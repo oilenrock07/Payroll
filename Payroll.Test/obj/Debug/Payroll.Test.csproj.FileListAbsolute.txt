@@ -1,0 +1,48 @@
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\bin\Debug\Payroll.Test.dll
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\bin\Debug\Payroll.Test.pdb
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\bin\Debug\Payroll.Repository.dll
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\bin\Debug\MySql.Data.dll
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\bin\Debug\Payroll.Repository.pdb
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\obj\Debug\Payroll.Test.csprojResolveAssemblyReference.cache
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\obj\Debug\Payroll.Test.dll
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\obj\Debug\Payroll.Test.pdb
+C:\Users\Cawi\Documents\Visual Studio 2013\Payroll\Payroll.Test\bin\Debug\Payroll.Test.dll.config
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Test.dll.config
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Test.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Test.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Repository.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Repository.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.csprojResolveAssemblyReference.cache
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Entities.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Entities.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.Web.Common.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.Web.Mvc.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\WebActivatorEx.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.Web.Common.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.Web.Mvc.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Moq.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.MockingKernel.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.MockingKernel.Moq.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Moq.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.MockingKernel.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Ninject.MockingKernel.Moq.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\nunit.framework.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\nunit.framework.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Infrastructure.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Infrastructure.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\FluentNHibernate.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\NHibernate.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Iesi.Collections.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\FluentNHibernate.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\FluentNHibernate.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\NHibernate.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Iesi.Collections.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.SqlServer.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.SqlServer.xml

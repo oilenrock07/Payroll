@@ -1,0 +1,7 @@
+packages/
+Payroll.Test/bin/Debug/nunit.framework.xml
+Payroll.Test/bin/
+Payroll/bin/
+Payroll.Repository/bin/
+Payroll.Infrastructure/bin/
+Payroll.Entities/bin/
