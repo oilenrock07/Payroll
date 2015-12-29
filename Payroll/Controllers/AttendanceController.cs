@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using Payroll.Entities;
-using Payroll.Entities.Enums;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 
@@ -20,7 +19,7 @@ namespace Payroll.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public void ClockInOut(string code)
+        public void ClockInOut(string code, int attendanceType)
         {
             var employee = _employeeRepository.GetByCode(code);
             if (employee != null)
@@ -28,7 +27,7 @@ namespace Payroll.Controllers
                 var attendance = new Attendance()
                 {
                     EmployeeId = employee.EmployeeId,
-                    AttendanceType = (int)AttendanceTypes.ClockIn,
+                    AttendanceType = attendanceType,
                     ClockInOut = DateTime.Now
                 };
 

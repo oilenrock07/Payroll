@@ -5,3 +5,7 @@ Payroll.Repository/bin/
 Payroll.Infrastructure/bin/
 Payroll.Entities/bin/
 Payroll.Service/bin/
+Payroll.Entities/obj
+Payroll.Service/obj
+Payroll.Test/obj/
+Payroll/obj/

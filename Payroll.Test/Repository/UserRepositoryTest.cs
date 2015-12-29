@@ -28,11 +28,15 @@ namespace Payroll.Test.Repository
         [Test]
         public void GetUserById()
         {
+            //Arrange
             var databaseFactory = new DatabaseFactory();
             var userRepository = new Repository<User>(databaseFactory);
             
+            //Act
             var user = userRepository.GetById(1);
 
+            //Asset
+            Assert.NotNull(user);
         }
     }
 }

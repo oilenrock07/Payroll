@@ -16,8 +16,8 @@ namespace Payroll
 
             routes.MapRoute(
                 name: "AttendanceRoute",
-                url: "{controller}/{action}/{code}",
-                defaults: new {controller = "Attendance", action = "ClockInOut"}
+                url: "{controller}/{action}/{code}/{attendanceType}",
+                defaults: new { controller = "Attendance", action = "ClockIn" }
                 );
 
 

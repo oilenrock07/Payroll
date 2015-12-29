@@ -46,3 +46,5 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\NHibernate.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Iesi.Collections.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.SqlServer.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.SqlServer.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\MySql.Data.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\MySql.Data.Entity.EF6.dll

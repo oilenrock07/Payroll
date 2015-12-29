@@ -1,9 +1,0 @@
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\bin\Debug\Payroll.Entities.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\bin\Debug\Payroll.Entities.pdb
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\obj\Debug\Payroll.Entities.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\obj\Debug\Payroll.Entities.pdb
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\obj\Debug\Payroll.Entities.csprojResolveAssemblyReference.cache
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\bin\Debug\EntityFramework.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\bin\Debug\EntityFramework.SqlServer.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\bin\Debug\EntityFramework.xml
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Entities\bin\Debug\EntityFramework.SqlServer.xml
