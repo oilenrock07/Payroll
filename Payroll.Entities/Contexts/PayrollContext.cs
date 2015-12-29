@@ -7,7 +7,6 @@ namespace Payroll.Entities.Contexts
     public class PayrollContext : DbContext
     {
         public PayrollContext()
-            //: base("Payroll.ConnectionString")
             : base(ConnectionString)
         {
             Database.SetInitializer<PayrollContext>(null);

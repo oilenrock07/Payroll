@@ -5,6 +5,6 @@ namespace Payroll.Repository.Interface
 {
     public interface IAttendanceRepository : IRepository<Attendance>
     {
-
+        Attendance GetLastAttendance(int employeeId);
     }
 }
