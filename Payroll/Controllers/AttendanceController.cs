@@ -19,7 +19,7 @@ namespace Payroll.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public void ClockInOut(string code, int attendanceType)
+        public void ClockIn(string code)
         {
             var employee = _employeeRepository.GetByCode(code);
             if (employee != null)
@@ -27,12 +27,34 @@ namespace Payroll.Controllers
                 var attendance = new Attendance()
                 {
                     EmployeeId = employee.EmployeeId,
-                    AttendanceType = attendanceType,
-                    ClockInOut = DateTime.Now
+                    ClockIn = DateTime.Now,
+                    ClockOut = null
                 };
 
                 _attendanceRepository.Add(attendance);
                 _unitOfWork.Commit();
+            }
+        }
+
+
+        public void ClockOut(string code)
+        {
+            var employee = _employeeRepository.GetByCode(code);
+            
+            if (employee != null)
+            {
+                var lastClockIn = _attendanceRepository.GetLastAttendance(employee.EmployeeId);
+
+                if (lastClockIn != null)
+                {
+                    lastClockIn.ClockOut = DateTime.Now;
+                    _attendanceRepository.Update(lastClockIn, new[] {"ClockOut"});
+                    _unitOfWork.Commit();
+                }
+                else
+                {
+                    //employee did not clocked in
+                }
             }
         }
     }

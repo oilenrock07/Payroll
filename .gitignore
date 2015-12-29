@@ -9,3 +9,5 @@ Payroll.Entities/obj
 Payroll.Service/obj
 Payroll.Test/obj/
 Payroll/obj/
+Payroll.Repository/obj/
+Payroll.Infrastructure/obj/
