@@ -12,5 +12,7 @@ namespace Payroll.Entities.Contexts
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
     }
 }

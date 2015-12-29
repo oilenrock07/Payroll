@@ -64,8 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IAttendanceRepository.cs" />
+    <Compile Include="Interface\IEmployeeRepository.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
     <Compile Include="Mappings\UserMap.cs" />
+    <Compile Include="Repositories\AttendanceRepository.cs" />
+    <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
