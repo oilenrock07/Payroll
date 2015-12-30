@@ -52,6 +52,7 @@
     <Compile Include="Employee.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule.cs" />
     <Compile Include="Users\User.cs" />
   </ItemGroup>
   <ItemGroup>

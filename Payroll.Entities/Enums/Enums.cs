@@ -6,4 +6,10 @@ namespace Payroll.Entities.Enums
         ClockIn = 1,
         ClockOut = 2
     }
+
+    public enum TimePeriod
+    {
+        AM = 1,
+        PM = 2
+    }
 }
