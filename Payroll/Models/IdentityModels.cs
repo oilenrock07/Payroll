@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System.Configuration;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Payroll.Models
 {
@@ -10,9 +11,29 @@ namespace Payroll.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("ConnectionString.MsSql")
+            : base(ConnectionString)
         {
 
+        }
+
+        static string ConnectionString
+        {
+
+            get
+            {
+                string cs = "";
+                switch (ConfigurationManager.AppSettings["DatabaseType"])
+                {
+                    case "MsSql":
+                        cs = "ConnectionString.MsSql";
+                        break;
+                    case "MySql":
+                        cs = "ConnectionString.MySql";
+                        break;
+                }
+
+                return cs;
+            }
         }
     }
 }
