@@ -37,13 +37,6 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Infrastructure.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Infrastructure.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.xml
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\FluentNHibernate.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\NHibernate.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Iesi.Collections.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\FluentNHibernate.pdb
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\FluentNHibernate.xml
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\NHibernate.xml
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Iesi.Collections.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.SqlServer.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.SqlServer.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\MySql.Data.dll

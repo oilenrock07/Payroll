@@ -73,7 +73,7 @@ namespace Payroll.Test.App_Start
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
 
             //Repository
-            kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
+            //kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
         }
     }
 }

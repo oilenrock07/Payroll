@@ -73,7 +73,6 @@ namespace Payroll.App_Start
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
 
             //Repository
-            kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IAttendanceRepository>().To<AttendanceRepository>().InRequestScope();
             kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>().InRequestScope();
         }        

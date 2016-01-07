@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Payroll.Entities.Users;
+using Payroll.Entities;
 using Payroll.Infrastructure.Implementations;
 using Assert = NUnit.Framework.Assert;
 
@@ -40,17 +40,17 @@ namespace Payroll.Test.Repository
         }
 
         [TestMethod]
-        public void GetUserById()
+        public void GetEmployeeById()
         {
             //Arrange
             var databaseFactory = new DatabaseFactory();
-            var userRepository = new Repository<User>(databaseFactory);
+            var employeeRepository = new Repository<Employee>(databaseFactory);
 
             //Act
-            var user = userRepository.GetById(1);
+            var employee = employeeRepository.GetById(1);
 
             //Asset
-            Assert.NotNull(user);
+            Assert.NotNull(employee);
         }
     }
 }
