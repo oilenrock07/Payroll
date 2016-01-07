@@ -115,7 +115,6 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\UserRepositoryTest.cs" />
-    <Compile Include="Repository\UserRepositoryTest2.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Payroll.Entities\Payroll.Entities.csproj">

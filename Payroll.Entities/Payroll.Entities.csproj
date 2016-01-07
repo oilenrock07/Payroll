@@ -49,11 +49,33 @@
   <ItemGroup>
     <Compile Include="Attendance.cs" />
     <Compile Include="Contexts\PayrollContext.cs" />
+    <Compile Include="Department.cs" />
+    <Compile Include="DepartmentManager.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeDepartment.cs" />
+    <Compile Include="EmployeeFile.cs" />
+    <Compile Include="EmployeeInfo.cs" />
+    <Compile Include="EmployeeWorkSchedule.cs" />
+    <Compile Include="Files.cs" />
+    <Compile Include="Frequency.cs" />
+    <Compile Include="Holiday.cs" />
+    <Compile Include="Leave.cs" />
+    <Compile Include="Loan.cs" />
+    <Compile Include="LoanPayment.cs" />
+    <Compile Include="PaymentFrequency.cs" />
+    <Compile Include="Payroll\EmployeeLeave.cs" />
     <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Payroll\Deduction.cs" />
+    <Compile Include="Payroll\EmployeeAdjustment.cs" />
+    <Compile Include="Payroll\EmployeeLoan.cs" />
+    <Compile Include="Payroll\Payroll.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="Setting.cs" />
+    <Compile Include="Tax.cs" />
     <Compile Include="Users\User.cs" />
+    <Compile Include="WorkSchedule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

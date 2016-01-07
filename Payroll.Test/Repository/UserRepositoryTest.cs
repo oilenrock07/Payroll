@@ -1,37 +1,51 @@
-﻿using Ninject.MockingKernel.Moq;
-using NUnit.Framework;
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Payroll.Entities.Users;
 using Payroll.Infrastructure.Implementations;
-using Payroll.Repository.Interface;
-using Payroll.Repository.Repositories;
+using Assert = NUnit.Framework.Assert;
 
 namespace Payroll.Test.Repository
 {
-    [TestFixture]
+    /// <summary>
+    /// Summary description for UserRepositoryTest2
+    /// </summary>
+    [TestClass]
     public class UserRepositoryTest
     {
-        private readonly MoqMockingKernel _kernel;
-
         public UserRepositoryTest()
         {
-            _kernel = new MoqMockingKernel();
-            _kernel.Bind<IUserRepository>().To<UserRepository>();
+            //
+            // TODO: Add constructor logic here
+            //
         }
 
+        private TestContext testContextInstance;
 
-        [SetUp]
-        public void SetUp()
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
         {
-            _kernel.Reset();
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
         }
 
-        [Test]
+        [TestMethod]
         public void GetUserById()
         {
             //Arrange
             var databaseFactory = new DatabaseFactory();
             var userRepository = new Repository<User>(databaseFactory);
-            
+
             //Act
             var user = userRepository.GetById(1);
 
