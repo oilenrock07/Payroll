@@ -13,10 +13,10 @@ namespace Payroll.Entities
 
         public bool IsActive { get; set; }
 
-        public int WeeklyStartDayOfWeek { get; set; }
+        public int ? WeeklyStartDayOfWeek { get; set; }
 
-        public int MonthlyStartDay { get; set; }
+        public int ? MonthlyStartDay { get; set; }
 
-        public int MonthlyEndDay { get; set; }
+        public int ? MonthlyEndDay { get; set; }
     }
 }

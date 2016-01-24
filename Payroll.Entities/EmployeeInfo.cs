@@ -17,7 +17,7 @@ namespace Payroll.Entities
 
         public decimal Salary { get; set; }
 
-        public decimal Allowance { get; set; }
+        public decimal ? Allowance { get; set; }
 
         [StringLength(50)]
         public string TIN { get; set; }
