@@ -14,9 +14,9 @@ namespace Payroll.Repository.Repositories
             
         }
 
-        public Attendance GetLastAttendance(int employeeId)
+        public Attendance GetLastAttendance(string employeeCode)
         {
-            return Find(e => e.ClockOut == null && e.ClockIn != null && e.EmployeeId == employeeId)
+            return Find(e => e.ClockOut == null && e.ClockIn != null && e.EmployeeCode == employeeCode)
                    .OrderByDescending(e => e.AttendanceId).Take(1).FirstOrDefault();
         }
     }

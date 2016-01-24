@@ -3,3 +3,15 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Service.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\obj\Debug\Payroll.Service.csprojResolveAssemblyReference.cache
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\obj\Debug\Payroll.Service.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\obj\Debug\Payroll.Service.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Common.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Entities.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Infrastructure.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Repository.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\EntityFramework.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\MySql.Data.Entity.EF6.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\MySql.Data.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Common.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Entities.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Infrastructure.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Repository.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\EntityFramework.xml

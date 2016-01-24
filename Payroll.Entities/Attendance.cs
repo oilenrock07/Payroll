@@ -10,7 +10,8 @@ namespace Payroll.Entities
         [Key]
         public int AttendanceId { get; set; }
 
-        public int EmployeeId { get; set; }
+        [StringLength(50)]
+        public string EmployeeCode { get; set; }
         public DateTime ClockIn { get; set; }
         public DateTime ? ClockOut { get; set; }
     }

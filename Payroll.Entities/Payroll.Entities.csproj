@@ -92,6 +92,11 @@
     <Compile Include="Schedule.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Tax.cs" />
+    <Compile Include="Users\Role.cs" />
+    <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserClaim.cs" />
+    <Compile Include="Users\UserLogin.cs" />
+    <Compile Include="Users\UserRole.cs" />
     <Compile Include="WorkSchedule.cs" />
   </ItemGroup>
   <ItemGroup>

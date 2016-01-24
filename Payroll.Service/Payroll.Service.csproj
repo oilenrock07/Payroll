@@ -39,11 +39,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\AttendanceService.cs" />
+    <Compile Include="Interfaces\IAttendanceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Implementations\" />
-    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Payroll.Common\Payroll.Common.csproj">
+      <Project>{ba703de8-5f8e-4eed-a82e-ea38f6e959c7}</Project>
+      <Name>Payroll.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Payroll.Entities\Payroll.Entities.csproj">
+      <Project>{b5b3e6b2-7613-4341-a351-729aef9bedf9}</Project>
+      <Name>Payroll.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Payroll.Infrastructure\Payroll.Infrastructure.csproj">
+      <Project>{b7ab72ba-4672-422d-9ec6-0364bba3159a}</Project>
+      <Name>Payroll.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Payroll.Repository\Payroll.Repository.csproj">
+      <Project>{8fa31ff9-0081-490e-8f06-a627998be330}</Project>
+      <Name>Payroll.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
