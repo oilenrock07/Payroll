@@ -7,7 +7,9 @@ namespace Payroll.Entities
     public class Setting
     {
         [Key]
-        public int SettingKey { get; set; }
+        public int SettingId { get; set; }
+
+        public string SettingKey { get; set; }
 
         public string Name { get; set; }
 
