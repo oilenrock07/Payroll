@@ -13,7 +13,7 @@ namespace Payroll.Entities
     public class Schedule
     {
         [Key]
-        public int AttendanceId { get; set; }
+        public int ScheduleId { get; set; }
 
         public int StartDay { get; set; }
 
@@ -21,5 +21,8 @@ namespace Payroll.Entities
 
         public TimePeriod Timeperiod { get; set; }
 
+        public DateTime StartTime { get; set; }
+
+        public DateTime EndTime { get; set; }
     }
 }
