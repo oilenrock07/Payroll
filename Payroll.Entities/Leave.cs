@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
-    [Table("tbl_leave")]
+    [Table("leave")]
     public class Leave
     {
         [Key]

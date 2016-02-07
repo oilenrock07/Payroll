@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Payroll.Entities
 {
-    [Table("tbl_schedule")]
+    [Table("schedule")]
     public class Schedule
     {
         [Key]

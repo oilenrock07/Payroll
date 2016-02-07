@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
-    [Table("tbl_employee_info")]
+    [Table("employee_info")]
     public class EmployeeInfo
     {
         [Key]
