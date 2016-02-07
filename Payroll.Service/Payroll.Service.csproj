@@ -39,7 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
+    <Compile Include="Interfaces\IAttendanceLogService.cs" />
     <Compile Include="Interfaces\IAttendanceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

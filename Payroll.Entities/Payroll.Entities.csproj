@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attendance.cs" />
+    <Compile Include="AttendanceLog.cs" />
     <Compile Include="Contexts\PayrollContext.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="DepartmentManager.cs" />
@@ -71,9 +72,9 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
-    <Compile Include="Migrations\201602070743473_initial.cs" />
-    <Compile Include="Migrations\201602070743473_initial.Designer.cs">
-      <DependentUpon>201602070743473_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201602070812546_test.cs" />
+    <Compile Include="Migrations\201602070812546_test.Designer.cs">
+      <DependentUpon>201602070812546_test.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -99,8 +100,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602070743473_initial.resx">
-      <DependentUpon>201602070743473_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602070812546_test.resx">
+      <DependentUpon>201602070812546_test.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

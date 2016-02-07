@@ -4,6 +4,7 @@ using Payroll.Entities.Payroll;
 
 namespace Payroll.Entities.Contexts
 {
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class PayrollContext : DbContext
     {
         public PayrollContext()
