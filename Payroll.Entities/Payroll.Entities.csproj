@@ -71,13 +71,9 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
-    <Compile Include="Migrations\201601071012139_InitialMigration.cs" />
-    <Compile Include="Migrations\201601071012139_InitialMigration.Designer.cs">
-      <DependentUpon>201601071012139_InitialMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201601071023232_OtherEntities.cs" />
-    <Compile Include="Migrations\201601071023232_OtherEntities.Designer.cs">
-      <DependentUpon>201601071023232_OtherEntities.cs</DependentUpon>
+    <Compile Include="Migrations\201602070743473_initial.cs" />
+    <Compile Include="Migrations\201602070743473_initial.Designer.cs">
+      <DependentUpon>201602070743473_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -103,11 +99,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201601071012139_InitialMigration.resx">
-      <DependentUpon>201601071012139_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601071023232_OtherEntities.resx">
-      <DependentUpon>201601071023232_OtherEntities.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602070743473_initial.resx">
+      <DependentUpon>201602070743473_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

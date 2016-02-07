@@ -11,9 +11,9 @@ namespace Payroll.Entities
 
         public string SettingKey { get; set; }
 
-        public string Name { get; set; }
-
         public string Value { get; set; }
+
+        public string Description { get; set; }
 
         public string Category { get; set; }
     }

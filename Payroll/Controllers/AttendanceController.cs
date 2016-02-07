@@ -26,7 +26,7 @@ namespace Payroll.Controllers
             {
                 var attendance = new Attendance()
                 {
-                    EmployeeId = employee.EmployeeId,
+                    EmployeeCode = code,
                     ClockIn = DateTime.Now,
                     ClockOut = null
                 };
@@ -43,7 +43,7 @@ namespace Payroll.Controllers
             
             if (employee != null)
             {
-                var lastClockIn = _attendanceRepository.GetLastAttendance(employee.EmployeeId);
+                var lastClockIn = _attendanceRepository.GetLastAttendance(employee.EmployeeCode);
 
                 if (lastClockIn != null)
                 {

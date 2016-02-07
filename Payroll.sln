@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Service", "Payroll.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Entities", "Payroll.Entities\Payroll.Entities.csproj", "{B5B3E6B2-7613-4341-A351-729AEF9BEDF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Common", "Payroll.Common\Payroll.Common.csproj", "{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{B5B3E6B2-7613-4341-A351-729AEF9BEDF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5B3E6B2-7613-4341-A351-729AEF9BEDF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5B3E6B2-7613-4341-A351-729AEF9BEDF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

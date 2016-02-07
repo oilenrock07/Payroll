@@ -3,17 +3,28 @@ namespace Payroll.Entities.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class OtherEntities : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.tbl_attendance",
+                c => new
+                    {
+                        AttendanceId = c.Int(nullable: false, identity: true),
+                        EmployeeCode = c.String(maxLength: 50, storeType: "nvarchar"),
+                        ClockIn = c.DateTime(nullable: false, precision: 0),
+                        ClockOut = c.DateTime(precision: 0),
+                    })
+                .PrimaryKey(t => t.AttendanceId);
+            
             CreateTable(
                 "dbo.tbl_deduction",
                 c => new
                     {
                         DeductionId = c.Int(nullable: false, identity: true),
-                        DeductionName = c.String(maxLength: 50),
-                        Remarks = c.String(),
+                        DeductionName = c.String(maxLength: 50, storeType: "nvarchar"),
+                        Remarks = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.DeductionId);
             
@@ -32,7 +43,7 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         DepartmentId = c.Int(nullable: false, identity: true),
-                        DepartmentName = c.String(maxLength: 250),
+                        DepartmentName = c.String(maxLength: 250, storeType: "nvarchar"),
                         IsActive = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.DepartmentId);
@@ -44,9 +55,9 @@ namespace Payroll.Entities.Migrations
                         AdjustmentId = c.Int(nullable: false, identity: true),
                         AdjustmentTypeId = c.Int(nullable: false),
                         EmployeeId = c.Int(nullable: false),
-                        Date = c.DateTime(nullable: false),
+                        Date = c.DateTime(nullable: false, precision: 0),
                         Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Remarks = c.String(),
+                        Remarks = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.AdjustmentId);
             
@@ -79,12 +90,12 @@ namespace Payroll.Entities.Migrations
                         PaymentFrequencyId = c.Int(nullable: false),
                         PositionId = c.Int(nullable: false),
                         Salary = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Allowance = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        TIN = c.String(maxLength: 50),
-                        SSS = c.String(maxLength: 50),
-                        GSIS = c.String(maxLength: 50),
-                        PAGIBIG = c.String(maxLength: 50),
-                        PhilHealth = c.String(maxLength: 50),
+                        Allowance = c.Decimal(precision: 18, scale: 2),
+                        TIN = c.String(maxLength: 50, storeType: "nvarchar"),
+                        SSS = c.String(maxLength: 50, storeType: "nvarchar"),
+                        GSIS = c.String(maxLength: 50, storeType: "nvarchar"),
+                        PAGIBIG = c.String(maxLength: 50, storeType: "nvarchar"),
+                        PhilHealth = c.String(maxLength: 50, storeType: "nvarchar"),
                         Dependents = c.Int(nullable: false),
                         Married = c.Boolean(nullable: false),
                     })
@@ -97,8 +108,8 @@ namespace Payroll.Entities.Migrations
                         EmployeeLeaveId = c.Int(nullable: false, identity: true),
                         EmployeeId = c.Int(nullable: false),
                         LeaveId = c.Int(nullable: false),
-                        Date = c.DateTime(nullable: false),
-                        Reason = c.String(),
+                        Date = c.DateTime(nullable: false, precision: 0),
+                        Reason = c.String(unicode: false),
                         IsApproved = c.Boolean(nullable: false),
                         ApprovedBy = c.Int(nullable: false),
                         Hours = c.Int(nullable: false),
@@ -114,17 +125,30 @@ namespace Payroll.Entities.Migrations
                         LoanId = c.Int(nullable: false),
                         FrequencyId = c.Int(nullable: false),
                         Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        LoanDate = c.DateTime(nullable: false),
-                        StartDate = c.DateTime(nullable: false),
-                        EndDate = c.DateTime(nullable: false),
+                        LoanDate = c.DateTime(nullable: false, precision: 0),
+                        StartDate = c.DateTime(nullable: false, precision: 0),
+                        EndDate = c.DateTime(nullable: false, precision: 0),
                         IsActive = c.Boolean(nullable: false),
-                        PaymentStartDate = c.DateTime(nullable: false),
-                        WeeklyPaymentDayOfWeek = c.DateTime(nullable: false),
-                        BiMonthlyPaymentFirstDate = c.DateTime(nullable: false),
-                        BiMonthlyPaymentSecondDate = c.DateTime(nullable: false),
-                        MonthlyPaymentDate = c.DateTime(nullable: false),
+                        PaymentStartDate = c.DateTime(nullable: false, precision: 0),
+                        WeeklyPaymentDayOfWeek = c.DateTime(nullable: false, precision: 0),
+                        BiMonthlyPaymentFirstDate = c.DateTime(nullable: false, precision: 0),
+                        BiMonthlyPaymentSecondDate = c.DateTime(nullable: false, precision: 0),
+                        MonthlyPaymentDate = c.DateTime(nullable: false, precision: 0),
                     })
                 .PrimaryKey(t => t.EmployeeLoanId);
+            
+            CreateTable(
+                "dbo.tbl_employee",
+                c => new
+                    {
+                        EmployeeId = c.Int(nullable: false, identity: true),
+                        EmployeeCode = c.String(maxLength: 250, storeType: "nvarchar"),
+                        FirstName = c.String(maxLength: 50, storeType: "nvarchar"),
+                        LastName = c.String(maxLength: 50, storeType: "nvarchar"),
+                        MiddleName = c.String(maxLength: 50, storeType: "nvarchar"),
+                        BirthDate = c.DateTime(nullable: false, precision: 0),
+                    })
+                .PrimaryKey(t => t.EmployeeId);
             
             CreateTable(
                 "dbo.tbl_employee_workschedule",
@@ -134,7 +158,7 @@ namespace Payroll.Entities.Migrations
                         EmployeeId = c.Int(nullable: false),
                         WorkScheduleId = c.Int(nullable: false),
                         IsActive = c.Boolean(nullable: false),
-                        DateCreated = c.DateTime(nullable: false),
+                        DateCreated = c.DateTime(nullable: false, precision: 0),
                     })
                 .PrimaryKey(t => t.EmployeeWorkScheduleId);
             
@@ -143,7 +167,7 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         FileId = c.Int(nullable: false, identity: true),
-                        FileName = c.String(maxLength: 250),
+                        FileName = c.String(maxLength: 250, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.FileId);
             
@@ -152,7 +176,7 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         FrequencyId = c.Int(nullable: false, identity: true),
-                        FrequencyName = c.String(maxLength: 50),
+                        FrequencyName = c.String(maxLength: 50, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.FrequencyId);
             
@@ -161,9 +185,9 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         HolidayId = c.Int(nullable: false, identity: true),
-                        HolidayName = c.String(maxLength: 50),
+                        HolidayName = c.String(maxLength: 50, storeType: "nvarchar"),
                         IsRegularHoliday = c.Boolean(nullable: false),
-                        Date = c.DateTime(nullable: false),
+                        Date = c.DateTime(nullable: false, precision: 0),
                         IsActive = c.Boolean(nullable: false),
                         Year = c.Int(nullable: false),
                     })
@@ -174,11 +198,11 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         LeaveId = c.Int(nullable: false, identity: true),
-                        LeaveName = c.String(maxLength: 250),
+                        LeaveName = c.String(maxLength: 250, storeType: "nvarchar"),
                         IsActive = c.Boolean(nullable: false),
                         IsRefundable = c.Boolean(nullable: false),
                         Count = c.Int(nullable: false),
-                        Description = c.String(),
+                        Description = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.LeaveId);
             
@@ -188,7 +212,7 @@ namespace Payroll.Entities.Migrations
                     {
                         LoanPaymentId = c.Int(nullable: false, identity: true),
                         EmployeeLoanId = c.Int(nullable: false),
-                        PaymentDate = c.DateTime(nullable: false),
+                        PaymentDate = c.DateTime(nullable: false, precision: 0),
                         Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.LoanPaymentId);
@@ -198,7 +222,7 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         LoanId = c.Int(nullable: false, identity: true),
-                        LoanName = c.String(maxLength: 50),
+                        LoanName = c.String(maxLength: 50, storeType: "nvarchar"),
                         Min = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Max = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Interest = c.Decimal(nullable: false, precision: 18, scale: 2),
@@ -212,9 +236,9 @@ namespace Payroll.Entities.Migrations
                         PaymentFrequencyId = c.Int(nullable: false, identity: true),
                         FrequencyId = c.Int(nullable: false),
                         IsActive = c.Boolean(nullable: false),
-                        WeeklyStartDayOfWeek = c.Int(nullable: false),
-                        MonthlyStartDay = c.Int(nullable: false),
-                        MonthlyEndDay = c.Int(nullable: false),
+                        WeeklyStartDayOfWeek = c.Int(),
+                        MonthlyStartDay = c.Int(),
+                        MonthlyEndDay = c.Int(),
                     })
                 .PrimaryKey(t => t.PaymentFrequencyId);
             
@@ -227,10 +251,11 @@ namespace Payroll.Entities.Migrations
                         Salary = c.Decimal(nullable: false, precision: 18, scale: 2),
                         TotalDeduction = c.Decimal(nullable: false, precision: 18, scale: 2),
                         TotalAdjustment = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        PayrollDate = c.DateTime(nullable: false),
-                        CutOffStartDate = c.DateTime(nullable: false),
-                        CutOffEndDate = c.DateTime(nullable: false),
-                        PayrollGeneratedDate = c.DateTime(nullable: false),
+                        PayrollDate = c.DateTime(nullable: false, precision: 0),
+                        CutOffStartDate = c.DateTime(nullable: false, precision: 0),
+                        CutOffEndDate = c.DateTime(nullable: false, precision: 0),
+                        PayrollGeneratedDate = c.DateTime(nullable: false, precision: 0),
+                        TotalPay = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.PayrollId);
             
@@ -239,8 +264,8 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         PositionId = c.Int(nullable: false, identity: true),
-                        PositionName = c.String(maxLength: 150),
-                        Description = c.String(),
+                        PositionName = c.String(maxLength: 150, storeType: "nvarchar"),
+                        Description = c.String(unicode: false),
                         IsActive = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.PositionId);
@@ -249,30 +274,33 @@ namespace Payroll.Entities.Migrations
                 "dbo.tbl_schedule",
                 c => new
                     {
-                        AttendanceId = c.Int(nullable: false, identity: true),
+                        ScheduleId = c.Int(nullable: false, identity: true),
                         StartDay = c.Int(nullable: false),
                         EndDay = c.Int(nullable: false),
                         Timeperiod = c.Int(nullable: false),
+                        StartTime = c.DateTime(nullable: false, precision: 0),
+                        EndTime = c.DateTime(nullable: false, precision: 0),
                     })
-                .PrimaryKey(t => t.AttendanceId);
+                .PrimaryKey(t => t.ScheduleId);
             
             CreateTable(
                 "dbo.tbl_settings",
                 c => new
                     {
-                        SettingKey = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Value = c.String(),
-                        Category = c.String(),
+                        SettingId = c.Int(nullable: false, identity: true),
+                        SettingKey = c.String(unicode: false),
+                        Value = c.String(unicode: false),
+                        Description = c.String(unicode: false),
+                        Category = c.String(unicode: false),
                     })
-                .PrimaryKey(t => t.SettingKey);
+                .PrimaryKey(t => t.SettingId);
             
             CreateTable(
                 "dbo.tbl_tax",
                 c => new
                     {
                         TaxId = c.Int(nullable: false, identity: true),
-                        Code = c.String(maxLength: 50),
+                        Code = c.String(maxLength: 50, storeType: "nvarchar"),
                         Frequency = c.Int(nullable: false),
                         NoOfDependents = c.Int(nullable: false),
                         BaseAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
@@ -285,7 +313,7 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         WorkScheduleId = c.Int(nullable: false, identity: true),
-                        WorkScheduleName = c.String(maxLength: 250),
+                        WorkScheduleName = c.String(maxLength: 250, storeType: "nvarchar"),
                         TimeStart = c.Int(nullable: false),
                         TimeEnd = c.Int(nullable: false),
                         WeekStart = c.Int(nullable: false),
@@ -293,24 +321,10 @@ namespace Payroll.Entities.Migrations
                     })
                 .PrimaryKey(t => t.WorkScheduleId);
             
-            DropTable("dbo.tbl_users");
         }
         
         public override void Down()
         {
-            CreateTable(
-                "dbo.tbl_users",
-                c => new
-                    {
-                        UserId = c.Int(nullable: false, identity: true),
-                        UserName = c.String(),
-                        Password = c.String(),
-                        FirstName = c.String(),
-                        LastName = c.String(),
-                        MiddleName = c.String(),
-                    })
-                .PrimaryKey(t => t.UserId);
-            
             DropTable("dbo.tbl_work_schedule");
             DropTable("dbo.tbl_tax");
             DropTable("dbo.tbl_settings");
@@ -325,6 +339,7 @@ namespace Payroll.Entities.Migrations
             DropTable("dbo.tbl_frequency");
             DropTable("dbo.tbl_files");
             DropTable("dbo.tbl_employee_workschedule");
+            DropTable("dbo.tbl_employee");
             DropTable("dbo.tbl_employee_loan");
             DropTable("dbo.tbl_employee_leave");
             DropTable("dbo.tbl_employee_info");
@@ -334,6 +349,7 @@ namespace Payroll.Entities.Migrations
             DropTable("dbo.tbl_department");
             DropTable("dbo.tbl_department_manager");
             DropTable("dbo.tbl_deduction");
+            DropTable("dbo.tbl_attendance");
         }
     }
 }
