@@ -1,7 +1,7 @@
 ﻿
 namespace Payroll.Entities.Enums
 {
-    public enum AttendanceTypes
+    public enum AttendanceType
     {
         ClockIn = 1,
         ClockOut = 2
