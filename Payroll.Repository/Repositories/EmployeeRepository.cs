@@ -3,6 +3,8 @@ using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Infrastructure.Implementations;
+using System;
+using System.Collections.Generic;
 
 namespace Payroll.Repository.Repositories
 {
@@ -12,6 +14,12 @@ namespace Payroll.Repository.Repositories
             : base (databaseFactory)
         {
             
+        }
+
+        public IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId)
+        {
+            //TODO check the payment frequency id
+            return Find(e => e.IsActive).ToList();
         }
 
         public Employee GetByCode(string code)

@@ -25,5 +25,7 @@ namespace Payroll.Entities
         public DateTime BirthDate { get; set; }
 
         public string Picture { get; set; }
+
+        public Boolean IsActive { get; set; }
     }
 }

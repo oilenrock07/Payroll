@@ -1,6 +1,7 @@
 ﻿using System;
 using Payroll.Common.Enums;
 using Payroll.Entities;
+using System.Collections.Generic;
 
 namespace Payroll.Service.Interfaces
 {
@@ -13,5 +14,9 @@ namespace Payroll.Service.Interfaces
         int CreateWorkSchedulesByDateRange(DateTime fromDate, DateTime toDate);
 
         void Save(Attendance attendance);
+
+        IList<Attendance> GetAttendanceByDateRange(string employeeCode, DateTime fromDate, DateTime toDate);
+
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Payroll.Entities;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
@@ -14,10 +16,16 @@ namespace Payroll.Repository.Repositories
             
         }
 
+        public IList<Attendance> GetAttendanceByDateRange(string employeeCode, DateTime fromDate, DateTime toDate)
+        {
+            return Find(a => a.EmployeeCode == employeeCode &&
+                a.ClockIn.Day >= fromDate.Day && a.ClockIn.Day <= toDate.Day).OrderBy(a => a.ClockIn).ToList();
+        }
+
         public Attendance GetLastAttendance(string employeeCode)
         {
-            return Find(e => e.ClockOut == null && e.ClockIn != null && e.EmployeeCode == employeeCode)
-                   .OrderByDescending(e => e.AttendanceId).Take(1).FirstOrDefault();
+            return Find(a => a.ClockOut == null && a.ClockIn != null && a.EmployeeCode == employeeCode)
+                   .OrderByDescending(a => a.AttendanceId).Take(1).FirstOrDefault();
         }
     }
 }

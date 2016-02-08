@@ -41,6 +41,7 @@ namespace Payroll.Entities.Contexts
         public DbSet<EmployeeLeave> EmployeeLeaves { get; set; }
         public DbSet<EmployeeLoan> EmployeeLoans { get; set; }
         public DbSet<Payroll.Payroll> Payrolls { get; set; }
+        public DbSet<EmployeeHours> EmployeeHours { get; set; }
 
         static string ConnectionString
         {

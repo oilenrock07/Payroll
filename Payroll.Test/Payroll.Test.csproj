@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AttendanceLogRepositoryTest.cs" />
     <Compile Include="Repository\PayrollComputation.cs" />
     <Compile Include="Repository\UserRepositoryTest.cs" />
     <Compile Include="Service\AttendanceServiceTest.cs" />
