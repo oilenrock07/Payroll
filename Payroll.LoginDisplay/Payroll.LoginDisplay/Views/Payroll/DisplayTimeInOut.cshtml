@@ -1,0 +1,36 @@
+﻿@using Payroll.Common.Enums
+@model Payroll.LoginDisplay.Models.Payroll.LogInViewModel
+@{
+    ViewBag.Title = "DisplayTimeInOut";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        @if (Model.AttendanceCode == AttendanceCode.ClockIn)
+        {
+            <h2>Clock in success!</h2>
+        }
+        @if (Model.AttendanceCode == AttendanceCode.ClockIn)
+        {
+            <h2>Clock out success!</h2>
+        }
+    </div>
+    <div class="col-xs-6">
+        <img src="@Model.ImagePath" class="img-responsive"/>
+        <h3>Hi @Model.FullName</h3>
+    </div>
+    <div class="col-xs-6">
+        <h2>@Model.Datetime</h2>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        //after 5 seconds redirect to default page
+        window.setTimeout(function () {
+            window.location = '/Payroll/Index';
+        }, 5000);
+    </script>
+}

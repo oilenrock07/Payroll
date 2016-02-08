@@ -88,6 +88,10 @@
     <Compile Include="Migrations\201602080556529_add-attendance-log-table.Designer.cs">
       <DependentUpon>201602080556529_add-attendance-log-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.cs" />
+    <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.Designer.cs">
+      <DependentUpon>201602080627473_AddedPictureToEmployee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeLeave.cs" />
@@ -123,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602080556529_add-attendance-log-table.resx">
       <DependentUpon>201602080556529_add-attendance-log-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602080627473_AddedPictureToEmployee.resx">
+      <DependentUpon>201602080627473_AddedPictureToEmployee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

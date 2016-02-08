@@ -23,5 +23,7 @@ namespace Payroll.Entities
         public string MiddleName { get; set; }
         
         public DateTime BirthDate { get; set; }
+
+        public string Picture { get; set; }
     }
 }
