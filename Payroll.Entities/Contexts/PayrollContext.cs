@@ -33,6 +33,7 @@ namespace Payroll.Entities.Contexts
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<WorkSchedule> WorkSchedules { get; set; }
+        public DbSet<AttendanceLog> AttendanceLog { get; set; }
 
         //Payroll
         public DbSet<Deduction> Deductions { get; set; }
