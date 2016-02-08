@@ -89,15 +89,12 @@ namespace Payroll.Service.Implementations
                 foreach (var attendanceLog in logs) {
                     //If next employee
                     if (attendanceLog.EmployeeCode != previousAttendance.EmployeeCode)
-                    {
                         previousAttendance = null;
-                    }
+
                     if (previousAttendance == null)
-                    {
                         //Last record of the employee
                         previousAttendance
                             = _attendanceRepository.GetLastAttendance(attendanceLog.EmployeeCode);
-                    }
 
                     //If logout should find the last in of the employee
                         // If none we will be using first in first out rule 
@@ -129,9 +126,7 @@ namespace Payroll.Service.Implementations
 
                     //Save or Update
                     if (attendance != null)
-                    {
                         this.Save(attendance);
-                    }
 
                     //Update attendance log
                     attendanceLog.IsRecorded = true;
@@ -154,14 +149,10 @@ namespace Payroll.Service.Implementations
         public void Save(Attendance attendance)
         {
             if (attendance.AttendanceId != null)
-            {
                 _attendanceRepository.Update(attendance);
-            }
             else
-            {
                 _attendanceRepository.Add(attendance);
 
-            }
         }
     }
 }
