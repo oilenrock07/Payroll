@@ -10,6 +10,6 @@ namespace Payroll.Repository.Interface
 {
     public interface IAttendanceLogRepository : IRepository<AttendanceLog>
     {
-        List<AttendanceLog> GetAttenDanceLog();
+        IList<AttendanceLog> GetAttendanceLogs(DateTime fromDate, DateTime toDate, Boolean isRecorded);
     }
 }
