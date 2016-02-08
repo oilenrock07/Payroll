@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201602070812546_test.Designer.cs">
       <DependentUpon>201602070812546_test.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602080233234_additional-attendance-fields.cs" />
+    <Compile Include="Migrations\201602080233234_additional-attendance-fields.Designer.cs">
+      <DependentUpon>201602080233234_additional-attendance-fields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeLeave.cs" />
@@ -102,6 +106,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201602070812546_test.resx">
       <DependentUpon>201602070812546_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602080233234_additional-attendance-fields.resx">
+      <DependentUpon>201602080233234_additional-attendance-fields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
