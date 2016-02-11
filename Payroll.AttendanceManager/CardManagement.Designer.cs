@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Timer rtTimer;
-            this.lbRTShow = new System.Windows.Forms.ListBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -67,36 +65,20 @@
             this.btnEmptyCard = new System.Windows.Forms.Button();
             this.label31 = new System.Windows.Forms.Label();
             this.UserIDTimer = new System.Windows.Forms.Timer(this.components);
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lbRTShow = new System.Windows.Forms.ListBox();
             rtTimer = new System.Windows.Forms.Timer(this.components);
-            this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtTimer
             // 
             rtTimer.Interval = 800;
             rtTimer.Tick += new System.EventHandler(this.rtTimer_Tick);
-            // 
-            // lbRTShow
-            // 
-            this.lbRTShow.FormattingEnabled = true;
-            this.lbRTShow.Location = new System.Drawing.Point(8, 16);
-            this.lbRTShow.Name = "lbRTShow";
-            this.lbRTShow.Size = new System.Drawing.Size(445, 121);
-            this.lbRTShow.TabIndex = 4;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.lbRTShow);
-            this.groupBox3.Location = new System.Drawing.Point(7, 190);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(461, 147);
-            this.groupBox3.TabIndex = 5;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Show the RealTime Events Related with the Card";
             // 
             // groupBox1
             // 
@@ -328,7 +310,7 @@
             this.groupBox7.Controls.Add(this.btnWriteCard);
             this.groupBox7.Controls.Add(this.btnEmptyCard);
             this.groupBox7.Controls.Add(this.label31);
-            this.groupBox7.Location = new System.Drawing.Point(6, 345);
+            this.groupBox7.Location = new System.Drawing.Point(11, 192);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(462, 117);
             this.groupBox7.TabIndex = 41;
@@ -421,6 +403,24 @@
             this.UserIDTimer.Enabled = true;
             this.UserIDTimer.Tick += new System.EventHandler(this.UserIDTimer_Tick);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.lbRTShow);
+            this.groupBox3.Location = new System.Drawing.Point(12, 39);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(461, 147);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Show the RealTime Events Related with the Card";
+            // 
+            // lbRTShow
+            // 
+            this.lbRTShow.FormattingEnabled = true;
+            this.lbRTShow.Location = new System.Drawing.Point(8, 16);
+            this.lbRTShow.Name = "lbRTShow";
+            this.lbRTShow.Size = new System.Drawing.Size(445, 121);
+            this.lbRTShow.TabIndex = 4;
+            // 
             // CardMaintenance
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -433,7 +433,6 @@
             this.MaximizeBox = false;
             this.Name = "CardMaintenance";
             this.Text = "Card Management";
-            this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -441,14 +440,13 @@
             this.groupBox5.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListBox lbRTShow;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Label label28;
@@ -484,6 +482,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Timer UserIDTimer;
         private System.Windows.Forms.ComboBox cbUserID;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ListBox lbRTShow;
     }
 }
 

@@ -36,7 +36,6 @@ namespace Payroll.Controllers
             }
         }
 
-
         public void ClockOut(string code)
         {
             var employee = _employeeRepository.GetByCode(code);

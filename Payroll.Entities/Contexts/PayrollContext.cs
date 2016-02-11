@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
 using Payroll.Entities.Payroll;
+using Payroll.Entities.Users;
 
 namespace Payroll.Entities.Contexts
 {
@@ -41,6 +42,13 @@ namespace Payroll.Entities.Contexts
         public DbSet<EmployeeLeave> EmployeeLeaves { get; set; }
         public DbSet<EmployeeLoan> EmployeeLoans { get; set; }
         public DbSet<Payroll.Payroll> Payrolls { get; set; }
+
+        //Users
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserClaim> UserClaims { get; set; }
+        public DbSet<UserLogin> UserLogIns { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; } 
 
         static string ConnectionString
         {

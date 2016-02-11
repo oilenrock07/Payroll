@@ -41,8 +41,10 @@
   <ItemGroup>
     <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
+    <Compile Include="Implementations\SettingService.cs" />
     <Compile Include="Interfaces\IAttendanceLogService.cs" />
     <Compile Include="Interfaces\IAttendanceService.cs" />
+    <Compile Include="Interfaces\ISettingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -92,6 +92,14 @@
     <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.Designer.cs">
       <DependentUpon>201602080627473_AddedPictureToEmployee.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602101422541_AddedIsActiveToEmployee.cs" />
+    <Compile Include="Migrations\201602101422541_AddedIsActiveToEmployee.Designer.cs">
+      <DependentUpon>201602101422541_AddedIsActiveToEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602101446278_AddedUserEntities.cs" />
+    <Compile Include="Migrations\201602101446278_AddedUserEntities.Designer.cs">
+      <DependentUpon>201602101446278_AddedUserEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeLeave.cs" />
@@ -103,6 +111,8 @@
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="Seeder\ISeeders.cs" />
+    <Compile Include="Seeder\SettingSeeds.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Tax.cs" />
     <Compile Include="Users\Role.cs" />
@@ -131,6 +141,15 @@
     <EmbeddedResource Include="Migrations\201602080627473_AddedPictureToEmployee.resx">
       <DependentUpon>201602080627473_AddedPictureToEmployee.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602101422541_AddedIsActiveToEmployee.resx">
+      <DependentUpon>201602101422541_AddedIsActiveToEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602101446278_AddedUserEntities.resx">
+      <DependentUpon>201602101446278_AddedUserEntities.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

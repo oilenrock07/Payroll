@@ -113,12 +113,17 @@
   </Choose>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="Common\ExtensionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\PayrollComputation.cs" />
     <Compile Include="Repository\UserRepositoryTest.cs" />
     <Compile Include="Service\AttendanceServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Payroll.Common\Payroll.Common.csproj">
+      <Project>{ba703de8-5f8e-4eed-a82e-ea38f6e959c7}</Project>
+      <Name>Payroll.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Payroll.Entities\Payroll.Entities.csproj">
       <Project>{b5b3e6b2-7613-4341-a351-729aef9bedf9}</Project>
       <Name>Payroll.Entities</Name>

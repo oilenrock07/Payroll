@@ -14,11 +14,11 @@ namespace Payroll
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "AttendanceRoute",
-                url: "{controller}/{action}/{code}",
-                defaults: new { controller = "Attendance", action = "ClockIn" }
-                );
+            //routes.MapRoute(
+            //    name: "AttendanceRoute",
+            //    url: "{controller}/{action}/{code}",
+            //    defaults: new { controller = "Attendance", action = "ClockIn" }
+            //    );
 
 
             routes.MapRoute(

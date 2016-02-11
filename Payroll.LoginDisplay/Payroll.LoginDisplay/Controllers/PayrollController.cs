@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using Omu.ValueInjecter;
 using Payroll.Common.Enums;
+using Payroll.Common.Extension;
 using Payroll.LoginDisplay.Models.Payroll;
 using Payroll.Repository.Interface;
 
@@ -26,7 +21,7 @@ namespace Payroll.LoginDisplay.Controllers
         {
             var employee = _employeeRepository.GetById(id);
             var viewModel = (LogInViewModel)(new LogInViewModel().InjectFrom(employee));
-            viewModel.Datetime = Convert.ToDateTime(timeInOut);
+            viewModel.Datetime = timeInOut.DeserializeDate();
             viewModel.ImagePath = String.Format("{0}/{1}", "", employee.Picture); //set cache value here
             viewModel.AttendanceCode = attCode;
 
