@@ -13,7 +13,7 @@ namespace Payroll.Infrastructure.Implementations
         protected readonly bool _sharedContext = false;
         protected readonly PayrollContext _context;
 
-        protected DbSet<T> _dbSet
+        protected virtual DbSet<T> _dbSet
         {
             get { return _context.Set<T>(); }
         }
@@ -24,22 +24,22 @@ namespace Payroll.Infrastructure.Implementations
             _sharedContext = true;
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             return _dbSet.Find(id);
         }
 
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll()
         {
             return _dbSet;
         }
 
-        public IQueryable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
             return _dbSet.Where(expression);
         }
 
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
             _dbSet.Add(entity);
 
@@ -49,7 +49,7 @@ namespace Payroll.Infrastructure.Implementations
             return entity;
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             _dbSet.Attach(entity);
 
@@ -57,7 +57,7 @@ namespace Payroll.Infrastructure.Implementations
                 _context.SaveChanges();
         }
 
-        public void Update(T entity, string[] propertyToUpdate)
+        public virtual void Update(T entity, string[] propertyToUpdate)
         {
             _dbSet.Attach(entity);
             foreach (string property in propertyToUpdate)
@@ -67,7 +67,7 @@ namespace Payroll.Infrastructure.Implementations
                 _context.SaveChanges();
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             _dbSet.Remove(entity);
 
@@ -75,7 +75,7 @@ namespace Payroll.Infrastructure.Implementations
                 _context.SaveChanges();
         }
 
-        public void ExecuteSqlCommand(string command, params object[] parameters)
+        public virtual void ExecuteSqlCommand(string command, params object[] parameters)
         {
             _context.Database.ExecuteSqlCommand(command, parameters);
         }

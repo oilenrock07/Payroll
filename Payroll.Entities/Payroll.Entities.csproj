@@ -100,8 +100,21 @@
     <Compile Include="Migrations\201602101446278_AddedUserEntities.Designer.cs">
       <DependentUpon>201602101446278_AddedUserEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602111432018_jonaschanges.cs" />
+    <Compile Include="Migrations\201602111432018_jonaschanges.Designer.cs">
+      <DependentUpon>201602111432018_jonaschanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602161338092_AddedFieldsForEmployees.cs" />
+    <Compile Include="Migrations\201602161338092_AddedFieldsForEmployees.Designer.cs">
+      <DependentUpon>201602161338092_AddedFieldsForEmployees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602161414209_AddedNewEmployeeProperties.cs" />
+    <Compile Include="Migrations\201602161414209_AddedNewEmployeeProperties.Designer.cs">
+      <DependentUpon>201602161414209_AddedNewEmployeeProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
+    <Compile Include="Payroll\EmployeeHours.cs" />
     <Compile Include="Payroll\EmployeeLeave.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Payroll\Deduction.cs" />
@@ -146,6 +159,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602101446278_AddedUserEntities.resx">
       <DependentUpon>201602101446278_AddedUserEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602111432018_jonaschanges.resx">
+      <DependentUpon>201602111432018_jonaschanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602161338092_AddedFieldsForEmployees.resx">
+      <DependentUpon>201602161338092_AddedFieldsForEmployees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602161414209_AddedNewEmployeeProperties.resx">
+      <DependentUpon>201602161414209_AddedNewEmployeeProperties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

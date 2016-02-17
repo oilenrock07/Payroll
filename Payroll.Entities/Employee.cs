@@ -7,6 +7,11 @@ namespace Payroll.Entities
     [Table("employee")]
     public class Employee
     {
+        public Employee()
+        {
+            Enabled = true;
+        }
+
         [Key]
         public int EmployeeId { get; set; }
             
@@ -27,5 +32,17 @@ namespace Payroll.Entities
         public string Picture { get; set; }
 
         public bool IsActive { get; set; }
+
+        //For clock in/out (biomertrics and rfid)
+        public int Privilege { get; set; }
+        public bool Enabled { get; set; }
+        public bool EnrolledToRfid { get; set; }
+        public bool EnrolledToBiometrics { get; set; }
+
+        [NotMapped]
+        public string FullName
+        {
+            get { return String.Format("{0} {1}", FirstName, LastName); }
+        }
     }
 }

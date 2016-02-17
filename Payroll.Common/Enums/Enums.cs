@@ -8,4 +8,10 @@ namespace Payroll.Common.Enums
         ClockInOt = 4,
         ClockOutOt = 5
     }
+
+    public enum Privilege
+    {
+        Common = 1,
+        Admin = 3
+    }
 }

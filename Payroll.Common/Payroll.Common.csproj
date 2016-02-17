@@ -45,6 +45,7 @@
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Extension\DatetimeExtension.cs" />
     <Compile Include="Extension\ValueInjectorExtensions.cs" />
+    <Compile Include="Helpers\GuidHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

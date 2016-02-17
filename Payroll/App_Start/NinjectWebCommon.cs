@@ -2,6 +2,9 @@ using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
+using Payroll.Service.Caching;
+using Payroll.Service.Implementations;
+using Payroll.Service.Interfaces;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Payroll.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Payroll.App_Start.NinjectWebCommon), "Stop")]
@@ -76,6 +79,10 @@ namespace Payroll.App_Start
             kernel.Bind<IAttendanceRepository>().To<AttendanceRepository>().InRequestScope();
             kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>().InRequestScope();
             kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
+            kernel.Bind<IWebService>().To<WebService>().InRequestScope();
+
+            //Caching
+            //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();
         }        
     }
 }

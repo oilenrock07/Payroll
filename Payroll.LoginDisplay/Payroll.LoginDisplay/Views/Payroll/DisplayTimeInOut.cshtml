@@ -8,19 +8,19 @@
     <div class="col-xs-12">
         @if (Model.AttendanceCode == AttendanceCode.ClockIn)
         {
-            <h2>Clock in success!</h2>
+            <span class="clockin">Clock in success!</span>
         }
-        @if (Model.AttendanceCode == AttendanceCode.ClockIn)
+        @if (Model.AttendanceCode == AttendanceCode.ClockOut)
         {
-            <h2>Clock out success!</h2>
+            <span class="clockout">Clock out success!</span>
         }
     </div>
     <div class="col-xs-6">
-        <img src="@Model.ImagePath" class="img-responsive"/>
-        <h3>Hi @Model.FullName</h3>
+        @Html.Action("EmployeeInformation", new { id = Model.EmployeeId })
     </div>
     <div class="col-xs-6">
-        <h2>@Model.Datetime</h2>
+        <h1>@Model.Datetime.ToLongDateString()</h1>
+        <span class="timeinout">@Model.Datetime.ToLongTimeString()</span>
     </div>
 </div>
 
@@ -28,9 +28,9 @@
 @section scripts
 {
     <script>
-        //after 5 seconds redirect to default page
+        //after 10 seconds redirect to default page
         window.setTimeout(function () {
             window.location = '/Payroll/Index';
-        }, 5000);
+        }, 10000);
     </script>
 }

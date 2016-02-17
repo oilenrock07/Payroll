@@ -5,13 +5,18 @@ using Payroll.Entities.Users;
 
 namespace Payroll.Entities.Contexts
 {
-    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
+    //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class PayrollContext : DbContext
     {
-        public PayrollContext()
-            : base(ConnectionString)
+
+        public PayrollContext() : base(ConnectionString)
         {
-            //Database.SetInitializer<PayrollContext>(null);
+            Database.SetInitializer<PayrollContext>(null);
+        }
+
+        public PayrollContext(string test)
+        {
+
         }
 
         public DbSet<Employee> Employees { get; set; }
@@ -49,7 +54,7 @@ namespace Payroll.Entities.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<UserClaim> UserClaims { get; set; }
         public DbSet<UserLogin> UserLogIns { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; } 
+        public DbSet<UserRole> UserRoles { get; set; }
 
         static string ConnectionString
         {
@@ -70,5 +75,6 @@ namespace Payroll.Entities.Contexts
                 return cs;
             }
         }
+
     }
 }

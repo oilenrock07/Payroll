@@ -17,17 +17,33 @@ namespace Payroll.LoginDisplay.Controllers
             _employeeRepository = employeeRepository;
         }
 
+        [HttpGet]
         public ActionResult DisplayTimeInOut(int id, AttendanceCode attCode, string timeInOut)
         {
-            var employee = _employeeRepository.GetById(id);
-            var viewModel = (LogInViewModel)(new LogInViewModel().InjectFrom(employee));
-            viewModel.Datetime = timeInOut.DeserializeDate();
-            viewModel.ImagePath = String.Format("{0}/{1}", "", employee.Picture); //set cache value here
-            viewModel.AttendanceCode = attCode;
+            var viewModel = new LogInViewModel
+            {
+                Datetime = timeInOut.DeserializeDate(),
+                AttendanceCode = attCode,
+                EmployeeId = id
+            };
 
             return View(viewModel);
         }
 
+        //find a way to create a permanent duration
+        //duration value is 1 month
+        [HttpGet]
+        [OutputCache(Duration = 2592000, VaryByParam = "id", VaryByCustom = "payroll:employeeinformation")]
+        public ActionResult EmployeeInformation(int id)
+        {
+            var employee = _employeeRepository.GetById(id);
+            var viewModel = (LogInViewModel)(new LogInViewModel().InjectFrom(employee));
+            viewModel.ImagePath = Url.Content(employee.Picture);
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
         public ActionResult Index()
         {
             return View();

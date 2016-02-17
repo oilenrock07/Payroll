@@ -61,6 +61,15 @@ namespace RTEvents.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User has been successfully registered.
+        /// </summary>
+        internal static string Message_CardRegistrationSuccess {
+            get {
+                return ResourceManager.GetString("Message_CardRegistrationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap top485 {

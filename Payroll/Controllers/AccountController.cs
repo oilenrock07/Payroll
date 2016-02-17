@@ -15,8 +15,7 @@ namespace Payroll.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        public AccountController() : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
         }
 
@@ -33,6 +32,7 @@ namespace Payroll.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.AllowExternalLogIn = false;
             return View();
         }
 

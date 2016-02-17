@@ -20,6 +20,13 @@ namespace Payroll
             //    defaults: new { controller = "Attendance", action = "ClockIn" }
             //    );
 
+            //Fix route for employee
+            //routes.MapRoute(
+            //    name: "EmployeeListRoute",
+            //    url: "{controller}/{action}/{Page}",
+            //    defaults: new { controller = "Home", action = "Index" }
+            //);
+
 
             routes.MapRoute(
                 name: "Default",

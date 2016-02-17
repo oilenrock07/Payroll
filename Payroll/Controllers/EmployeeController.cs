@@ -5,11 +5,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Omu.ValueInjecter;
+using Payroll.Common.Helpers;
 using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
+using Payroll.Models;
 using Payroll.Models.Employee;
 using Payroll.Repository.Interface;
 using Payroll.Common.Extension;
+using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
 {
@@ -19,39 +22,45 @@ namespace Payroll.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ISettingRepository _settingRepository;
+        private readonly IWebService _webService;
 
-        //todo: implement caching for settings repository
-
-        public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, ISettingRepository settingRepository)
+        public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, ISettingRepository settingRepository,
+            IWebService webService)
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
             _settingRepository = settingRepository;
+            _webService = webService;
         }
 
         public virtual ActionResult Index()
         {
             var employees = _employeeRepository.Find(x => x.IsActive).ToList();
+            var pagination = _webService.GetPaginationModel(Request, employees);
 
-            return View(employees);
+            return View(pagination);
         }
 
         public virtual ActionResult Edit(int id)
         {
-            var employee = _employeeRepository.GetById(id);
-            return View(employee);
+            var viewModel = _employeeRepository.GetById(id).MapItem<EmployeeViewModel>();
+            return View(viewModel);
         }
 
         [HttpPost]
-        public virtual ActionResult Edit(Employee employee)
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult Edit(EmployeeViewModel viewModel)
         {
+            var employee = viewModel.MapItem<Employee>();
+            var imagePath = UploadImage(employee.EmployeeId);
+            if (!String.IsNullOrEmpty(imagePath))
+                employee.Picture = imagePath;
+
             employee.IsActive = true;
-
             _employeeRepository.Update(employee);
+            
+
             _unitOfWork.Commit();
-
-            UploadImage(employee.EmployeeId);
-
             return RedirectToAction("Index");
         }
 
@@ -61,19 +70,39 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public virtual ActionResult Create(EmployeeViewModel viewModel)
         {
-            var employee = (Employee) new Employee().InjectFrom(viewModel);
+            var employee = viewModel.MapItem<Employee>();
             employee.IsActive = true;
 
             var newEmployee = _employeeRepository.Add(employee);
             _unitOfWork.Commit();
 
-            UploadImage(newEmployee.EmployeeId);
+            //upload the picture and update the record
+            var imagePath = UploadImage(newEmployee.EmployeeId);
+            if (!String.IsNullOrEmpty(imagePath))
+            {
+                newEmployee.Picture = imagePath;
+                _employeeRepository.Update(newEmployee, new[] { "Picture" });
+                _unitOfWork.Commit();
+            }
+            
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public virtual ActionResult Delete(int id)
+        {
+            var employee = _employeeRepository.GetById(id);
+            employee.IsActive = false;
+            _employeeRepository.Update(employee, new[] { "IsActive"});
+            _unitOfWork.Commit();
 
             return RedirectToAction("Index");
         }
 
+        [ChildActionOnly]
         protected virtual string UploadImage(int id)
         {
             if (Request.Files.Count > 0)
@@ -86,11 +115,10 @@ namespace Payroll.Controllers
                         var file = Request.Files[i];
                         if (file != null && file.ContentLength > 0)
                         {
-                            var fileName = Path.GetFileName(file.FileName);
                             var imagePath = Path.Combine(Server.MapPath(imageUploadPath), String.Format("{0}.jpg", id));
                             file.SaveAs(imagePath);
 
-                            return String.Format("{0}/{1}", imageUploadPath, fileName);
+                            return String.Format("{0}/{1}", imageUploadPath, String.Format("{0}.jpg", id));
                         }
                     }
                 }

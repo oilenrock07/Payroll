@@ -1,4 +1,5 @@
-﻿using Payroll.Entities.Contexts;
+﻿using System.Configuration;
+using Payroll.Entities.Contexts;
 using Payroll.Infrastructure.Interfaces;
 
 namespace Payroll.Infrastructure.Implementations
@@ -7,7 +8,16 @@ namespace Payroll.Infrastructure.Implementations
     {
         private PayrollContext _context;
 
-        public PayrollContext GetContext()
+        public DatabaseFactory()
+        {
+        }
+
+        public DatabaseFactory(PayrollContext context)
+        {
+            _context = context;
+        }
+
+        public virtual PayrollContext GetContext()
         {
             if (_context != null) return _context;
 

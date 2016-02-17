@@ -66,10 +66,12 @@
   <ItemGroup>
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
+    <Compile Include="Interface\IEmployeeHoursRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />
     <Compile Include="Interface\ISettingRepository.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
+    <Compile Include="Repositories\EmployeeHoursRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\SettingRepository.cs" />

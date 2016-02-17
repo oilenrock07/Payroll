@@ -64,8 +64,9 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Omu.ValueInjecter">
-      <HintPath>..\Payroll.LoginDisplay\packages\ValueInjecter.3.1.1.2\lib\net40\Omu.ValueInjecter.dll</HintPath>
+    <Reference Include="Omu.ValueInjecter, Version=3.1.1.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\valueinjecter.3.1.1.2\lib\net40\Omu.ValueInjecter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -209,14 +210,18 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Employee\employeelist.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -227,6 +232,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\pagination.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -258,6 +264,7 @@
     <Content Include="Views\Employee\Create.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
+    <Content Include="Views\Shared\Pagination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -286,6 +293,10 @@
     <ProjectReference Include="..\Payroll.Repository\Payroll.Repository.csproj">
       <Project>{8fa31ff9-0081-490e-8f06-a627998be330}</Project>
       <Name>Payroll.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Payroll.Service\Payroll.Service.csproj">
+      <Project>{96027240-d9de-44d2-8d61-1afb9963f88c}</Project>
+      <Name>Payroll.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

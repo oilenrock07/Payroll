@@ -7,7 +7,7 @@
 <h2>Create Employee</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
     
@@ -16,7 +16,7 @@
         <hr />
         @Html.ValidationSummary(true)
         <div class="form-group">
-            @Html.LabelFor(model => model.EmployeeCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.EmployeeCode, "Card Number", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "form-control " })
                 @Html.ValidationMessageFor(model => model.EmployeeCode)
@@ -50,8 +50,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BirthDate, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BirthDate)
+                @Html.TextBoxFor(model => model.DisplayBirthDate, new { @class = "form-control datepicker" })
+                @Html.ValidationMessageFor(model => model.DisplayBirthDate)
             </div>
         </div>
 
@@ -64,7 +64,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </div>
     </div>

@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
@@ -12,6 +15,11 @@ namespace Payroll.Repository.Repositories
             : base (databaseFactory)
         {
 
+        }
+
+        public new virtual IEnumerable<Setting> GetAll()
+        {
+            return base.GetAll().ToList();
         }
 
         public virtual string GetSettingValue(string key, string defaultValue = "")
