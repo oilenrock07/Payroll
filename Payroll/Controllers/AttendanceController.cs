@@ -46,8 +46,8 @@ namespace Payroll.Controllers
 
                 if (lastClockIn != null)
                 {
+                    _attendanceRepository.Update(lastClockIn);
                     lastClockIn.ClockOut = DateTime.Now;
-                    _attendanceRepository.Update(lastClockIn, new[] {"ClockOut"});
                     _unitOfWork.Commit();
                 }
                 else

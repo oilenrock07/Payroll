@@ -51,14 +51,14 @@ namespace Payroll.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult Edit(EmployeeViewModel viewModel)
         {
-            var employee = viewModel.MapItem<Employee>();
+            var employee = new Employee {EmployeeId = viewModel.EmployeeId};
+            _employeeRepository.Update(employee);
+            employee = viewModel.MapItem<Employee>();
+            employee.IsActive = true;
+
             var imagePath = UploadImage(employee.EmployeeId);
             if (!String.IsNullOrEmpty(imagePath))
                 employee.Picture = imagePath;
-
-            employee.IsActive = true;
-            _employeeRepository.Update(employee);
-            
 
             _unitOfWork.Commit();
             return RedirectToAction("Index");
@@ -83,8 +83,8 @@ namespace Payroll.Controllers
             var imagePath = UploadImage(newEmployee.EmployeeId);
             if (!String.IsNullOrEmpty(imagePath))
             {
+                _employeeRepository.Update(newEmployee);
                 newEmployee.Picture = imagePath;
-                _employeeRepository.Update(newEmployee, new[] { "Picture" });
                 _unitOfWork.Commit();
             }
             
@@ -94,9 +94,9 @@ namespace Payroll.Controllers
         [HttpGet]
         public virtual ActionResult Delete(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee = new Employee {EmployeeId = id};
+            _employeeRepository.Update(employee);
             employee.IsActive = false;
-            _employeeRepository.Update(employee, new[] { "IsActive"});
             _unitOfWork.Commit();
 
             return RedirectToAction("Index");

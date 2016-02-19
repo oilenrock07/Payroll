@@ -58,17 +58,7 @@ namespace Payroll.Infrastructure.Implementations
         public virtual void Update(T entity)
         {
             DbSet.Attach(entity);
-
-            if (!_sharedContext)
-                _context.SaveChanges();
-        }
-
-        public virtual void Update(T entity, string[] propertyToUpdate)
-        {
-            DbSet.Attach(entity);
-            foreach (string property in propertyToUpdate)
-                _context.Entry<T>(entity).Property(property).IsModified = true;
-
+            
             if (!_sharedContext)
                 _context.SaveChanges();
         }

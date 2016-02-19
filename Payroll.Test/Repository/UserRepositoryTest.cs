@@ -63,6 +63,46 @@ namespace Payroll.Test.Repository
 
 
         [TestMethod]
+        public void UpdateEmployeeTest()
+        {
+            //Arrange
+            var databaseFactory = new DatabaseFactory();
+            var employeeRepository = new Repository<Employee>(databaseFactory);
+            var unitOfWork = new UnitOfWork(databaseFactory);
+
+            //Act
+            var employee = employeeRepository.GetById(1);
+            employeeRepository.Update(employee);
+            employee.MiddleName = "Updated";
+            unitOfWork.Commit();
+
+            var updatedEmployee = employeeRepository.GetById(1);
+
+            //Asset
+            Assert.AreEqual(updatedEmployee.MiddleName, "Updated");
+        }
+
+
+        public void UpdateEmployeeUsingOnlyIdTest()
+        {
+            //Arrange
+            var databaseFactory = new DatabaseFactory();
+            var employeeRepository = new Repository<Employee>(databaseFactory);
+            var unitOfWork = new UnitOfWork(databaseFactory);
+
+            //Act
+            var employee = new Employee() { EmployeeId = 1 };
+            employeeRepository.Update(employee);
+            employee.LastName = "Updated";
+            unitOfWork.Commit();
+
+            var updatedEmployee = employeeRepository.GetById(1);
+
+            //Asset
+            Assert.AreEqual(updatedEmployee.LastName, "Updated");
+        }
+
+        [TestMethod]
         public void TestFakeData()
         {
             var data = new List<Employee>
