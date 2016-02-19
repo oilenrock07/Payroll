@@ -14,7 +14,7 @@ namespace Payroll.Repository.Repositories
         public SettingRepository(IDatabaseFactory databaseFactory)
             : base (databaseFactory)
         {
-
+            DbSet = databaseFactory.GetContext().Settings;
         }
 
         public new virtual IEnumerable<Setting> GetAll()

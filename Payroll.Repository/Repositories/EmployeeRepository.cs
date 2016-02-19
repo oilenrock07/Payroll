@@ -13,7 +13,7 @@ namespace Payroll.Repository.Repositories
         public EmployeeRepository(IDatabaseFactory databaseFactory)
             : base (databaseFactory)
         {
-            
+            DbSet = databaseFactory.GetContext().Employees;
         }
 
         public IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId)

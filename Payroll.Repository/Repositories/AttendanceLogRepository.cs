@@ -13,7 +13,7 @@ namespace Payroll.Repository.Repositories
         public AttendanceLogRepository(IDatabaseFactory databaseFactory)
             : base (databaseFactory)
         {
-
+            DbSet = databaseFactory.GetContext().AttendanceLog;
         }
 
         public IList<AttendanceLog> GetAttendanceLogs(DateTime fromDate, DateTime toDate, bool isRecorded)
