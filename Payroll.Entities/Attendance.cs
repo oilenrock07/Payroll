@@ -14,6 +14,6 @@ namespace Payroll.Entities
         public string EmployeeCode { get; set; }
         public DateTime ClockIn { get; set; }
         public DateTime ? ClockOut { get; set; }
-        public Boolean IsManuallyEdited { get; set; }
+        public Boolean ? IsManuallyEdited { get; set; }
     }
 }

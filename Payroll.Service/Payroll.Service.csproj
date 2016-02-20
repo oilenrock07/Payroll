@@ -46,6 +46,10 @@
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
     <Compile Include="Implementations\EmployeeService.cs" />
+    <Compile Include="Interfaces\IAttendanceLogService.cs" />
+    <Compile Include="Interfaces\IAttendanceService.cs" />
+    <Compile Include="Interfaces\IEmployeeHoursService.cs" />
+    <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Implementations\CacheService.cs" />
     <Compile Include="Implementations\SettingService.cs" />
     <Compile Include="Implementations\WebService.cs" />

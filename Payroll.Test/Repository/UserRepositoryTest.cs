@@ -55,7 +55,7 @@ namespace Payroll.Test.Repository
             var employeeRepository = new Repository<Employee>(databaseFactory);
 
             //Act
-            var employee = employeeRepository.GetById(1);
+            var employee = employeeRepository.GetById(1001);
 
             //Asset
             Assert.NotNull(employee);

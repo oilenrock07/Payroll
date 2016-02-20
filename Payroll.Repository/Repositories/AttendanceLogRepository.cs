@@ -18,8 +18,9 @@ namespace Payroll.Repository.Repositories
 
         public IList<AttendanceLog> GetAttendanceLogs(DateTime fromDate, DateTime toDate, bool isRecorded)
         {
-            return Find(a => !a.IsRecorded && a.ClockInOut >= fromDate && a.ClockInOut <= toDate)
-                   .OrderBy(a => a.EmployeeCode).ThenBy(a => a.ClockInOut).ToList();
+            return Find(a => !a.IsRecorded
+                && a.ClockInOut >= fromDate && a.ClockInOut < toDate)
+                    .OrderBy(a => a.EmployeeCode).ThenBy(a => a.ClockInOut).ToList();
         }
 
     }
