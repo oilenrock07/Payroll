@@ -14,11 +14,6 @@ namespace Payroll.Entities.Contexts
             Database.SetInitializer<PayrollContext>(null);
         }
 
-        public PayrollContext(string test)
-        {
-
-        }
-
         public virtual IDbSet<Employee> Employees { get; set; }
         public virtual IDbSet<Attendance> Attendances { get; set; }
         public virtual IDbSet<Department> Departments { get; set; }

@@ -1,0 +1,124 @@
+﻿@model Payroll.Models.Employee.EmployeeInfoViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Employment Details</h2>
+<h3>@Model.Name</h3>
+@Html.ValidationSummary(true)
+@using (Html.BeginForm("UpdateEmploymentInfo", "Employee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.EmployeeInfo.EmployeeId)
+    @Html.HiddenFor(model => model.EmployeeInfo.EmploymentInfoId)
+    
+    <div class="row">
+        <div class="col-md-9">
+            <div class="col-md-6">
+                
+
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.Salary, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.Salary, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.Salary)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.Allowance, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.Allowance, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.Allowance)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.TIN, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.TIN, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.TIN)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.GSIS, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.GSIS, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.GSIS)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.SSS, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.SSS, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.SSS)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.PAGIBIG, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.PAGIBIG, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.PAGIBIG)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.PhilHealth, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.PhilHealth, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.PhilHealth)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.Dependents, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.Dependents, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.Dependents)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.Married, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.CheckBoxFor(model => model.EmployeeInfo.Married)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Positions, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.PositionId, Model.Positions, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.Positions)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="employee_info_picture">
+                <img src="@Model.ImagePath" class="img-responsive" title="@Model.Name" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <p>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </div>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+}

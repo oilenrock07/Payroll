@@ -11,6 +11,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using System.Threading;
+using Payroll.Entities;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
@@ -24,8 +25,10 @@ namespace Payroll.AttendanceManager
     {
         private readonly IDatabaseFactory _databaseFactory;
         private readonly IUnitOfWork _unitOfWork;
-
         private readonly IEmployeeRepository _employeeRepository;
+
+        //properties
+        private int iMachineNumber = 1;//the serial number of the device.After connecting the device ,this value will be changed.
 
         public CardMaintenance()
         {
@@ -34,15 +37,6 @@ namespace Payroll.AttendanceManager
             _unitOfWork = new UnitOfWork(_databaseFactory);
             _employeeRepository = new EmployeeRepository(_databaseFactory);
         }
-
-        /*************************************************************************************************
-        * Before you refer to this demo,we strongly suggest you read the development manual deeply first.*
-        * This part is for demonstrating the communication with your device.                             *
-        * ************************************************************************************************/
-        #region Communication
-        private int iMachineNumber = 1;//the serial number of the device.After connecting the device ,this value will be changed.
-
-        #endregion
 
         /**************************************************************************************************
         * Before you refer to this demo,we strongly suggest you read the development manual deeply first. *
@@ -154,22 +148,10 @@ namespace Payroll.AttendanceManager
                 return;
             }
 
-            //if (txtUserID.Text.Trim() == "" || cbPrivilege.Text.Trim() == "" || txtCardnumber.Text.Trim() == "")
-            //{
-            //    MessageBox.Show("UserID,Privilege,Cardnumber must be inputted first!", "Error");
-            //    return;
-            //}
             int idwErrorCode = 0;
 
             bool bEnabled = true;
-            if (chbEnabled.Checked)
-            {
-                bEnabled = true;
-            }
-            else
-            {
-                bEnabled = false;
-            }
+            bEnabled = chbEnabled.Checked;
             string sName = txtName.Text.Trim();
             string sPassword = "";//txtPassword.Text.Trim();
             int iPrivilege = 0;//Convert.ToInt32(cbPrivilege.Text.Trim());
@@ -181,39 +163,57 @@ namespace Payroll.AttendanceManager
             Program._czkemClass.SetStrCardNumber(sCardnumber);//Before you using function SetUserInfo,set the card number to make sure you can upload it to the device
             if (Program._czkemClass.SSR_SetUserInfo(iMachineNumber, sdwEnrollNumber, sName, sPassword, iPrivilege, bEnabled))//upload the user's information(card number included)
             {
-                //MessageBox.Show("(SSR_)SetUserInfo,UserID:" + sdwEnrollNumber + " Privilege:" + iPrivilege.ToString() + " Enabled:" + bEnabled.ToString(), "Success");
-                MessageBox.Show(Resources.Message_CardRegistrationSuccess);
-
                 //update the record in db
-                var employee = _employeeRepository.GetById(Convert.ToInt32(sdwEnrollNumber));
-                employee.EmployeeCode = txtCardnumber.Text;
-                employee.EnrolledToRfid = true;
-                employee.Enabled = chbEnabled.Checked;
-                _employeeRepository.Update(employee);
-                _unitOfWork.Commit();
+                try
+                {
+                    var employee = _employeeRepository.GetById(Convert.ToInt32(sdwEnrollNumber));
+                    _employeeRepository.Update(employee);
+                    employee.EmployeeCode = txtCardnumber.Text;
+                    employee.EnrolledToRfid = true;
+                    employee.Enabled = chbEnabled.Checked;
+                    _unitOfWork.Commit();
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+
+                MessageBox.Show(Resources.Message_CardRegistrationSuccess);
+                Rebind();
             }
             else
             {
                 Program._czkemClass.GetLastError(ref idwErrorCode);
-                MessageBox.Show("Operation failed,ErrorCode=" + idwErrorCode.ToString(), "Error");
+                MessageBox.Show("Operation failed,ErrorCode=" + idwErrorCode, "Error");
             }
             Program._czkemClass.RefreshData(iMachineNumber);//the data in the device should be refreshed
             Program._czkemClass.EnableDevice(iMachineNumber, true);
             Cursor = Cursors.Default;
         }
 
-        //add by Darcy on Nov.23 2009
-        //Add the existed userid to DropDownLists.
         bool bAddControl = true;
         #endregion
 
-
-        private void CardMaintenance_Load(object sender, EventArgs e)
+        private void Rebind()
         {
             //load the employees to the grid
             var employees = _employeeRepository.Find(x => x.IsActive).ToList();
             GridView.AutoGenerateColumns = false;
             GridView.DataSource = employees;
+        }
+
+        private void CardMaintenance_Load(object sender, EventArgs e)
+        {
+            Rebind();
+            RegisterEvents();
+        }
+
+        public void RegisterEvents()
+        {
+            if (Program._czkemClass.RegEvent(iMachineNumber, 65535))
+            {
+                Program._czkemClass.OnHIDNum += new zkemkeeper._IZKEMEvents_OnHIDNumEventHandler(OnCardTap);
+            }
         }
 
         private void GridView_DoubleClick(object sender, EventArgs e)
@@ -223,6 +223,16 @@ namespace Payroll.AttendanceManager
             txtName.Text = grid.CurrentRow.Cells[1].Value.ToString();
             txtCardnumber.Text = grid.CurrentRow.Cells[2].Value.ToString();
             chbEnabled.Checked = Convert.ToBoolean(grid.CurrentRow.Cells[5].Value);
+        }
+
+        private void OnCardTap(int iCardNumber)
+        {
+            txtCardnumber.Text = iCardNumber.ToString();
+        }
+
+        private void CardMaintenance_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Program._czkemClass.OnHIDNum -= new zkemkeeper._IZKEMEvents_OnHIDNumEventHandler(OnCardTap);
         }
 
     }

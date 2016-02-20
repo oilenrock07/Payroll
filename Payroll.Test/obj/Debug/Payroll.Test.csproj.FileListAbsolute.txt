@@ -151,3 +151,6 @@ C:\Development\Workspace\Personal\Payroll\Payroll.Test\obj\Debug\Payroll.Test.pd
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.xml
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\RTEvents.exe
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Interop.zkemkeeper.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\RTEvents.pdb

@@ -8,12 +8,17 @@ namespace Payroll.Entities.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<PayrollContext>
+    public sealed class Configuration : DbMigrationsConfiguration<PayrollContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
             //SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+        }
+
+        public void RunSeeds(PayrollContext context)
+        {
+            Seed(context);
         }
 
         protected override void Seed(PayrollContext context)
@@ -31,7 +36,9 @@ namespace Payroll.Entities.Migrations
             //    );
             //
             context.Settings.AddOrUpdate(s => s.SettingId, new SettingSeeds().GetDefaultSeeds().ToArray());
+            context.Frequencies.AddOrUpdate(s => s.FrequencyId, new FrequencySeeds().GetDefaultSeeds().ToArray());
 
+            //context.PaymentFrequencies.AddOrUpdate(s => s.PaymentFrequencyId, new PaymentFrequencySeeds().GetDefaultSeeds().ToArray());
         }
     }
 }

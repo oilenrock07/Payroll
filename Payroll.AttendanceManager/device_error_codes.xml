@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<errors>
+  <error>
+    <code>-100</code>
+    <description>Operation failed or data not exist</description>
+  </error>
+  <error>
+    <code>-10</code>
+    <description>Transmitted data length is incorrect</description>
+  </error>
+  <error>
+    <code>-5</code>
+    <description>Data already exists</description>
+  </error>
+  <error>
+    <code>-4</code>
+    <description>Space is not enough</description>
+  </error>
+  <error>
+    <code>-3</code>
+    <description>Error size</description>
+  </error>
+  <error>
+    <code>-2</code>
+    <description>Error in file read/write</description>
+  </error>
+  <error>
+    <code>-1</code>
+    <description>SDK is not initialized and needs to be reconnected</description>
+  </error>
+  <error>
+    <code>0</code>
+    <description>Data not found or data repeated</description>
+  </error>
+  <error>
+    <code>1</code>
+    <description>Operation is correct</description>
+  </error>
+  <error>
+    <code>4</code>
+    <description>Parameter is incorrect</description>
+  </error>
+  <error>
+    <code>101</code>
+    <description>Error in allocating buffer</description>
+  </error>
+</errors>

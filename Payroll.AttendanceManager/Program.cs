@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 using Payroll.Entities;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
@@ -24,7 +25,9 @@ namespace RTEvents
         public static PayrollMain _mainForm;
         public static bool _connected = false;
 
-        [STAThread]
+        //todo: load the error codes
+        public static Dictionary<int, string> _errorCodes;
+ 
         static void Main()
         {
             Application.EnableVisualStyles();
@@ -51,6 +54,14 @@ namespace RTEvents
         {
             var setting = _settings.FirstOrDefault(x => x.SettingKey == key);
             return setting != null ? setting.Value : defaultValue;
+        }
+
+        public static Dictionary<int, string> GetErrorCodes()
+        {
+            var doc = new XmlDocument();
+            doc.Load(String.Format("{0}/device_error_codes.xml", Environment.CurrentDirectory));
+
+            return new Dictionary<int, string>();
         }
 
     }

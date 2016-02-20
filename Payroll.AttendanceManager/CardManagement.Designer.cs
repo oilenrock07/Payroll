@@ -268,6 +268,7 @@
             this.MaximizeBox = false;
             this.Name = "CardMaintenance";
             this.Text = "Card Management";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CardMaintenance_FormClosing);
             this.Load += new System.EventHandler(this.CardMaintenance_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

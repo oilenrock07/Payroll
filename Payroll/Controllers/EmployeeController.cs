@@ -21,15 +21,20 @@ namespace Payroll.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEmployeeInfoRepository _employeeInfoRepository;
         private readonly ISettingRepository _settingRepository;
+        private readonly IPositionRepository _positionRepository;
         private readonly IWebService _webService;
 
-        public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, ISettingRepository settingRepository,
+        public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
+            ISettingRepository settingRepository, IPositionRepository positionRepository,
             IWebService webService)
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
             _settingRepository = settingRepository;
+            _employeeInfoRepository = employeeInfoRepository;
+            _positionRepository = positionRepository;
             _webService = webService;
         }
 
@@ -76,7 +81,11 @@ namespace Payroll.Controllers
             var employee = viewModel.MapItem<Employee>();
             employee.IsActive = true;
 
-            var newEmployee = _employeeRepository.Add(employee);
+            var employeeInfo = new EmployeeInfo
+            {
+                Employee = employee,
+            };
+            var newEmployee = _employeeInfoRepository.Add(employeeInfo).Employee;
             _unitOfWork.Commit();
 
             //upload the picture and update the record
@@ -94,7 +103,7 @@ namespace Payroll.Controllers
         [HttpGet]
         public virtual ActionResult Delete(int id)
         {
-            var employee = new Employee {EmployeeId = id};
+            var employee = _employeeRepository.GetById(id);
             _employeeRepository.Update(employee);
             employee.IsActive = false;
             _unitOfWork.Commit();
@@ -109,7 +118,7 @@ namespace Payroll.Controllers
             {
                 try
                 {
-                    var imageUploadPath = _settingRepository.GetSettingValue("APP_EMPLOYEE_IMAGE_PATH");
+                    var imageUploadPath = _settingRepository.GetSettingValue("EMPLOYEE_IMAGE_PATH");
                     for (var i = 0; i < Request.Files.Count; i++)
                     {
                         var file = Request.Files[i];
@@ -129,6 +138,45 @@ namespace Payroll.Controllers
             }
 
             return "";
+        }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var employeeInfo = _employeeInfoRepository.GetByEmployeeId(id);
+            var positions = _positionRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            {
+                Text = x.PositionName,
+                Value = x.PositionId.ToString(),
+                Selected = x.PositionId == employeeInfo.PositionId
+            }).ToList();
+
+            positions.Insert(0, new SelectListItem {Text = "Select Position", Value = "0"});
+
+            var viewModel = new EmployeeInfoViewModel();
+
+            if (employeeInfo != null)
+            {
+                viewModel.EmployeeInfo = employeeInfo;
+                viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "";
+                viewModel.Name = employeeInfo.Employee.FullName;
+                viewModel.Positions = positions;
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateEmploymentInfo(EmployeeInfoViewModel viewModel)
+        {
+            var employeeInfo = new EmployeeInfo {EmploymentInfoId = viewModel.EmployeeInfo.EmploymentInfoId};
+            _employeeInfoRepository.Update(employeeInfo);
+            employeeInfo.InjectFrom(viewModel.EmployeeInfo);
+            employeeInfo.PositionId = viewModel.PositionId;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Index");
         }
 
     }
