@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
+    <Compile Include="Payroll\EmployeeHours.cs" />
     <Compile Include="Payroll\EmployeeLeave.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Payroll\Deduction.cs" />
