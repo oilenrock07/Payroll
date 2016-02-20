@@ -12,7 +12,6 @@ namespace Payroll.Infrastructure.Interfaces
         
         T Add(T entity);
         void Update(T entity);
-        void Update(T entity, string[] propertyToUpdate);
         void Delete(T entity);
         void ExecuteSqlCommand(string command, params object[] parameters);
     }

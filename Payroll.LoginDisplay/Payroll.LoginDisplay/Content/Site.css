@@ -15,3 +15,16 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.welcome {
+    text-align: center;
+    font-size: 150px;
+}
+
+.timeinout {
+    font-size: 80px;
+}
+
+.clockin, .clockout {
+    font-size: 50px
+}

@@ -13,10 +13,10 @@ namespace Payroll.Repository.Repositories
         public AttendanceLogRepository(IDatabaseFactory databaseFactory)
             : base (databaseFactory)
         {
-
+            DbSet = databaseFactory.GetContext().AttendanceLog;
         }
 
-        public IList<AttendanceLog> GetAttendanceLogs(DateTime fromDate, DateTime toDate, Boolean isRecorded)
+        public IList<AttendanceLog> GetAttendanceLogs(DateTime fromDate, DateTime toDate, bool isRecorded)
         {
             return Find(a => !a.IsRecorded
                 && a.ClockInOut >= fromDate && a.ClockInOut < toDate)

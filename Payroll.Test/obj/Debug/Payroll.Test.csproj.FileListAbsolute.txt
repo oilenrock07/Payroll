@@ -148,3 +148,6 @@ C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\Newtonsoft.Json
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\obj\Debug\Payroll.Test.csprojResolveAssemblyReference.cache
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\obj\Debug\Payroll.Test.dll
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\obj\Debug\Payroll.Test.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.xml

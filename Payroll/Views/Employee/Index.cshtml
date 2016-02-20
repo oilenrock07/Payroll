@@ -1,0 +1,71 @@
+﻿@model Payroll.Service.Interfaces.Model.IPaginationModel<Payroll.Entities.Employee>
+
+@{
+    ViewBag.Title = "Employee List";
+}
+
+<h2>Employee List</h2>
+
+<div>
+    <div class="pull-left t1">
+        @Html.ActionLink("Create New", "Create")
+    </div>
+    <div class="pull-right">
+        <input type="text" placeholder="Search name or code here" class="form-control b1" />
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Card Number
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Middle Name
+        </th>
+        <th>
+            Birthdate
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Items) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmployeeCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MiddleName)
+        </td>
+        <td>
+            @item.BirthDate.ToString("MM/dd/yyyy")
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id= item.EmployeeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeId }, new { @class = "js-employeeDelete" }) |
+            @Html.ActionLink("Employment Details", "Details", new { id = item.EmployeeId })
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.Partial("Pagination", Model)
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/pagination.js"></script>
+    <script type="text/javascript" src="/Scripts/Employee/employeelist.js"></script>
+}

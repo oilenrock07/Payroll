@@ -1,0 +1,40 @@
+﻿@model Payroll.Service.Interfaces.Model.IPaginationModel<Payroll.Entities.Employee>
+
+@if (Model.TotalPages > 1)
+{
+    <div class="row js-pagination">
+
+        <div class="col-md-12">
+
+            <ul class="pagination pull-right">
+
+                @* First Page *@
+                @if (Model.DisplayFirstPageIndicator)
+                {
+                    <li><a href="javascript:void(0);" data-page="1" title="First page">&laquo;</a></li>
+                }
+
+                @* Each result page *@
+                @foreach (var pageNum in Model.DisplayPages)
+                {
+                    <li class="@(pageNum == Model.CurrentPage ? "active" : string.Empty)"><a href="javascript:void(0);" data-page="@pageNum" title="Page @pageNum">@pageNum</a></li>
+                }
+
+                @if (Model.DisplayLastPageIndicator)
+                {
+                    <li><a href="javascript:void(0);" data-page="@Model.TotalPages" title="Last page">&raquo;</a></li>
+                }
+
+                @if (Model.TotalPages > 1)
+                {
+                    <li class="@(Model.CurrentPage == -1 ? "active" : string.Empty)"><a href="javascript:void(0);" data-page="-1" title="View all">View All</a></li>
+                }
+            </ul>
+
+        </div>
+
+    </div>
+
+
+}
+

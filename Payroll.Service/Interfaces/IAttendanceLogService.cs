@@ -9,7 +9,7 @@ namespace Payroll.Service.Interfaces
 {
     public interface IAttendanceLogService
     {
-        IList<AttendanceLog> GetAttendanceLogsToBeProcessed(string employeeCode, DateTime fromDate, DateTime toDate);
+        IList<AttendanceLog> GetAttendanceLogsToBeProcessed(DateTime fromDate, DateTime toDate);
 
         void Save(AttendanceLog attendanceLog);
     }

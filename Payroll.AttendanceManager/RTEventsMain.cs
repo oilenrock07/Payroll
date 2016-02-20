@@ -6,16 +6,28 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using Payroll.Entities;
+using Payroll.Entities.Enums;
+using Payroll.Repository.Interface;
+using Payroll.Repository.Repositories;
+using Payroll.Common.Extension;
 
 namespace RTEvents
 {
     public partial class RTEventsMain : Form
     {
+
+        private readonly IAttendanceLogRepository _attendanceLogRepository;
+        private readonly ISettingRepository _settingRepository;
+
         public RTEventsMain()
         {
             InitializeComponent();
+            _attendanceLogRepository = new AttendanceLogRepository(Program._databaseFactory);
+            _settingRepository = new SettingRepository(Program._databaseFactory);
         }
 
         /******************************************************************************************************************************************
@@ -208,6 +220,27 @@ namespace RTEvents
         //If your fingerprint(or your card) passes the verification,this event will be triggered
         private void axCZKEM1_OnAttTransactionEx(string sEnrollNumber, int iIsInValid, int iAttState, int iVerifyMethod, int iYear, int iMonth, int iDay, int iHour, int iMinute, int iSecond, int iWorkCode)
         {
+            //if valid, insert to database and display the picture to screen
+            if (iIsInValid == 0)
+            {
+                //insert to database
+                var attendaceLog = new AttendanceLog
+                {
+                    EmployeeCode = sEnrollNumber,
+                    ClockInOut = DateTime.Now,
+                    Type = (AttendanceType)Convert.ToInt16(iAttState)
+                };
+                _attendanceLogRepository.Add(attendaceLog);
+                Program._unitOfWork.Commit();
+
+                //display the picture to screen
+                var url = Program.GetSettingValue("DISPLAY_LOGIN_URL", "http://payroll.logindisplay/api/payrollapi/");
+                var client = WebRequest.Create(String.Format("{0}/{1}/{2}/{3}", url, sEnrollNumber, iAttState, DateTime.Now.Serialize()));
+                client.GetResponse();
+            }
+
+
+
             lbRTShow.Items.Add("RTEvent OnAttTrasactionEx Has been Triggered,Verified OK");
             lbRTShow.Items.Add("...UserID:" + sEnrollNumber);
             lbRTShow.Items.Add("...isInvalid:" + iIsInValid.ToString());

@@ -32,6 +32,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CachedSettingService.cs" />
     <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
@@ -47,11 +50,21 @@
     <Compile Include="Interfaces\IAttendanceService.cs" />
     <Compile Include="Interfaces\IEmployeeHoursService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
+    <Compile Include="Implementations\CacheService.cs" />
+    <Compile Include="Implementations\SettingService.cs" />
+    <Compile Include="Implementations\WebService.cs" />
+    <Compile Include="Interfaces\IAttendanceLogService.cs" />
+    <Compile Include="Interfaces\IAttendanceService.cs" />
+    <Compile Include="Interfaces\ICacheService.cs" />
+    <Compile Include="Interfaces\IEmployeeHoursService.cs" />
+    <Compile Include="Interfaces\IEmployeeService.cs" />
+    <Compile Include="Interfaces\ISettingService.cs" />
+    <Compile Include="Interfaces\IWebService.cs" />
+    <Compile Include="Interfaces\Model\IPaginationModel.cs" />
+    <Compile Include="Models\PaginationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Payroll.Common\Payroll.Common.csproj">
       <Project>{ba703de8-5f8e-4eed-a82e-ea38f6e959c7}</Project>

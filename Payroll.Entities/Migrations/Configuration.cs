@@ -1,4 +1,5 @@
 using Payroll.Entities.Contexts;
+using Payroll.Entities.Seeder;
 
 namespace Payroll.Entities.Migrations
 {
@@ -12,7 +13,7 @@ namespace Payroll.Entities.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            //SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
 
         protected override void Seed(PayrollContext context)
@@ -29,16 +30,7 @@ namespace Payroll.Entities.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            context.Settings.AddOrUpdate(
-                    s => s.SettingId,
-                        new Setting { SettingId = 1, SettingKey = "SCHEDULE_NIGHTDIF_TIME_START", Value= "10:00:00 PM", Description="Night Differential Start Time", Category= "SCHEDULE" },
-                        new Setting { SettingId = 2, SettingKey = "SCHEDULE_NIGHTDIF_TIME_END", Value = "7:59:00 AM", Description = "Night Differential End Time", Category = "SCHEDULE" },
-                        new Setting { SettingId = 3, SettingKey = "RATE_OT", Value = "1.25", Description = "OT Rate", Category = "RATE" },
-                        new Setting { SettingId = 4, SettingKey = "RATE_NIGHTDIF", Value = "0.8", Description = "Night Dif", Category = "RATE" },
-                        new Setting { SettingId = 5, SettingKey = "RATE_REST_DAY", Value = "1.3", Description = "Rest Day", Category = "RATE" },
-                        new Setting { SettingId = 6, SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "1.3", Description = "Special Holiday", Category = "RATE" },
-                        new Setting { SettingId = 6, SettingKey = "RATE_HOLIDAY_REGULAR", Value = "2", Description = "Regular Holiday", Category = "RATE" }
-             );
+            context.Settings.AddOrUpdate(s => s.SettingId, new SettingSeeds().GetDefaultSeeds().ToArray());
 
         }
     }

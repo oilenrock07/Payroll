@@ -13,10 +13,16 @@ namespace Payroll.Infrastructure.Implementations
         protected readonly bool _sharedContext = false;
         protected readonly PayrollContext _context;
 
-        protected DbSet<T> _dbSet
+        private IDbSet<T> _dbset;
+        public virtual IDbSet<T> DbSet
         {
-            get { return _context.Set<T>(); }
+            get
+            {
+                return _dbset ?? _context.Set<T>();
+            }
+            set { _dbset = value; } 
         }
+	
 
         public Repository(IDatabaseFactory databaseFactory)
         {
@@ -24,24 +30,24 @@ namespace Payroll.Infrastructure.Implementations
             _sharedContext = true;
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
-            return _dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> GetAll()
         {
-            return _dbSet;
+            return DbSet;
         }
 
-        public IQueryable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
-            return _dbSet.Where(expression);
+            return DbSet.Where(expression);
         }
 
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
-            _dbSet.Add(entity);
+            DbSet.Add(entity);
 
             if (!_sharedContext)
                 _context.SaveChanges();
@@ -49,33 +55,23 @@ namespace Payroll.Infrastructure.Implementations
             return entity;
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
-            _dbSet.Attach(entity);
+            DbSet.Attach(entity);
+            
+            if (!_sharedContext)
+                _context.SaveChanges();
+        }
+
+        public virtual void Delete(T entity)
+        {
+            DbSet.Remove(entity);
 
             if (!_sharedContext)
                 _context.SaveChanges();
         }
 
-        public void Update(T entity, string[] propertyToUpdate)
-        {
-            _dbSet.Attach(entity);
-            foreach (string property in propertyToUpdate)
-                _context.Entry<T>(entity).Property(property).IsModified = true;
-
-            if (!_sharedContext)
-                _context.SaveChanges();
-        }
-
-        public void Delete(T entity)
-        {
-            _dbSet.Remove(entity);
-
-            if (!_sharedContext)
-                _context.SaveChanges();
-        }
-
-        public void ExecuteSqlCommand(string command, params object[] parameters)
+        public virtual void ExecuteSqlCommand(string command, params object[] parameters)
         {
             _context.Database.ExecuteSqlCommand(command, parameters);
         }
