@@ -18,6 +18,7 @@ namespace Payroll.Entities
 
         public int Count { get; set; }
 
+        [StringLength(2500)]
         public string Description { get; set; }
 
     }

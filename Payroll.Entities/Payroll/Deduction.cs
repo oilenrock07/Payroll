@@ -12,6 +12,7 @@ namespace Payroll.Entities.Payroll
         [StringLength(50)]
         public string DeductionName { get; set; }
 
+        [StringLength(2500)]
         public string Remarks { get; set; }
     }
 }

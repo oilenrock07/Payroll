@@ -29,6 +29,7 @@ namespace Payroll.Entities
         
         public DateTime BirthDate { get; set; }
 
+        [StringLength(500)]
         public string Picture { get; set; }
 
         public bool IsActive { get; set; }

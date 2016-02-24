@@ -7,15 +7,15 @@ namespace Payroll.Entities.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.employee", "Picture", c => c.String());
+            AddColumn("dbo.employee", "Picture", c => c.String(maxLength: 500));
             AlterColumn("dbo.attendance_log", "ClockInOut", c => c.DateTime(nullable: false));
             AlterColumn("dbo.attendance", "ClockIn", c => c.DateTime(nullable: false));
             AlterColumn("dbo.attendance", "ClockOut", c => c.DateTime());
-            AlterColumn("dbo.deduction", "Remarks", c => c.String());
+            AlterColumn("dbo.deduction", "Remarks", c => c.String(maxLength:2500));
             AlterColumn("dbo.employee_adjustment", "Date", c => c.DateTime(nullable: false));
-            AlterColumn("dbo.employee_adjustment", "Remarks", c => c.String());
+            AlterColumn("dbo.employee_adjustment", "Remarks", c => c.String(maxLength:5000));
             AlterColumn("dbo.employee_leave", "Date", c => c.DateTime(nullable: false));
-            AlterColumn("dbo.employee_leave", "Reason", c => c.String());
+            AlterColumn("dbo.employee_leave", "Reason", c => c.String(maxLength:5000));
             AlterColumn("dbo.employee_loan", "LoanDate", c => c.DateTime(nullable: false));
             AlterColumn("dbo.employee_loan", "StartDate", c => c.DateTime(nullable: false));
             AlterColumn("dbo.employee_loan", "EndDate", c => c.DateTime(nullable: false));
@@ -27,19 +27,19 @@ namespace Payroll.Entities.Migrations
             AlterColumn("dbo.employee", "BirthDate", c => c.DateTime(nullable: false));
             AlterColumn("dbo.employee_workschedule", "DateCreated", c => c.DateTime(nullable: false));
             AlterColumn("dbo.holiday", "Date", c => c.DateTime(nullable: false));
-            AlterColumn("dbo.leave", "Description", c => c.String());
+            AlterColumn("dbo.leave", "Description", c => c.String(maxLength:2500));
             AlterColumn("dbo.loan_payment", "PaymentDate", c => c.DateTime(nullable: false));
             AlterColumn("dbo.payroll", "PayrollDate", c => c.DateTime(nullable: false));
             AlterColumn("dbo.payroll", "CutOffStartDate", c => c.DateTime(nullable: false));
             AlterColumn("dbo.payroll", "CutOffEndDate", c => c.DateTime(nullable: false));
             AlterColumn("dbo.payroll", "PayrollGeneratedDate", c => c.DateTime(nullable: false));
-            AlterColumn("dbo.positions", "Description", c => c.String());
+            AlterColumn("dbo.positions", "Description", c => c.String(maxLength: 1000));
             AlterColumn("dbo.schedule", "StartTime", c => c.DateTime(nullable: false));
             AlterColumn("dbo.schedule", "EndTime", c => c.DateTime(nullable: false));
-            AlterColumn("dbo.settings", "SettingKey", c => c.String());
-            AlterColumn("dbo.settings", "Value", c => c.String());
-            AlterColumn("dbo.settings", "Description", c => c.String());
-            AlterColumn("dbo.settings", "Category", c => c.String());
+            AlterColumn("dbo.settings", "SettingKey", c => c.String(maxLength:250));
+            AlterColumn("dbo.settings", "Value", c => c.String(maxLength:5000));
+            AlterColumn("dbo.settings", "Description", c => c.String(maxLength:500));
+            AlterColumn("dbo.settings", "Category", c => c.String(maxLength:250));
         }
         
         public override void Down()

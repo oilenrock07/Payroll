@@ -12,8 +12,8 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         RoleId = c.Int(nullable: false, identity: true),
-                        Id = c.String(),
-                        Name = c.String(),
+                        Id = c.String(maxLength:250),
+                        Name = c.String(maxLength: 250),
                     })
                 .PrimaryKey(t => t.RoleId);
             
@@ -22,9 +22,9 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ClaimType = c.String(),
-                        ClaimValue = c.String(),
-                        User_Id = c.String(),
+                        ClaimType = c.String(maxLength: 500),
+                        ClaimValue = c.String(maxLength: 500),
+                        User_Id = c.String(maxLength: 250),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -33,9 +33,9 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         UserLoginId = c.String(nullable: false, maxLength: 128),
-                        UserId = c.String(),
-                        LoginProvider = c.String(),
-                        ProviderKey = c.String(),
+                        UserId = c.String(maxLength: 250),
+                        LoginProvider = c.String(maxLength: 500),
+                        ProviderKey = c.String(maxLength: 500),
                     })
                 .PrimaryKey(t => t.UserLoginId);
             
@@ -44,8 +44,8 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         UserRoleId = c.Int(nullable: false, identity: true),
-                        UserId = c.String(),
-                        RoleId = c.String(),
+                        UserId = c.String(maxLength: 250),
+                        RoleId = c.String(maxLength: 250),
                     })
                 .PrimaryKey(t => t.UserRoleId);
             
@@ -54,10 +54,10 @@ namespace Payroll.Entities.Migrations
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
-                        UserName = c.String(),
-                        PasswordHash = c.String(),
-                        SecurityStamp = c.String(),
-                        Discriminator = c.String(),
+                        UserName = c.String(maxLength: 250),
+                        PasswordHash = c.String(maxLength: 500),
+                        SecurityStamp = c.String(maxLength: 500),
+                        Discriminator = c.String(maxLength: 500),
                     })
                 .PrimaryKey(t => t.Id);
             

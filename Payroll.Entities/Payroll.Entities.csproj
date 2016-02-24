@@ -88,7 +88,9 @@
     <Compile Include="Migrations\201602080556529_add-attendance-log-table.Designer.cs">
       <DependentUpon>201602080556529_add-attendance-log-table.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.cs" />
+    <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.Designer.cs">
       <DependentUpon>201602080627473_AddedPictureToEmployee.cs</DependentUpon>
     </Compile>
@@ -104,7 +106,9 @@
     <Compile Include="Migrations\201602111432018_jonaschanges.Designer.cs">
       <DependentUpon>201602111432018_jonaschanges.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201602161338092_AddedFieldsForEmployees.cs" />
+    <Compile Include="Migrations\201602161338092_AddedFieldsForEmployees.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Migrations\201602161338092_AddedFieldsForEmployees.Designer.cs">
       <DependentUpon>201602161338092_AddedFieldsForEmployees.cs</DependentUpon>
     </Compile>
