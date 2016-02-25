@@ -16,6 +16,7 @@ namespace Payroll.Entities.Payroll
 
         public DateTime Date { get; set; }
 
+        [StringLength(5000)]
         public string Reason { get; set; }
 
         public bool IsApproved { get; set; }

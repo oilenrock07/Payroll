@@ -8,7 +8,12 @@ namespace Payroll.Entities.Users
     {
         [Key]
         public int UserRoleId { get; set; }
+
+        [StringLength(250)]
         public string UserId { get; set; }
+        
+        
+        [StringLength(250)]
         public string RoleId { get; set; }
     }
 }

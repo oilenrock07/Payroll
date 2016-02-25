@@ -18,6 +18,7 @@ namespace Payroll.Entities.Payroll
 
         public decimal Amount { get; set; }
 
+        [StringLength(5000)]
         public string Remarks { get; set; }
     }
 }

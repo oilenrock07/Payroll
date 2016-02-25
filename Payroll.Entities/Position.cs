@@ -12,6 +12,7 @@ namespace Payroll.Entities
         [StringLength(150)]
         public string PositionName { get; set; }
 
+        [StringLength(1000)]
         public string Description { get; set; }
 
         public bool IsActive { get; set; }
