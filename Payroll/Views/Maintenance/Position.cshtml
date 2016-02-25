@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Payroll.Entities.Position>
+
+@{
+    ViewBag.Title = "Position";
+}
+
+<h2>Positions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreatePosition")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PositionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PositionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditPosition", new { id = item.PositionId }) |
+            @Html.ActionLink("Delete", "DeletePosition", new { id = item.PositionId, @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>

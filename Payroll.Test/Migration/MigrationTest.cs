@@ -11,9 +11,9 @@ namespace Payroll.Test.Migration
         [TestMethod]
         public void RunSeedersTest()
         {
-            var context = new PayrollContext();
-            var configuration = new Configuration();
-            configuration.RunSeeds(context);
+            //var context = new PayrollContext();
+            //var configuration = new Configuration();
+            //configuration.RunSeeds(context);
         }
     }
 }

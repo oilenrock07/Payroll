@@ -124,6 +124,10 @@
     <Compile Include="Migrations\201602200347503_Added foreignkey to employee and employeeinfo.Designer.cs">
       <DependentUpon>201602200347503_Added foreignkey to employee and employeeinfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602241613509_runseed.cs" />
+    <Compile Include="Migrations\201602241613509_runseed.Designer.cs">
+      <DependentUpon>201602241613509_runseed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -188,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602200347503_Added foreignkey to employee and employeeinfo.resx">
       <DependentUpon>201602200347503_Added foreignkey to employee and employeeinfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602241613509_runseed.resx">
+      <DependentUpon>201602241613509_runseed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

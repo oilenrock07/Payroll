@@ -16,7 +16,7 @@
         <hr />
         @Html.ValidationSummary(true)
         <div class="form-group">
-            @Html.LabelFor(model => model.EmployeeCode, "Card Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.EmployeeCode, "Card Number", htmlAttributes: new { @class = "control-label col-md-2", placeholder = "RFID Number" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "form-control " })
                 @Html.ValidationMessageFor(model => model.EmployeeCode)

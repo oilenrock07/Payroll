@@ -9,7 +9,6 @@ namespace Payroll.Models.Employee
         public int EmployeeId { get; set; }
 
         [StringLength(250)]
-        [Required]
         public string EmployeeCode { get; set; }
 
         [StringLength(50)]
