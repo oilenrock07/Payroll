@@ -53,11 +53,7 @@
     <Compile Include="Implementations\CacheService.cs" />
     <Compile Include="Implementations\SettingService.cs" />
     <Compile Include="Implementations\WebService.cs" />
-    <Compile Include="Interfaces\IAttendanceLogService.cs" />
-    <Compile Include="Interfaces\IAttendanceService.cs" />
     <Compile Include="Interfaces\ICacheService.cs" />
-    <Compile Include="Interfaces\IEmployeeHoursService.cs" />
-    <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\ISettingService.cs" />
     <Compile Include="Interfaces\IWebService.cs" />
     <Compile Include="Interfaces\Model\IPaginationModel.cs" />

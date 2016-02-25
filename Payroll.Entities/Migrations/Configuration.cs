@@ -13,7 +13,7 @@ namespace Payroll.Entities.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            //SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
 
         public void RunSeeds(PayrollContext context)
