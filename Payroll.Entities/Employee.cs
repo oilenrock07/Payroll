@@ -29,6 +29,7 @@ namespace Payroll.Entities
         
         public DateTime BirthDate { get; set; }
 
+        [StringLength(500)]
         public string Picture { get; set; }
 
         public bool IsActive { get; set; }
@@ -39,6 +40,7 @@ namespace Payroll.Entities
         public bool EnrolledToRfid { get; set; }
         public bool EnrolledToBiometrics { get; set; }
 
+        [StringLength(500)]
         [NotMapped]
         public string FullName
         {
