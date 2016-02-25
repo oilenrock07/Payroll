@@ -40,6 +40,7 @@ namespace Payroll.Entities
         public bool EnrolledToRfid { get; set; }
         public bool EnrolledToBiometrics { get; set; }
 
+        [StringLength(500)]
         [NotMapped]
         public string FullName
         {
