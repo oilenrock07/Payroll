@@ -33,7 +33,7 @@ namespace Payroll.LoginDisplay.Controllers
         //find a way to create a permanent duration
         //duration value is 1 month
         [HttpGet]
-        [OutputCache(Duration = 2592000, VaryByParam = "id", VaryByCustom = "payroll:employeeinformation")]
+        //[OutputCache(Duration = 2592000, VaryByParam = "id", VaryByCustom = "payroll:employeeinformation")]
         public ActionResult EmployeeInformation(int id)
         {
             var employee = _employeeRepository.GetById(id);

@@ -30,9 +30,14 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "EditPosition", new { id = item.PositionId }) |
-            @Html.ActionLink("Delete", "DeletePosition", new { id = item.PositionId, @class = "js-maintenanceDelete" })
+            @Html.ActionLink("Delete", "DeletePosition", new { id = item.PositionId }, new { @class = "js-maintenanceDelete" })
         </td>
     </tr>
 }
 
 </table>
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

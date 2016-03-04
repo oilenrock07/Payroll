@@ -9,7 +9,10 @@ namespace Payroll.Entities
         [Key]
         public int PaymentFrequencyId { get; set; }
 
+        [ForeignKey("Frequency")]
         public int FrequencyId { get; set; }
+        public virtual Frequency Frequency { get; set; }
+
 
         public bool IsActive { get; set; }
 

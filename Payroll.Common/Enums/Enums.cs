@@ -14,4 +14,11 @@ namespace Payroll.Common.Enums
         Common = 1,
         Admin = 3
     }
+
+    public enum Frequency
+    {
+        Weekly = 1,
+        Bimonthly = 2,
+        Monthly = 3
+    }
 }

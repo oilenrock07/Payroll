@@ -28,7 +28,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -210,7 +210,13 @@
     <Compile Include="Models\Employee\EmployeeInfoViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Maintenance\PaymentFrequencyViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ErrorMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +230,7 @@
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\Payroll.Web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Employee\employeelist.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -233,11 +240,13 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Maintenance\frequency.js" />
     <Content Include="Scripts\Maintenance\maintenance.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\pagination.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -276,6 +285,8 @@
     <Content Include="Views\Maintenance\Position.cshtml" />
     <Content Include="Views\Maintenance\EditPosition.cshtml" />
     <Content Include="Views\Maintenance\CreatePosition.cshtml" />
+    <Content Include="Views\Maintenance\PaymentFrequency.cshtml" />
+    <Content Include="Views\Maintenance\CreatePaymentFrequency.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -309,7 +320,14 @@
     <ProjectReference Include="..\Payroll.Service\Payroll.Service.csproj">
       <Project>{96027240-d9de-44d2-8d61-1afb9963f88c}</Project>
       <Name>Payroll.Service</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

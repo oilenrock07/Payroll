@@ -35,3 +35,4 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Omu.ValueInjecter.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Omu.ValueInjecter.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\MySql.Data.Entity.EF6.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\MySql.Data.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Service\bin\Debug\Payroll.Service.dll.config

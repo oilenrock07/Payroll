@@ -22,9 +22,9 @@
             var today = new Date();
             var locale = "en-us";
 
-            var year = today.getYear();
+            var year = today.getFullYear();
             var month = today.toLocaleString(locale, { month: "long" });
-            var day = formatTime(today.getDay());
+            var day = formatTime(today.getDate());
 
             var h = today.getHours();
             var m = today.getMinutes();

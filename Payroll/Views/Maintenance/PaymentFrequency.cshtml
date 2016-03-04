@@ -1,0 +1,51 @@
+﻿@using Payroll.Common.Enums
+@model IEnumerable<Payroll.Entities.PaymentFrequency>
+
+@{
+    ViewBag.Title = "PaymentFrequency";
+}
+
+<h2>PaymentFrequency</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreatePaymentFrequency")
+</p>
+
+<hr/>
+@foreach (var item in Model) {
+    <div class="col-md-12">
+        <div class="form-group">
+            <h3>@item.Frequency.FrequencyName</h3>
+            @if (item.FrequencyId == (int)Frequency.Weekly)
+            {
+                <span>Start day of week:</span>
+                <span class="label label-primary">@Enum.GetName(typeof(DayOfWeek), item.WeeklyStartDayOfWeek)</span>
+            }
+
+            @if (item.FrequencyId == (int)Frequency.Bimonthly)
+            {
+                <div>
+                    <span>Cut off #1:</span>
+                    <span class="label label-primary">@item.MonthlyStartDay</span>
+                </div>
+
+                <div>
+                    <span>Cut off #2:</span>
+                    <span class="label label-primary">@item.MonthlyEndDay</span>
+                </div>
+            }
+        </div>
+
+        
+        <div class="form-group">
+            @Html.ActionLink("Delete", "DeletePaymentFrequency", "Maintenance", new {id = item.PaymentFrequencyId}, new { @class = "btn btn-danger js-maintenanceDelete" })
+        </div>
+        
+        <hr/>
+    </div>
+}
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

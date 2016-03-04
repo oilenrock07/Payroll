@@ -12,6 +12,7 @@ using Payroll.Models;
 using Payroll.Models.Employee;
 using Payroll.Repository.Interface;
 using Payroll.Common.Extension;
+using Payroll.Resources;
 using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
@@ -25,10 +26,11 @@ namespace Payroll.Controllers
         private readonly ISettingRepository _settingRepository;
         private readonly IPositionRepository _positionRepository;
         private readonly IWebService _webService;
+        private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository,
-            IWebService webService)
+            IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository)
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -36,6 +38,7 @@ namespace Payroll.Controllers
             _employeeInfoRepository = employeeInfoRepository;
             _positionRepository = positionRepository;
             _webService = webService;
+            _paymentFrequencyRepository = paymentFrequencyRepository;
         }
 
         public virtual ActionResult Index()
@@ -44,6 +47,22 @@ namespace Payroll.Controllers
             var pagination = _webService.GetPaginationModel(Request, employees);
 
             return View(pagination);
+        }
+
+        public virtual ActionResult SearchEmployee(string query)
+        {
+            var firstNames = _employeeRepository.Find(x => x.FirstName.Contains(query) && x.IsActive).ToList();
+            var lastNames = _employeeRepository.Find(x => x.LastName.Contains(query) && x.IsActive).ToList();
+            var employeeCodes = _employeeRepository.Find(x => x.EmployeeCode.Contains(query) && x.IsActive).ToList();
+
+            var result = new List<Employee>();
+            result.AddRange(firstNames);
+            result.AddRange(lastNames);
+            result.AddRange(employeeCodes);
+
+            ViewBag.SearchCriteria = query;
+            var pagination = _webService.GetPaginationModel(Request, result.Distinct());
+            return View("Index", pagination);
         }
 
         public virtual ActionResult Edit(int id)
@@ -56,9 +75,17 @@ namespace Payroll.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult Edit(EmployeeViewModel viewModel)
         {
-            var employee = new Employee {EmployeeId = viewModel.EmployeeId};
+
+            //validate birthdate
+            if (!viewModel.BirthDate.IsValidBirthDate())
+            {
+                ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
+                return View(viewModel);
+            }
+
+            var employee = _employeeRepository.GetById(viewModel.EmployeeId);
             _employeeRepository.Update(employee);
-            employee = viewModel.MapItem<Employee>();
+            employee.InjectFrom(viewModel);
             employee.IsActive = true;
 
             var imagePath = UploadImage(employee.EmployeeId);
@@ -78,6 +105,13 @@ namespace Payroll.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult Create(EmployeeViewModel viewModel)
         {
+            //validate birthdate
+            if (!viewModel.BirthDate.IsValidBirthDate())
+            {
+                ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
+                return View(viewModel);
+            }
+
             var employee = viewModel.MapItem<Employee>();
             employee.IsActive = true;
 
@@ -147,11 +181,18 @@ namespace Payroll.Controllers
             var positions = _positionRepository.Find(x => x.IsActive).Select(x => new SelectListItem
             {
                 Text = x.PositionName,
-                Value = x.PositionId.ToString(),
-                Selected = x.PositionId == employeeInfo.PositionId
+                Value = x.PositionId.ToString()
             }).ToList();
 
+            var paymentFrequencies = _paymentFrequencyRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            {
+                Text = x.Frequency.FrequencyName,
+                Value = x.FrequencyId.ToString()
+            }).ToList();
+
+
             positions.Insert(0, new SelectListItem {Text = "Select Position", Value = "0"});
+            paymentFrequencies.Insert(0, new SelectListItem { Text = "Select Payment Frequency", Value = "0" });
 
             var viewModel = new EmployeeInfoViewModel();
 
@@ -161,6 +202,9 @@ namespace Payroll.Controllers
                 viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "";
                 viewModel.Name = employeeInfo.Employee.FullName;
                 viewModel.Positions = positions;
+                viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
+                viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
+                viewModel.PaymentFrequencies = paymentFrequencies;
             }
 
             return View(viewModel);
@@ -174,6 +218,7 @@ namespace Payroll.Controllers
             _employeeInfoRepository.Update(employeeInfo);
             employeeInfo.InjectFrom(viewModel.EmployeeInfo);
             employeeInfo.PositionId = viewModel.PositionId;
+            employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
 
             _unitOfWork.Commit();
             return RedirectToAction("Index");

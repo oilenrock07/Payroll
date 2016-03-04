@@ -11,7 +11,7 @@
         @Html.ActionLink("Create New", "Create")
     </div>
     <div class="pull-right">
-        <input type="text" placeholder="Search name or code here" class="form-control b1" />
+        <input type="text" id="search" placeholder="Search name or code here" class="form-control b1 js-searchEmployee" value="@(ViewBag.SearchCriteria ?? "")" />
     </div>
 </div>
 

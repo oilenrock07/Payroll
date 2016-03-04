@@ -26,5 +26,11 @@ namespace Payroll.Repository.Repositories
         {
             return Find(e => e.EmployeeCode == code).FirstOrDefault();
         }
+
+        public IEnumerable<Employee> SearchEmployee(string criteria)
+        {
+            //ExecuteSqlCommand("SELECT * FROM Employee WHERE FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%' OR EmployeeCode LIKE '%{0}%' OR EmployeeId={0}", criteria);
+            return Find(x => x.FirstName.Contains(criteria));
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Payroll.Repository.Interface
         Employee GetByCode(string code);
 
         IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId);
+        IEnumerable<Employee> SearchEmployee(string criteria);
     }
 }

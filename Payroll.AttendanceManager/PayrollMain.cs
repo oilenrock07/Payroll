@@ -14,8 +14,8 @@ namespace RTEvents
     {
         private int childFormNumber = 0;
 
-        private readonly RTEventsMain frmEvents;
-        private readonly CardMaintenance frmCardMaintenance;
+        private RTEventsMain frmEvents;
+        private CardMaintenance frmCardMaintenance;
 
         public PayrollMain()
         {
@@ -111,14 +111,20 @@ namespace RTEvents
 
         private void eventsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmEvents.MdiParent = Program._mainForm;
-            frmEvents.Show();
+            if (frmEvents.IsDisposed) frmEvents = new RTEventsMain();
+            ShowForm(frmEvents);
         }
 
         private void cardMaintenanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmCardMaintenance.MdiParent = Program._mainForm;
-            frmCardMaintenance.Show();
+            if (frmCardMaintenance.IsDisposed) frmCardMaintenance = new CardMaintenance();
+            ShowForm(frmCardMaintenance);
+        }
+
+        private void ShowForm(Form form)
+        {
+            form.MdiParent = Program._mainForm;
+            form.Show();
         }
     }
 }
