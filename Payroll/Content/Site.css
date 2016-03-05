@@ -95,3 +95,7 @@ input[type="checkbox"].input-validation-error {
 .employee-details-picture {
     max-height: 250px;
 }
+
+.home-info-icon {
+    text-align: center;
+}

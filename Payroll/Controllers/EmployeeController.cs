@@ -46,26 +46,44 @@ namespace Payroll.Controllers
 
         public virtual ActionResult Index()
         {
-            var employees = _employeeRepository.Find(x => x.IsActive).ToList();
-            var pagination = _webService.GetPaginationModel(Request, employees);
+            var employees = _employeeInfoRepository.Find(x => x.Employee.IsActive).ToList();
+            var pagination = _webService.GetPaginationModel(Request, employees.Count);
+            var viewModel = new EmployeeListViewModel
+            {
+                Employees = _webService.TakePaginationModel(employees, pagination),
+                Pagination = pagination
+            };
 
-            return View(pagination);
+            return View(viewModel);
         }
 
         public virtual ActionResult SearchEmployee(string query)
         {
-            var firstNames = _employeeRepository.Find(x => x.FirstName.Contains(query) && x.IsActive).ToList();
-            var lastNames = _employeeRepository.Find(x => x.LastName.Contains(query) && x.IsActive).ToList();
-            var employeeCodes = _employeeRepository.Find(x => x.EmployeeCode.Contains(query) && x.IsActive).ToList();
+            var result = new List<EmployeeInfo>();
+            var firstNames = _employeeInfoRepository.Find(x => x.Employee.FirstName.Contains(query) && x.Employee.IsActive).ToList();
+            var lastNames = _employeeInfoRepository.Find(x => x.Employee.LastName.Contains(query) && x.Employee.IsActive).ToList();
 
-            var result = new List<Employee>();
+            int id;
+            if (int.TryParse(query, out id))
+            {
+                var employeeId = _employeeInfoRepository.Find(x => x.EmployeeId == id && x.Employee.IsActive).ToList();
+                result.AddRange(employeeId);
+            }
+                
             result.AddRange(firstNames);
             result.AddRange(lastNames);
-            result.AddRange(employeeCodes);
 
             ViewBag.SearchCriteria = query;
-            var pagination = _webService.GetPaginationModel(Request, result.Distinct());
-            return View("Index", pagination);
+
+            var resultDistinct = result.Distinct();
+            var pagination = _webService.GetPaginationModel(Request, resultDistinct.Count());
+            var viewModel = new EmployeeListViewModel
+            {
+                Employees = _webService.TakePaginationModel(resultDistinct, pagination),
+                Pagination = pagination
+            };
+
+            return View("Index", viewModel);
         }
 
         public virtual ActionResult Edit(int id)
@@ -127,6 +145,16 @@ namespace Payroll.Controllers
                 });
             }
 
+            var employmentStatus = new List<SelectListItem>();
+            foreach (EmploymentStatus status in Enum.GetValues(typeof(EmploymentStatus)))
+            {
+                employmentStatus.Add(new SelectListItem
+                {
+                    Text = status.ToString(),
+                    Value = ((int)status).ToString()
+                });
+            }
+
             positions.Insert(0, new SelectListItem { Text = "Select Position", Value = "0" });
             paymentFrequencies.Insert(0, new SelectListItem { Text = "Select Payment Frequency", Value = "0" });
 
@@ -155,6 +183,7 @@ namespace Payroll.Controllers
             viewModel.Departments = departments;
             viewModel.PaymentFrequencies = paymentFrequencies;
             viewModel.Genders = genders;
+            viewModel.EmploymentStatuses = employmentStatus;
         }
 
         [HttpPost]
@@ -229,10 +258,12 @@ namespace Payroll.Controllers
             employeeInfo.SSS = viewModel.EmployeeInfo.SSS;
             employeeInfo.Salary = viewModel.EmployeeInfo.Salary;
             employeeInfo.TIN = viewModel.EmployeeInfo.TIN;
+            employeeInfo.EmploymentStatus = viewModel.EmploymentStatus;
 
             employeeInfo.PositionId = viewModel.PositionId;
             employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
             employeeInfo.Employee.InjectFrom( viewModel.EmployeeInfo.Employee);
+            employeeInfo.Employee.Gender = viewModel.Gender;
 
             var departments = viewModel.CheckedDepartments != null
                             ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)

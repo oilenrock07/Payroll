@@ -1,4 +1,5 @@
-﻿@model Payroll.Service.Interfaces.Model.IPaginationModel<Payroll.Entities.Employee>
+﻿@using Payroll.Common.Enums
+@model Payroll.Models.Employee.EmployeeListViewModel
 
 @{
     ViewBag.Title = "Employee List";
@@ -7,18 +8,20 @@
 <h2>Employee List</h2>
 
 <div>
-    <div class="pull-left t1">
+    <div class="col-md-6 pull-left t1">
         @Html.ActionLink("Create New", "Create")
     </div>
-    <div class="pull-right">
-        <input type="text" id="search" placeholder="Search name or code here" class="form-control b1 js-searchEmployee" value="@(ViewBag.SearchCriteria ?? "")" />
+    <div class="col-md-6">
+        <div class="pull-right">
+            <input type="text" id="search" placeholder="Search name or code here" class="form-control b1 js-searchEmployee" value="@(ViewBag.SearchCriteria ?? "")" />
+        </div>
     </div>
 </div>
 
 <table class="table">
     <tr>
         <th>
-            Card Number
+            Id
         </th>
         <th>
             First Name
@@ -30,38 +33,63 @@
             Middle Name
         </th>
         <th>
-            Birthdate
+            Nickname
+        </th>
+        <th>
+            Gender
+        </th>
+        <th>
+            Actual Date Hired
+        </th>
+        <th>
+            Date Hired (SSS Based)
+        </th>
+        <th>
+            Employment Status
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model.Items) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployeeCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MiddleName)
-        </td>
-        <td>
-            @item.BirthDate.ToString("MM/dd/yyyy")
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id= item.EmployeeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeId }, new { @class = "js-employeeDelete" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.Employees)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.MiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.NickName)
+            </td>
+            <td>
+                @((Gender)item.Employee.Gender == Gender.Male ? "Male" : "Female ")
+            </td>
+            <td>
+                @item.DateHired.ToString("MM/dd/yyyy")
+            </td>
+            <td>
+                @(item.CustomDate1 != null ? item.CustomDate1.Value.ToString("MM/dd/yyyy") : "")
+            </td>
+            <td>
+                @((EmploymentStatus)item.EmploymentStatus == EmploymentStatus.Regular ? "Regular" : "Contractual")
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeId }, new { @class = "js-employeeDelete" })
+            </td>
+        </tr>
+    }
 
 </table>
 
-@Html.Partial("Pagination", Model)
+@Html.Partial("Pagination", Model.Pagination)
 
 @section scripts
 {

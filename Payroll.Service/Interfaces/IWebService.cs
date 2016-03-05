@@ -6,6 +6,7 @@ namespace Payroll.Service.Interfaces
 {
     public interface IWebService
     {
-        IPaginationModel<T> GetPaginationModel<T>(HttpRequestBase request, IEnumerable<T> items, int itemsPerPage = 0, string pageName = "");
+        IPaginationModel GetPaginationModel(HttpRequestBase request, int itemCount, int itemsPerPage = 0, string pageName = "");
+        IEnumerable<T> TakePaginationModel<T>(IEnumerable<T> list, IPaginationModel pagination) where T : class;
     }
 }

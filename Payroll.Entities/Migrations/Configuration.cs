@@ -3,8 +3,6 @@ using Payroll.Entities.Seeder;
 
 namespace Payroll.Entities.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -37,8 +35,7 @@ namespace Payroll.Entities.Migrations
             //
             context.Settings.AddOrUpdate(s => s.SettingId, new SettingSeeds().GetDefaultSeeds().ToArray());
             context.Frequencies.AddOrUpdate(s => s.FrequencyId, new FrequencySeeds().GetDefaultSeeds().ToArray());
-
-            //context.PaymentFrequencies.AddOrUpdate(s => s.PaymentFrequencyId, new PaymentFrequencySeeds().GetDefaultSeeds().ToArray());
+            context.Departments.AddOrUpdate(s => s.DepartmentId, new DepartmentSeeds().GetDefaultSeeds().ToArray());
         }
     }
 }

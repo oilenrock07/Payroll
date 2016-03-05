@@ -2,8 +2,6 @@
 using System.Web;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Payroll.Repository.Interface;
 using Payroll.Service.Interfaces;
 using Payroll.Service.Interfaces.Model;
@@ -20,25 +18,30 @@ namespace Payroll.Service.Implementations
             _settingRepository = settingRepository;
         }
 
-        public IPaginationModel<T> GetPaginationModel<T>(HttpRequestBase request, IEnumerable<T> items, int itemsPerPage = 0, string pageName = "")
+        public IEnumerable<T> TakePaginationModel<T>(IEnumerable<T> list, IPaginationModel pagination) where T : class 
+        {
+            list = (pagination.CurrentPage > 0 ? list.Skip((pagination.CurrentPage - 1) * pagination.ItemsPerPage).Take(pagination.ItemsPerPage) : list);
+            return list;
+        }
+
+        public IPaginationModel GetPaginationModel(HttpRequestBase request, int itemCount, int itemsPerPage = 0, string pageName = "")
         {
             var page = Convert.ToInt32(request.QueryString["Page"] ?? "1");
-            var totalCount = items.Count();
 
             if (itemsPerPage == 0)
             {
                 itemsPerPage = Convert.ToInt16(_settingRepository.GetSettingValue("PAGINATION_ITEMS_PER_PAGE"));
             }
 
-            return new PaginationModel<T>
+            return new PaginationModel
             {
                 PageName = pageName,
                 CurrentPage = page == 0 ? 1 : page,
-                TotalPages = Convert.ToInt32(Math.Ceiling((decimal)totalCount / itemsPerPage)),
-                TotalItems = totalCount,
+                TotalPages = Convert.ToInt32(Math.Ceiling((decimal)itemCount / itemsPerPage)),
+                TotalItems = itemCount,
                 DefaultItemsPerPage = itemsPerPage,
                 ItemsPerPage = itemsPerPage,
-                Items =  (page > 0 ? items.Skip((page - 1) * itemsPerPage).Take(itemsPerPage) : items)
+                
             };
         }
     }

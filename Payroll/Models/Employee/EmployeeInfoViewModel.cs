@@ -18,6 +18,7 @@ namespace Payroll.Models.Employee
         public int PositionId { get; set; }
         public int PaymentFrequency { get; set; }
         public int Gender { get; set; }
+        public int EmploymentStatus { get; set; }
         public string CheckedDepartments { get; set; }
         public bool IsPrivate { get; set; }
 
@@ -26,6 +27,7 @@ namespace Payroll.Models.Employee
         public IEnumerable<SelectListItem> Positions { get; set; }
         public IEnumerable<SelectListItem> PaymentFrequencies { get; set; }
         public IEnumerable<SelectListItem> Genders { get; set; }
+        public IEnumerable<SelectListItem> EmploymentStatuses { get; set; }
         public IEnumerable<EmployeeDepartmentViewModel> Departments { get; set; }
 
         [Required(ErrorMessageResourceType = typeof (ErrorMessages), ErrorMessageResourceName = "REQUIRED_BIRTHDATE")]

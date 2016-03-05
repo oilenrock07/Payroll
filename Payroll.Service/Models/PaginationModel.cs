@@ -4,7 +4,7 @@ using Payroll.Service.Interfaces.Model;
 
 namespace Payroll.Service.Models
 {
-    public class PaginationModel<T> : IPaginationModel<T>
+    public class PaginationModel : IPaginationModel
     {
         protected const int DisplayPageRange = 2;
 
@@ -15,7 +15,6 @@ namespace Payroll.Service.Models
         public virtual int ItemsPerPage { get; set; }
         public virtual int DefaultItemsPerPage { get; set; }
         public virtual string PagingText { get; set; }
-        public virtual IEnumerable<T> Items { get; set; }
 
 
         /// <summary>

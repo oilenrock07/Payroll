@@ -2,7 +2,7 @@
 
 namespace Payroll.Service.Interfaces.Model
 {
-    public interface IPaginationModel<T>
+    public interface IPaginationModel
     {
         int CurrentPage { get; set; }
         int TotalPages { get; set; }
@@ -16,6 +16,5 @@ namespace Payroll.Service.Interfaces.Model
         int StartDisplayPage { get; }
         int EndDisplayPage { get; }
         IEnumerable<int> DisplayPages { get; }
-        IEnumerable<T> Items { get; set; }
     }
 }
