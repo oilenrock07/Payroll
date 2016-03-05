@@ -68,5 +68,14 @@ namespace Payroll.Resources {
                 return ResourceManager.GetString("INVALID_DATE", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Birthdate is required.
+        /// </summary>
+        internal static string REQUIRED_BIRTHDATE {
+            get {
+                return ResourceManager.GetString("REQUIRED_BIRTHDATE", resourceCulture);
+            }
+        }
     }
 }

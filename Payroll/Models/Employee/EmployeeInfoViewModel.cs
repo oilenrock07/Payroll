@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Payroll.Entities;
+using Payroll.Resources;
 
 namespace Payroll.Models.Employee
 {
@@ -26,6 +28,7 @@ namespace Payroll.Models.Employee
         public IEnumerable<SelectListItem> Genders { get; set; }
         public IEnumerable<EmployeeDepartmentViewModel> Departments { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof (ErrorMessages), ErrorMessageResourceName = "REQUIRED_BIRTHDATE")]
         public string DisplayBirthDate
         {
             get { return EmployeeInfo.Employee.BirthDate.ToString("MM/dd/yyyy"); }

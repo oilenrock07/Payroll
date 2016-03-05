@@ -88,6 +88,23 @@ namespace Payroll.Controllers
 
         protected EmployeeInfoViewModel GetEmployeeViewModel(EmployeeInfo employeeInfo)
         {
+            var viewModel = new EmployeeInfoViewModel();
+            GetDropDowns(viewModel, employeeInfo.EmployeeId);
+
+            if (employeeInfo != null)
+            {
+                viewModel.EmployeeInfo = employeeInfo;
+                viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "/Images/noimage.jpg";
+                viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
+                viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
+                viewModel.Gender = employeeInfo.Employee.Gender;
+            }
+
+            return viewModel;
+        }
+
+        protected void GetDropDowns(EmployeeInfoViewModel viewModel, int employeeId)
+        {
             var positions = _positionRepository.Find(x => x.IsActive).Select(x => new SelectListItem
             {
                 Text = x.PositionName,
@@ -113,6 +130,7 @@ namespace Payroll.Controllers
             positions.Insert(0, new SelectListItem { Text = "Select Position", Value = "0" });
             paymentFrequencies.Insert(0, new SelectListItem { Text = "Select Payment Frequency", Value = "0" });
 
+
             //For employee department association
             var departments = _departmentRepository.Find(x => x.IsActive).Select(x => new EmployeeDepartmentViewModel
             {
@@ -120,9 +138,9 @@ namespace Payroll.Controllers
                 DepartmentName = x.DepartmentName
             }).ToList();
 
-            if (employeeInfo.EmployeeId > 0)
+            if (employeeId > 0)
             {
-                var employeeDepartments = _employeeRepository.GetDepartments(employeeInfo.EmployeeId);
+                var employeeDepartments = _employeeRepository.GetDepartments(employeeId);
                 foreach (var employeeDepartment in employeeDepartments)
                 {
                     var department = departments.FirstOrDefault(x => x.DepartmentId == employeeDepartment.DepartmentId);
@@ -133,22 +151,10 @@ namespace Payroll.Controllers
                 }
             }
 
-            var viewModel = new EmployeeInfoViewModel();
-
-            if (employeeInfo != null)
-            {
-                viewModel.EmployeeInfo = employeeInfo;
-                viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "/Images/noimage.jpg";
-                viewModel.Positions = positions;
-                viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
-                viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
-                viewModel.PaymentFrequencies = paymentFrequencies;
-                viewModel.Genders = genders;
-                viewModel.Gender = employeeInfo.Employee.Gender;
-                viewModel.Departments = departments;
-            }
-
-            return viewModel;
+            viewModel.Positions = positions;
+            viewModel.Departments = departments;
+            viewModel.PaymentFrequencies = paymentFrequencies;
+            viewModel.Genders = genders;
         }
 
         [HttpPost]
@@ -158,18 +164,28 @@ namespace Payroll.Controllers
             //validate birthdate
             if (!viewModel.EmployeeInfo.Employee.BirthDate.IsValidBirthDate())
             {
+                GetDropDowns(viewModel, viewModel.EmployeeInfo.EmployeeId);
                 ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
                 return View("Details", viewModel);
             }
 
             var employee = viewModel.EmployeeInfo.Employee.MapItem<Employee>();
+            employee.Gender = viewModel.Gender;
             var employeeInfo = new EmployeeInfo
             {
                 Employee = employee,
+                PaymentFrequencyId = viewModel.PaymentFrequency != 0 ? viewModel.PaymentFrequency : (int?) null,
+                PositionId = viewModel.PositionId != 0 ? viewModel.PositionId : (int?)null,
             };
 
             var newEmployee = _employeeInfoRepository.Add(employeeInfo).Employee;
-            _employeeRepository.UpdateDepartment(viewModel.CheckedDepartments.Split(',').Select(Int32.Parse), employee.EmployeeId);
+            _unitOfWork.Commit();
+
+            var departments = viewModel.CheckedDepartments != null
+                            ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)
+                            : new List<int>();
+
+            _employeeRepository.UpdateDepartment(departments, employee.EmployeeId);
             _unitOfWork.Commit();
 
             //upload the picture and update the record
@@ -192,20 +208,36 @@ namespace Payroll.Controllers
             //validate birthdate
             if (!viewModel.EmployeeInfo.Employee.BirthDate.IsValidBirthDate())
             {
+                GetDropDowns(viewModel, viewModel.EmployeeInfo.EmployeeId);
                 ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
                 return View("Details", viewModel);
             }
 
-            var employeeInfo = new EmployeeInfo { EmploymentInfoId = viewModel.EmployeeInfo.EmploymentInfoId };
+            var employeeInfo = _employeeInfoRepository.GetById(viewModel.EmployeeInfo.EmploymentInfoId);
             _employeeInfoRepository.Update(employeeInfo);
 
-            employeeInfo.InjectFrom(viewModel.EmployeeInfo);
+            employeeInfo.Allowance = viewModel.EmployeeInfo.Allowance;
+            employeeInfo.CustomDate1 = viewModel.EmployeeInfo.CustomDate1;
+            employeeInfo.DateHired = viewModel.EmployeeInfo.DateHired;
+            employeeInfo.Dependents = viewModel.EmployeeInfo.Dependents;
+            employeeInfo.EmploymentStatus = viewModel.EmployeeInfo.EmploymentStatus;
+            employeeInfo.GSIS = viewModel.EmployeeInfo.GSIS;
+            employeeInfo.Married = viewModel.EmployeeInfo.Married;
+            employeeInfo.PAGIBIG = viewModel.EmployeeInfo.PAGIBIG;
+            employeeInfo.EmploymentStatus = viewModel.EmployeeInfo.EmploymentStatus;
+            employeeInfo.PhilHealth = viewModel.EmployeeInfo.PhilHealth;
+            employeeInfo.SSS = viewModel.EmployeeInfo.SSS;
+            employeeInfo.Salary = viewModel.EmployeeInfo.Salary;
+            employeeInfo.TIN = viewModel.EmployeeInfo.TIN;
+
             employeeInfo.PositionId = viewModel.PositionId;
             employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
-            employeeInfo.Employee = viewModel.EmployeeInfo.Employee;
+            employeeInfo.Employee.InjectFrom( viewModel.EmployeeInfo.Employee);
 
-
-            _employeeRepository.UpdateDepartment(viewModel.CheckedDepartments.Split(',').Select(Int32.Parse), viewModel.EmployeeInfo.EmployeeId);
+            var departments = viewModel.CheckedDepartments != null
+                            ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)
+                            : new List<int>();
+            _employeeRepository.UpdateDepartment(departments, viewModel.EmployeeInfo.EmployeeId);
             _unitOfWork.Commit();
 
             //upload the picture and update the record

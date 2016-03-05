@@ -39,7 +39,9 @@ namespace Payroll.Repository.Repositories
         {
             //get first the current departments
             var currentDepartments = GetDepartments(employeeId).Select(x => new { x.DepartmentId, x.EmployeeDepartmentId} ).ToList();
-            
+
+            if (currentDepartments.Count == 0 && !departmentIds.Any()) return;
+
             //add the newly added departments
             var newDepartments = departmentIds.Except(currentDepartments.Select(x => x.DepartmentId));
             foreach (var newDepartment in newDepartments)
@@ -57,10 +59,9 @@ namespace Payroll.Repository.Repositories
             foreach (var removeDepartment in toRemoveDepartments)
             {
                 var employeeDepartmentId = currentDepartments.First(x => x.DepartmentId == removeDepartment).EmployeeDepartmentId;
-                var employeeDepartment = new EmployeeDepartment {EmployeeDepartmentId = employeeDepartmentId};
+                var employeeDepartment = _employeeDepartmentRepository.GetById(employeeDepartmentId);
                 _employeeDepartmentRepository.Update(employeeDepartment);
                 employeeDepartment.IsActive = false;
-
             }
 
         }

@@ -120,4 +120,7 @@
   <data name="INVALID_DATE" xml:space="preserve">
     <value>Please enter valid date</value>
   </data>
+  <data name="REQUIRED_BIRTHDATE" xml:space="preserve">
+    <value>Birthdate is required</value>
+  </data>
 </root>
