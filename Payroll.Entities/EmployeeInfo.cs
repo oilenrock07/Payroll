@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
@@ -41,5 +42,21 @@ namespace Payroll.Entities
 
         public bool Married { get; set; }
 
+        public DateTime DateHired { get; set; }
+
+        public int EmploymentStatus { get; set; }
+
+        public DateTime? CustomDate1 { get; set; }
+        public DateTime? CustomDate2 { get; set; }
+
+        [StringLength(250)]
+        public string CustomString1 { get; set; }
+        [StringLength(250)]
+        public string CustomString2 { get; set; }
+
+        public decimal CustomDecimal1 { get; set; }
+        public decimal CustomDecimal2 { get; set; }
+
+        
     }
 }

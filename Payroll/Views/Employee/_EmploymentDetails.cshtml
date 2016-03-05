@@ -1,0 +1,117 @@
+﻿@model Payroll.Models.Employee.EmployeeInfoViewModel
+    
+<div class="row t2">
+    <div class="col-md-12">
+        <div class="col-md-6">
+
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.Salary, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.Salary, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.Salary)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.Allowance, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.Allowance, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.Allowance)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.TIN, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.TIN, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.TIN)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.GSIS, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.GSIS, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.GSIS)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.SSS, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.SSS, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.SSS)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.PAGIBIG, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.PAGIBIG, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.PAGIBIG)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.PhilHealth, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.PhilHealth, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.PhilHealth)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.Dependents, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.Dependents, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.Dependents)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.DateHired, "Actual Date Hired", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.DateHired, new { @class = "form-control datepicker" })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.DateHired)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.CustomDate1, "Date Hired (SSS Based)", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeInfo.CustomDate1, new { @class = "form-control datepicker" })
+                        @Html.ValidationMessageFor(model => model.EmployeeInfo.CustomDate1)
+                    </div>
+                </div>                                
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeInfo.Married, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.CheckBoxFor(model => model.EmployeeInfo.Married)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Positions, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.PositionId, Model.Positions, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.Positions)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentFrequency, "Payment Frequency", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.PaymentFrequency, Model.PaymentFrequencies, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.PaymentFrequency)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

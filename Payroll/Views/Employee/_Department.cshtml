@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Payroll.Models.Employee.EmployeeDepartmentViewModel>
+
+<div class="row t2">
+    @foreach (var item in Model)
+    {
+        var isChecked = item.Checked ? "checked=\"checked\"" : "";
+        <div class="col-xs-12">
+            <label>
+                <input type="checkbox" name="employee_department" data-departmentid="@item.DepartmentId" @isChecked />
+                @item.DepartmentName    
+            </label>
+        </div>
+    }
+</div>
+
+<input type="hidden" name="CheckedDepartments" id="CheckedDepartments" />

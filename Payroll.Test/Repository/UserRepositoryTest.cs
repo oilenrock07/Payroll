@@ -122,8 +122,8 @@ namespace Payroll.Test.Repository
             context.Object.SaveChanges();
             var databaseFactory = new DatabaseFactory(context.Object);
 
-
-            var employeeRepository = new EmployeeRepository(databaseFactory);
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
+            var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
             Assert.AreEqual(employeeRepository.GetAll().Count(), 2);
         }
     }

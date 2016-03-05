@@ -124,6 +124,18 @@
     <Compile Include="Migrations\201602200347503_Added foreignkey to employee and employeeinfo.Designer.cs">
       <DependentUpon>201602200347503_Added foreignkey to employee and employeeinfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602241613509_runseed.cs" />
+    <Compile Include="Migrations\201602241613509_runseed.Designer.cs">
+      <DependentUpon>201602241613509_runseed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603050538375_GenderAndNickNameInEmployee.cs" />
+    <Compile Include="Migrations\201603050538375_GenderAndNickNameInEmployee.Designer.cs">
+      <DependentUpon>201603050538375_GenderAndNickNameInEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.cs" />
+    <Compile Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.Designer.cs">
+      <DependentUpon>201603050807267_IsActiveStatusInEmployeeDepartment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -188,6 +200,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602200347503_Added foreignkey to employee and employeeinfo.resx">
       <DependentUpon>201602200347503_Added foreignkey to employee and employeeinfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602241613509_runseed.resx">
+      <DependentUpon>201602241613509_runseed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603050538375_GenderAndNickNameInEmployee.resx">
+      <DependentUpon>201603050538375_GenderAndNickNameInEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.resx">
+      <DependentUpon>201603050807267_IsActiveStatusInEmployeeDepartment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

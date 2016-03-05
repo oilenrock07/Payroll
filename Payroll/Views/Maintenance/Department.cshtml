@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Payroll.Entities.Department>
+
+@{
+    ViewBag.Title = "Department";
+}
+
+<h2>Department</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateDepartment")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Department Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditDepartment", new { id = item.DepartmentId }) |
+            @Html.ActionLink("Delete", "DeleteDepartment", new { id = item.DepartmentId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

@@ -1,0 +1,66 @@
+﻿@model Payroll.Models.Maintenance.PaymentFrequencyViewModel
+
+@{
+    ViewBag.Title = "Create Payment Frequency";
+}
+
+<h2>Create Payment Frequency</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Payment Frequency</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentFrequency.FrequencyId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.PaymentFrequency.FrequencyId, Model.Frequencies, new { @class = "form-control js-frequencyType" })
+                @Html.ValidationMessageFor(model => model.PaymentFrequency.FrequencyId)
+            </div>
+        </div>
+
+        <div class="form-group" data-frequency="weekly">
+            @Html.LabelFor(model => model.PaymentFrequency.WeeklyStartDayOfWeek, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.PaymentFrequency.WeeklyStartDayOfWeek, Model.DayOfWeeks, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PaymentFrequency.WeeklyStartDayOfWeek)
+            </div>
+        </div>
+
+        <div class="form-group hidden" data-frequency="startdate">
+            @Html.LabelFor(model => model.PaymentFrequency.MonthlyStartDay, "Cut Off Date #1", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PaymentFrequency.MonthlyStartDay, new { @class = "form-control", type="number" })
+                @Html.ValidationMessageFor(model => model.PaymentFrequency.MonthlyStartDay)
+            </div>
+        </div>
+
+        <div class="form-group hidden" data-frequency="enddate">
+            @Html.LabelFor(model => model.PaymentFrequency.MonthlyEndDay, "Cut Off Date #2", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PaymentFrequency.MonthlyEndDay, new { @class = "form-control", type = "number" })
+                @Html.ValidationMessageFor(model => model.PaymentFrequency.MonthlyEndDay)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "PaymentFrequency")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+    <script type="text/javascript" src="/Scripts/Maintenance/frequency.js"></script>
+}

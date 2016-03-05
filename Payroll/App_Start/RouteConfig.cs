@@ -27,6 +27,11 @@ namespace Payroll
             //    defaults: new { controller = "Home", action = "Index" }
             //);
 
+            routes.MapRoute(
+                name: "EmployeeRoute",
+                url: "EmployeeController/{action}/{id}",
+                defaults: new { controller = "Employee", action = "Index", id = UrlParameter.Optional }
+            );
 
             routes.MapRoute(
                 name: "Default",

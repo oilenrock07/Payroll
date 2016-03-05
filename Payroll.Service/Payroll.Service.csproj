@@ -46,6 +46,7 @@
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
     <Compile Include="Implementations\EmployeeService.cs" />
+    <Compile Include="Implementations\ValidationService.cs" />
     <Compile Include="Interfaces\IAttendanceLogService.cs" />
     <Compile Include="Implementations\CacheService.cs" />
     <Compile Include="Implementations\SettingService.cs" />
@@ -55,12 +56,15 @@
     <Compile Include="Interfaces\IEmployeeHoursService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\ISettingService.cs" />
+    <Compile Include="Interfaces\IValidationService.cs" />
     <Compile Include="Interfaces\IWebService.cs" />
     <Compile Include="Interfaces\Model\IPaginationModel.cs" />
     <Compile Include="Models\PaginationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Payroll.Common\Payroll.Common.csproj">
       <Project>{ba703de8-5f8e-4eed-a82e-ea38f6e959c7}</Project>

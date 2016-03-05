@@ -91,3 +91,7 @@ input[type="checkbox"].input-validation-error {
   display: -ms-flexbox;
   display:  flex;
 }
+
+.employee-details-picture {
+    max-height: 250px;
+}
