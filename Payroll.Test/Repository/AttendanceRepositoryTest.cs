@@ -70,21 +70,21 @@ namespace Payroll.Test.Repository
                     AttendanceId = 2,
                     EmployeeCode = employeeCode1,
                     ClockIn = DateTime.Parse("2016-02-01 23:59:59"),
-                    ClockOut = null,
+                    ClockOut = null
                 },
                 new Attendance()
                 {
                     AttendanceId = 3,
                     EmployeeCode = employeeCode1,
                     ClockIn = DateTime.Parse("2016-02-02 01:00:00"),
-                    ClockOut = null,
+                    ClockOut = null
                 },
                 new Attendance()
                 {
                     AttendanceId = 4,
                     EmployeeCode = employeeCode2,
                     ClockIn = DateTime.Parse("2016-02-02 02:00:00"),
-                    ClockOut = null,
+                    ClockOut = null
                 }
             }.AsQueryable();
 
