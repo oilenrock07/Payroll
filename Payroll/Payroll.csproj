@@ -207,6 +207,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Employee\EmployeeDepartmentViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeInfoViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -232,6 +233,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Payroll.Web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Employee\employeedetails.js" />
     <Content Include="Scripts\Employee\employeelist.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -275,11 +277,9 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Employee\Create.cshtml" />
-    <Content Include="Views\Employee\Index.cshtml" />
-    <Content Include="Views\Employee\Edit.cshtml" />
-    <Content Include="Views\Shared\Pagination.cshtml" />
     <Content Include="Views\Employee\Details.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Shared\Pagination.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Settings\Edit.cshtml" />
     <Content Include="Views\Maintenance\Position.cshtml" />
@@ -287,6 +287,12 @@
     <Content Include="Views\Maintenance\CreatePosition.cshtml" />
     <Content Include="Views\Maintenance\PaymentFrequency.cshtml" />
     <Content Include="Views\Maintenance\CreatePaymentFrequency.cshtml" />
+    <Content Include="Views\Employee\_PersonalDetails.cshtml" />
+    <Content Include="Views\Employee\_EmploymentDetails.cshtml" />
+    <Content Include="Views\Maintenance\Department.cshtml" />
+    <Content Include="Views\Maintenance\EditDepartment.cshtml" />
+    <Content Include="Views\Maintenance\CreateDepartment.cshtml" />
+    <Content Include="Views\Employee\_Department.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

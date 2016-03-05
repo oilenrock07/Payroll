@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Omu.ValueInjecter;
+using Payroll.Common.Enums;
 using Payroll.Common.Helpers;
 using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
@@ -27,10 +28,11 @@ namespace Payroll.Controllers
         private readonly IPositionRepository _positionRepository;
         private readonly IWebService _webService;
         private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
+        private readonly IDepartmentRepository _departmentRepository;
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository,
-            IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository)
+            IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository, IDepartmentRepository departmentRepository)
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -39,6 +41,7 @@ namespace Payroll.Controllers
             _positionRepository = positionRepository;
             _webService = webService;
             _paymentFrequencyRepository = paymentFrequencyRepository;
+            _departmentRepository = departmentRepository;
         }
 
         public virtual ActionResult Index()
@@ -67,59 +70,101 @@ namespace Payroll.Controllers
 
         public virtual ActionResult Edit(int id)
         {
-            var viewModel = _employeeRepository.GetById(id).MapItem<EmployeeViewModel>();
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public virtual ActionResult Edit(EmployeeViewModel viewModel)
-        {
-
-            //validate birthdate
-            if (!viewModel.BirthDate.IsValidBirthDate())
-            {
-                ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
-                return View(viewModel);
-            }
-
-            var employee = _employeeRepository.GetById(viewModel.EmployeeId);
-            _employeeRepository.Update(employee);
-            employee.InjectFrom(viewModel);
-            employee.IsActive = true;
-
-            var imagePath = UploadImage(employee.EmployeeId);
-            if (!String.IsNullOrEmpty(imagePath))
-                employee.Picture = imagePath;
-
-            _unitOfWork.Commit();
-            return RedirectToAction("Index");
+            var viewModel = GetEmployeeViewModel(_employeeInfoRepository.GetByEmployeeId(id));
+            ViewBag.Title = "Edit Employee";
+            return View("Details", viewModel);
         }
 
         public virtual ActionResult Create()
         {
-            return View();
+            var viewModel = GetEmployeeViewModel(new EmployeeInfo{ Employee = new Employee()});
+            ViewBag.Title = "Create Employee";
+            return View("Details", viewModel);
+        }
+
+        protected EmployeeInfoViewModel GetEmployeeViewModel(EmployeeInfo employeeInfo)
+        {
+            var positions = _positionRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            {
+                Text = x.PositionName,
+                Value = x.PositionId.ToString()
+            }).ToList();
+
+            var paymentFrequencies = _paymentFrequencyRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            {
+                Text = x.Frequency.FrequencyName,
+                Value = x.FrequencyId.ToString()
+            }).ToList();
+
+            var genders = new List<SelectListItem>();
+            foreach (Gender gender in Enum.GetValues(typeof(Gender)))
+            {
+                genders.Add(new SelectListItem
+                {
+                    Text = gender.ToString(),
+                    Value = ((int)gender).ToString()
+                });
+            }
+
+            positions.Insert(0, new SelectListItem { Text = "Select Position", Value = "0" });
+            paymentFrequencies.Insert(0, new SelectListItem { Text = "Select Payment Frequency", Value = "0" });
+
+            //For employee department association
+            var departments = _departmentRepository.Find(x => x.IsActive).Select(x => new EmployeeDepartmentViewModel
+            {
+                DepartmentId = x.DepartmentId,
+                DepartmentName = x.DepartmentName
+            }).ToList();
+
+            if (employeeInfo.EmployeeId > 0)
+            {
+                var employeeDepartments = _employeeRepository.GetDepartments(employeeInfo.EmployeeId);
+                foreach (var employeeDepartment in employeeDepartments)
+                {
+                    var department = departments.FirstOrDefault(x => x.DepartmentId == employeeDepartment.DepartmentId);
+                    if (department != null)
+                    {
+                        department.Checked = true;
+                    }
+                }
+            }
+
+            var viewModel = new EmployeeInfoViewModel();
+
+            if (employeeInfo != null)
+            {
+                viewModel.EmployeeInfo = employeeInfo;
+                viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "/Images/noimage.jpg";
+                viewModel.Positions = positions;
+                viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
+                viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
+                viewModel.PaymentFrequencies = paymentFrequencies;
+                viewModel.Genders = genders;
+                viewModel.Gender = employeeInfo.Employee.Gender;
+                viewModel.Departments = departments;
+            }
+
+            return viewModel;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create(EmployeeViewModel viewModel)
+        public virtual ActionResult Details(EmployeeInfoViewModel viewModel)
         {
             //validate birthdate
-            if (!viewModel.BirthDate.IsValidBirthDate())
+            if (!viewModel.EmployeeInfo.Employee.BirthDate.IsValidBirthDate())
             {
                 ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
-                return View(viewModel);
+                return View("Details", viewModel);
             }
 
-            var employee = viewModel.MapItem<Employee>();
-            employee.IsActive = true;
-
+            var employee = viewModel.EmployeeInfo.Employee.MapItem<Employee>();
             var employeeInfo = new EmployeeInfo
             {
                 Employee = employee,
             };
             var newEmployee = _employeeInfoRepository.Add(employeeInfo).Employee;
+            _employeeRepository.UpdateDepartment(viewModel.CheckedDepartments.Split(',').Select(Int32.Parse), employee.EmployeeId);
             _unitOfWork.Commit();
 
             //upload the picture and update the record
@@ -172,42 +217,6 @@ namespace Payroll.Controllers
             }
 
             return "";
-        }
-
-        [HttpGet]
-        public ActionResult Details(int id)
-        {
-            var employeeInfo = _employeeInfoRepository.GetByEmployeeId(id);
-            var positions = _positionRepository.Find(x => x.IsActive).Select(x => new SelectListItem
-            {
-                Text = x.PositionName,
-                Value = x.PositionId.ToString()
-            }).ToList();
-
-            var paymentFrequencies = _paymentFrequencyRepository.Find(x => x.IsActive).Select(x => new SelectListItem
-            {
-                Text = x.Frequency.FrequencyName,
-                Value = x.FrequencyId.ToString()
-            }).ToList();
-
-
-            positions.Insert(0, new SelectListItem {Text = "Select Position", Value = "0"});
-            paymentFrequencies.Insert(0, new SelectListItem { Text = "Select Payment Frequency", Value = "0" });
-
-            var viewModel = new EmployeeInfoViewModel();
-
-            if (employeeInfo != null)
-            {
-                viewModel.EmployeeInfo = employeeInfo;
-                viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "";
-                viewModel.Name = employeeInfo.Employee.FullName;
-                viewModel.Positions = positions;
-                viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
-                viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
-                viewModel.PaymentFrequencies = paymentFrequencies;
-            }
-
-            return View(viewModel);
         }
 
         [HttpPost]

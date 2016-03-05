@@ -10,6 +10,7 @@ namespace Payroll.Entities
         public Employee()
         {
             Enabled = true;
+            IsActive = true;
         }
 
         [Key]
@@ -19,9 +20,11 @@ namespace Payroll.Entities
         public string EmployeeCode { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string FirstName { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string LastName { get; set; }
 
         [StringLength(50)]
@@ -30,6 +33,7 @@ namespace Payroll.Entities
         [StringLength(100)]
         public string NickName { get; set; }
 
+        [Required]
         public DateTime BirthDate { get; set; }
 
         [StringLength(500)]

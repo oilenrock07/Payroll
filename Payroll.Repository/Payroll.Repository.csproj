@@ -67,6 +67,8 @@
   <ItemGroup>
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
+    <Compile Include="Interface\IDepartmentRepository.cs" />
+    <Compile Include="Interface\IEmployeeDepartmentRepository.cs" />
     <Compile Include="Interface\IEmployeeHoursRepository.cs" />
     <Compile Include="Interface\IEmployeeInfoRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />
@@ -75,6 +77,8 @@
     <Compile Include="Interface\ISettingRepository.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
+    <Compile Include="Repositories\DepartmentRepository.cs" />
+    <Compile Include="Repositories\EmployeeDepartmentRepository.cs" />
     <Compile Include="Repositories\EmployeeHoursRepository.cs" />
     <Compile Include="Repositories\EmployeeInfoRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
@@ -87,11 +91,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Mappings\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Payroll.Entities\Payroll.Entities.csproj">
       <Project>{b5b3e6b2-7613-4341-a351-729aef9bedf9}</Project>

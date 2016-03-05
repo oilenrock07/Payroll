@@ -20,14 +20,17 @@ namespace Payroll.Controllers
         private readonly ISettingRepository _settingRepository;
         private readonly IPositionRepository _positionRepository;
         private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly IWebService _webService;
 
-        public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, IWebService webService)
+        public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
+            IDepartmentRepository departmentRepository, IWebService webService)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
             _positionRepository = positionRepository;
             _paymentFrequencyRepository = paymentFrequencyRepository;
+            _departmentRepository = departmentRepository;
             _webService = webService;
         }
 
@@ -141,6 +144,54 @@ namespace Payroll.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("PaymentFrequency");
+        }
+
+
+        public virtual ActionResult Department()
+        {
+            var departments = _departmentRepository.Find(x => x.IsActive);
+            return View(departments);
+        }
+
+        public virtual ActionResult EditDepartment(int id)
+        {
+            var department = _departmentRepository.GetById(id);
+            return View(department);
+        }
+
+        public virtual ActionResult CreateDepartment()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateDepartment(Department department)
+        {
+            _departmentRepository.Add(department);
+            _unitOfWork.Commit();
+            return RedirectToAction("Department");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditDepartment(Department model)
+        {
+            var department = new Department { DepartmentId = model.DepartmentId };
+            _departmentRepository.Update(department);
+            department.InjectFrom(model);
+            _unitOfWork.Commit();
+            return RedirectToAction("Department");
+        }
+
+        public virtual ActionResult DeleteDepartment(int id)
+        {
+            var department = _departmentRepository.GetById(id);
+            _departmentRepository.Update(department);
+            department.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Department");
         }
     }
 }

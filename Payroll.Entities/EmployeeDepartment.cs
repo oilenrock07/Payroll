@@ -12,5 +12,7 @@ namespace Payroll.Entities
         public int EmployeeId { get; set; }
 
         public int DepartmentId { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
