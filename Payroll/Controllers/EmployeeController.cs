@@ -72,6 +72,8 @@ namespace Payroll.Controllers
         {
             var viewModel = GetEmployeeViewModel(_employeeInfoRepository.GetByEmployeeId(id));
             ViewBag.Title = "Edit Employee";
+            ViewBag.FormAction = "/Employee/Edit";
+            
             return View("Details", viewModel);
         }
 
@@ -79,6 +81,8 @@ namespace Payroll.Controllers
         {
             var viewModel = GetEmployeeViewModel(new EmployeeInfo{ Employee = new Employee()});
             ViewBag.Title = "Create Employee";
+            ViewBag.FormAction = "/Employee/Create";
+
             return View("Details", viewModel);
         }
 
@@ -149,7 +153,7 @@ namespace Payroll.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Details(EmployeeInfoViewModel viewModel)
+        public virtual ActionResult Create(EmployeeInfoViewModel viewModel)
         {
             //validate birthdate
             if (!viewModel.EmployeeInfo.Employee.BirthDate.IsValidBirthDate())
@@ -163,6 +167,7 @@ namespace Payroll.Controllers
             {
                 Employee = employee,
             };
+
             var newEmployee = _employeeInfoRepository.Add(employeeInfo).Employee;
             _employeeRepository.UpdateDepartment(viewModel.CheckedDepartments.Split(',').Select(Int32.Parse), employee.EmployeeId);
             _unitOfWork.Commit();
@@ -176,6 +181,43 @@ namespace Payroll.Controllers
                 _unitOfWork.Commit();
             }
             
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult Edit(EmployeeInfoViewModel viewModel)
+        {
+            //validate birthdate
+            if (!viewModel.EmployeeInfo.Employee.BirthDate.IsValidBirthDate())
+            {
+                ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
+                return View("Details", viewModel);
+            }
+
+            var employeeInfo = new EmployeeInfo { EmploymentInfoId = viewModel.EmployeeInfo.EmploymentInfoId };
+            _employeeInfoRepository.Update(employeeInfo);
+
+            employeeInfo.InjectFrom(viewModel.EmployeeInfo);
+            employeeInfo.PositionId = viewModel.PositionId;
+            employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
+            employeeInfo.Employee = viewModel.EmployeeInfo.Employee;
+
+
+            _employeeRepository.UpdateDepartment(viewModel.CheckedDepartments.Split(',').Select(Int32.Parse), viewModel.EmployeeInfo.EmployeeId);
+            _unitOfWork.Commit();
+
+            //upload the picture and update the record
+            var imagePath = UploadImage(viewModel.EmployeeInfo.EmployeeId);
+            if (!String.IsNullOrEmpty(imagePath))
+            {
+                var employee = employeeInfo.Employee;
+                _employeeRepository.Update(employee);
+                employee.Picture = imagePath;
+                _unitOfWork.Commit();
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -217,20 +259,6 @@ namespace Payroll.Controllers
             }
 
             return "";
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateEmploymentInfo(EmployeeInfoViewModel viewModel)
-        {
-            var employeeInfo = new EmployeeInfo {EmploymentInfoId = viewModel.EmployeeInfo.EmploymentInfoId};
-            _employeeInfoRepository.Update(employeeInfo);
-            employeeInfo.InjectFrom(viewModel.EmployeeInfo);
-            employeeInfo.PositionId = viewModel.PositionId;
-            employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
-
-            _unitOfWork.Commit();
-            return RedirectToAction("Index");
         }
 
     }

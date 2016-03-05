@@ -34,7 +34,7 @@ namespace Payroll.Service.Implementations
             {
                 //Get all employee attendance within date range
                 IList<Attendance> attendanceList = _attendanceService
-                    .GetAttendanceByDateRange(employee.EmployeeCode, fromDate, toDate);
+                    .GetAttendanceByDateRange(employee.EmployeeId, fromDate, toDate);
 
                 
             }

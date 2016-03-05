@@ -15,8 +15,7 @@ namespace Payroll.Entities
         [Key]
         public int AttendanceLogId { get; set; }
 
-        [StringLength(50)]
-        public string EmployeeCode { get; set; }
+        public int EmployeeId { get; set; }
         public DateTime ClockInOut { get; set; }
         public AttendanceType Type { get; set; }
         public Boolean IsRecorded { get; set; }

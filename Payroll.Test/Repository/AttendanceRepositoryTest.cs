@@ -43,7 +43,7 @@ namespace Payroll.Test.Repository
             var attendance1 = new Attendance()
             {
                 AttendanceId = 1,
-                EmployeeCode = "001",
+                EmployeeId = 1,
                 ClockIn = DateTime.Parse("2016-02-01 23:59:59"),
                 ClockOut = DateTime.Parse("201-02-02 06:50:00"),
             };
@@ -53,36 +53,36 @@ namespace Payroll.Test.Repository
         [TestMethod]
         public void GetLastAttendance()
         {
-            var employeeCode1 = "001";
-            var employeeCode2 = "002";
+            var employeeCode1 = 1;
+            var employeeCode2 = 2;
 
             var data = new List<Attendance>
             {
                 new Attendance()
                 {
                     AttendanceId = 1,
-                    EmployeeCode = employeeCode1,
+                    EmployeeId = employeeCode1,
                     ClockIn = DateTime.Parse("2016-02-01 23:59:59"),
                     ClockOut = DateTime.Parse("201-02-02 06:50:00"),
                 },
                 new Attendance()
                 {
                     AttendanceId = 2,
-                    EmployeeCode = employeeCode1,
+                    EmployeeId = employeeCode1,
                     ClockIn = DateTime.Parse("2016-02-01 23:59:59"),
                     ClockOut = null
                 },
                 new Attendance()
                 {
                     AttendanceId = 3,
-                    EmployeeCode = employeeCode1,
+                    EmployeeId = employeeCode1,
                     ClockIn = DateTime.Parse("2016-02-02 01:00:00"),
                     ClockOut = null
                 },
                 new Attendance()
                 {
                     AttendanceId = 4,
-                    EmployeeCode = employeeCode2,
+                    EmployeeId = employeeCode2,
                     ClockIn = DateTime.Parse("2016-02-02 02:00:00"),
                     ClockOut = null
                 }
@@ -95,7 +95,7 @@ namespace Payroll.Test.Repository
             dbSetAttendanceMock.Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
 
             var context = new Mock<PayrollContext>();
-            context.Setup(x => x.Attendance).Returns(dbSetAttendanceMock.Object);
+            context.Setup(x => x.Attendances).Returns(dbSetAttendanceMock.Object);
             context.Object.SaveChanges();
             var databaseFactory = new DatabaseFactory(context.Object);
 

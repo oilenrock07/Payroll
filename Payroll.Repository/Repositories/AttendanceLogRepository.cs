@@ -20,7 +20,7 @@ namespace Payroll.Repository.Repositories
         {
             return Find(a => !a.IsRecorded
                 && a.ClockInOut >= fromDate && a.ClockInOut < toDate)
-                    .OrderBy(a => a.EmployeeCode).ThenBy(a => a.ClockInOut).ToList();
+                    .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ToList();
         }
 
     }

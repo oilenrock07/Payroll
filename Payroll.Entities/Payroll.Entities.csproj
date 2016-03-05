@@ -136,6 +136,10 @@
     <Compile Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.Designer.cs">
       <DependentUpon>201603050807267_IsActiveStatusInEmployeeDepartment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs" />
+    <Compile Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.Designer.cs">
+      <DependentUpon>201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -209,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.resx">
       <DependentUpon>201603050807267_IsActiveStatusInEmployeeDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.resx">
+      <DependentUpon>201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

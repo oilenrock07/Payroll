@@ -7,8 +7,8 @@ namespace Payroll.Repository.Interface
 {
     public interface IAttendanceRepository : IRepository<Attendance>
     {
-        Attendance GetLastAttendance(string employeeCode);
+        Attendance GetLastAttendance(int employeeId);
 
-        IList<Attendance> GetAttendanceByDateRange(string employeeCode, DateTime fromDate, DateTime toDate);
+        IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
     }
 }

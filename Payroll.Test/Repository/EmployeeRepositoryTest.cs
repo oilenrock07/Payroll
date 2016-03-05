@@ -71,12 +71,14 @@ namespace Payroll.Test.Repository
 
 
             var context = new Mock<PayrollContext>();
+
             context.Setup(x => x.Employees).Returns(dbSetEmployeesMock.Object);
             context.Setup(x => x.Departments).Returns(dbSetDepartmentMock.Object);
             context.Setup(x => x.EmployeeDepartments).Returns(dbSetEmployeeDepartmentMock.Object);
 
             
             var databaseFactory = new DatabaseFactory(context.Object);
+            var unitOfWork = new UnitOfWork(databaseFactory);
 
             var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
             var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
@@ -84,7 +86,7 @@ namespace Payroll.Test.Repository
             //Act
             var newDepartments = new[] {2, 3}; 
             employeeRepository.UpdateDepartment(newDepartments, 1);
-            context.Object.SaveChanges();
+            unitOfWork.Commit();
 
             //Asset
             Assert.AreEqual(employeeRepository.GetDepartments(1).Count(), 2);

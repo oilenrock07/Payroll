@@ -23,7 +23,7 @@ namespace Payroll.Service.Implementations
             _attendanceLogService = attendanceLogService;
         }
 
-        public int CreateWorkSchedule(string employeeCode, AttendanceCode attCode, DateTime datetime)
+        public int CreateWorkSchedule(int employeeId, AttendanceCode attCode, DateTime datetime)
         {
             try
             {
@@ -33,14 +33,14 @@ namespace Payroll.Service.Implementations
                     {
                         ClockIn = datetime,
                         ClockOut = null,
-                        EmployeeCode = employeeCode
+                        EmployeeId = employeeId
                     };
 
                     _attendanceRepository.Add(attendace);
                 }
                 else if (attCode == AttendanceCode.ClockOut)
                 {
-                    var attendance = _attendanceRepository.GetLastAttendance(employeeCode);
+                    var attendance = _attendanceRepository.GetLastAttendance(employeeId);
                     attendance.ClockOut = datetime;
 
                     _attendanceRepository.Update(attendance);
@@ -55,7 +55,7 @@ namespace Payroll.Service.Implementations
             }
         }
 
-        public int CreateWorkSchedule(string employeeCode, DateTime clockIn, DateTime clockOut)
+        public int CreateWorkSchedule(int employeeId, DateTime clockIn, DateTime clockOut)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace Payroll.Service.Implementations
                 {
                     ClockIn = clockIn,
                     ClockOut = clockOut,
-                    EmployeeCode = employeeCode,
+                    EmployeeId = employeeId,
                     IsManuallyEdited = false
                 };
 
@@ -88,13 +88,13 @@ namespace Payroll.Service.Implementations
                 Attendance previousAttendance = null;
                 foreach (var attendanceLog in logs) {
                     //If next employee
-                    if (attendanceLog.EmployeeCode != previousAttendance.EmployeeCode)
+                    if (attendanceLog.EmployeeId != previousAttendance.EmployeeId)
                         previousAttendance = null;
 
                     if (previousAttendance == null)
                         //Last record of the employee
                         previousAttendance
-                            = _attendanceRepository.GetLastAttendance(attendanceLog.EmployeeCode);
+                            = _attendanceRepository.GetLastAttendance(attendanceLog.EmployeeId);
 
                     //If logout should find the last in of the employee
                         // If none we will be using first in first out rule 
@@ -118,7 +118,7 @@ namespace Payroll.Service.Implementations
                             {
                                 ClockIn = attendanceLog.ClockInOut,
                                 ClockOut = null,
-                                EmployeeCode = attendanceLog.EmployeeCode,
+                                EmployeeId = attendanceLog.EmployeeId,
                                 IsManuallyEdited = false
                             };
                         } //Else do nothing
@@ -155,9 +155,9 @@ namespace Payroll.Service.Implementations
 
         }
 
-        public IList<Attendance> GetAttendanceByDateRange(string employeeCode, DateTime fromDate, DateTime toDate)
+        public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)
         {
-            return _attendanceRepository.GetAttendanceByDateRange(employeeCode, fromDate, toDate);
+            return _attendanceRepository.GetAttendanceByDateRange(employeeId, fromDate, toDate);
         }
     }
 }

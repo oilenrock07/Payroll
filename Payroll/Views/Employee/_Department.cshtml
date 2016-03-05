@@ -6,7 +6,7 @@
         var isChecked = item.Checked ? "checked=\"checked\"" : "";
         <div class="col-xs-12">
             <label>
-                <input type="checkbox" name="employee_department" data-departmentid="@item.DepartmentId" @isChecked />
+                <input type="checkbox" class="js-department" name="employee_department" data-departmentid="@item.DepartmentId" @isChecked />
                 @item.DepartmentName    
             </label>
         </div>

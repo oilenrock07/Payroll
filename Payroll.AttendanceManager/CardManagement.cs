@@ -35,7 +35,8 @@ namespace Payroll.AttendanceManager
             InitializeComponent();
             _databaseFactory = new DatabaseFactory();
             _unitOfWork = new UnitOfWork(_databaseFactory);
-            _employeeRepository = new EmployeeRepository(_databaseFactory);
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(_databaseFactory); 
+            _employeeRepository = new EmployeeRepository(_databaseFactory, employeeDepartmentRepository);
         }
 
         /**************************************************************************************************
@@ -184,7 +185,7 @@ namespace Payroll.AttendanceManager
             else
             {
                 Program._czkemClass.GetLastError(ref idwErrorCode);
-                MessageBox.Show("Operation failed,ErrorCode=" + idwErrorCode, "Error");
+                MessageBox.Show("Operation failed, ErrorCode=" + idwErrorCode, "Error" + "\nPlease Try Again");
             }
             Program._czkemClass.RefreshData(iMachineNumber);//the data in the device should be refreshed
             Program._czkemClass.EnableDevice(iMachineNumber, true);
@@ -221,7 +222,7 @@ namespace Payroll.AttendanceManager
             var grid = (DataGridView) sender;
             txtUserID.Text = grid.CurrentRow.Cells[0].Value.ToString();
             txtName.Text = grid.CurrentRow.Cells[1].Value.ToString();
-            txtCardnumber.Text = grid.CurrentRow.Cells[2].Value.ToString();
+            txtCardnumber.Text = (grid.CurrentRow.Cells[2].Value ?? "").ToString();
             chbEnabled.Checked = Convert.ToBoolean(grid.CurrentRow.Cells[5].Value);
         }
 

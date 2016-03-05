@@ -2,6 +2,8 @@
            
 <div class="row form-horizontal t2">
     
+    @Html.HiddenFor(model => model.EmployeeInfo.Employee.EmployeeId)
+
     <div class="col-md-9">
         <div class="form-group">
             @Html.LabelFor(model => model.EmployeeInfo.Employee.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })

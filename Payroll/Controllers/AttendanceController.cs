@@ -19,14 +19,14 @@ namespace Payroll.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public void ClockIn(string code)
+        public void ClockIn(int employeeId)
         {
-            var employee = _employeeRepository.GetByCode(code);
+            var employee = _employeeRepository.GetById(employeeId);
             if (employee != null)
             {
                 var attendance = new Attendance()
                 {
-                    EmployeeCode = code,
+                    EmployeeId = employeeId,
                     ClockIn = DateTime.Now,
                     ClockOut = null
                 };
@@ -36,13 +36,13 @@ namespace Payroll.Controllers
             }
         }
 
-        public void ClockOut(string code)
+        public void ClockOut(int employeeId)
         {
-            var employee = _employeeRepository.GetByCode(code);
+            var employee = _employeeRepository.GetById(employeeId);
             
             if (employee != null)
             {
-                var lastClockIn = _attendanceRepository.GetLastAttendance(employee.EmployeeCode);
+                var lastClockIn = _attendanceRepository.GetLastAttendance(employeeId);
 
                 if (lastClockIn != null)
                 {

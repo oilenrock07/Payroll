@@ -34,7 +34,6 @@ namespace Payroll.Entities.Contexts
         public virtual IDbSet<Tax> Taxes { get; set; }
         public virtual IDbSet<WorkSchedule> WorkSchedules { get; set; }
         public virtual IDbSet<AttendanceLog> AttendanceLog { get; set; }
-        public virtual IDbSet<Attendance> Attendance { get; set; }
 
         //Payroll
         public virtual IDbSet<Deduction> Deductions { get; set; }

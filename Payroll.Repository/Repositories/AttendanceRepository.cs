@@ -16,15 +16,15 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().Attendances;
         }
 
-        public IList<Attendance> GetAttendanceByDateRange(string employeeCode, DateTime fromDate, DateTime toDate)
+        public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)
         {
-            return Find(a => a.EmployeeCode == employeeCode &&
+            return Find(a => a.EmployeeId == employeeId &&
                 a.ClockIn >= fromDate && a.ClockIn < toDate).OrderBy(a => a.ClockIn).ToList();
         }
 
-        public Attendance GetLastAttendance(string employeeCode)
+        public Attendance GetLastAttendance(int employeeId)
         {
-            return Find(a => a.ClockOut == null && a.ClockIn != null && a.EmployeeCode == employeeCode)
+            return Find(a => a.ClockOut == null && a.ClockIn != null && a.EmployeeId == employeeId)
                    .OrderByDescending(a => a.AttendanceId).Take(1).FirstOrDefault();
         }
     }

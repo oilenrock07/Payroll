@@ -10,10 +10,9 @@ namespace Payroll.Entities
         [Key]
         public int AttendanceId { get; set; }
 
-        [StringLength(50)]
-        public string EmployeeCode { get; set; }
+        public int EmployeeId { get; set; }
         public DateTime ClockIn { get; set; }
         public DateTime ? ClockOut { get; set; }
-        public Boolean ? IsManuallyEdited { get; set; }
+        public bool ? IsManuallyEdited { get; set; }
     }
 }

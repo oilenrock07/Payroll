@@ -7,15 +7,15 @@ namespace Payroll.Service.Interfaces
 {
     public interface IAttendanceService
     {
-        int CreateWorkSchedule(string employeeCode, AttendanceCode attCode, DateTime datetime);
+        int CreateWorkSchedule(int employeeId, AttendanceCode attCode, DateTime datetime);
 
-        int CreateWorkSchedule(string employeeCode, DateTime clockIn, DateTime clockOut);
+        int CreateWorkSchedule(int employeeId, DateTime clockIn, DateTime clockOut);
 
         int CreateWorkSchedulesByDateRange(DateTime fromDate, DateTime toDate);
 
         void Save(Attendance attendance);
 
-        IList<Attendance> GetAttendanceByDateRange(string employeeCode, DateTime fromDate, DateTime toDate);
+        IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 
 
     }
