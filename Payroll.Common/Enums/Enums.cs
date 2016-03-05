@@ -21,4 +21,16 @@ namespace Payroll.Common.Enums
         Bimonthly = 2,
         Monthly = 3
     }
+
+    public enum EmploymentStatus
+    {
+        Regular = 1,
+        Contractual = 2
+    }
+
+    public enum Gender
+    {
+        Male = 1,
+        Female = 2
+    }
 }

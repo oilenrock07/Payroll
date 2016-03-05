@@ -66,6 +66,7 @@
     <Compile Include="EmployeeFile.cs" />
     <Compile Include="EmployeeInfo.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
+    <Compile Include="EmploymentStatus.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="Frequency.cs" />
     <Compile Include="Holiday.cs" />
@@ -127,6 +128,10 @@
     <Compile Include="Migrations\201602241613509_runseed.cs" />
     <Compile Include="Migrations\201602241613509_runseed.Designer.cs">
       <DependentUpon>201602241613509_runseed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603050538375_GenderAndNickNameInEmployee.cs" />
+    <Compile Include="Migrations\201603050538375_GenderAndNickNameInEmployee.Designer.cs">
+      <DependentUpon>201603050538375_GenderAndNickNameInEmployee.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -195,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602241613509_runseed.resx">
       <DependentUpon>201602241613509_runseed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603050538375_GenderAndNickNameInEmployee.resx">
+      <DependentUpon>201603050538375_GenderAndNickNameInEmployee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
