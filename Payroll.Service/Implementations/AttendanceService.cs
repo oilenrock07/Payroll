@@ -15,8 +15,8 @@ namespace Payroll.Service.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAttendanceLogService _attendanceLogService;
 
-        public AttendanceService(IAttendanceRepository attendanceRepository,
-            IUnitOfWork unitOfWork, IAttendanceLogService attendanceLogService)
+        public AttendanceService(IUnitOfWork unitOfWork, IAttendanceRepository attendanceRepository,
+            IAttendanceLogService attendanceLogService)
         {
             _attendanceRepository = attendanceRepository;
             _unitOfWork = unitOfWork;
@@ -100,18 +100,32 @@ namespace Payroll.Service.Implementations
                         // If none we will be using first in first out rule 
                             // So it will not be recorded
                     Attendance attendance = null;
+                    // For clock out
                     if (attendanceLog.Type.Equals(AttendanceType.ClockOut))
                     {
-                        if (previousAttendance != null)
+                        //If previous attendance is not null and clock out is null
+                            // set the attendace clock out
+                        if (previousAttendance != null &&
+                                previousAttendance.ClockOut == null)
                         {
                             attendance = previousAttendance;
                             attendance.ClockOut = attendanceLog.ClockInOut;
+
+                            attendanceLog.IsConsidered = true;
                         }
+                        else
+                        {
+                            //Else do nothing
+                                // Attendance entry should always have clock in 
+                                // Double time out
+                            attendanceLog.IsConsidered = false;
+                        }
+                       
                     }
                     else
                     {
                         //If previous attendance is null 
-                            //It means we have to create new attendance
+                        //It means we have to create new attendance
                         if (previousAttendance == null)
                         {
                             attendance = new Attendance()
@@ -121,7 +135,14 @@ namespace Payroll.Service.Implementations
                                 EmployeeId = attendanceLog.EmployeeId,
                                 IsManuallyEdited = false
                             };
-                        } //Else do nothing
+
+                            attendanceLog.IsConsidered = true;
+                        }
+                        else {
+                            //Else do nothing
+                                // This means it's double tap
+                            attendanceLog.IsConsidered = false;
+                        }
                     }
 
                     //Save or Update
