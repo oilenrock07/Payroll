@@ -1,14 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Payroll.Entities.Enums;
+﻿using Payroll.Entities.Enums;
+using System;
 
-namespace Payroll.Entities
+namespace Payroll.Repository.Models
 {
-    [Table("attendance_log")]
-    public class AttendanceLog
+    public class AttendanceLogDao
     {
-        [Key]
         public int AttendanceLogId { get; set; }
 
         public int EmployeeId { get; set; }
@@ -16,5 +12,9 @@ namespace Payroll.Entities
         public AttendanceType Type { get; set; }
         public bool IsRecorded { get; set; }
         public bool IsConsidered { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MiddleName { get; set; }
     }
 }

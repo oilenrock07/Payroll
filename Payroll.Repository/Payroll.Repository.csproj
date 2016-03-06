@@ -75,6 +75,7 @@
     <Compile Include="Interface\IPaymentFrequencyRepository.cs" />
     <Compile Include="Interface\IPositionRepository.cs" />
     <Compile Include="Interface\ISettingRepository.cs" />
+    <Compile Include="Models\AttendanceLogDao.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />
