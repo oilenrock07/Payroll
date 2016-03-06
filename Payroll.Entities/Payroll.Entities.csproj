@@ -140,6 +140,10 @@
     <Compile Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.Designer.cs">
       <DependentUpon>201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603060311436_add-field-attendance.cs" />
+    <Compile Include="Migrations\201603060311436_add-field-attendance.Designer.cs">
+      <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -217,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.resx">
       <DependentUpon>201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603060311436_add-field-attendance.resx">
+      <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

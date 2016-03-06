@@ -19,5 +19,6 @@ namespace Payroll.Entities
         public DateTime ClockInOut { get; set; }
         public AttendanceType Type { get; set; }
         public Boolean IsRecorded { get; set; }
+        public Boolean IsConsidered { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Payroll.Repository.Repositories
 
         public Attendance GetLastAttendance(int employeeId)
         {
-            return Find(a => a.ClockOut == null && a.ClockIn != null && a.EmployeeId == employeeId)
+            return Find(a => a.EmployeeId == employeeId)
                    .OrderByDescending(a => a.AttendanceId).Take(1).FirstOrDefault();
         }
     }

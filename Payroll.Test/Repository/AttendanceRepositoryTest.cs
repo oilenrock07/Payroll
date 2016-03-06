@@ -36,17 +36,72 @@ namespace Payroll.Test.Repository
         [TestMethod]
         public void GetAttendanceByDateRange()
         {
-            var databaseFactory = new DatabaseFactory();
+            //Test Data
+            var employeeCode1 = 1;
+            var employeeCode2 = 2;
+
+            var data = new List<Attendance>
+            {
+                new Attendance()
+                {
+                    AttendanceId = 1,
+                    EmployeeId = employeeCode1,
+                    ClockIn = DateTime.Parse("2016-02-01 23:59:59"),
+                    ClockOut = DateTime.Parse("201-02-02 06:50:00"),
+                },
+                new Attendance()
+                {
+                    AttendanceId = 2,
+                    EmployeeId = employeeCode1,
+                    ClockIn = DateTime.Parse("2016-02-02 07:00:00"),
+                    ClockOut = null
+                },
+                new Attendance()
+                {
+                    AttendanceId = 3,
+                    EmployeeId = employeeCode1,
+                    ClockIn = DateTime.Parse("2016-02-02 01:00:00"),
+                    ClockOut = null
+                },
+                new Attendance()
+                {
+                    AttendanceId = 4,
+                    EmployeeId = employeeCode2,
+                    ClockIn = DateTime.Parse("2016-02-02 02:00:00"),
+                    ClockOut = null
+                },
+                new Attendance()
+                {
+                    AttendanceId = 5,
+                    EmployeeId = employeeCode1,
+                    ClockIn = DateTime.Parse("2016-02-03 00:00:00"),
+                    ClockOut = null
+                }
+            }.AsQueryable();
+
+            var dbSetAttendanceMock = new Mock<IDbSet<Attendance>>();
+            dbSetAttendanceMock.Setup(m => m.Provider).Returns(data.Provider);
+            dbSetAttendanceMock.Setup(m => m.Expression).Returns(data.Expression);
+            dbSetAttendanceMock.Setup(m => m.ElementType).Returns(data.ElementType);
+            dbSetAttendanceMock.Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            var context = new Mock<PayrollContext>();
+            context.Setup(x => x.Attendances).Returns(dbSetAttendanceMock.Object);
+            context.Object.SaveChanges();
+            var databaseFactory = new DatabaseFactory(context.Object);
+
             var attendanceRepository = new AttendanceRepository(databaseFactory);
 
-            //Test Data
-            var attendance1 = new Attendance()
-            {
-                AttendanceId = 1,
-                EmployeeId = 1,
-                ClockIn = DateTime.Parse("2016-02-01 23:59:59"),
-                ClockOut = DateTime.Parse("201-02-02 06:50:00"),
-            };
+            //Test
+
+            var dateFrom = DateTime.Parse("2016-02-02");
+            var dateTo = DateTime.Parse("2016-02-03");
+
+            var attendance = attendanceRepository.GetAttendanceByDateRange(employeeCode1, dateFrom, dateTo);
+
+            Assert.AreEqual(2, attendance.Count());
+            Assert.AreEqual(3, attendance[0].AttendanceId);
+            Assert.AreEqual(2, attendance[1].AttendanceId);
 
         }
 
@@ -77,7 +132,7 @@ namespace Payroll.Test.Repository
                     AttendanceId = 3,
                     EmployeeId = employeeCode1,
                     ClockIn = DateTime.Parse("2016-02-02 01:00:00"),
-                    ClockOut = null
+                    ClockOut = DateTime.Parse("201-02-02 06:50:00")
                 },
                 new Attendance()
                 {
@@ -102,9 +157,9 @@ namespace Payroll.Test.Repository
             var attendanceRepository = new AttendanceRepository(databaseFactory);
 
             //Test
-            var attendance = attendanceRepository.GetLastAttendance(employeeCode2);
+            var attendance = attendanceRepository.GetLastAttendance(employeeCode1);
 
-            Assert.AreEqual(attendance.AttendanceId, 3);
+            Assert.AreEqual(3, attendance.AttendanceId);
 
         }
     }
