@@ -156,7 +156,9 @@ namespace Payroll.Test.Service
             var databaseFactory = new DatabaseFactory(context.Object);
            
             var unitOfWork = new UnitOfWork(databaseFactory);
-            var attendanceLogRepository = new AttendanceLogRepository(databaseFactory);
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
+            var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
+            var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
             var attendanceLogService = new AttendanceLogService(attendanceLogRepository, unitOfWork);
             var attendanceRepository = new AttendanceRepository(databaseFactory);
 

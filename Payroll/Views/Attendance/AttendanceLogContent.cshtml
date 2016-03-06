@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Payroll.Models.Attendance.AttendanceLogViewModel>
+
+<div class="AttendanceLog t2">
+    <table class="table table-responsive">
+        <tr>
+            <th>Name</th>
+            <th>Date and Time</th>
+            <th>Type</th>
+            <th>Is Recorded</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @item.Datetime
+                </td>
+                <td>
+                    @item.Type
+                </td>
+                <td>
+                    @item.IsRecorded
+                </td>
+            </tr>
+        }
+    </table>
+</div>

@@ -92,9 +92,38 @@ namespace Payroll.Test.Repository
             Assert.AreEqual(employeeRepository.GetDepartments(1).Count(), 2);
         }
 
-        private void SetupEmployeeDepartment()
+        [TestMethod]
+        public void UnitOfWorkCommitTest()
         {
-            
+            var data = new List<Employee>
+            {
+                new Employee() { EmployeeId = 1, FirstName = "Cawi", BirthDate = new DateTime(1989, 10, 30)},
+            }.AsQueryable();
+
+            var dbSetEmployeesMock = new Mock<IDbSet<Employee>>();
+            dbSetEmployeesMock.Setup(m => m.Provider).Returns(data.Provider);
+            dbSetEmployeesMock.Setup(m => m.Expression).Returns(data.Expression);
+            dbSetEmployeesMock.Setup(m => m.ElementType).Returns(data.ElementType);
+            dbSetEmployeesMock.Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            var context = new Mock<PayrollContext>();
+            context.Setup(x => x.Employees).Returns(dbSetEmployeesMock.Object);
+
+            var databaseFactory = new DatabaseFactory(context.Object);
+            var unitOfWork = new UnitOfWork(databaseFactory);
+
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
+            var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
+
+            employeeRepository.Add(new Employee() {BirthDate = DateTime.Now, FirstName = "New"});
+            unitOfWork.Commit();
+
+            dbSetEmployeesMock.Verify(x => x.Add(It.IsAny<Employee>()));
+            context.Verify(x => x.SaveChanges());
+
+            var count = employeeRepository.GetAll().Count();
+
+            Assert.AreEqual(count,2);
         }
     }
 }

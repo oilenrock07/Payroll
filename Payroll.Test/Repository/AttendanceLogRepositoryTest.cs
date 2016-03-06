@@ -133,8 +133,9 @@ namespace Payroll.Test.Repository
             context.Object.SaveChanges();
             var databaseFactory = new DatabaseFactory(context.Object);
 
-
-            var attendanceLogRepository = new AttendanceLogRepository(databaseFactory);
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
+            var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
+            var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
 
             var fromDate = DateTime.Parse("2016-02-02 00:00:00");
             var toDate = DateTime.Parse("2016-02-03 00:00:00");
@@ -152,6 +153,28 @@ namespace Payroll.Test.Repository
             Assert.AreEqual(attendanceLogs[5].AttendanceLogId, 5);
             Assert.AreEqual(attendanceLogs[6].AttendanceLogId, 9);
             Assert.AreEqual(attendanceLogs[7].AttendanceLogId, 7);
+        }
+
+        [TestMethod]
+        public void GetAttendanceWithName()
+        {
+            //This will connect to database not mock data
+            //Arrange
+            var payrollContext = new PayrollContext();
+            var databaseFactory = new DatabaseFactory(payrollContext);
+
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
+            var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
+            var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
+
+            var startDate = new DateTime(2016, 03, 06);
+            var endDate = new DateTime(2016, 03, 07);
+            
+            //Act
+            var result = attendanceLogRepository.GetAttendanceLogsWithName(startDate, endDate);
+            
+            //Assert
+            Assert.IsNotNull(result);
         }
     }
 }
