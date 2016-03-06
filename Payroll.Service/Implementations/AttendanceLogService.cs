@@ -28,7 +28,8 @@ namespace Payroll.Service.Implementations
 
         public void Save(AttendanceLog attendanceLog)
         {
-            if (attendanceLog.AttendanceLogId == null)
+            if (attendanceLog.AttendanceLogId == null 
+                    && attendanceLog.AttendanceLogId > 0)
             {
                 _attendanceLogRepository.Add(attendanceLog);
             }

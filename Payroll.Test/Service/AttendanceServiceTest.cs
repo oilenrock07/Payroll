@@ -100,7 +100,7 @@ namespace Payroll.Test.Service
                  // Employee 2 logout
                  new AttendanceLog
                     {
-                        AttendanceLogId = 5,
+                        AttendanceLogId = 8,
                         EmployeeId = employeeId3,
                         ClockInOut = DateTime.Parse("2016-02-02 07:00:00"),
                         Type = AttendanceType.ClockIn,
@@ -109,7 +109,7 @@ namespace Payroll.Test.Service
                  // Will not be considered
                  new AttendanceLog
                     {
-                        AttendanceLogId = 6,
+                        AttendanceLogId = 9,
                         EmployeeId = employeeId3,
                         ClockInOut = DateTime.Parse("2016-02-03 00:00:00"),
                         Type = AttendanceType.ClockOut,

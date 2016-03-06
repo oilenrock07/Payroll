@@ -88,8 +88,9 @@ namespace Payroll.Service.Implementations
                 Attendance previousAttendance = null;
                 foreach (var attendanceLog in logs) {
                     //If next employee
-                    if (attendanceLog.EmployeeId != previousAttendance.EmployeeId)
-                        previousAttendance = null;
+                    if (previousAttendance != null &&
+                        attendanceLog.EmployeeId != previousAttendance.EmployeeId)
+                            previousAttendance = null;
 
                     if (previousAttendance == null)
                         //Last record of the employee
@@ -125,8 +126,10 @@ namespace Payroll.Service.Implementations
                     else
                     {
                         //If previous attendance is null 
-                        //It means we have to create new attendance
-                        if (previousAttendance == null)
+                            // Or it already have clockout
+                                //It means we have to create new attendance
+                        if (previousAttendance == null ||
+                                (previousAttendance != null && previousAttendance.ClockOut != null ))
                         {
                             attendance = new Attendance()
                             {
@@ -169,7 +172,8 @@ namespace Payroll.Service.Implementations
 
         public void Save(Attendance attendance)
         {
-            if (attendance.AttendanceId != null)
+            if (attendance.AttendanceId != null &&
+                    attendance.AttendanceId > 0)
                 _attendanceRepository.Update(attendance);
             else
                 _attendanceRepository.Add(attendance);
