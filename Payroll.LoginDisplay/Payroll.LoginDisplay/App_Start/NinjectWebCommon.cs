@@ -2,6 +2,8 @@ using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
+using Payroll.Service.Implementations;
+using Payroll.Service.Interfaces;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Payroll.LoginDisplay.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Payroll.LoginDisplay.App_Start.NinjectWebCommon), "Stop")]
@@ -71,9 +73,17 @@ namespace Payroll.LoginDisplay.App_Start
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
 
+
             //Repository
             kernel.Bind<IAttendanceRepository>().To<AttendanceRepository>().InRequestScope();
             kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>().InRequestScope();
+            kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
+            kernel.Bind<IEmployeeInfoRepository>().To<EmployeeInfoRepository>().InRequestScope();
+            kernel.Bind<IPositionRepository>().To<PositionRepository>().InRequestScope();
+            kernel.Bind<IWebService>().To<WebService>().InRequestScope();
+            kernel.Bind<IPaymentFrequencyRepository>().To<PaymentFrequencyRepository>().InRequestScope();
+            kernel.Bind<IDepartmentRepository>().To<DepartmentRepository>().InRequestScope();
+            kernel.Bind<IEmployeeDepartmentRepository>().To<EmployeeDepartmentRepository>().InRequestScope();
         }        
     }
 }

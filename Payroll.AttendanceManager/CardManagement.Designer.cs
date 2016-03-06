@@ -31,15 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Timer rtTimer;
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.GridView = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Priv = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EnrolledToRfid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Enabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UserIDTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.txtUserID = new System.Windows.Forms.TextBox();
@@ -51,6 +44,12 @@
             this.label89 = new System.Windows.Forms.Label();
             this.txtCardnumber = new System.Windows.Forms.TextBox();
             this.label55 = new System.Windows.Forms.Label();
+            this.btnReload = new System.Windows.Forms.Button();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EnrolledToRfid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Enabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             rtTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -65,7 +64,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.btnReload);
             this.groupBox1.Controls.Add(this.groupBox4);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -73,16 +72,6 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Download or Upload Card Number";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Crimson;
-            this.label4.Location = new System.Drawing.Point(13, 26);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(422, 18);
-            this.label4.TabIndex = 46;
-            this.label4.Text = "Please make sure your device has an optional ID card module. ";
             // 
             // groupBox4
             // 
@@ -103,7 +92,6 @@
             this.Id,
             this.FullName,
             this.CardNumber,
-            this.Priv,
             this.EnrolledToRfid,
             this.Enabled});
             this.GridView.Location = new System.Drawing.Point(16, 23);
@@ -112,52 +100,6 @@
             this.GridView.Size = new System.Drawing.Size(914, 353);
             this.GridView.TabIndex = 47;
             this.GridView.DoubleClick += new System.EventHandler(this.GridView_DoubleClick);
-            // 
-            // Id
-            // 
-            this.Id.DataPropertyName = "EmployeeId";
-            this.Id.HeaderText = "Id";
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            // 
-            // FullName
-            // 
-            this.FullName.DataPropertyName = "FullName";
-            this.FullName.HeaderText = "Name";
-            this.FullName.Name = "FullName";
-            this.FullName.ReadOnly = true;
-            this.FullName.Width = 300;
-            // 
-            // CardNumber
-            // 
-            this.CardNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.CardNumber.DataPropertyName = "EmployeeCode";
-            this.CardNumber.HeaderText = "Card Number";
-            this.CardNumber.Name = "CardNumber";
-            this.CardNumber.ReadOnly = true;
-            this.CardNumber.Width = 122;
-            // 
-            // Priv
-            // 
-            this.Priv.DataPropertyName = "Privilege";
-            this.Priv.HeaderText = "Privilege";
-            this.Priv.Name = "Priv";
-            this.Priv.ReadOnly = true;
-            this.Priv.Width = 130;
-            // 
-            // EnrolledToRfid
-            // 
-            this.EnrolledToRfid.DataPropertyName = "EnrolledToRfid";
-            this.EnrolledToRfid.HeaderText = "Enrolled";
-            this.EnrolledToRfid.Name = "EnrolledToRfid";
-            this.EnrolledToRfid.ReadOnly = true;
-            // 
-            // Enabled
-            // 
-            this.Enabled.DataPropertyName = "Enabled";
-            this.Enabled.HeaderText = "Enabled";
-            this.Enabled.Name = "Enabled";
-            this.Enabled.ReadOnly = true;
             // 
             // groupBox5
             // 
@@ -256,6 +198,54 @@
             this.label55.TabIndex = 66;
             this.label55.Text = "Card Number";
             // 
+            // btnReload
+            // 
+            this.btnReload.Location = new System.Drawing.Point(759, 15);
+            this.btnReload.Name = "btnReload";
+            this.btnReload.Size = new System.Drawing.Size(177, 42);
+            this.btnReload.TabIndex = 44;
+            this.btnReload.Text = "Reload";
+            this.btnReload.UseVisualStyleBackColor = true;
+            this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
+            // 
+            // Id
+            // 
+            this.Id.DataPropertyName = "EmployeeId";
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            // 
+            // FullName
+            // 
+            this.FullName.DataPropertyName = "FullName";
+            this.FullName.HeaderText = "Name";
+            this.FullName.Name = "FullName";
+            this.FullName.ReadOnly = true;
+            this.FullName.Width = 300;
+            // 
+            // CardNumber
+            // 
+            this.CardNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.CardNumber.DataPropertyName = "EmployeeCode";
+            this.CardNumber.HeaderText = "Card Number";
+            this.CardNumber.Name = "CardNumber";
+            this.CardNumber.ReadOnly = true;
+            this.CardNumber.Width = 122;
+            // 
+            // EnrolledToRfid
+            // 
+            this.EnrolledToRfid.DataPropertyName = "EnrolledToRfid";
+            this.EnrolledToRfid.HeaderText = "Enrolled";
+            this.EnrolledToRfid.Name = "EnrolledToRfid";
+            this.EnrolledToRfid.ReadOnly = true;
+            // 
+            // Enabled
+            // 
+            this.Enabled.DataPropertyName = "Enabled";
+            this.Enabled.HeaderText = "Enabled";
+            this.Enabled.Name = "Enabled";
+            this.Enabled.ReadOnly = true;
+            // 
             // CardMaintenance
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -271,7 +261,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CardMaintenance_FormClosing);
             this.Load += new System.EventHandler(this.CardMaintenance_Load);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.GridView)).EndInit();
             this.groupBox5.ResumeLayout(false);
@@ -284,15 +273,8 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Timer UserIDTimer;
         private System.Windows.Forms.DataGridView GridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FullName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Priv;
-        private System.Windows.Forms.DataGridViewTextBoxColumn EnrolledToRfid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Enabled;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TextBox txtUserID;
         private System.Windows.Forms.TextBox txtName;
@@ -303,6 +285,12 @@
         private System.Windows.Forms.Label label89;
         private System.Windows.Forms.TextBox txtCardnumber;
         private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.Button btnReload;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FullName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EnrolledToRfid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Enabled;
     }
 }
 

@@ -116,6 +116,7 @@ namespace Payroll.Controllers
                 viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
                 viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
                 viewModel.Gender = employeeInfo.Employee.Gender;
+                viewModel.EmploymentStatus = employeeInfo.EmploymentStatus;
             }
 
             return viewModel;

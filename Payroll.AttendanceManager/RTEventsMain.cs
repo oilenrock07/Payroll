@@ -226,7 +226,7 @@ namespace RTEvents
                 //insert to database
                 var attendaceLog = new AttendanceLog
                 {
-                    EmployeeCode = sEnrollNumber,
+                    EmployeeId = Convert.ToInt32(sEnrollNumber),
                     ClockInOut = DateTime.Now,
                     Type = (AttendanceType)Convert.ToInt16(iAttState)
                 };

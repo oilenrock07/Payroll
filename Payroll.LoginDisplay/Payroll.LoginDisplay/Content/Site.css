@@ -28,3 +28,7 @@ textarea {
 .clockin, .clockout {
     font-size: 50px
 }
+
+.employee-image {
+    max-height: 300px;
+}

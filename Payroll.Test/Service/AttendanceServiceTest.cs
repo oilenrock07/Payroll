@@ -157,9 +157,10 @@ namespace Payroll.Test.Service
            
             var unitOfWork = new UnitOfWork(databaseFactory);
             var attendanceLogRepository = new AttendanceLogRepository(databaseFactory);
-            var attendanceRepository = new AttendanceLogRepository(databaseFactory);
+            var attendanceLogService = new AttendanceLogService(attendanceLogRepository, unitOfWork);
+            var attendanceRepository = new AttendanceRepository(databaseFactory);
 
-            var attendanceService = new AttendanceService(unitOfWork , attendanceRepository, attendanceLogRepository );
+            var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService);
 
             var dateFrom = DateTime.Parse("2016-02-02 00:00:00");
             var dateTo = DateTime.Parse("2016-02-03 00:00:00");
