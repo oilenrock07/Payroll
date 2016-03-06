@@ -17,6 +17,6 @@ namespace Payroll.Service.Interfaces
 
         IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 
-
+        IList<Attendance> GetAttendanceByDate(int employeeId, DateTime date)
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Payroll.Common.Extension
 {
@@ -27,6 +28,12 @@ namespace Payroll.Common.Extension
         public static bool IsValidBirthDate(this DateTime birthdate)
         {
             return !((birthdate > DateTime.Now) || birthdate < new DateTime(1900, 1, 1));
+        }
+
+        public static IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        {
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Payroll.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace Payroll.Service.Interfaces
 {
     public interface ISettingService
     {
+        String GetByKey(String Key);
     }
 }

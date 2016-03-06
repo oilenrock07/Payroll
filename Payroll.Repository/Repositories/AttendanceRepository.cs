@@ -19,7 +19,8 @@ namespace Payroll.Repository.Repositories
         public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)
         {
             return Find(a => a.EmployeeId == employeeId &&
-                a.ClockIn >= fromDate && a.ClockIn < toDate).OrderBy(a => a.ClockIn).ToList();
+                ((a.ClockIn >= fromDate && a.ClockIn < toDate) ||
+                    (a.ClockOut >= fromDate && a.ClockOut < toDate))).OrderBy(a => a.ClockIn).ToList();
         }
 
         public Attendance GetLastAttendance(int employeeId)
