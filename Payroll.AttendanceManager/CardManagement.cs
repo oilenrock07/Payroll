@@ -236,5 +236,11 @@ namespace Payroll.AttendanceManager
             Program._czkemClass.OnHIDNum -= new zkemkeeper._IZKEMEvents_OnHIDNumEventHandler(OnCardTap);
         }
 
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            Rebind();
+            RegisterEvents();
+        }
+
     }
 } 

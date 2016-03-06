@@ -38,7 +38,7 @@ namespace Payroll.LoginDisplay.Controllers
         {
             var employee = _employeeRepository.GetById(id);
             var viewModel = (LogInViewModel)(new LogInViewModel().InjectFrom(employee));
-            viewModel.ImagePath = Url.Content(employee.Picture);
+            viewModel.ImagePath = Url.Content(employee.Picture ?? "~/Images/noimage.jpg");
 
             return View(viewModel);
         }
