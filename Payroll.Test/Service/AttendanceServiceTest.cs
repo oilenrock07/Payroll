@@ -181,6 +181,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(DateTime.Parse("2016-02-02 13:00:00"), attendanceListEmployee2[1].ClockIn);
             Assert.AreEqual(DateTime.Parse("2016-02-02 18:00:00"), attendanceListEmployee2[1].ClockOut);
 
+            var attendanceListEmployee3 = attendanceService.GetAttendanceByDateRange(employeeId3, dateFrom, dateTo);
+
+            Assert.AreEqual(1, attendanceListEmployee3.Count());
+            Assert.AreEqual(DateTime.Parse("2016-02-02 07:00:00"), attendanceListEmployee3[0].ClockIn);
+            Assert.AreEqual(DateTime.Parse("2016-02-02 18:00:00"), attendanceListEmployee3[0].ClockOut);
+
         }
     }
 }
