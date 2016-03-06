@@ -1,4 +1,5 @@
-﻿@model Payroll.Models.Employee.EmployeeInfoViewModel
+﻿@using Payroll.Extension
+@model Payroll.Models.Employee.EmployeeInfoViewModel
     
 <div class="row t2">
     <div class="col-md-12">
@@ -75,7 +76,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.EmployeeInfo.DateHired, "Actual Date Hired", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.TextBoxFor(model => model.EmployeeInfo.DateHired, new { @class = "form-control datepicker" })
+                        @Html.DatePickerFor("EmployeeInfo.DateHired", Model.EmployeeInfo.DateHired, new { @class = "form-control datepicker" })
                         @Html.ValidationMessageFor(model => model.EmployeeInfo.DateHired)
                     </div>
                 </div>
@@ -83,7 +84,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.EmployeeInfo.CustomDate1, "Date Hired (SSS Based)", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.TextBoxFor(model => model.EmployeeInfo.CustomDate1, new { @class = "form-control datepicker" })
+                        @Html.DatePickerFor("EmployeeInfo.CustomDate1", Model.EmployeeInfo.CustomDate1, new { @class = "form-control datepicker" })
                         @Html.ValidationMessageFor(model => model.EmployeeInfo.CustomDate1)
                     </div>
                 </div>                                
