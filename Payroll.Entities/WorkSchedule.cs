@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Payroll.Entities.Enums;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
@@ -12,9 +14,9 @@ namespace Payroll.Entities
         [StringLength(250)]
         public string WorkScheduleName { get; set; }
 
-        public int TimeStart { get; set; }
+        public TimeSpan TimeStart { get; set; }
 
-        public int TimeEnd { get; set; }
+        public TimeSpan TimeEnd { get; set; }
 
         public int WeekStart { get; set; }
 

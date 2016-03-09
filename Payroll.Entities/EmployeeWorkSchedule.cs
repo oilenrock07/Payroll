@@ -12,7 +12,9 @@ namespace Payroll.Entities
 
         public int EmployeeId { get; set; }
 
+        [ForeignKey("WorkSchedule")]
         public int WorkScheduleId { get; set; }
+        public virtual WorkSchedule WorkSchedule { get; set; }
 
         public bool IsActive { get; set; }
 
