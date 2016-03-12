@@ -1,4 +1,5 @@
 ﻿using System;
+using AttendanceManager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RTEvents;
 

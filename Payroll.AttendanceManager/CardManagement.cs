@@ -11,13 +11,13 @@ using System.Text;
 using System.Windows.Forms;
 
 using System.Threading;
+using AttendanceManager;
+using AttendanceManager.Properties;
 using Payroll.Entities;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
-using RTEvents;
-using RTEvents.Properties;
 
 namespace Payroll.AttendanceManager
 {
@@ -223,7 +223,7 @@ namespace Payroll.AttendanceManager
             txtUserID.Text = grid.CurrentRow.Cells[0].Value.ToString();
             txtName.Text = grid.CurrentRow.Cells[1].Value.ToString();
             txtCardnumber.Text = (grid.CurrentRow.Cells[2].Value ?? "").ToString();
-            chbEnabled.Checked = Convert.ToBoolean(grid.CurrentRow.Cells[5].Value);
+            chbEnabled.Checked = Convert.ToBoolean(grid.CurrentRow.Cells[4].Value);
         }
 
         private void OnCardTap(int iCardNumber)

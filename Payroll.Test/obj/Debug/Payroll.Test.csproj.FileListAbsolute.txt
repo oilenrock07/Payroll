@@ -106,7 +106,6 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Entities.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Infrastructure.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Repository.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Service.dll
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\RTEvents.exe
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\WebActivatorEx.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
@@ -131,7 +130,6 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Infrastructure.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Repository.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Service.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.pdb
-C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\RTEvents.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\EntityFramework.SqlServer.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Moq.xml
@@ -160,3 +158,5 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Newtonsoft.Json.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.csprojResolveAssemblyReference.cache
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.pdb
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\AttendanceManager.exe
+C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\AttendanceManager.pdb
