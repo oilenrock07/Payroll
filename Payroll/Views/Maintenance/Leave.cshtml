@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Payroll.Entities.Leave>
+
+@{
+    ViewBag.Title = "Leave";
+}
+
+<h2>Leave</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateLeave")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LeaveName)
+        </th>
+
+        @if (ViewBag.Title == "true")
+        {
+            <th>
+                Is Refundable
+            </th>
+        }
+
+        <th>
+            @Html.DisplayNameFor(model => model.Count)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeaveName)
+            </td>
+            @if (ViewBag.Title == "true")
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsRefundable)
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditLeave", new { id = item.LeaveId }) |
+                @Html.ActionLink("Delete", "DeleteLeave", new { id = item.LeaveId }, new { @class = "js-maintenanceDelete" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

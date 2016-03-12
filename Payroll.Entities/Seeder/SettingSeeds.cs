@@ -25,12 +25,14 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "COMPANY_NAME", Value = "Lychee Co", Description = "Company Name", Category = "COMPANY_INFO" },
                 new Setting { SettingKey = "COMPANY_TYPE", Value = "Private", Description = "Company Is Private or Public? For SSS OR GSIS Field", Category = "COMPANY_INFO" },
 
+                //Company Settings
+                new Setting { SettingKey = "SUPPORT_REFUNDABLE_LEAVE", Value = "true", Description = "Whether or not, the company supports refundable leaves", Category = "COMPANY_SETTING" },
+
 
                 //Application Settings
                 new Setting { SettingKey = "EMPLOYEE_IMAGE_PATH", Value = "~/Images/Employee/", Description = "Relative image path of the employee's pictures", Category = "APP" },
                 new Setting { SettingKey = "ALLOW_EXTERNAL_LOGIN", Value = "false", Description = "Should allow the app to have external login e.g. facebook, twitter, gmail", Category = "APP" },
                 new Setting { SettingKey = "PAGINATION_ITEMS_PER_PAGE", Value = "30", Description = "Conrtrols the item count to display within the pagination", Category = "APP" },
-
 
                 //for login display
                 new Setting { SettingKey = "DISPLAY_LOGIN_URL", Value = "http://payroll.logindisplay/api/payrollapi/", Description = "Route of display picture upon login", Category = "URL" }

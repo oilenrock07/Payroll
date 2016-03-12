@@ -22,10 +22,11 @@ namespace Payroll.Controllers
         private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IHolidayRepository _holidayRepository;
+        private readonly ILeaveRepository _leaveRepository;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
-            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, IWebService webService)
+            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, IWebService webService)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
@@ -33,9 +34,11 @@ namespace Payroll.Controllers
             _paymentFrequencyRepository = paymentFrequencyRepository;
             _departmentRepository = departmentRepository;
             _holidayRepository = holidayRepository;
+            _leaveRepository = leaveRepository;
             _webService = webService;
         }
 
+        #region Positions
         public virtual ActionResult Position()
         {
             var positions = _positionRepository.Find(x => x.IsActive);
@@ -86,7 +89,9 @@ namespace Payroll.Controllers
 
             return RedirectToAction("Position");
         }
+        #endregion
 
+        #region Payment Frequency
         public virtual ActionResult PaymentFrequency()
         {
             var paymentFrequencies = _paymentFrequencyRepository.Find(x => x.IsActive).ToList();
@@ -147,8 +152,9 @@ namespace Payroll.Controllers
 
             return RedirectToAction("PaymentFrequency");
         }
+        #endregion
 
-
+        #region Departments
         public virtual ActionResult Department()
         {
             var departments = _departmentRepository.Find(x => x.IsActive);
@@ -195,7 +201,9 @@ namespace Payroll.Controllers
 
             return RedirectToAction("Department");
         }
+        #endregion
 
+        #region Holiday
         public virtual ActionResult Holiday()
         {
             var holidays = _holidayRepository.GetHolidaysByCurrentYear();
@@ -249,5 +257,65 @@ namespace Payroll.Controllers
 
             return RedirectToAction("Holiday");
         }
+        #endregion
+
+        #region Leaves
+        public virtual ActionResult Leave()
+        {
+            var leaves = _leaveRepository.Find(x => x.IsActive);
+            ViewBag.SupportRefundable = _settingRepository.GetSettingValue("SUPPORT_REFUNDABLE_LEAVE", "false");
+
+            return View(leaves);
+        }
+
+        public virtual ActionResult CreateLeave()
+        {
+            ViewBag.SupportRefundable = _settingRepository.GetSettingValue("SUPPORT_REFUNDABLE_LEAVE", "false");
+            return View(new Leave());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateLeave(Leave leave)
+        {
+            leave.IsActive = true;
+
+            _leaveRepository.Add(leave);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Leave");
+        }
+
+        public virtual ActionResult EditLeave(int id)
+        {
+            ViewBag.SupportRefundable = _settingRepository.GetSettingValue("SUPPORT_REFUNDABLE_LEAVE", "false");
+            var leave = _leaveRepository.GetById(id);
+            return View(leave);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditLeave(Leave model)
+        {
+            var leave = _leaveRepository.GetById(model.LeaveId);
+            _leaveRepository.Update(leave);
+
+            leave.InjectFrom(model);
+            leave.IsActive = true;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Leave");
+        }
+
+        public virtual ActionResult DeleteLeave(int id)
+        {
+            var leave = _leaveRepository.GetById(id);
+            _leaveRepository.Update(leave);
+            leave.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Leave");
+        }
+        #endregion
     }
 }

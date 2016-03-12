@@ -10,6 +10,7 @@ using Payroll.Repository.Models;
 
 namespace Payroll.Controllers
 {
+    [Authorize]
     public class AttendanceController : Controller
     {
         private readonly IAttendanceLogRepository _attendanceLogRepository;

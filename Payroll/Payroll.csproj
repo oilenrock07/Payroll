@@ -316,6 +316,9 @@
     <Content Include="Views\Maintenance\Holiday.cshtml" />
     <Content Include="Views\Maintenance\CreateHoliday.cshtml" />
     <Content Include="Views\Maintenance\EditHoliday.cshtml" />
+    <Content Include="Views\Maintenance\Leave.cshtml" />
+    <Content Include="Views\Maintenance\CreateLeave.cshtml" />
+    <Content Include="Views\Maintenance\EditLeave.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

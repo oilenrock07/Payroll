@@ -1,0 +1,65 @@
+﻿@model Payroll.Entities.Leave
+
+@{
+    ViewBag.Title = "EditLeave";
+}
+
+<h2>EditLeave</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Leave</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.LeaveId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LeaveName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.LeaveName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LeaveName)
+            </div>
+        </div>
+
+
+        @if (ViewBag.SupportRefundable == "true")
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsRefundable, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.IsRefundable)
+                    @Html.ValidationMessageFor(model => model.IsRefundable)
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.Count, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Count)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
