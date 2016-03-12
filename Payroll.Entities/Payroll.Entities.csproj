@@ -144,10 +144,6 @@
     <Compile Include="Migrations\201603060311436_add-field-attendance.Designer.cs">
       <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201603071157423_runseed1.cs" />
-    <Compile Include="Migrations\201603071157423_runseed1.Designer.cs">
-      <DependentUpon>201603071157423_runseed1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -228,9 +224,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603060311436_add-field-attendance.resx">
       <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603071157423_runseed1.resx">
-      <DependentUpon>201603071157423_runseed1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
