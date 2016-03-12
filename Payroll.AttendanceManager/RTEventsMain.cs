@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using AttendanceManager;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
 using Payroll.Repository.Interface;
@@ -26,7 +27,7 @@ namespace RTEvents
         public RTEventsMain()
         {
             InitializeComponent();
-            _attendanceLogRepository = new AttendanceLogRepository(Program._databaseFactory);
+            _attendanceLogRepository = new AttendanceLogRepository(Program._databaseFactory, Program._employeeRepository);
             _settingRepository = new SettingRepository(Program._databaseFactory);
         }
 

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Payroll.Entities.Holiday>
+
+@{
+    ViewBag.Title = "Holiday";
+}
+
+<h2>Holiday</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateHoliday")
+</p>
+<table class="table">
+    <tr>
+        <th width="15%">
+            @Html.DisplayNameFor(model => model.HolidayName)
+        </th>
+        <th width="10%">
+            Is Regular Holiday
+        </th>
+        <th width="15%">
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th width="10%">
+            Day
+        </th>
+        <th width="40%">
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th width="10%"></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.HolidayName)
+        </td>
+        <td>
+            @(item.IsRegularHoliday ? "Yes" : "")
+        </td>
+        <td>
+            @item.Date.ToString("MMMM dd")
+        </td>
+        <td>
+            @item.Date.DayOfWeek.ToString()
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditHoliday", new { id=item.HolidayId }) |
+            @Html.ActionLink("Delete", "DeleteHoliday", new { id = item.HolidayId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

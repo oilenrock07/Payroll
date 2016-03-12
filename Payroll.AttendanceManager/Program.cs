@@ -8,9 +8,10 @@ using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
+using RTEvents;
 using zkemkeeper;
 
-namespace RTEvents
+namespace AttendanceManager
 {
     public static class Program
     {
@@ -18,6 +19,8 @@ namespace RTEvents
         public static IDatabaseFactory _databaseFactory;
         public static IUnitOfWork _unitOfWork;
         public static ISettingRepository _settingRepository;
+        public static IEmployeeRepository _employeeRepository;
+        public static IEmployeeDepartmentRepository _employeeDepartmentRepository;
 
         public static IEnumerable<Setting> _settings;
 
@@ -35,7 +38,9 @@ namespace RTEvents
             
             _databaseFactory = new DatabaseFactory();
             _unitOfWork = new UnitOfWork(_databaseFactory);
-            
+            _employeeDepartmentRepository = new EmployeeDepartmentRepository(_databaseFactory);
+            _employeeRepository = new EmployeeRepository(_databaseFactory, _employeeDepartmentRepository);
+
             LoadSettings();
 
             _mainForm = new PayrollMain();

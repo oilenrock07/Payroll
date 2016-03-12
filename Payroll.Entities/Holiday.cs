@@ -11,6 +11,7 @@ namespace Payroll.Entities
         public int HolidayId { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string HolidayName { get; set; }
 
         public bool IsRegularHoliday { get; set; }
@@ -20,6 +21,9 @@ namespace Payroll.Entities
         public bool IsActive { get; set; }
 
         public int Year { get; set; }
+
+        [StringLength(500)]
+        public string Description { get; set; }
 
     }
 }

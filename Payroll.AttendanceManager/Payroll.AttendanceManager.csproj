@@ -8,8 +8,8 @@
     <ProjectGuid>{8B8B46E4-868F-4466-82CF-03915BA4E3A3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RTEvents</RootNamespace>
-    <AssemblyName>RTEvents</AssemblyName>
+    <RootNamespace>AttendanceManager</RootNamespace>
+    <AssemblyName>AttendanceManager</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
