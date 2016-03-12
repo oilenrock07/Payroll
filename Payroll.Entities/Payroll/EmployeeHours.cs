@@ -17,7 +17,8 @@ namespace Payroll.Entities.Payroll
 
         public int EmployeeId { get; set; }
         public DateTime Date { get; set; }
-        public int Hours { get; set; }
+        public double Hours { get; set; }
         public RateType Type { get; set; }
+        public int OriginAttendanceId { get; set; }
     }
 }

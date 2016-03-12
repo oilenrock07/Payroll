@@ -1,16 +1,10 @@
 ﻿using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
 
-namespace Payroll.Repository.Interface
+namespace Payroll.Repository.Repositories
 {
-    public interface IEmployeeworkScheduleRepository : IRepository<EmployeeWorkSchedule>
+    public interface IEmployeeWorkScheduleRepository : IRepository<EmployeeWorkSchedule>
     {
-        EmployeeWorkSchedule GetActiveByEmployeeId(int employeeId);
+        EmployeeWorkSchedule GetByEmployeeId(int employeeId);
     }
 }

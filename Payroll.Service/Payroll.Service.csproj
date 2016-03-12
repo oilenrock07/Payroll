@@ -45,7 +45,9 @@
     <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
+    <Compile Include="Implementations\EmployeeInfoService.cs" />
     <Compile Include="Implementations\EmployeeService.cs" />
+    <Compile Include="Implementations\EmployeeWorkScheduleService.cs" />
     <Compile Include="Implementations\ValidationService.cs" />
     <Compile Include="Interfaces\IAttendanceLogService.cs" />
     <Compile Include="Implementations\CacheService.cs" />
@@ -54,7 +56,9 @@
     <Compile Include="Interfaces\IAttendanceService.cs" />
     <Compile Include="Interfaces\ICacheService.cs" />
     <Compile Include="Interfaces\IEmployeeHoursService.cs" />
+    <Compile Include="Interfaces\IEmployeeInfoService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
+    <Compile Include="Interfaces\IEmployeeWorkScheduleService.cs" />
     <Compile Include="Interfaces\ISettingService.cs" />
     <Compile Include="Interfaces\IValidationService.cs" />
     <Compile Include="Interfaces\IWebService.cs" />
