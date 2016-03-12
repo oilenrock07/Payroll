@@ -1,0 +1,64 @@
+﻿@model Payroll.Entities.Loan
+
+@{
+    ViewBag.Title = "Edit Loan";
+}
+
+<h2>Edit Loan</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Loan</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.LoanId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LoanName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.LoanName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LoanName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Min, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.Min, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Min)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Max, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.Max, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Max)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Interest, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                <div class="input-group">
+                    @Html.TextBoxFor(model => model.Interest, new { @class = "form-control" })
+                    <span class="input-group-addon">%</span>
+                </div>
+                @Html.ValidationMessageFor(model => model.Interest)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Loan")
+</div>

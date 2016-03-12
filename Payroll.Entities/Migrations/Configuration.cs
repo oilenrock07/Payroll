@@ -37,6 +37,7 @@ namespace Payroll.Entities.Migrations
             context.Frequencies.AddOrUpdate(s => s.FrequencyId, new FrequencySeeds().GetDefaultSeeds().ToArray());
             context.Departments.AddOrUpdate(s => s.DepartmentId, new DepartmentSeeds().GetDefaultSeeds().ToArray());
             context.Holidays.AddOrUpdate(s => s.HolidayId, new HolidaySeeds().GetDefaultSeeds().ToArray());
+            context.Leaves.AddOrUpdate(s => s.LeaveId, new LeaveSeeds().GetDefaultSeeds().ToArray());
         }
     }
 }

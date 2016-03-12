@@ -23,10 +23,11 @@ namespace Payroll.Controllers
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IHolidayRepository _holidayRepository;
         private readonly ILeaveRepository _leaveRepository;
+        private readonly ILoanRepository _loanRepository;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
-            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, IWebService webService)
+            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, IWebService webService)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
@@ -35,6 +36,7 @@ namespace Payroll.Controllers
             _departmentRepository = departmentRepository;
             _holidayRepository = holidayRepository;
             _leaveRepository = leaveRepository;
+            _loanRepository = loanRepository;
             _webService = webService;
         }
 
@@ -315,6 +317,61 @@ namespace Payroll.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("Leave");
+        }
+        #endregion
+
+        #region Loans
+        public virtual ActionResult Loan()
+        {
+            var loan = _loanRepository.Find(x => x.IsActive);
+            return View(loan);
+        }
+
+        public virtual ActionResult CreateLoan()
+        {
+            return View(new Loan());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateLoan(Loan loan)
+        {
+            loan.IsActive = true;
+
+            _loanRepository.Add(loan);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Loan");
+        }
+
+        public virtual ActionResult EditLoan(int id)
+        {
+            var loan = _loanRepository.GetById(id);
+            return View(loan);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditLoan(Loan model)
+        {
+            var leave = _loanRepository.GetById(model.LoanId);
+            _loanRepository.Update(leave);
+
+            leave.InjectFrom(model);
+            leave.IsActive = true;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Loan");
+        }
+
+        public virtual ActionResult DeleteLoan(int id)
+        {
+            var leave = _loanRepository.GetById(id);
+            _loanRepository.Update(leave);
+            leave.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Loan");
         }
         #endregion
     }

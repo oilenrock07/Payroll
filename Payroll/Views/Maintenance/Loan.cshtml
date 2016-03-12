@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Payroll.Entities.Loan>
+
+@{
+    ViewBag.Title = "Loan";
+}
+
+<h2>Loan</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateLoan")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Loan Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Min)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Max)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Interest)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Min)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Max)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Interest) %
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditLoan", new { id=item.LoanId }) |
+            @Html.ActionLink("Delete", "DeleteLoan", new { id = item.LoanId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

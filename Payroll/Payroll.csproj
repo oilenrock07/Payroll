@@ -319,6 +319,9 @@
     <Content Include="Views\Maintenance\Leave.cshtml" />
     <Content Include="Views\Maintenance\CreateLeave.cshtml" />
     <Content Include="Views\Maintenance\EditLeave.cshtml" />
+    <Content Include="Views\Maintenance\Loan.cshtml" />
+    <Content Include="Views\Maintenance\CreateLoan.cshtml" />
+    <Content Include="Views\Maintenance\EditLoan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

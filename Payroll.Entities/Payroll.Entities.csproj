@@ -148,6 +148,10 @@
     <Compile Include="Migrations\201603121322567_AddedDescriptionToHoliday.Designer.cs">
       <DependentUpon>201603121322567_AddedDescriptionToHoliday.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603121558288_AddedIsActiveToLoan.cs" />
+    <Compile Include="Migrations\201603121558288_AddedIsActiveToLoan.Designer.cs">
+      <DependentUpon>201603121558288_AddedIsActiveToLoan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -164,6 +168,7 @@
     <Compile Include="Seeder\FrequencySeeds.cs" />
     <Compile Include="Seeder\HolidaySeeds.cs" />
     <Compile Include="Seeder\ISeeders.cs" />
+    <Compile Include="Seeder\LeaveSeeds.cs" />
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
     <Compile Include="Setting.cs" />
@@ -232,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603121322567_AddedDescriptionToHoliday.resx">
       <DependentUpon>201603121322567_AddedDescriptionToHoliday.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603121558288_AddedIsActiveToLoan.resx">
+      <DependentUpon>201603121558288_AddedIsActiveToLoan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

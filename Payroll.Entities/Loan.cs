@@ -17,5 +17,7 @@ namespace Payroll.Entities
         public decimal Max { get; set; }
 
         public decimal Interest { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
