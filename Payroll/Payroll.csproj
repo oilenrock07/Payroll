@@ -313,6 +313,9 @@
     <Content Include="Views\Employee\_Department.cshtml" />
     <Content Include="Views\Attendance\AttendanceLog.cshtml" />
     <Content Include="Views\Attendance\AttendanceLogContent.cshtml" />
+    <Content Include="Views\Maintenance\Holiday.cshtml" />
+    <Content Include="Views\Maintenance\CreateHoliday.cshtml" />
+    <Content Include="Views\Maintenance\EditHoliday.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

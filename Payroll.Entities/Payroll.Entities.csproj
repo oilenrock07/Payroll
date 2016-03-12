@@ -144,6 +144,10 @@
     <Compile Include="Migrations\201603060311436_add-field-attendance.Designer.cs">
       <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603121322567_AddedDescriptionToHoliday.cs" />
+    <Compile Include="Migrations\201603121322567_AddedDescriptionToHoliday.Designer.cs">
+      <DependentUpon>201603121322567_AddedDescriptionToHoliday.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -158,6 +162,7 @@
     <Compile Include="Schedule.cs" />
     <Compile Include="Seeder\DepartmentSeeds.cs" />
     <Compile Include="Seeder\FrequencySeeds.cs" />
+    <Compile Include="Seeder\HolidaySeeds.cs" />
     <Compile Include="Seeder\ISeeders.cs" />
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
@@ -224,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603060311436_add-field-attendance.resx">
       <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603121322567_AddedDescriptionToHoliday.resx">
+      <DependentUpon>201603121322567_AddedDescriptionToHoliday.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

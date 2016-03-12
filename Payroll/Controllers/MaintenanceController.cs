@@ -21,16 +21,18 @@ namespace Payroll.Controllers
         private readonly IPositionRepository _positionRepository;
         private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IHolidayRepository _holidayRepository;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
-            IDepartmentRepository departmentRepository, IWebService webService)
+            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, IWebService webService)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
             _positionRepository = positionRepository;
             _paymentFrequencyRepository = paymentFrequencyRepository;
             _departmentRepository = departmentRepository;
+            _holidayRepository = holidayRepository;
             _webService = webService;
         }
 
@@ -192,6 +194,60 @@ namespace Payroll.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("Department");
+        }
+
+        public virtual ActionResult Holiday()
+        {
+            var holidays = _holidayRepository.GetHolidaysByCurrentYear();
+            return View(holidays);
+        }
+
+        public virtual ActionResult CreateHoliday()
+        {
+            return View(new Holiday());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateHoliday(Holiday holiday)
+        {
+            holiday.Year = DateTime.Now.Year;
+            holiday.IsActive = true;
+
+            _holidayRepository.Add(holiday);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Holiday");
+        }
+
+        public virtual ActionResult EditHoliday(int id)
+        {
+            var holiday = _holidayRepository.GetById(id);
+            return View(holiday);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditHoliday(Holiday model)
+        {
+            var holiday = _holidayRepository.GetById(model.HolidayId);
+            _holidayRepository.Update(holiday);
+
+            holiday.InjectFrom(model);
+            holiday.IsActive = true;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Holiday");
+        }
+
+        public virtual ActionResult DeleteHoliday(int id)
+        {
+            var holiday = _holidayRepository.GetById(id);
+            _holidayRepository.Update(holiday);
+            holiday.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Holiday");
         }
     }
 }
