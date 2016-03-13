@@ -33,4 +33,11 @@ namespace Payroll.Common.Enums
         Male = 1,
         Female = 2
     }
+
+    public enum LoanPaymentPeriod
+    {
+        Week = 1,
+        Month = 2,
+        Year = 3
+    }
 }

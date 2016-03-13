@@ -23,6 +23,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Interest)
         </th>
+        <th>
+            Loan Payment Period
+        </th>
         <th></th>
     </tr>
 
@@ -39,6 +42,12 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Interest) %
+        </td>
+        <td>
+            @if (item.LoanPeriodNumber != 0 && item.LoanPeriod != 0)
+            {
+                <span>@item.LoanPeriodNumber @(((Payroll.Common.Enums.LoanPaymentPeriod)item.LoanPeriod).ToString())/s</span>
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "EditLoan", new { id=item.LoanId }) |

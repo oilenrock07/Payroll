@@ -18,6 +18,10 @@ namespace Payroll.Entities
 
         public decimal Interest { get; set; }
 
+        public int LoanPeriod { get; set; }
+
+        public int LoanPeriodNumber { get; set; }
+
         public bool IsActive { get; set; }
     }
 }

@@ -1,7 +1,7 @@
-﻿@model Payroll.Entities.Loan
+﻿@model Payroll.Models.Maintenance.LoanViewModel
 
 @{
-    ViewBag.Title = "CreateLoan";
+    ViewBag.Title = "Create Loan";
 }
 
 <h2>CreateLoan</h2>
@@ -15,37 +15,47 @@
         <hr />
         @Html.ValidationSummary(true)
         <div class="form-group">
-            @Html.LabelFor(model => model.LoanName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Loan.LoanName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.LoanName, new {@class = "form-control"})
-                @Html.ValidationMessageFor(model => model.LoanName)
+                @Html.TextBoxFor(model => model.Loan.LoanName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Loan.LoanName)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Min, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Loan.Min, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Min, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Min)
+                @Html.TextBoxFor(model => model.Loan.Min, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Loan.Min)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Max, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Loan.Max, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Max, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Max)
+                @Html.TextBoxFor(model => model.Loan.Max, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Loan.Max)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Loan.LoanPeriod, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Loan.LoanPeriodNumber, new { @class = "form-control", placeholder ="Number of period" })                
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.Loan.LoanPeriod, Model.LoanPaymentPeriod, new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Interest, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Loan.Interest, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 <div class="input-group">
-                    @Html.TextBoxFor(model => model.Interest, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Loan.Interest, new { @class = "form-control" })
                     <span class="input-group-addon">%</span>
                 </div>
-                @Html.ValidationMessageFor(model => model.Interest)
+                @Html.ValidationMessageFor(model => model.Loan.Interest)
             </div>
         </div>
 

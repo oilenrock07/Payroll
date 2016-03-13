@@ -1,0 +1,70 @@
+﻿@using Payroll.Common.Enums
+@model IEnumerable<Payroll.Repository.Models.EmployeeLoanDao>
+
+@{
+    ViewBag.Title = "Employee Loans";
+}
+
+<h2>Employee Loans</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateEmployeeLoan")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Loan
+        </th>
+        <th>
+            Payment Frequency
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @item.FirstName @item.LastName
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanName)
+        </td>
+        <td>
+            @(((Frequency) item.FrequencyId).ToString())
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoanDate.ToShortDateString())
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDate.ToShortDateString())
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndDate.ToShortDateString())
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

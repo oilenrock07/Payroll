@@ -26,9 +26,11 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "COMPANY_NAME", Value = "Lychee Co", Description = "Company Name", Category = "COMPANY_INFO" },
                 new Setting { SettingKey = "COMPANY_TYPE", Value = "Private", Description = "Company Is Private or Public? For SSS OR GSIS Field", Category = "COMPANY_INFO" },
 
+
                 //Company Settings
                 new Setting { SettingKey = "SUPPORT_REFUNDABLE_LEAVE", Value = "true", Description = "Whether or not, the company supports refundable leaves", Category = "COMPANY_SETTING" },
                 new Setting { SettingKey = "HOLIDAY_CURRENT_YEAR", Value = "2016", Description = "This will be changed every year. This value will only be used in Payroll.Scheduler", Category = "COMPANY_SETTING" },
+                new Setting { SettingKey = "IS_PRIVATE_COMPANY", Value = "true", Description = "Will Determine if SSS or GSIS", Category = "COMPANY_SETTING" },
 
 
                 //Application Settings

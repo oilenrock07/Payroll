@@ -152,6 +152,18 @@
     <Compile Include="Migrations\201603121558288_AddedIsActiveToLoan.Designer.cs">
       <DependentUpon>201603121558288_AddedIsActiveToLoan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603130423095_LoanPeriod.cs" />
+    <Compile Include="Migrations\201603130423095_LoanPeriod.Designer.cs">
+      <DependentUpon>201603130423095_LoanPeriod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603130546568_addedRelationshipforEmployeeLoan.cs" />
+    <Compile Include="Migrations\201603130546568_addedRelationshipforEmployeeLoan.Designer.cs">
+      <DependentUpon>201603130546568_addedRelationshipforEmployeeLoan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs" />
+    <Compile Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.Designer.cs">
+      <DependentUpon>201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -240,6 +252,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603121558288_AddedIsActiveToLoan.resx">
       <DependentUpon>201603121558288_AddedIsActiveToLoan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603130423095_LoanPeriod.resx">
+      <DependentUpon>201603130423095_LoanPeriod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603130546568_addedRelationshipforEmployeeLoan.resx">
+      <DependentUpon>201603130546568_addedRelationshipforEmployeeLoan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.resx">
+      <DependentUpon>201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

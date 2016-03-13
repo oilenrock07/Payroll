@@ -20,10 +20,17 @@
                 @Html.ActionLink("Frisco Foundry", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">                   
+                <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Employees", "Index","Employee")</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Employees <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Employee List", "Index", "Employee")</li>
+                                <li>@Html.ActionLink("Employee Loans", "EmployeeLoans", "Employee")</li>
+                                <li>@Html.ActionLink("Employee Leaves", "Index", "Employee")</li>
+                            </ul>
+                        </li>
                     }
                     @if (User.Identity.IsAuthenticated)
                     {

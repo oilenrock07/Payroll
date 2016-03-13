@@ -10,9 +10,13 @@ namespace Payroll.Entities.Payroll
         [Key]
         public int EmployeeLoanId { get; set; }
 
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; }
 
+        [ForeignKey("Loan")]
         public int LoanId { get; set; }
+        public virtual Loan Loan { get; set; }
 
         public int FrequencyId { get; set; }
 
@@ -28,13 +32,15 @@ namespace Payroll.Entities.Payroll
 
         public DateTime PaymentStartDate { get; set; }
 
-        public DateTime WeeklyPaymentDayOfWeek { get; set; }
 
-        public DateTime BiMonthlyPaymentFirstDate { get; set; }
+        //When to deduct
+        public int WeeklyPaymentDayOfWeek { get; set; }
 
-        public DateTime BiMonthlyPaymentSecondDate { get; set; }
+        public int BiMonthlyPaymentFirstDate { get; set; }
 
-        public DateTime MonthlyPaymentDate { get; set; }
+        public int BiMonthlyPaymentSecondDate { get; set; }
+
+        public int MonthlyPaymentDate { get; set; }
 
     }
 }

@@ -29,9 +29,10 @@ namespace Payroll.Controllers
         private readonly IWebService _webService;
         private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IEmployeeLoanRepository _employeeLoanRepository;
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
-            ISettingRepository settingRepository, IPositionRepository positionRepository,
+            ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
             IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository, IDepartmentRepository departmentRepository)
         {
             _unitOfWork = unitOfWork;
@@ -41,6 +42,7 @@ namespace Payroll.Controllers
             _positionRepository = positionRepository;
             _webService = webService;
             _paymentFrequencyRepository = paymentFrequencyRepository;
+            _employeeLoanRepository = employeeLoanRepository;
             _departmentRepository = departmentRepository;
         }
 
@@ -89,6 +91,8 @@ namespace Payroll.Controllers
         public virtual ActionResult Edit(int id)
         {
             var viewModel = GetEmployeeViewModel(_employeeInfoRepository.GetByEmployeeId(id));
+            viewModel.IsPrivate = _settingRepository.GetSettingValue("IS_PRIVATE_COMPANY", "true") == "true";
+
             ViewBag.Title = "Edit Employee";
             ViewBag.FormAction = "/Employee/Edit";
             
@@ -98,6 +102,8 @@ namespace Payroll.Controllers
         public virtual ActionResult Create()
         {
             var viewModel = GetEmployeeViewModel(new EmployeeInfo{ Employee = new Employee()});
+            viewModel.IsPrivate = _settingRepository.GetSettingValue("IS_PRIVATE_COMPANY", "true") == "true";
+
             ViewBag.Title = "Create Employee";
             ViewBag.FormAction = "/Employee/Create";
 
@@ -323,6 +329,12 @@ namespace Payroll.Controllers
             }
 
             return "";
+        }
+
+        public virtual ActionResult EmployeeLoans()
+        {
+            var result = _employeeLoanRepository.GetActiveEmployeeLoans();
+            return View(result);
         }
 
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Omu.ValueInjecter;
+using Payroll.Common.Enums;
 using Payroll.Common.Extension;
 using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
@@ -329,7 +330,23 @@ namespace Payroll.Controllers
 
         public virtual ActionResult CreateLoan()
         {
-            return View(new Loan());
+            var loanPeriods = new List<SelectListItem> {new SelectListItem {Text = "Not Specified", Value = "0"}};
+            foreach (LoanPaymentPeriod val in Enum.GetValues(typeof(Common.Enums.LoanPaymentPeriod)))
+            {
+                loanPeriods.Add(new SelectListItem
+                {
+                    Text = val.ToString(),
+                    Value = ((int)val).ToString()
+                });
+            } 
+            
+            var viewModel = new LoanViewModel
+            {
+                Loan = new Loan(),
+                LoanPaymentPeriod = loanPeriods
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -346,19 +363,35 @@ namespace Payroll.Controllers
 
         public virtual ActionResult EditLoan(int id)
         {
+            var loanPeriods = new List<SelectListItem> { new SelectListItem { Text = "Not Specified", Value = "0" } };
+            foreach (LoanPaymentPeriod val in Enum.GetValues(typeof(LoanPaymentPeriod)))
+            {
+                loanPeriods.Add(new SelectListItem
+                {
+                    Text = val.ToString(),
+                    Value = ((int)val).ToString()
+                });
+            } 
+
             var loan = _loanRepository.GetById(id);
-            return View(loan);
+            var viewModel = new LoanViewModel
+            {
+                Loan = loan,
+                LoanPaymentPeriod = loanPeriods
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult EditLoan(Loan model)
+        public virtual ActionResult EditLoan(LoanViewModel viewModel)
         {
-            var leave = _loanRepository.GetById(model.LoanId);
-            _loanRepository.Update(leave);
+            var loan = _loanRepository.GetById(viewModel.Loan.LoanId);
+            _loanRepository.Update(loan);
 
-            leave.InjectFrom(model);
-            leave.IsActive = true;
+            loan.InjectFrom(viewModel.Loan);
+            loan.IsActive = true;
 
             _unitOfWork.Commit();
             return RedirectToAction("Loan");
@@ -366,9 +399,9 @@ namespace Payroll.Controllers
 
         public virtual ActionResult DeleteLoan(int id)
         {
-            var leave = _loanRepository.GetById(id);
-            _loanRepository.Update(leave);
-            leave.IsActive = false;
+            var loan = _loanRepository.GetById(id);
+            _loanRepository.Update(loan);
+            loan.IsActive = false;
             _unitOfWork.Commit();
 
             return RedirectToAction("Loan");

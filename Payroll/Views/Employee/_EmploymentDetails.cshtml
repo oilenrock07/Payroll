@@ -32,22 +32,27 @@
                         @Html.ValidationMessageFor(model => model.EmployeeInfo.TIN)
                     </div>
                 </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EmployeeInfo.GSIS, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.TextBoxFor(model => model.EmployeeInfo.GSIS, new { @class = "form-control " })
-                        @Html.ValidationMessageFor(model => model.EmployeeInfo.GSIS)
+                
+                @if (!Model.IsPrivate)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.GSIS, htmlAttributes: new {@class = "control-label col-md-4"})
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.GSIS, new {@class = "form-control "})
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.GSIS)
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EmployeeInfo.SSS, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.TextBoxFor(model => model.EmployeeInfo.SSS, new { @class = "form-control " })
-                        @Html.ValidationMessageFor(model => model.EmployeeInfo.SSS)
+                }
+                else
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EmployeeInfo.SSS, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.EmployeeInfo.SSS, new { @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.EmployeeInfo.SSS)
+                        </div>
                     </div>
-                </div>
+                }
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.EmployeeInfo.PAGIBIG, htmlAttributes: new { @class = "control-label col-md-4" })
