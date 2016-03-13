@@ -27,15 +27,40 @@ namespace Payroll.Test.Service
             var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
             var settingRepository = new SettingRepository(databaseFactory);
             var employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
+            var employeeHoursRepository = new EmployeeHoursRepository(databaseFactory);
+            var employeeInfoRepository = new EmployeeInfoRepository(databaseFactory);
 
             var attendanceLogService = new AttendanceLogService(unitOfWork, attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService) ;
             var employeeService = new EmployeeService(employeeRepository, unitOfWork);
             var settingService = new SettingService(settingRepository, unitOfWork);
             var employeeWorkScheduleService = new EmployeeWorkScheduleService(employeeWorkScheduleRepository);
+            var employeeHoursService = new EmployeeHoursService(unitOfWork, employeeHoursRepository, attendanceService, settingService, employeeWorkScheduleService);
 
-        var employeeId1 = 1;
-         
+            var employeeId1 = 0;
+            var paymentFrequencyId = 1;
+
+            var employee = new Employee
+            {
+                EmployeeCode = "11001",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1        
+            };
+
+            employee = employeeRepository.Add(employee);
+            employeeId1 = employee.EmployeeId;
+
+            var employeeInfo = new EmployeeInfo
+            {
+                EmployeeId = employeeId1,
+                PaymentFrequencyId = paymentFrequencyId,
+            };
+
+            employeeInfoRepository.Add(employeeInfo);
+
             var dataAttendance = new List<Attendance>
                 {
                     // Standard time
@@ -52,10 +77,22 @@ namespace Payroll.Test.Service
                         EmployeeId = employeeId1,
                         ClockIn = DateTime.Parse("2016-02-01 13:00:00"),
                         ClockOut = DateTime.Parse("2016-02-01 16:00:00")
-                    },
+                    }
 
                 };
 
+            //Save data
+            foreach (var attendance in dataAttendance)
+            {
+                attendanceService.Add(attendance);
+            }
+
+            var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
+            var dateTo = DateTime.Parse("2016-02-02 00:00:00");
+
+            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+
+            var employeeHours = employeeHoursRepository.GetByEmployeeAndDateRange(employeeId1, dateFrom, dateTo);
 
             /*
                     // Standard

@@ -33,8 +33,9 @@ namespace Payroll.Service.Implementations
         private bool isWithinAdvanceOtPeriod = false;
         private bool clockoutLaterThanScheduled = false;
 
-        public EmployeeHoursService(IEmployeeHoursRepository employeeHoursRepository,
-          IUnitOfWork unitOfWork, IAttendanceService attendanceService, ISettingService settingService,
+        public EmployeeHoursService(IUnitOfWork unitOfWork, 
+            IEmployeeHoursRepository employeeHoursRepository,
+            IAttendanceService attendanceService, ISettingService settingService,
           IEmployeeWorkScheduleService employeeWorkScheduleService)
         {
             _employeeHoursRepository = employeeHoursRepository;

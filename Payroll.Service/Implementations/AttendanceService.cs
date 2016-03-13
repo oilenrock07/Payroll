@@ -172,9 +172,9 @@ namespace Payroll.Service.Implementations
             }
         }
 
-        public void Add(Attendance attendance)
+        public Attendance Add(Attendance attendance)
         {
-            _attendanceRepository.Add(attendance);
+            return _attendanceRepository.Add(attendance);
         }
 
         public void Update(Attendance attendance)

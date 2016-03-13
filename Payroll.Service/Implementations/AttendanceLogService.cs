@@ -27,10 +27,9 @@ namespace Payroll.Service.Implementations
             return _attendanceLogRepository.GetAttendanceLogs(fromDate, toDate, false);
         }
 
-        public void Add(AttendanceLog attendanceLog)
+        public AttendanceLog Add(AttendanceLog attendanceLog)
         {
-             _attendanceLogRepository.Add(attendanceLog);
-            _unitOfWork.Commit();
+            return _attendanceLogRepository.Add(attendanceLog);
         }
 
         public void Update(AttendanceLog attendanceLog)

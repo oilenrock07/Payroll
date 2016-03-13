@@ -13,7 +13,7 @@ namespace Payroll.Service.Interfaces
 
         int CreateWorkSchedulesByDateRange(DateTime fromDate, DateTime toDate);
 
-        void Add(Attendance attendance);
+        Attendance Add(Attendance attendance);
 
         void Update(Attendance attendance);
 
