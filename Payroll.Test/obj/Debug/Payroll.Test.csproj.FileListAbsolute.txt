@@ -79,10 +79,8 @@ C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\Newtonsoft.Json
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\obj\Debug\Payroll.Test.csprojResolveAssemblyReference.cache
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\obj\Debug\Payroll.Test.dll
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\obj\Debug\Payroll.Test.pdb
-C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\RTEvents.exe
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.dll
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\Interop.zkemkeeper.dll
-C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\RTEvents.pdb
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.pdb
 C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\Omu.ValueInjecter.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\Payroll.Test.dll.config
@@ -160,3 +158,5 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.dll
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\obj\Debug\Payroll.Test.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\AttendanceManager.exe
 C:\Cawi\DEV\Payroll\Payroll\Payroll.Test\bin\Debug\AttendanceManager.pdb
+C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\AttendanceManager.exe
+C:\Development\Workspace\Personal\Payroll\Payroll.Test\bin\Debug\AttendanceManager.pdb

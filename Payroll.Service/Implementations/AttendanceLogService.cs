@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Payroll.Infrastructure.Implementations;
 
 namespace Payroll.Service.Implementations
 {
@@ -15,7 +16,7 @@ namespace Payroll.Service.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAttendanceLogRepository _attendanceLogRepository;
 
-        public AttendanceLogService(IAttendanceLogRepository attendanceLogRepository, IUnitOfWork unitOfWork)
+        public AttendanceLogService(IUnitOfWork unitOfWork, IAttendanceLogRepository attendanceLogRepository)
         {
             _unitOfWork = unitOfWork;
             _attendanceLogRepository = attendanceLogRepository;
@@ -26,19 +27,15 @@ namespace Payroll.Service.Implementations
             return _attendanceLogRepository.GetAttendanceLogs(fromDate, toDate, false);
         }
 
-        public void Save(AttendanceLog attendanceLog)
+        public void Add(AttendanceLog attendanceLog)
         {
-            if (attendanceLog.AttendanceLogId == null 
-                    && attendanceLog.AttendanceLogId > 0)
-            {
-                _attendanceLogRepository.Add(attendanceLog);
-            }
-            else
-            {
-                _attendanceLogRepository.Update(attendanceLog);
-            }
-
+             _attendanceLogRepository.Add(attendanceLog);
             _unitOfWork.Commit();
+        }
+
+        public void Update(AttendanceLog attendanceLog)
+        {
+            _attendanceLogRepository.Update(attendanceLog);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Payroll.Service.Interfaces
     {
         IList<AttendanceLog> GetAttendanceLogsToBeProcessed(DateTime fromDate, DateTime toDate);
 
-        void Save(AttendanceLog attendanceLog);
+        void Add(AttendanceLog attendanceLog);
+
+        void Update(AttendanceLog attendanceLog);
     }
 }

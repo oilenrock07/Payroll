@@ -87,6 +87,8 @@ namespace Payroll.Service.Implementations
 
                 Attendance previousAttendance = null;
                 foreach (var attendanceLog in logs) {
+                    _attendanceLogService.Update(attendanceLog);
+
                     //If next employee
                     if (previousAttendance != null &&
                         attendanceLog.EmployeeId != previousAttendance.EmployeeId)
@@ -110,8 +112,10 @@ namespace Payroll.Service.Implementations
                                 previousAttendance.ClockOut == null)
                         {
                             attendance = previousAttendance;
-                            attendance.ClockOut = attendanceLog.ClockInOut;
 
+                            this.Update(attendance);
+
+                            attendance.ClockOut = attendanceLog.ClockInOut;
                             attendanceLog.IsConsidered = true;
                         }
                         else
@@ -140,6 +144,9 @@ namespace Payroll.Service.Implementations
                             };
 
                             attendanceLog.IsConsidered = true;
+
+                            this.Add(attendance);
+                   
                         }
                         else {
                             //Else do nothing
@@ -148,15 +155,10 @@ namespace Payroll.Service.Implementations
                         }
                     }
 
-                    //Save or Update
-                    if (attendance != null)
-                        this.Save(attendance);
-
                     //Update attendance log
                     attendanceLog.IsRecorded = true;
-                    _attendanceLogService.Save(attendanceLog);
-
-                    _unitOfWork.Commit();
+                   
+                   _unitOfWork.Commit();
 
                     //Set previous attendance
                     previousAttendance = attendance;
@@ -170,14 +172,14 @@ namespace Payroll.Service.Implementations
             }
         }
 
-        public void Save(Attendance attendance)
+        public void Add(Attendance attendance)
         {
-            if (attendance.AttendanceId != null &&
-                    attendance.AttendanceId > 0)
-                _attendanceRepository.Update(attendance);
-            else
-                _attendanceRepository.Add(attendance);
+            _attendanceRepository.Add(attendance);
+        }
 
+        public void Update(Attendance attendance)
+        {
+            _attendanceRepository.Update(attendance);
         }
 
         public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)

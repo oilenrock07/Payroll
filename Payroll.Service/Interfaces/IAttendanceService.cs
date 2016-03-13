@@ -13,7 +13,9 @@ namespace Payroll.Service.Interfaces
 
         int CreateWorkSchedulesByDateRange(DateTime fromDate, DateTime toDate);
 
-        void Save(Attendance attendance);
+        void Add(Attendance attendance);
+
+        void Update(Attendance attendance);
 
         IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 

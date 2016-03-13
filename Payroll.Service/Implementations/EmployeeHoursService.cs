@@ -186,8 +186,7 @@ namespace Payroll.Service.Implementations
             var otTimeStart = scheduledTimeOut;
             var otTimeEnd = clockOut;
 
-            if (clockoutLaterThanScheduled &&
-                    this.isForOT(otTimeStart, otTimeEnd))
+            if (clockoutLaterThanScheduled)
             {
                 TimeSpan? otHoursCount = clockOut - scheduledTimeOut;
 
@@ -235,7 +234,17 @@ namespace Payroll.Service.Implementations
                 // Set clockout to ND end time
                 if (clockOut.Value.Hour > nightDifEndTime.Hour)
                 {
-                    clockOut.Value.ChangeTime(nightDifEndTime.Hour, nightDifEndTime.Minute, 0, 0);
+                    //This handles if NightDif overlaps schedule
+                        // If timeout is later nightDifEnd set out to less than 1 hour than actual
+                    if (nightDifEndTime.TimeOfDay > employeeWorkSchedule.WorkSchedule.TimeStart &&
+                        clockOut.Value.TimeOfDay >= employeeWorkSchedule.WorkSchedule.TimeStart)
+                    {
+                        clockOut.Value.ChangeTime(nightDifEndTime.Hour-1, 0, 0, 0);
+                    }
+                    else
+                    {
+                        clockOut.Value.ChangeTime(nightDifEndTime.Hour, nightDifEndTime.Minute, 0, 0);
+                    }
                 }
 
                 TimeSpan? ndHoursCount = clockOut - clockIn;
@@ -275,6 +284,8 @@ namespace Payroll.Service.Implementations
             return (clockIn - scheduledClockIn) > advanceOTDuration;
         }
 
+
+        // Remove checking of minimum OT since it should be checked in the payroll computation
         private bool isForOT(DateTime otTimeStart, DateTime? otTimeEnd)
         {
             var minimumOT =
