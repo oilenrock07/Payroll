@@ -28,6 +28,7 @@ namespace Payroll.Entities.Seeder
 
                 //Company Settings
                 new Setting { SettingKey = "SUPPORT_REFUNDABLE_LEAVE", Value = "true", Description = "Whether or not, the company supports refundable leaves", Category = "COMPANY_SETTING" },
+                new Setting { SettingKey = "HOLIDAY_CURRENT_YEAR", Value = "2016", Description = "This will be changed every year. This value will only be used in Payroll.Scheduler", Category = "COMPANY_SETTING" },
 
 
                 //Application Settings

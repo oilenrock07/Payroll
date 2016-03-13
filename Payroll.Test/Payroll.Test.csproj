@@ -124,6 +124,7 @@
     <Compile Include="Repository\PayrollComputation.cs" />
     <Compile Include="Repository\UserRepositoryTest.cs" />
     <Compile Include="Service\AttendanceServiceTest.cs" />
+    <Compile Include="Service\HolidayServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Payroll.AttendanceManager\Payroll.AttendanceManager.csproj">

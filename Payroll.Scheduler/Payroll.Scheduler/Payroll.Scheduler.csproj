@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{96027240-D9DE-44D2-8D61-1AFB9963F88C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{F61048CF-D2F0-43E6-8409-44AB421C4C76}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Payroll.Service</RootNamespace>
-    <AssemblyName>Payroll.Service</AssemblyName>
+    <RootNamespace>Payroll.Scheduler</RootNamespace>
+    <AssemblyName>Payroll.Scheduler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,10 +32,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.Entity.6.9.8\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,52 +57,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\CachedSettingService.cs" />
-    <Compile Include="Implementations\AttendanceLogService.cs" />
-    <Compile Include="Implementations\AttendanceService.cs" />
-    <Compile Include="Implementations\EmployeeHoursService.cs" />
-    <Compile Include="Implementations\EmployeeInfoService.cs" />
-    <Compile Include="Implementations\EmployeeService.cs" />
-    <Compile Include="Implementations\EmployeeWorkScheduleService.cs" />
-    <Compile Include="Implementations\HolidayService.cs" />
-    <Compile Include="Implementations\ValidationService.cs" />
-    <Compile Include="Interfaces\IAttendanceLogService.cs" />
-    <Compile Include="Implementations\CacheService.cs" />
-    <Compile Include="Implementations\SettingService.cs" />
-    <Compile Include="Implementations\WebService.cs" />
-    <Compile Include="Interfaces\IAttendanceService.cs" />
-    <Compile Include="Interfaces\ICacheService.cs" />
-    <Compile Include="Interfaces\IEmployeeHoursService.cs" />
-    <Compile Include="Interfaces\IEmployeeInfoService.cs" />
-    <Compile Include="Interfaces\IEmployeeService.cs" />
-    <Compile Include="Interfaces\IEmployeeWorkScheduleService.cs" />
-    <Compile Include="Interfaces\IHolidayService.cs" />
-    <Compile Include="Interfaces\ISettingService.cs" />
-    <Compile Include="Interfaces\IValidationService.cs" />
-    <Compile Include="Interfaces\IWebService.cs" />
-    <Compile Include="Interfaces\Model\IPaginationModel.cs" />
-    <Compile Include="Models\PaginationModel.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Payroll.Common\Payroll.Common.csproj">
-      <Project>{ba703de8-5f8e-4eed-a82e-ea38f6e959c7}</Project>
-      <Name>Payroll.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Payroll.Entities\Payroll.Entities.csproj">
+    <ProjectReference Include="..\..\Payroll.Entities\Payroll.Entities.csproj">
       <Project>{b5b3e6b2-7613-4341-a351-729aef9bedf9}</Project>
       <Name>Payroll.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payroll.Infrastructure\Payroll.Infrastructure.csproj">
-      <Project>{b7ab72ba-4672-422d-9ec6-0364bba3159a}</Project>
+    <ProjectReference Include="..\..\Payroll.Infrastructure\Payroll.Infrastructure.csproj">
+      <Project>{B7AB72BA-4672-422D-9EC6-0364BBA3159A}</Project>
       <Name>Payroll.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payroll.Repository\Payroll.Repository.csproj">
+    <ProjectReference Include="..\..\Payroll.Repository\Payroll.Repository.csproj">
       <Project>{8fa31ff9-0081-490e-8f06-a627998be330}</Project>
       <Name>Payroll.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Payroll.Service\Payroll.Service.csproj">
+      <Project>{96027240-d9de-44d2-8d61-1afb9963f88c}</Project>
+      <Name>Payroll.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
