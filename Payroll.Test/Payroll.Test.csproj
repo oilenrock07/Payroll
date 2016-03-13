@@ -113,7 +113,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
-    <Compile Include="AttendanceManager\ProgramTest.cs" />
     <Compile Include="CodeTest.cs" />
     <Compile Include="Common\ExtensionTest.cs" />
     <Compile Include="Migration\MigrationTest.cs" />

@@ -25,11 +25,12 @@ namespace Payroll.Service.Implementations
 
         public void CreateNewHolidays()
         {
-            var currentYear = 2017;//DateTime.Now.Year;
+            var currentYear = DateTime.Now.Year;
             var payrollCurrentYear = _settingRepository.Find(x => x.SettingKey == "HOLIDAY_CURRENT_YEAR").First();
-            var staticHolidays = GetStaticHolidays(currentYear);
+            
             if (currentYear > Convert.ToInt32(payrollCurrentYear.Value))
             {
+                var staticHolidays = GetStaticHolidays(currentYear);
                 foreach (var holiday in staticHolidays)
                 {
                     _holidayRepository.Add(holiday);
