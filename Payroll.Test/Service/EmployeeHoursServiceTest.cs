@@ -29,7 +29,9 @@ namespace Payroll.Test.Service
             var employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
             var employeeHoursRepository = new EmployeeHoursRepository(databaseFactory);
             var employeeInfoRepository = new EmployeeInfoRepository(databaseFactory);
-
+            var frequencyRepository = new FrequencyRepository(databaseFactory);
+            var paymentFrequencyRepository = new PaymentFrequencyRepository(databaseFactory);
+        
             var attendanceLogService = new AttendanceLogService(unitOfWork, attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService) ;
             var employeeService = new EmployeeService(employeeRepository, unitOfWork);
@@ -37,8 +39,21 @@ namespace Payroll.Test.Service
             var employeeWorkScheduleService = new EmployeeWorkScheduleService(employeeWorkScheduleRepository);
             var employeeHoursService = new EmployeeHoursService(unitOfWork, employeeHoursRepository, attendanceService, settingService, employeeWorkScheduleService);
 
-            var employeeId1 = 0;
-            var paymentFrequencyId = 1;
+            var frequency = new Frequency
+            {
+                FrequencyName = "Weekly",
+            };
+
+            frequency = frequencyRepository.Add(frequency);
+
+            var paymentFrequency = new PaymentFrequency
+            {
+                Frequency = frequency,
+                FrequencyId = frequency.FrequencyId,
+                IsActive = true
+            };
+
+            paymentFrequency = paymentFrequencyRepository.Add(paymentFrequency);
 
             var employee = new Employee
             {
@@ -47,20 +62,22 @@ namespace Payroll.Test.Service
                 LastName = "Pereira",
                 MiddleName = "Aprecio",
                 BirthDate = DateTime.Parse("02/02/1991"),
-                Gender = 1        
+                Gender = 1,
+                IsActive = true        
             };
 
             employee = employeeRepository.Add(employee);
-            employeeId1 = employee.EmployeeId;
+
+            var employeeId1 = employee.EmployeeId;
 
             var employeeInfo = new EmployeeInfo
             {
                 EmployeeId = employeeId1,
-                PaymentFrequencyId = paymentFrequencyId,
+                PaymentFrequencyId = paymentFrequency.PaymentFrequencyId,
             };
 
             employeeInfoRepository.Add(employeeInfo);
-
+          
             var dataAttendance = new List<Attendance>
                 {
                     // Standard time
@@ -78,7 +95,6 @@ namespace Payroll.Test.Service
                         ClockIn = DateTime.Parse("2016-02-01 13:00:00"),
                         ClockOut = DateTime.Parse("2016-02-01 16:00:00")
                     }
-
                 };
 
             //Save data
@@ -87,13 +103,16 @@ namespace Payroll.Test.Service
                 attendanceService.Add(attendance);
             }
 
+            unitOfWork.Commit();
+
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(paymentFrequency.PaymentFrequencyId, dateFrom, dateTo);
 
             var employeeHours = employeeHoursRepository.GetByEmployeeAndDateRange(employeeId1, dateFrom, dateTo);
 
+            Assert.IsNotNull(employeeHours);
             /*
                     // Standard
                         // with OT

@@ -17,5 +17,10 @@ namespace Payroll.Service.Implementations
         {
          return _employeeInfoRepository.GetByEmployeeId(employeeId);
         }
+
+        public IList<EmployeeInfo> GetActiveByPaymentFrequency(int PaymentFrequencyId)
+        {
+            return _employeeInfoRepository.GetActiveByPaymentFrequency(PaymentFrequencyId);
+        }
     }
 }

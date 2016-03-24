@@ -21,9 +21,5 @@ namespace Payroll.Service.Implementations
             unitOfWork = _unitOfWork;
         }
 
-        public IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId)
-        {
-           return _employeeRepository.GetActiveByPaymentFrequency(PaymentFrequencyId);
-        }
     }
 }

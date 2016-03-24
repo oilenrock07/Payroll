@@ -18,6 +18,7 @@ namespace Payroll.Service.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAttendanceService _attendanceService;
         private readonly IEmployeeService _employeeService;
+        private readonly IEmployeeInfoService _employeeInfoService;
         private readonly ISettingService _settingService;
         private readonly IEmployeeWorkScheduleService _employeeWorkScheduleService;
 
@@ -48,7 +49,7 @@ namespace Payroll.Service.Implementations
         public int GenerateEmployeeHours(int PaymentFrequencyId, DateTime fromDate, DateTime toDate)
         {
             //Get all active employee with the same frequency
-            IList<Employee> employees = _employeeService.GetActiveByPaymentFrequency(PaymentFrequencyId);
+            IList<EmployeeInfo> employees = _employeeInfoService.GetActiveByPaymentFrequency(PaymentFrequencyId);
 
             foreach (var employee in employees)
             {
