@@ -56,22 +56,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\BaseEntityService.cs" />
     <Compile Include="Implementations\DatabaseFactory.cs" />
+    <Compile Include="Implementations\BaseEntityRepository.cs" />
     <Compile Include="Implementations\Repository.cs" />
     <Compile Include="Implementations\UnitOfWork.cs" />
+    <Compile Include="Interfaces\IBaseEntityService.cs" />
     <Compile Include="Interfaces\IDatabaseFactory.cs" />
+    <Compile Include="Interfaces\IBaseEntityRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Payroll.Entities\Payroll.Entities.csproj">
       <Project>{b5b3e6b2-7613-4341-a351-729aef9bedf9}</Project>
       <Name>Payroll.Entities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
