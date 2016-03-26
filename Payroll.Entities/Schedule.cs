@@ -1,4 +1,5 @@
 ﻿using Payroll.Entities.Enums;
+using Payroll.Infrastructure.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Payroll.Entities
 {
     [Table("schedule")]
-    public class Schedule
+    public class Schedule : BaseEntity
     {
         [Key]
         public int ScheduleId { get; set; }

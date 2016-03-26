@@ -3,11 +3,12 @@ using System.Linq;
 using Payroll.Entities.Contexts;
 using Payroll.Infrastructure.Interfaces;
 using System.Data.Entity;
+using Payroll.Infrastructure.Entities;
 
 namespace Payroll.Infrastructure.Implementations
 {
     public class Repository<T>  : IRepository<T>
-        where T : class
+        where T : BaseEntity
     {
 
         protected readonly bool _sharedContext = false;
@@ -47,6 +48,9 @@ namespace Payroll.Infrastructure.Implementations
 
         public virtual T Add(T entity)
         {
+            entity.CreateDate = new DateTime();
+            entity.IsActive = true;
+
             DbSet.Add(entity);
 
             if (!_sharedContext)
@@ -58,14 +62,17 @@ namespace Payroll.Infrastructure.Implementations
         public virtual void Update(T entity)
         {
             DbSet.Attach(entity);
-            
+            entity.UpdateDate = new DateTime();
             if (!_sharedContext)
                 _context.SaveChanges();
         }
 
         public virtual void Delete(T entity)
         {
-            DbSet.Remove(entity);
+            //DbSet.Remove(entity);
+            DbSet.Attach(entity);
+
+            entity.IsActive = false;
 
             if (!_sharedContext)
                 _context.SaveChanges();

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Payroll.Infrastructure.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
     [Table("holiday")]
-    public class Holiday
+    public class Holiday : BaseEntity
     {
         [Key]
         public int HolidayId { get; set; }
@@ -17,9 +18,7 @@ namespace Payroll.Entities
         public bool IsRegularHoliday { get; set; }
 
         public DateTime Date { get; set; }
-
-        public bool IsActive { get; set; }
-
+        
         public int Year { get; set; }
 
         [StringLength(500)]

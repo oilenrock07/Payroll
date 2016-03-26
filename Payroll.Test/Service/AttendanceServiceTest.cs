@@ -36,7 +36,7 @@ namespace Payroll.Test.Service
             var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
            
             var attendanceRepository = new AttendanceRepository(databaseFactory);
-            var attendanceLogService = new AttendanceLogService(unitOfWork, attendanceLogRepository);
+            var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService);
 
             var employeeId1 = 1001;

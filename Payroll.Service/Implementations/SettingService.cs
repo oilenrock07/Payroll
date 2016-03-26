@@ -13,12 +13,10 @@ namespace Payroll.Service.Implementations
     public class SettingService : ISettingService
     {
         private readonly ISettingRepository _settingRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SettingService(ISettingRepository settingRepository, IUnitOfWork unitOfWork)
+      
+        public SettingService(ISettingRepository settingRepository)
         {
             _settingRepository = settingRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public String GetByKey(String Key)

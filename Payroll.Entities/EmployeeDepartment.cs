@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Payroll.Infrastructure.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
     [Table("employee_department")]
-    public class EmployeeDepartment
+    public class EmployeeDepartment : BaseEntity
     {
         [Key]
         public int EmployeeDepartmentId { get; set; }
@@ -12,7 +13,5 @@ namespace Payroll.Entities
         public int EmployeeId { get; set; }
 
         public int DepartmentId { get; set; }
-
-        public bool IsActive { get; set; }
     }
 }

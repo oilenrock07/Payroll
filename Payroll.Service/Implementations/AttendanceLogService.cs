@@ -13,12 +13,10 @@ namespace Payroll.Service.Implementations
 {
     public class AttendanceLogService : IAttendanceLogService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IAttendanceLogRepository _attendanceLogRepository;
 
-        public AttendanceLogService(IUnitOfWork unitOfWork, IAttendanceLogRepository attendanceLogRepository)
+        public AttendanceLogService(IAttendanceLogRepository attendanceLogRepository)
         {
-            _unitOfWork = unitOfWork;
             _attendanceLogRepository = attendanceLogRepository;
         }
 

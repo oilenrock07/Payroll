@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Payroll.Infrastructure.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
     [Table("employee_workschedule")]
-    public class EmployeeWorkSchedule
+    public class EmployeeWorkSchedule : BaseEntity
     {
         [Key]
         public int EmployeeWorkScheduleId { get; set; }
@@ -15,8 +16,6 @@ namespace Payroll.Entities
         [ForeignKey("WorkSchedule")]
         public int WorkScheduleId { get; set; }
         public virtual WorkSchedule WorkSchedule { get; set; }
-
-        public bool IsActive { get; set; }
 
         public DateTime DateCreated { get; set; }
     }

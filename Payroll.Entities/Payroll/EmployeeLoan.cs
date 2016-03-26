@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Payroll.Infrastructure.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities.Payroll
 {
     [Table("employee_loan")]
-    public class EmployeeLoan
+    public class EmployeeLoan : BaseEntity
     {
         [Key]
         public int EmployeeLoanId { get; set; }
@@ -28,10 +29,7 @@ namespace Payroll.Entities.Payroll
 
         public DateTime EndDate { get; set; }
 
-        public bool IsActive { get; set; }
-
         public DateTime PaymentStartDate { get; set; }
-
 
         //When to deduct
         public int WeeklyPaymentDayOfWeek { get; set; }

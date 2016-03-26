@@ -13,26 +13,20 @@ namespace Payroll.Infrastructure.Implementations
         where T : BaseEntity
     {
         private readonly IRepository<T> _repository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public BaseEntityService(IRepository<T> repository, IUnitOfWork unitOfWork)
+        public BaseEntityService(IRepository<T> repository)
         {
             _repository = repository;
-            _unitOfWork = unitOfWork;
         }
 
         public T Add(T entity)
         {
-            entity.IsActive = true;
-            entity.CreateDate = new DateTime();
-
             return _repository.Add(entity);
         }
 
         public void Delete(T entity)
         {
-            _repository.Update(entity);
-            entity.IsActive = false;
+            _repository.Delete(entity);
         }
 
         public void ExecuteSqlCommand(string command, params object[] parameters)
@@ -58,8 +52,6 @@ namespace Payroll.Infrastructure.Implementations
         public void Update(T entity)
         {
             _repository.Update(entity);
-
-            entity.UpdateDate = new DateTime();
         }
     }
 }

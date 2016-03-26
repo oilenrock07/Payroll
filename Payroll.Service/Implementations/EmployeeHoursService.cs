@@ -17,7 +17,6 @@ namespace Payroll.Service.Implementations
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAttendanceService _attendanceService;
-        private readonly IEmployeeService _employeeService;
         private readonly IEmployeeInfoService _employeeInfoService;
         private readonly ISettingService _settingService;
         private readonly IEmployeeWorkScheduleService _employeeWorkScheduleService;
@@ -37,13 +36,15 @@ namespace Payroll.Service.Implementations
         public EmployeeHoursService(IUnitOfWork unitOfWork, 
             IEmployeeHoursRepository employeeHoursRepository,
             IAttendanceService attendanceService, ISettingService settingService,
-          IEmployeeWorkScheduleService employeeWorkScheduleService)
+            IEmployeeWorkScheduleService employeeWorkScheduleService,
+            IEmployeeInfoService employeeInfoService)
         {
             _employeeHoursRepository = employeeHoursRepository;
             _unitOfWork = unitOfWork;
             _attendanceService = attendanceService;
             _settingService = settingService;
             _employeeWorkScheduleService = employeeWorkScheduleService;
+            _employeeInfoService = employeeInfoService;
         }
 
         public int GenerateEmployeeHours(int PaymentFrequencyId, DateTime fromDate, DateTime toDate)
@@ -79,6 +80,9 @@ namespace Payroll.Service.Implementations
                     }
                 }
             }
+
+            _unitOfWork.Commit();
+
             return 0;
         }
 
