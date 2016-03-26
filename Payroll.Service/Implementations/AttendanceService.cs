@@ -6,17 +6,18 @@ using Payroll.Repository.Interface;
 using Payroll.Service.Interfaces;
 using System.Collections.Generic;
 using Payroll.Entities.Enums;
+using Payroll.Infrastructure.Implementations;
 
 namespace Payroll.Service.Implementations
 {
-    public class AttendanceService : IAttendanceService
+    public class AttendanceService : BaseEntityService<Attendance>, IAttendanceService
     {
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAttendanceLogService _attendanceLogService;
 
         public AttendanceService(IUnitOfWork unitOfWork, IAttendanceRepository attendanceRepository,
-            IAttendanceLogService attendanceLogService)
+            IAttendanceLogService attendanceLogService) : base(attendanceRepository)
         {
             _attendanceRepository = attendanceRepository;
             _unitOfWork = unitOfWork;
@@ -170,16 +171,6 @@ namespace Payroll.Service.Implementations
             {
                 return -1;
             }
-        }
-
-        public Attendance Add(Attendance attendance)
-        {
-            return _attendanceRepository.Add(attendance);
-        }
-
-        public void Update(Attendance attendance)
-        {
-            _attendanceRepository.Update(attendance);
         }
 
         public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)

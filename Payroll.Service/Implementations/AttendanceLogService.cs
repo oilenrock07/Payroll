@@ -11,11 +11,12 @@ using Payroll.Infrastructure.Implementations;
 
 namespace Payroll.Service.Implementations
 {
-    public class AttendanceLogService : IAttendanceLogService
+    public class AttendanceLogService : BaseEntityService<AttendanceLog>, IAttendanceLogService
     {
         private readonly IAttendanceLogRepository _attendanceLogRepository;
 
-        public AttendanceLogService(IAttendanceLogRepository attendanceLogRepository)
+        public AttendanceLogService(IAttendanceLogRepository attendanceLogRepository) 
+            : base(attendanceLogRepository)
         {
             _attendanceLogRepository = attendanceLogRepository;
         }
@@ -25,14 +26,5 @@ namespace Payroll.Service.Implementations
             return _attendanceLogRepository.GetAttendanceLogs(fromDate, toDate, false);
         }
 
-        public AttendanceLog Add(AttendanceLog attendanceLog)
-        {
-            return _attendanceLogRepository.Add(attendanceLog);
-        }
-
-        public void Update(AttendanceLog attendanceLog)
-        {
-            _attendanceLogRepository.Update(attendanceLog);
-        }
     }
 }
