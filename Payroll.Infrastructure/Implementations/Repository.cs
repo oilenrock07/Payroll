@@ -49,8 +49,7 @@ namespace Payroll.Infrastructure.Implementations
         public virtual T Add(T entity)
         {
             entity.CreateDate = new DateTime();
-            entity.IsActive = true;
-
+           
             DbSet.Add(entity);
 
             if (!_sharedContext)
