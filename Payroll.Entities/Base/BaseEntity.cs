@@ -11,6 +11,7 @@ namespace Payroll.Infrastructure.Entities
     {
         public BaseEntity(){
             IsActive = true;
+            CreateDate = new DateTime();
         }
 
         public Boolean IsActive { get; set; }

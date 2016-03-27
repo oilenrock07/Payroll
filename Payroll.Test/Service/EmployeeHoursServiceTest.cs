@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Payroll.Entities;
+using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Implementations;
@@ -29,31 +30,26 @@ namespace Payroll.Test.Service
             var employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
             var employeeHoursRepository = new EmployeeHoursRepository(databaseFactory);
             var employeeInfoRepository = new EmployeeInfoRepository(databaseFactory);
-            var frequencyRepository = new FrequencyRepository(databaseFactory);
-            var paymentFrequencyRepository = new PaymentFrequencyRepository(databaseFactory);
-        
-            var attendanceLogService = new AttendanceLogService(unitOfWork, attendanceLogRepository);
+
+            var employeeInfoService = new EmployeeInfoService(employeeInfoRepository);
+            var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService) ;
-            var employeeService = new EmployeeService(employeeRepository, unitOfWork);
-            var settingService = new SettingService(settingRepository, unitOfWork);
+            var employeeService = new EmployeeService(employeeRepository);
+            var settingService = new SettingService(settingRepository);
             var employeeWorkScheduleService = new EmployeeWorkScheduleService(employeeWorkScheduleRepository);
-            var employeeHoursService = new EmployeeHoursService(unitOfWork, employeeHoursRepository, attendanceService, settingService, employeeWorkScheduleService);
+            var employeeHoursService = new EmployeeHoursService(unitOfWork, employeeHoursRepository, attendanceService, settingService, employeeWorkScheduleService, employeeInfoService);
 
-            var frequency = new Frequency
-            {
-                FrequencyName = "Weekly",
-            };
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE payment_frequency");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE frequency");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE attendance");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE attendance_log");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_info");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_workschedule");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours");
+            employeeRepository.ExecuteSqlCommand("DELETE FROM work_schedule");
+            employeeRepository.ExecuteSqlCommand("DELETE FROM employee");
 
-            frequency = frequencyRepository.Add(frequency);
-
-            var paymentFrequency = new PaymentFrequency
-            {
-                Frequency = frequency,
-                FrequencyId = frequency.FrequencyId,
-                IsActive = true
-            };
-
-            paymentFrequency = paymentFrequencyRepository.Add(paymentFrequency);
+            var paymentFrequencyId = 1;
 
             var employee = new Employee
             {
@@ -66,34 +62,49 @@ namespace Payroll.Test.Service
                 IsActive = true        
             };
 
-            employee = employeeRepository.Add(employee);
-
-            var employeeId1 = employee.EmployeeId;
-
             var employeeInfo = new EmployeeInfo
             {
-                EmployeeId = employeeId1,
-                PaymentFrequencyId = paymentFrequency.PaymentFrequencyId,
+                Employee = employee,
+                PaymentFrequencyId = paymentFrequencyId
             };
 
             employeeInfoRepository.Add(employeeInfo);
-          
+
+            var workSchedule = new WorkSchedule
+            {
+                TimeStart = new TimeSpan(0, 7, 0, 0),
+                TimeEnd = new TimeSpan(0, 16, 0, 0),
+                WeekStart = 1,
+                WeekEnd = 5
+            };
+
+            var employeeWorkSchedule = new EmployeeWorkSchedule
+            {
+                WorkSchedule = workSchedule,
+                Employee = employee
+            };
+
+            employeeWorkScheduleRepository.Add(employeeWorkSchedule);
+
+            var attendanceId1 = 1;
+            var attendanceId2 = 2;
+
             var dataAttendance = new List<Attendance>
                 {
                     // Standard time
                     new Attendance()
                     {
-                        AttendanceId = 1,
-                        EmployeeId = employeeId1,
-                        ClockIn = DateTime.Parse("2016-02-01 07:00:00"),
-                        ClockOut = DateTime.Parse("2016-02-01 12:00:00")
+                        AttendanceId = attendanceId1,
+                        Employee = employee,
+                        ClockIn = new DateTime(2016,2,1,7,0,0),
+                        ClockOut = new DateTime(2016,2,1,12,0,0)
                     },
                     new Attendance()
                     {
-                        AttendanceId = 2,
-                        EmployeeId = employeeId1,
-                        ClockIn = DateTime.Parse("2016-02-01 13:00:00"),
-                        ClockOut = DateTime.Parse("2016-02-01 16:00:00")
+                        AttendanceId = attendanceId2,
+                        Employee = employee,
+                        ClockIn = new DateTime(2016,2,1,13,0,0),
+                        ClockOut = new DateTime(2016,2,1,16,0,0)
                     }
                 };
 
@@ -108,11 +119,39 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequency.PaymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
 
-            var employeeHours = employeeHoursRepository.GetByEmployeeAndDateRange(employeeId1, dateFrom, dateTo);
+            var employeeHours = employeeHoursRepository.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
             Assert.IsNotNull(employeeHours);
+            Assert.AreEqual(2, employeeHours.Count);
+
+            var employeeHourEntry1 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.Regular,
+                OriginAttendanceId = attendanceId1,
+                EmployeeId = employee.EmployeeId,
+                Hours = 5
+            };
+
+            var employeeHourEntry2 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.Regular,
+                OriginAttendanceId = attendanceId2,
+                EmployeeId = employee.EmployeeId,
+                Hours = 3
+            };
+
+            Assert.AreEqual(employeeHourEntry1.Type, employeeHours[0].Type);
+            Assert.AreEqual(employeeHourEntry1.OriginAttendanceId, employeeHours[0].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry1.EmployeeId, employeeHours[0].EmployeeId);
+            Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
+
+            Assert.AreEqual(employeeHourEntry2.Type, employeeHours[1].Type);
+            Assert.AreEqual(employeeHourEntry2.OriginAttendanceId, employeeHours[1].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
+            Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
+
             /*
                     // Standard
                         // with OT

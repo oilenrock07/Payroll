@@ -181,6 +181,14 @@
     <Compile Include="Migrations\201603270422471_add-fk-attendance.Designer.cs">
       <DependentUpon>201603270422471_add-fk-attendance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.cs" />
+    <Compile Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.Designer.cs">
+      <DependentUpon>201603270501307_add-fk-employeeWorkSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603271421060_add-fk-employeeWorkHours.cs" />
+    <Compile Include="Migrations\201603271421060_add-fk-employeeWorkHours.Designer.cs">
+      <DependentUpon>201603271421060_add-fk-employeeWorkHours.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -291,6 +299,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603270422471_add-fk-attendance.resx">
       <DependentUpon>201603270422471_add-fk-attendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.resx">
+      <DependentUpon>201603270501307_add-fk-employeeWorkSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603271421060_add-fk-employeeWorkHours.resx">
+      <DependentUpon>201603271421060_add-fk-employeeWorkHours.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -91,7 +91,7 @@ namespace Payroll.Service.Implementations
             // Early OT or OT of from yesterday
             //  This may be special for client
             scheduledTimeIn = day;
-            scheduledTimeIn.ChangeTime(employeeWorkSchedule.WorkSchedule.TimeStart.Hours,
+            scheduledTimeIn = scheduledTimeIn.ChangeTime(employeeWorkSchedule.WorkSchedule.TimeStart.Hours,
                  employeeWorkSchedule.WorkSchedule.TimeStart.Minutes, 0, 0);
 
             scheduledTimeOut = day;
@@ -100,7 +100,7 @@ namespace Payroll.Service.Implementations
             if (employeeWorkSchedule.WorkSchedule.TimeEnd < employeeWorkSchedule.WorkSchedule.TimeStart)
                 scheduledTimeOut = day.AddDays(1);
 
-            scheduledTimeOut.ChangeTime(employeeWorkSchedule.WorkSchedule.TimeEnd.Hours,
+            scheduledTimeOut = scheduledTimeOut.ChangeTime(employeeWorkSchedule.WorkSchedule.TimeEnd.Hours,
                  employeeWorkSchedule.WorkSchedule.TimeEnd.Minutes, 0, 0);
 
             clockIn = attendance.ClockIn;
@@ -133,7 +133,7 @@ namespace Payroll.Service.Implementations
                     new EmployeeHours
                     {
                         OriginAttendanceId = attendance.AttendanceId,
-                        Date = new DateTime(),
+                        Date = day,
                         EmployeeId = attendance.EmployeeId,
                         Hours = advancedOTHoursCount.Value.Hours,
                         Type = Entities.Enums.RateType.OverTime
@@ -174,7 +174,7 @@ namespace Payroll.Service.Implementations
                     new EmployeeHours
                     {
                         OriginAttendanceId = attendance.AttendanceId,
-                        Date = new DateTime(),
+                        Date = day,
                         EmployeeId = attendance.EmployeeId,
                         Hours = regularHoursCount.Value.Hours,
                         Type = Entities.Enums.RateType.Regular
@@ -200,7 +200,7 @@ namespace Payroll.Service.Implementations
                    new EmployeeHours
                    {
                        OriginAttendanceId = attendance.AttendanceId,
-                       Date = new DateTime(),
+                       Date = day,
                        EmployeeId = attendance.EmployeeId,
                        Hours = otHoursCount.Value.Hours,
                        Type = Entities.Enums.RateType.OverTime
@@ -259,7 +259,7 @@ namespace Payroll.Service.Implementations
                    new EmployeeHours
                    {
                        OriginAttendanceId = attendance.AttendanceId,
-                       Date = new DateTime(),
+                       Date = day,
                        EmployeeId = attendance.EmployeeId,
                        Hours = ndHoursCount.Value.Hours,
                        Type = Entities.Enums.RateType.NightDifferential
