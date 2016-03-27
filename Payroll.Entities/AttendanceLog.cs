@@ -13,9 +13,13 @@ namespace Payroll.Entities
         public int AttendanceLogId { get; set; }
 
         public int EmployeeId { get; set; }
+
         public DateTime ClockInOut { get; set; }
+
         public AttendanceType Type { get; set; }
+
         public bool IsRecorded { get; set; }
+
         public bool IsConsidered { get; set; }
     }
 }

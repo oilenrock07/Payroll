@@ -16,7 +16,5 @@ namespace Payroll.Entities
         [ForeignKey("WorkSchedule")]
         public int WorkScheduleId { get; set; }
         public virtual WorkSchedule WorkSchedule { get; set; }
-
-        public DateTime DateCreated { get; set; }
     }
 }

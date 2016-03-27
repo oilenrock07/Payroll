@@ -41,6 +41,11 @@ namespace Payroll.Infrastructure.Implementations
             return DbSet;
         }
 
+        public IQueryable<T> GetAllActive()
+        {
+            return Find(e => e.IsActive);
+        }
+
         public virtual IQueryable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
             return DbSet.Where(expression);
@@ -81,5 +86,6 @@ namespace Payroll.Infrastructure.Implementations
         {
             _context.Database.ExecuteSqlCommand(command, parameters);
         }
+
     }
 }

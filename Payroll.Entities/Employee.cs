@@ -8,10 +8,6 @@ namespace Payroll.Entities
     [Table("employee")]
     public class Employee : BaseEntity
     {
-        public Employee()
-        {
-            Enabled = true;
-        }
 
         [Key]
         public int EmployeeId { get; set; }
@@ -43,8 +39,9 @@ namespace Payroll.Entities
 
         //For clock in/out (biomertrics and rfid)
         public int Privilege { get; set; }
-        public bool Enabled { get; set; }
+
         public bool EnrolledToRfid { get; set; }
+
         public bool EnrolledToBiometrics { get; set; }
 
         [StringLength(500)]
