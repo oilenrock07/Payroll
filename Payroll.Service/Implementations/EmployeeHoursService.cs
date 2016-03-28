@@ -135,7 +135,7 @@ namespace Payroll.Service.Implementations
                         OriginAttendanceId = attendance.AttendanceId,
                         Date = day,
                         EmployeeId = attendance.EmployeeId,
-                        Hours = advancedOTHoursCount.Value.Hours,
+                        Hours = advancedOTHoursCount.Value.TotalHours,
                         Type = Entities.Enums.RateType.OverTime
                     };
 
@@ -176,7 +176,7 @@ namespace Payroll.Service.Implementations
                         OriginAttendanceId = attendance.AttendanceId,
                         Date = day,
                         EmployeeId = attendance.EmployeeId,
-                        Hours = regularHoursCount.Value.Hours,
+                        Hours = regularHoursCount.Value.TotalHours,
                         Type = Entities.Enums.RateType.Regular
                     };
 
@@ -202,7 +202,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = otHoursCount.Value.Hours,
+                       Hours = otHoursCount.Value.TotalHours,
                        Type = Entities.Enums.RateType.OverTime
                    };
 
@@ -261,7 +261,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = ndHoursCount.Value.Hours,
+                       Hours = ndHoursCount.Value.TotalHours,
                        Type = Entities.Enums.RateType.NightDifferential
                    };
 
