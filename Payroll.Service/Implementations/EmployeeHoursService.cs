@@ -220,10 +220,10 @@ namespace Payroll.Service.Implementations
             var ndEndTime = DateTime.Parse(_settingService.GetByKey("SCHEDULE_NIGHTDIF_TIME_END"));
 
             var nightDifStartTime = day.AddDays(-1);
-            nightDifStartTime.ChangeTime(ndStartTime.Hour, ndStartTime.Minute, 0, 0);
+            nightDifStartTime = nightDifStartTime.ChangeTime(ndStartTime.Hour, ndStartTime.Minute, 0, 0);
 
             var nightDifEndTime = day;
-            nightDifEndTime.ChangeTime(ndEndTime.Hour, ndEndTime.Minute, 0, 0);
+            nightDifEndTime = nightDifEndTime.ChangeTime(ndEndTime.Hour, ndEndTime.Minute, 0, 0);
 
             if (clockIn >= nightDifStartTime && clockIn <= nightDifEndTime)
             {
@@ -233,7 +233,7 @@ namespace Payroll.Service.Implementations
                 // Set clockin to ND start time
                 if (clockIn.Hour > nightDifStartTime.Hour)
                 {
-                    clockIn.ChangeTime(nightDifStartTime.Hour, nightDifStartTime.Minute, 0, 0);
+                    clockIn = clockIn.ChangeTime(nightDifStartTime.Hour, nightDifStartTime.Minute, 0, 0);
                 }
 
                 //If clockout is greater than night dif end time
@@ -245,11 +245,11 @@ namespace Payroll.Service.Implementations
                     if (nightDifEndTime.TimeOfDay > employeeWorkSchedule.WorkSchedule.TimeStart &&
                         clockOut.Value.TimeOfDay >= employeeWorkSchedule.WorkSchedule.TimeStart)
                     {
-                        clockOut.Value.ChangeTime(nightDifEndTime.Hour-1, 0, 0, 0);
+                        clockOut = clockOut.Value.ChangeTime(nightDifEndTime.Hour, 0, 0, 0);
                     }
                     else
                     {
-                        clockOut.Value.ChangeTime(nightDifEndTime.Hour, nightDifEndTime.Minute, 0, 0);
+                        clockOut = clockOut.Value.ChangeTime(nightDifEndTime.Hour, nightDifEndTime.Minute, 0, 0);
                     }
                 }
 
@@ -275,7 +275,7 @@ namespace Payroll.Service.Implementations
             var gracePeriod =
                              Int32.Parse(_settingService.GetByKey("SCHEDULE_GRACE_PERIOD_MINUTES"));
 
-            var gracePeriodDuration = new TimeSpan(gracePeriod);
+            var gracePeriodDuration = new TimeSpan(0, gracePeriod, 0);
 
             return (clockIn - scheduledClockIn) <= gracePeriodDuration;
         }
@@ -285,9 +285,11 @@ namespace Payroll.Service.Implementations
             var advanceOTPeriod =
                              Int32.Parse(_settingService.GetByKey("SCHEDULE_ADVANCE_OT_PERIOD_MINUTES"));
 
-            var advanceOTDuration = new TimeSpan(advanceOTPeriod);
+            var advanceOTDuration = new TimeSpan(0, advanceOTPeriod, 0);
 
-            return (clockIn - scheduledClockIn) > advanceOTDuration;
+            var clockInVsScheduled = (scheduledClockIn - clockIn);
+
+            return clockInVsScheduled > advanceOTDuration;
         }
 
 

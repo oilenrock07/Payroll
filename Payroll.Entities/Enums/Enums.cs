@@ -16,8 +16,8 @@ namespace Payroll.Entities.Enums
     public enum RateType
     {
         Regular = 1,
-        NightDifferential = 2,
-        OverTime = 3,
+        OverTime = 2,
+        NightDifferential = 3,
         RestDay = 4,
         HolidayRegular = 5,
         HolidaySpecial = 6
