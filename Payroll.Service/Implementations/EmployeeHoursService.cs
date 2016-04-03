@@ -36,6 +36,7 @@ namespace Payroll.Service.Implementations
         private bool isWithinAdvanceOtPeriod = false;
         private bool clockoutLaterThanScheduled = false;
         private bool clockOutGreaterThanNDEndTime = false;
+        private bool isClockInLaterThanScheduledTimeOut = false;
 
         public EmployeeHoursService(IUnitOfWork unitOfWork, 
             IEmployeeHoursRepository employeeHoursRepository,
@@ -117,6 +118,11 @@ namespace Payroll.Service.Implementations
 
             clockOut = attendance.ClockOut;
 
+            if (clockOut.Value.Day > day.Day)
+            {
+                clockOut = day.AddDays(1);
+            }
+
             // TODO I assume that the night dif start time starts at night time yesterday
             // and end time is morning of today's date
             var ndStartTime = DateTime.Parse(_settingService.GetByKey("SCHEDULE_NIGHTDIF_TIME_START"));
@@ -133,6 +139,7 @@ namespace Payroll.Service.Implementations
             isWithinAdvanceOtPeriod = this.isForAdvanceOT(clockIn, scheduledTimeIn);
             clockoutLaterThanScheduled = clockOut > scheduledTimeOut;
             clockOutGreaterThanNDEndTime = clockOut > nightDifEndTime;
+            isClockInLaterThanScheduledTimeOut = clockIn > scheduledTimeOut;
         }
 
         private void computeAdvanceOT()
@@ -168,10 +175,12 @@ namespace Payroll.Service.Implementations
 
         private void computeRegular()
         {
-            //FOR FRISCO
-            //If logout and scheduled in time difference is not an hour.
-            //No regular time recorded
-            if (!clockOutGreaterThanNDEndTime)
+            //If clock in is later than scheduled time out
+                //FOR FRISCO
+                //If logout and scheduled time in difference is not an hour.
+
+            //No regular time will be recorded
+            if (isClockInLaterThanScheduledTimeOut || !clockOutGreaterThanNDEndTime)
                 return;
 
             var tempClockIn = clockIn;
@@ -188,7 +197,7 @@ namespace Payroll.Service.Implementations
             // ********************
            
             var tempClockOut = clockOut;
-            // If clock out is greater than scheduled time ouot
+            // If clock out is greater than scheduled time out
             if (clockoutLaterThanScheduled)
             {
                 //Set clock out to scheduled time out
@@ -198,17 +207,21 @@ namespace Payroll.Service.Implementations
 
             TimeSpan? regularHoursCount = tempClockOut - tempClockIn;
 
-            EmployeeHours regularHours =
-                    new EmployeeHours
-                    {
-                        OriginAttendanceId = attendance.AttendanceId,
-                        Date = day,
-                        EmployeeId = attendance.EmployeeId,
-                        Hours = Math.Round(regularHoursCount.Value.TotalHours, 2),
-                        Type = Entities.Enums.RateType.Regular
-                    };
+            if (regularHoursCount != null && regularHoursCount.Value.TotalHours > 0)
+            {
+                EmployeeHours regularHours =
+                   new EmployeeHours
+                   {
+                       OriginAttendanceId = attendance.AttendanceId,
+                       Date = day,
+                       EmployeeId = attendance.EmployeeId,
+                       Hours = Math.Round(regularHoursCount.Value.TotalHours, 2),
+                       Type = Entities.Enums.RateType.Regular
+                   };
 
-            _employeeHoursRepository.Add(regularHours);
+                _employeeHoursRepository.Add(regularHours);
+            }
+           
         }
 
         private void computeOT()
@@ -216,25 +229,42 @@ namespace Payroll.Service.Implementations
             // ********************
             // *** OT Hours *******
             // ********************
-
             var otTimeStart = scheduledTimeOut;
             var otTimeEnd = clockOut;
 
+            //If clock in is later than scheduled time out ot time start should be clock in
+            // e.g. scheduled time out is 4pm.
+            // Last attendance time out is 6pm, 2 hrs of OT is already recorded
+            // Another clock in for 11pm, the  otTimeStart should be 11pm not 4pm
+            if (isClockInLaterThanScheduledTimeOut)
+            {
+                otTimeStart = clockIn;
+            }
+            
+            //Set ot time end to 12 am of next days
+            if (otTimeEnd.Value.Date > day.Date)
+            {
+                otTimeEnd = day.AddDays(1);
+            }
             if (clockoutLaterThanScheduled)
             {
-                TimeSpan? otHoursCount = clockOut - scheduledTimeOut;
+                TimeSpan? otHoursCount = otTimeEnd - otTimeStart;
 
-                EmployeeHours otHours =
-                   new EmployeeHours
-                   {
-                       OriginAttendanceId = attendance.AttendanceId,
-                       Date = day,
-                       EmployeeId = attendance.EmployeeId,
-                       Hours = Math.Round(otHoursCount.Value.TotalHours, 2),
-                       Type = Entities.Enums.RateType.OverTime
-                   };
+                if (otHoursCount != null && otHoursCount.Value.TotalHours > 0)
+                {
+                  EmployeeHours otHours =
+                  new EmployeeHours
+                  {
+                      OriginAttendanceId = attendance.AttendanceId,
+                      Date = day,
+                      EmployeeId = attendance.EmployeeId,
+                      Hours = Math.Round(otHoursCount.Value.TotalHours, 2),
+                      Type = Entities.Enums.RateType.OverTime
+                  };
 
-                _employeeHoursRepository.Add(otHours);
+                    _employeeHoursRepository.Add(otHours);
+                }
+               
             }
         }
 
@@ -242,33 +272,49 @@ namespace Payroll.Service.Implementations
             // ************************************
             // *** Night Differential Hours *******
             // ************************************
-          
 
-            if (clockIn >= nightDifStartTime && clockIn <= nightDifEndTime)
+            //Morning night dif
+            var morningNightDifStartTime = nightDifStartTime;
+            var morningNightDifEndTime = nightDifEndTime;
+
+            computeNightDifferential(morningNightDifStartTime, morningNightDifEndTime);
+
+            //Evening night dif
+            var eveningNightDifStartTime = nightDifStartTime.AddDays(1);
+            var eveningNightDifEndTime = nightDifEndTime.AddDays(1);
+
+            computeNightDifferential(eveningNightDifStartTime, eveningNightDifEndTime);
+        }
+
+        private void computeNightDifferential(DateTime startTime, DateTime endTime)
+        {
+            // ************************************
+            // *** Night Differential Hours *******
+            // ************************************
+            if ((clockIn >= startTime && clockIn <= endTime) ||
+                    (clockOut >= startTime && clockOut <= endTime))
             {
-                //Night Diff Morning
-
                 //If clockin is less than night dif start time
                 // Set clockin to ND start time
-                if (clockIn.Hour > nightDifStartTime.Hour)
+                if (clockIn < startTime)
                 {
-                    clockIn = clockIn.ChangeTime(nightDifStartTime.Hour, nightDifStartTime.Minute, 0, 0);
+                    clockIn = clockIn.ChangeTime(startTime.Hour, startTime.Minute, 0, 0);
                 }
 
                 //If clockout is greater than night dif end time
                 // Set clockout to ND end time
-                if (clockOut.Value.Hour > nightDifEndTime.Hour)
+                if (clockOut.Value > endTime)
                 {
                     //This handles if NightDif overlaps schedule
-                        // If timeout is later nightDifEnd set out to less than 1 hour than actual
+                    // If timeout is later nightDifEnd set out to less than 1 hour than actual
                     if (nightDifEndTime.TimeOfDay > employeeWorkSchedule.WorkSchedule.TimeStart &&
                         clockOut.Value.TimeOfDay >= employeeWorkSchedule.WorkSchedule.TimeStart)
                     {
-                        clockOut = clockOut.Value.ChangeTime(nightDifEndTime.Hour, 0, 0, 0);
+                        clockOut = clockOut.Value.ChangeTime(endTime.Hour, 0, 0, 0);
                     }
                     else
                     {
-                        clockOut = clockOut.Value.ChangeTime(nightDifEndTime.Hour, nightDifEndTime.Minute, 0, 0);
+                        clockOut = clockOut.Value.ChangeTime(endTime.Hour, endTime.Minute, 0, 0);
                     }
                 }
 
@@ -277,23 +323,24 @@ namespace Payroll.Service.Implementations
                 //Create entry if have night differential hours to record
                 if (ndHoursCount.Value.TotalHours > 0)
                 {
-                  EmployeeHours nightDifHours =
-                      new EmployeeHours
-                      {
-                          OriginAttendanceId = attendance.AttendanceId,
-                          Date = day,
-                          EmployeeId = attendance.EmployeeId,
-                          Hours = Math.Round(ndHoursCount.Value.TotalHours, 2),
-                          Type = Entities.Enums.RateType.NightDifferential
-                      };
+                    EmployeeHours nightDifHours =
+                        new EmployeeHours
+                        {
+                            OriginAttendanceId = attendance.AttendanceId,
+                            Date = day,
+                            EmployeeId = attendance.EmployeeId,
+                            Hours = Math.Round(ndHoursCount.Value.TotalHours, 2),
+                            Type = Entities.Enums.RateType.NightDifferential
+                        };
 
-                  _employeeHoursRepository.Add(nightDifHours);
+                    _employeeHoursRepository.Add(nightDifHours);
                 }
-               
+
 
             }
 
         }
+
         private bool isWtnGracePeriod(DateTime clockIn, DateTime scheduledClockIn)
         {
             var gracePeriod =

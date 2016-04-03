@@ -20,7 +20,7 @@ namespace Payroll.Repository.Repositories
         {
             return Find(eh => eh.EmployeeId == employeeId &&
                 eh.Date >= dateFrom && eh.Date <= dateTo)
-                   .OrderByDescending(eh => eh.Date).ToList();
+                   .OrderBy(eh => eh.Date).OrderBy(eh => eh.EmployeeHoursId).ToList();
         }
     }
 }
