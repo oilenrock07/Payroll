@@ -73,121 +73,9 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
-    <Compile Include="Migrations\201602070812546_test.cs" />
-    <Compile Include="Migrations\201602070812546_test.Designer.cs">
-      <DependentUpon>201602070812546_test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602080233234_additional-attendance-fields.cs" />
-    <Compile Include="Migrations\201602080233234_additional-attendance-fields.Designer.cs">
-      <DependentUpon>201602080233234_additional-attendance-fields.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602080539169_test2.cs" />
-    <Compile Include="Migrations\201602080539169_test2.Designer.cs">
-      <DependentUpon>201602080539169_test2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602080556529_add-attendance-log-table.cs" />
-    <Compile Include="Migrations\201602080556529_add-attendance-log-table.Designer.cs">
-      <DependentUpon>201602080556529_add-attendance-log-table.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Migrations\201602080627473_AddedPictureToEmployee.Designer.cs">
-      <DependentUpon>201602080627473_AddedPictureToEmployee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602101422541_AddedIsActiveToEmployee.cs" />
-    <Compile Include="Migrations\201602101422541_AddedIsActiveToEmployee.Designer.cs">
-      <DependentUpon>201602101422541_AddedIsActiveToEmployee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602101446278_AddedUserEntities.cs" />
-    <Compile Include="Migrations\201602101446278_AddedUserEntities.Designer.cs">
-      <DependentUpon>201602101446278_AddedUserEntities.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602111432018_jonaschanges.cs" />
-    <Compile Include="Migrations\201602111432018_jonaschanges.Designer.cs">
-      <DependentUpon>201602111432018_jonaschanges.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602161338092_AddedFieldsForEmployees.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Migrations\201602161338092_AddedFieldsForEmployees.Designer.cs">
-      <DependentUpon>201602161338092_AddedFieldsForEmployees.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602161414209_AddedNewEmployeeProperties.cs" />
-    <Compile Include="Migrations\201602161414209_AddedNewEmployeeProperties.Designer.cs">
-      <DependentUpon>201602161414209_AddedNewEmployeeProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602200334547_Make Frequency Id and position id nullable.cs" />
-    <Compile Include="Migrations\201602200334547_Make Frequency Id and position id nullable.Designer.cs">
-      <DependentUpon>201602200334547_Make Frequency Id and position id nullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602200347503_Added foreignkey to employee and employeeinfo.cs" />
-    <Compile Include="Migrations\201602200347503_Added foreignkey to employee and employeeinfo.Designer.cs">
-      <DependentUpon>201602200347503_Added foreignkey to employee and employeeinfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602241613509_runseed.cs" />
-    <Compile Include="Migrations\201602241613509_runseed.Designer.cs">
-      <DependentUpon>201602241613509_runseed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603050538375_GenderAndNickNameInEmployee.cs" />
-    <Compile Include="Migrations\201603050538375_GenderAndNickNameInEmployee.Designer.cs">
-      <DependentUpon>201603050538375_GenderAndNickNameInEmployee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.cs" />
-    <Compile Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.Designer.cs">
-      <DependentUpon>201603050807267_IsActiveStatusInEmployeeDepartment.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs" />
-    <Compile Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.Designer.cs">
-      <DependentUpon>201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603060311436_add-field-attendance.cs" />
-    <Compile Include="Migrations\201603060311436_add-field-attendance.Designer.cs">
-      <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603121322567_AddedDescriptionToHoliday.cs" />
-    <Compile Include="Migrations\201603121322567_AddedDescriptionToHoliday.Designer.cs">
-      <DependentUpon>201603121322567_AddedDescriptionToHoliday.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603121558288_AddedIsActiveToLoan.cs" />
-    <Compile Include="Migrations\201603121558288_AddedIsActiveToLoan.Designer.cs">
-      <DependentUpon>201603121558288_AddedIsActiveToLoan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603130423095_LoanPeriod.cs" />
-    <Compile Include="Migrations\201603130423095_LoanPeriod.Designer.cs">
-      <DependentUpon>201603130423095_LoanPeriod.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603130546568_addedRelationshipforEmployeeLoan.cs" />
-    <Compile Include="Migrations\201603130546568_addedRelationshipforEmployeeLoan.Designer.cs">
-      <DependentUpon>201603130546568_addedRelationshipforEmployeeLoan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs" />
-    <Compile Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.Designer.cs">
-      <DependentUpon>201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603270242401_base-entit.cs" />
-    <Compile Include="Migrations\201603270242401_base-entit.Designer.cs">
-      <DependentUpon>201603270242401_base-entit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603270245560_base-entity.cs" />
-    <Compile Include="Migrations\201603270245560_base-entity.Designer.cs">
-      <DependentUpon>201603270245560_base-entity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603270406430_cleaning-up-repeated-fields.cs" />
-    <Compile Include="Migrations\201603270406430_cleaning-up-repeated-fields.Designer.cs">
-      <DependentUpon>201603270406430_cleaning-up-repeated-fields.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603270422471_add-fk-attendance.cs" />
-    <Compile Include="Migrations\201603270422471_add-fk-attendance.Designer.cs">
-      <DependentUpon>201603270422471_add-fk-attendance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.cs" />
-    <Compile Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.Designer.cs">
-      <DependentUpon>201603270501307_add-fk-employeeWorkSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603271421060_add-fk-employeeWorkHours.cs" />
-    <Compile Include="Migrations\201603271421060_add-fk-employeeWorkHours.Designer.cs">
-      <DependentUpon>201603271421060_add-fk-employeeWorkHours.cs</DependentUpon>
+    <Compile Include="Migrations\201604030717363_NewMigration.cs" />
+    <Compile Include="Migrations\201604030717363_NewMigration.Designer.cs">
+      <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -222,93 +110,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602070812546_test.resx">
-      <DependentUpon>201602070812546_test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602080233234_additional-attendance-fields.resx">
-      <DependentUpon>201602080233234_additional-attendance-fields.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602080539169_test2.resx">
-      <DependentUpon>201602080539169_test2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602080556529_add-attendance-log-table.resx">
-      <DependentUpon>201602080556529_add-attendance-log-table.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602080627473_AddedPictureToEmployee.resx">
-      <DependentUpon>201602080627473_AddedPictureToEmployee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602101422541_AddedIsActiveToEmployee.resx">
-      <DependentUpon>201602101422541_AddedIsActiveToEmployee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602101446278_AddedUserEntities.resx">
-      <DependentUpon>201602101446278_AddedUserEntities.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602111432018_jonaschanges.resx">
-      <DependentUpon>201602111432018_jonaschanges.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602161338092_AddedFieldsForEmployees.resx">
-      <DependentUpon>201602161338092_AddedFieldsForEmployees.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602161414209_AddedNewEmployeeProperties.resx">
-      <DependentUpon>201602161414209_AddedNewEmployeeProperties.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602200334547_Make Frequency Id and position id nullable.resx">
-      <DependentUpon>201602200334547_Make Frequency Id and position id nullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602200347503_Added foreignkey to employee and employeeinfo.resx">
-      <DependentUpon>201602200347503_Added foreignkey to employee and employeeinfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602241613509_runseed.resx">
-      <DependentUpon>201602241613509_runseed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603050538375_GenderAndNickNameInEmployee.resx">
-      <DependentUpon>201603050538375_GenderAndNickNameInEmployee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603050807267_IsActiveStatusInEmployeeDepartment.resx">
-      <DependentUpon>201603050807267_IsActiveStatusInEmployeeDepartment.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.resx">
-      <DependentUpon>201603051127467_ChangeAttendanceEmployeeCodeToEmployeeId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603060311436_add-field-attendance.resx">
-      <DependentUpon>201603060311436_add-field-attendance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603121322567_AddedDescriptionToHoliday.resx">
-      <DependentUpon>201603121322567_AddedDescriptionToHoliday.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603121558288_AddedIsActiveToLoan.resx">
-      <DependentUpon>201603121558288_AddedIsActiveToLoan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603130423095_LoanPeriod.resx">
-      <DependentUpon>201603130423095_LoanPeriod.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603130546568_addedRelationshipforEmployeeLoan.resx">
-      <DependentUpon>201603130546568_addedRelationshipforEmployeeLoan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.resx">
-      <DependentUpon>201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603270242401_base-entit.resx">
-      <DependentUpon>201603270242401_base-entit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603270245560_base-entity.resx">
-      <DependentUpon>201603270245560_base-entity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603270406430_cleaning-up-repeated-fields.resx">
-      <DependentUpon>201603270406430_cleaning-up-repeated-fields.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603270422471_add-fk-attendance.resx">
-      <DependentUpon>201603270422471_add-fk-attendance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.resx">
-      <DependentUpon>201603270501307_add-fk-employeeWorkSchedule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603271421060_add-fk-employeeWorkHours.resx">
-      <DependentUpon>201603271421060_add-fk-employeeWorkHours.cs</DependentUpon>
-    </EmbeddedResource>
+    <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="readme.txt" />
+    <EmbeddedResource Include="Migrations\201604030717363_NewMigration.resx">
+      <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

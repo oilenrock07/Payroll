@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Payroll.Entities.Base;
 using Payroll.Entities.Enums;
-using Payroll.Infrastructure.Entities;
 
 namespace Payroll.Entities
 {

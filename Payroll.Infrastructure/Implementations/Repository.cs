@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Payroll.Entities.Base;
 using Payroll.Entities.Contexts;
 using Payroll.Infrastructure.Interfaces;
 using System.Data.Entity;
-using Payroll.Infrastructure.Entities;
 
 namespace Payroll.Infrastructure.Implementations
 {

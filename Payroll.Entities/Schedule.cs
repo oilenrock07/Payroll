@@ -1,5 +1,5 @@
-﻿using Payroll.Entities.Enums;
-using Payroll.Infrastructure.Entities;
+﻿using Payroll.Entities.Base;
+using Payroll.Entities.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

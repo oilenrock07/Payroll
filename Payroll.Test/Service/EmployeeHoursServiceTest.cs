@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Payroll.Entities;
 using Payroll.Entities.Payroll;
-using Payroll.Infrastructure.Entities;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Repositories;
