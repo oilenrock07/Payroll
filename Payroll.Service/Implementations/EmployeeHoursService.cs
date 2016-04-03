@@ -220,9 +220,14 @@ namespace Payroll.Service.Implementations
             var otTimeStart = scheduledTimeOut;
             var otTimeEnd = clockOut;
 
+            //Set ot time end to 12 am of next days
+            if (otTimeEnd.Value.Date > day.Date)
+            {
+                otTimeEnd = day.AddDays(1);
+            }
             if (clockoutLaterThanScheduled)
             {
-                TimeSpan? otHoursCount = clockOut - scheduledTimeOut;
+                TimeSpan? otHoursCount = otTimeEnd - scheduledTimeOut;
 
                 EmployeeHours otHours =
                    new EmployeeHours
@@ -242,34 +247,54 @@ namespace Payroll.Service.Implementations
             // ************************************
             // *** Night Differential Hours *******
             // ************************************
-          
 
-            if (clockIn >= nightDifStartTime && clockIn <= nightDifEndTime)
+            //Morning night dif
+            var morningNightDifStartTime = nightDifStartTime;
+            var morningNightDifEndTime = nightDifEndTime;
+
+            computeNightDifferential(morningNightDifStartTime, morningNightDifEndTime);
+
+            //Evening night dif
+            var eveningNightDifStartTime = nightDifStartTime.AddDays(1);
+            var eveningNightDifEndTime = nightDifEndTime.AddDays(1);
+
+            computeNightDifferential(eveningNightDifStartTime, eveningNightDifEndTime);
+        }
+
+        private void computeNightDifferential(DateTime startTime, DateTime endTime)
+        {
+            // ************************************
+            // *** Night Differential Hours *******
+            // ************************************
+            if ((clockIn >= startTime && clockIn <= endTime) ||
+                    (clockOut >= startTime && clockOut <= endTime))
             {
-                //Night Diff Morning
-
                 //If clockin is less than night dif start time
                 // Set clockin to ND start time
-                if (clockIn.Hour > nightDifStartTime.Hour)
+                if (clockIn < startTime)
                 {
-                    clockIn = clockIn.ChangeTime(nightDifStartTime.Hour, nightDifStartTime.Minute, 0, 0);
+                    clockIn = clockIn.ChangeTime(startTime.Hour, startTime.Minute, 0, 0);
                 }
 
                 //If clockout is greater than night dif end time
                 // Set clockout to ND end time
-                if (clockOut.Value.Hour > nightDifEndTime.Hour)
+                if (clockOut.Value > endTime)
                 {
                     //This handles if NightDif overlaps schedule
-                        // If timeout is later nightDifEnd set out to less than 1 hour than actual
+                    // If timeout is later nightDifEnd set out to less than 1 hour than actual
                     if (nightDifEndTime.TimeOfDay > employeeWorkSchedule.WorkSchedule.TimeStart &&
                         clockOut.Value.TimeOfDay >= employeeWorkSchedule.WorkSchedule.TimeStart)
                     {
-                        clockOut = clockOut.Value.ChangeTime(nightDifEndTime.Hour, 0, 0, 0);
+                        clockOut = clockOut.Value.ChangeTime(endTime.Hour, 0, 0, 0);
                     }
                     else
                     {
-                        clockOut = clockOut.Value.ChangeTime(nightDifEndTime.Hour, nightDifEndTime.Minute, 0, 0);
+                        clockOut = clockOut.Value.ChangeTime(endTime.Hour, endTime.Minute, 0, 0);
                     }
+                }  //Else if clockout is next day, should set clockout to 12am
+                else if (clockOut.Value.Day > day.Day)
+                {
+                    clockOut = day.AddDays(1);
                 }
 
                 TimeSpan? ndHoursCount = clockOut - clockIn;
@@ -277,23 +302,24 @@ namespace Payroll.Service.Implementations
                 //Create entry if have night differential hours to record
                 if (ndHoursCount.Value.TotalHours > 0)
                 {
-                  EmployeeHours nightDifHours =
-                      new EmployeeHours
-                      {
-                          OriginAttendanceId = attendance.AttendanceId,
-                          Date = day,
-                          EmployeeId = attendance.EmployeeId,
-                          Hours = Math.Round(ndHoursCount.Value.TotalHours, 2),
-                          Type = Entities.Enums.RateType.NightDifferential
-                      };
+                    EmployeeHours nightDifHours =
+                        new EmployeeHours
+                        {
+                            OriginAttendanceId = attendance.AttendanceId,
+                            Date = day,
+                            EmployeeId = attendance.EmployeeId,
+                            Hours = Math.Round(ndHoursCount.Value.TotalHours, 2),
+                            Type = Entities.Enums.RateType.NightDifferential
+                        };
 
-                  _employeeHoursRepository.Add(nightDifHours);
+                    _employeeHoursRepository.Add(nightDifHours);
                 }
-               
+
 
             }
 
         }
+
         private bool isWtnGracePeriod(DateTime clockIn, DateTime scheduledClockIn)
         {
             var gracePeriod =
