@@ -156,19 +156,24 @@ namespace Payroll.Service.Implementations
                 {
                     baseTimeIn = clockOut.Value;
                 }
+
                 TimeSpan? advancedOTHoursCount = baseTimeIn - clockIn;
 
-                EmployeeHours advancedOTHours =
-                    new EmployeeHours
-                    {
-                        OriginAttendanceId = attendance.AttendanceId,
-                        Date = day,
-                        EmployeeId = attendance.EmployeeId,
-                        Hours = Math.Round(advancedOTHoursCount.Value.TotalHours, 2),
-                        Type = Entities.Enums.RateType.OverTime
-                    };
+                if (advancedOTHoursCount != null && advancedOTHoursCount.Value.TotalHours > 0)
+                {
+                   EmployeeHours advancedOTHours =
+                   new EmployeeHours
+                   {
+                       OriginAttendanceId = attendance.AttendanceId,
+                       Date = day,
+                       EmployeeId = attendance.EmployeeId,
+                       Hours = Math.Round(advancedOTHoursCount.Value.TotalHours, 2),
+                       Type = Entities.Enums.RateType.OverTime
+                   };
 
-                _employeeHoursRepository.Add(advancedOTHours);
+                    _employeeHoursRepository.Add(advancedOTHours);
+                }
+               
             }
 
         }
@@ -277,7 +282,10 @@ namespace Payroll.Service.Implementations
             var morningNightDifStartTime = nightDifStartTime;
             var morningNightDifEndTime = nightDifEndTime;
 
-            computeNightDifferential(morningNightDifStartTime, morningNightDifEndTime);
+            if (isWithinAdvanceOtPeriod)
+            {
+                computeNightDifferential(morningNightDifStartTime, morningNightDifEndTime);
+            }
 
             //Evening night dif
             var eveningNightDifStartTime = nightDifStartTime.AddDays(1);
