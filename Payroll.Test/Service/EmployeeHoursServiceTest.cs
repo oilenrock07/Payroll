@@ -2027,6 +2027,7 @@ namespace Payroll.Test.Service
 
         }
 
+
         /*
           Regular Hours with Late but Within Grace period
         */
@@ -2073,12 +2074,11 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry1.EmployeeId, employeeHours[0].EmployeeId);
             Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
             Assert.AreEqual(employeeHourEntry1.Date, employeeHours[0].Date);
-
         }
 
         /*
-         Regular Hours with Late but Within Grace period
-       */
+         Regular Hours + OT Within Advance OT period
+        */
         [TestMethod]
         public void GenerateEmployeeHoursWithinAdvanceOTPeriod()
         {
@@ -2149,7 +2149,7 @@ namespace Payroll.Test.Service
         }
 
         /*
-          Regular Hours with Late but Within Grace period
+          Regular Hours + OT not Within Advance OT period
         */
         [TestMethod]
         public void GenerateEmployeeHoursNotWithinAdvanceOTPeriod()
