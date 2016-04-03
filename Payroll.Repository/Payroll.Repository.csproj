@@ -77,12 +77,14 @@
     <Compile Include="Interface\IEmployeeLoanRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />
     <Compile Include="Interface\IEmployeeworkScheduleRepository.cs" />
+    <Compile Include="Interface\IFrequencyRepository.cs" />
     <Compile Include="Interface\IHolidayRepository.cs" />
     <Compile Include="Interface\ILeaveRepository.cs" />
     <Compile Include="Interface\ILoanRepository.cs" />
     <Compile Include="Interface\IPaymentFrequencyRepository.cs" />
     <Compile Include="Interface\IPositionRepository.cs" />
     <Compile Include="Interface\ISettingRepository.cs" />
+    <Compile Include="Interface\ITotalEmployeeHoursRepository.cs" />
     <Compile Include="Models\AttendanceLogDao.cs" />
     <Compile Include="Models\EmployeeLoanDao.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
@@ -95,12 +97,14 @@
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EmployeeWorkScheduleRepository.cs" />
+    <Compile Include="Repositories\FrequencyRepository.cs" />
     <Compile Include="Repositories\HolidayRepository.cs" />
     <Compile Include="Repositories\LeaveRepository.cs" />
     <Compile Include="Repositories\LoanRepository.cs" />
     <Compile Include="Repositories\PaymentFrequencyRepository.cs" />
     <Compile Include="Repositories\PositionRepository.cs" />
     <Compile Include="Repositories\SettingRepository.cs" />
+    <Compile Include="Repositories\TotalEmployeeHoursRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

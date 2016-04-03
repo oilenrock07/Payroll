@@ -19,13 +19,7 @@ namespace Payroll.Repository.Repositories
             _employeeDepartmentRepository = employeeDepartmentRepository;
         }
 
-        public IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId)
-        {
-            //TODO check the payment frequency id
-            return Find(e => e.IsActive).ToList();
-        }
-
-        public Employee GetByCode(string code)
+       public Employee GetByCode(string code)
         {
             return Find(e => e.EmployeeCode == code).FirstOrDefault();
         }

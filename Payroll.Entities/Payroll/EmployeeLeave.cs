@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Payroll.Infrastructure.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities.Payroll
 {
     [Table("employee_leave")]
-    public class EmployeeLeave
+    public class EmployeeLeave : BaseEntity
     {
         [Key]
         public int EmployeeLeaveId { get; set; }

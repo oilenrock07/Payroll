@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Attendance.cs" />
     <Compile Include="AttendanceLog.cs" />
+    <Compile Include="Base\BaseEntity.cs" />
     <Compile Include="Contexts\PayrollContext.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="DepartmentManager.cs" />
@@ -164,6 +165,30 @@
     <Compile Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.Designer.cs">
       <DependentUpon>201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603270242401_base-entit.cs" />
+    <Compile Include="Migrations\201603270242401_base-entit.Designer.cs">
+      <DependentUpon>201603270242401_base-entit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603270245560_base-entity.cs" />
+    <Compile Include="Migrations\201603270245560_base-entity.Designer.cs">
+      <DependentUpon>201603270245560_base-entity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603270406430_cleaning-up-repeated-fields.cs" />
+    <Compile Include="Migrations\201603270406430_cleaning-up-repeated-fields.Designer.cs">
+      <DependentUpon>201603270406430_cleaning-up-repeated-fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603270422471_add-fk-attendance.cs" />
+    <Compile Include="Migrations\201603270422471_add-fk-attendance.Designer.cs">
+      <DependentUpon>201603270422471_add-fk-attendance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.cs" />
+    <Compile Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.Designer.cs">
+      <DependentUpon>201603270501307_add-fk-employeeWorkSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603271421060_add-fk-employeeWorkHours.cs" />
+    <Compile Include="Migrations\201603271421060_add-fk-employeeWorkHours.Designer.cs">
+      <DependentUpon>201603271421060_add-fk-employeeWorkHours.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -173,6 +198,7 @@
     <Compile Include="Payroll\EmployeeAdjustment.cs" />
     <Compile Include="Payroll\EmployeeLoan.cs" />
     <Compile Include="Payroll\Payroll.cs" />
+    <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
@@ -261,6 +287,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603130609367_RelationShipOfEmployeeLoanAndEmployee.resx">
       <DependentUpon>201603130609367_RelationShipOfEmployeeLoanAndEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270242401_base-entit.resx">
+      <DependentUpon>201603270242401_base-entit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270245560_base-entity.resx">
+      <DependentUpon>201603270245560_base-entity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270406430_cleaning-up-repeated-fields.resx">
+      <DependentUpon>201603270406430_cleaning-up-repeated-fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270422471_add-fk-attendance.resx">
+      <DependentUpon>201603270422471_add-fk-attendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603270501307_add-fk-employeeWorkSchedule.resx">
+      <DependentUpon>201603270501307_add-fk-employeeWorkSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603271421060_add-fk-employeeWorkHours.resx">
+      <DependentUpon>201603271421060_add-fk-employeeWorkHours.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

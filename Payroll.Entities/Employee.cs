@@ -1,17 +1,13 @@
-﻿using System;
+﻿using Payroll.Infrastructure.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
     [Table("employee")]
-    public class Employee
+    public class Employee : BaseEntity
     {
-        public Employee()
-        {
-            Enabled = true;
-            IsActive = true;
-        }
 
         [Key]
         public int EmployeeId { get; set; }
@@ -39,14 +35,13 @@ namespace Payroll.Entities
         [StringLength(500)]
         public string Picture { get; set; }
 
-        public bool IsActive { get; set; }
-
         public int Gender { get; set; }
 
         //For clock in/out (biomertrics and rfid)
         public int Privilege { get; set; }
-        public bool Enabled { get; set; }
+
         public bool EnrolledToRfid { get; set; }
+
         public bool EnrolledToBiometrics { get; set; }
 
         [StringLength(500)]

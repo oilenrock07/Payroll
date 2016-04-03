@@ -10,5 +10,7 @@ namespace Payroll.Service.Interfaces
     public interface IEmployeeInfoService
     {
         EmployeeInfo GetByEmployeeId(int employeeId);
+
+        IList<EmployeeInfo> GetActiveByPaymentFrequency(int PaymentFrequencyId);
     }
 }

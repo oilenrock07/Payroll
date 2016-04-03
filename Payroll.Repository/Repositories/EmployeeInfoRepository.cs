@@ -3,6 +3,7 @@ using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Interface;
+using System.Collections.Generic;
 
 namespace Payroll.Repository.Repositories
 {
@@ -17,6 +18,11 @@ namespace Payroll.Repository.Repositories
         public EmployeeInfo GetByEmployeeId(int employeeId)
         {
             return Find(x => x.Employee.EmployeeId == employeeId).FirstOrDefault();
+        }
+
+        public IList<EmployeeInfo> GetActiveByPaymentFrequency(int paymentFrequencyId)
+        {
+            return Find(e => e.Employee.IsActive && e.PaymentFrequencyId == paymentFrequencyId).ToList();
         }
     }
 }

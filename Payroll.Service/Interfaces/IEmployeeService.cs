@@ -9,6 +9,5 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeeService
     {
-        IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId);
     }
 }

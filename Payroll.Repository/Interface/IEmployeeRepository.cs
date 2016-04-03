@@ -8,9 +8,10 @@ namespace Payroll.Repository.Interface
     {
         Employee GetByCode(string code);
 
-        IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId);
         IEnumerable<EmployeeDepartment> GetDepartments(int employeeId);
+
         void UpdateDepartment(IEnumerable<int> departmentIds, int employeeId);
+
         IEnumerable<Employee> SearchEmployee(string criteria);
     }
 }

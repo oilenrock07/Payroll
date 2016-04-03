@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Payroll.Infrastructure.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
     [Table("frequency")]
-    public class Frequency
+    public class Frequency : BaseEntity
     {
         [Key]
         public int FrequencyId { get; set; }

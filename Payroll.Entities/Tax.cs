@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Payroll.Infrastructure.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
     [Table("tax")]
-    public class Tax
+    public class Tax : BaseEntity
     {
         [Key]
         public int TaxId { get; set; }

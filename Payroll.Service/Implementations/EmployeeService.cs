@@ -13,17 +13,11 @@ namespace Payroll.Service.Implementations
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork)
+        public EmployeeService(IEmployeeRepository employeeRepository)
         {
-            employeeRepository = _employeeRepository;
-            unitOfWork = _unitOfWork;
+            _employeeRepository = employeeRepository;
         }
 
-        public IList<Employee> GetActiveByPaymentFrequency(int PaymentFrequencyId)
-        {
-           return _employeeRepository.GetActiveByPaymentFrequency(PaymentFrequencyId);
-        }
     }
 }

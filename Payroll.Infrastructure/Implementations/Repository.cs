@@ -3,11 +3,12 @@ using System.Linq;
 using Payroll.Entities.Contexts;
 using Payroll.Infrastructure.Interfaces;
 using System.Data.Entity;
+using Payroll.Infrastructure.Entities;
 
 namespace Payroll.Infrastructure.Implementations
 {
     public class Repository<T>  : IRepository<T>
-        where T : class
+        where T : BaseEntity
     {
 
         protected readonly bool _sharedContext = false;
@@ -40,6 +41,11 @@ namespace Payroll.Infrastructure.Implementations
             return DbSet;
         }
 
+        public IQueryable<T> GetAllActive()
+        {
+            return Find(e => e.IsActive);
+        }
+
         public virtual IQueryable<T> Find(System.Linq.Expressions.Expression<Func<T, bool>> expression)
         {
             return DbSet.Where(expression);
@@ -47,6 +53,8 @@ namespace Payroll.Infrastructure.Implementations
 
         public virtual T Add(T entity)
         {
+            entity.CreateDate = new DateTime();
+           
             DbSet.Add(entity);
 
             if (!_sharedContext)
@@ -58,14 +66,17 @@ namespace Payroll.Infrastructure.Implementations
         public virtual void Update(T entity)
         {
             DbSet.Attach(entity);
-            
+            entity.UpdateDate = new DateTime();
             if (!_sharedContext)
                 _context.SaveChanges();
         }
 
         public virtual void Delete(T entity)
         {
-            DbSet.Remove(entity);
+            //DbSet.Remove(entity);
+            DbSet.Attach(entity);
+
+            entity.IsActive = false;
 
             if (!_sharedContext)
                 _context.SaveChanges();
@@ -75,5 +86,6 @@ namespace Payroll.Infrastructure.Implementations
         {
             _context.Database.ExecuteSqlCommand(command, parameters);
         }
+
     }
 }

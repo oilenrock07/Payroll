@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Payroll.Infrastructure.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Payroll.Entities
 {
     [Table("loan")]
-    public class Loan
+    public class Loan : BaseEntity
     {
         [Key]
         public int LoanId { get; set; }
@@ -22,6 +23,5 @@ namespace Payroll.Entities
 
         public int LoanPeriodNumber { get; set; }
 
-        public bool IsActive { get; set; }
     }
 }

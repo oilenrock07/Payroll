@@ -13,10 +13,6 @@ namespace Payroll.Service.Interfaces
 
         int CreateWorkSchedulesByDateRange(DateTime fromDate, DateTime toDate);
 
-        Attendance Add(Attendance attendance);
-
-        void Update(Attendance attendance);
-
         IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 
         IList<Attendance> GetAttendanceByDate(int employeeId, DateTime date);
