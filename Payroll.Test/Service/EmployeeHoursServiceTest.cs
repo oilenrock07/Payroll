@@ -902,6 +902,7 @@ namespace Payroll.Test.Service
         {
             var attendanceId1 = 1;
             var attendanceId2 = 2;
+            var attendanceId3 = 3;
 
             var dataAttendance = new List<Attendance>
                         {
@@ -920,14 +921,14 @@ namespace Payroll.Test.Service
                                 AttendanceId = attendanceId2,
                                 Employee = employee,
                                 ClockIn = new DateTime(2016,2,1,13,0,0),
-                                ClockOut = new DateTime(2016,2,2,2,0,0)
+                                ClockOut = new DateTime(2016,2,1,18,0,0)
                             },
                             //Next day
                             new Attendance()
                             {
-                                AttendanceId = attendanceId2,
+                                AttendanceId = attendanceId3,
                                 Employee = employee,
-                                ClockIn = new DateTime(2016,2,1,13,0,0),
+                                ClockIn = new DateTime(2016,2,1,23,0,0),
                                 ClockOut = new DateTime(2016,2,2,2,0,0)
                             }
                         };
@@ -942,7 +943,7 @@ namespace Payroll.Test.Service
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
             Assert.IsNotNull(employeeHours);
-            Assert.AreEqual(6, employeeHours.Count);
+            Assert.AreEqual(7, employeeHours.Count);
 
             var employeeHourEntry1 = new EmployeeHours
             {
@@ -967,32 +968,41 @@ namespace Payroll.Test.Service
                 Type = Entities.Enums.RateType.OverTime,
                 OriginAttendanceId = attendanceId2,
                 EmployeeId = employee.EmployeeId,
-                Hours = 8,
+                Hours = 2,
                 Date = dateFrom
             };
 
             var employeeHourEntry4 = new EmployeeHours
             {
-                Type = Entities.Enums.RateType.NightDifferential,
-                OriginAttendanceId = attendanceId2,
+                Type = Entities.Enums.RateType.OverTime,
+                OriginAttendanceId = attendanceId3,
                 EmployeeId = employee.EmployeeId,
-                Hours = 2,
+                Hours = 1,
                 Date = dateFrom
             };
 
             var employeeHourEntry5 = new EmployeeHours
             {
+                Type = Entities.Enums.RateType.NightDifferential,
+                OriginAttendanceId = attendanceId3,
+                EmployeeId = employee.EmployeeId,
+                Hours = 1,
+                Date = dateFrom
+            };
+
+            var employeeHourEntry6 = new EmployeeHours
+            {
                 Type = Entities.Enums.RateType.OverTime,
-                OriginAttendanceId = attendanceId2,
+                OriginAttendanceId = attendanceId3,
                 EmployeeId = employee.EmployeeId,
                 Hours = 2,
                 Date = dateTo
             };
 
-            var employeeHourEntry6 = new EmployeeHours
+            var employeeHourEntry7 = new EmployeeHours
             {
                 Type = Entities.Enums.RateType.NightDifferential,
-                OriginAttendanceId = attendanceId2,
+                OriginAttendanceId = attendanceId3,
                 EmployeeId = employee.EmployeeId,
                 Hours = 2,
                 Date = dateTo
@@ -1027,6 +1037,18 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry5.EmployeeId, employeeHours[4].EmployeeId);
             Assert.AreEqual(employeeHourEntry5.Hours, employeeHours[4].Hours);
             Assert.AreEqual(employeeHourEntry5.Date, employeeHours[4].Date);
+
+            Assert.AreEqual(employeeHourEntry6.Type, employeeHours[5].Type);
+            Assert.AreEqual(employeeHourEntry6.OriginAttendanceId, employeeHours[5].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry6.EmployeeId, employeeHours[5].EmployeeId);
+            Assert.AreEqual(employeeHourEntry6.Hours, employeeHours[5].Hours);
+            Assert.AreEqual(employeeHourEntry6.Date, employeeHours[5].Date);
+
+            Assert.AreEqual(employeeHourEntry7.Type, employeeHours[6].Type);
+            Assert.AreEqual(employeeHourEntry7.OriginAttendanceId, employeeHours[6].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry7.EmployeeId, employeeHours[6].EmployeeId);
+            Assert.AreEqual(employeeHourEntry7.Hours, employeeHours[6].Hours);
+            Assert.AreEqual(employeeHourEntry7.Date, employeeHours[6].Date);
         }
     }
 }
