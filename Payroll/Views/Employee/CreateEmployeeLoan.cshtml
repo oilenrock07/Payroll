@@ -1,0 +1,136 @@
+﻿@using Payroll.Extension
+@model Payroll.Models.Employee.EmployeeLoanViewModel
+
+@{
+    ViewBag.Title = "Create Loan";
+}
+
+<h2>Create Loan</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Loan Details</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EmployeeId)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.LoanId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.LoanId, Model.Loans, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LoanId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.Amount, new {@class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Amount)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LoanDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DatePickerFor("LoanDate", DateTime.Now, new { @class = "form-control datepicker" })
+                @Html.ValidationMessageFor(model => model.LoanDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DatePickerFor("StartDate", DateTime.Now.AddMonths(1), new { @class = "form-control datepicker" })
+                @Html.ValidationMessageFor(model => model.StartDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DatePickerFor("EndDate", DateTime.Now.AddMonths(2), new { @class = "form-control datepicker" })
+                @Html.ValidationMessageFor(model => model.EndDate)
+            </div>
+        </div>
+        
+        <hr/>
+        <h4>Payment Details</h4>
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FrequencyId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.FrequencyId, Model.PaymentFrequencies, new { @class = "form-control js-loanFrequency" })
+                @Html.ValidationMessageFor(model => model.FrequencyId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DatePickerFor("PaymentStartDate", DateTime.Now.AddMonths(1), new { @class = "form-control datepicker" })
+                @Html.ValidationMessageFor(model => model.PaymentStartDate)
+            </div>
+        </div>
+
+        <div class="form-group js-weekly js-loanPaymentOption">
+            @Html.LabelFor(model => model.WeeklyPaymentDayOfWeek, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.WeeklyPaymentDayOfWeek, Model.WeeklyPaymentDayOfWeekList, new { @class = "form-control" } )
+                @Html.ValidationMessageFor(model => model.WeeklyPaymentDayOfWeek)
+            </div>
+        </div>
+
+        <div class="form-group hidden js-bimonthly js-loanPaymentOption">
+            @Html.LabelFor(model => model.BiMonthlyPaymentFirstDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.BiMonthlyPaymentFirstDate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BiMonthlyPaymentFirstDate)
+            </div>
+        </div>
+
+        <div class="form-group hidden js-bimonthly js-loanPaymentOption">
+            @Html.LabelFor(model => model.BiMonthlyPaymentSecondDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.BiMonthlyPaymentSecondDate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BiMonthlyPaymentSecondDate)
+            </div>
+        </div>
+
+        <div class="form-group hidden js-monthly js-loanPaymentOption">
+            @Html.LabelFor(model => model.MonthlyPaymentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.MonthlyPaymentDate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MonthlyPaymentDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "EmployeeLoans")
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="/Scripts/pagination.js"></script>
+    <script type="text/javascript" src="/Scripts/Employee/employeeloan.js"></script>
+}
