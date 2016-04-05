@@ -1,4 +1,5 @@
-﻿using Payroll.Entities.Payroll;
+﻿using Payroll.Entities.Enums;
+using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Payroll.Repository.Interface
 {
     public interface ITotalEmployeeHoursRepository : IRepository<TotalEmployeeHours>
     {
+        TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type);
     }
 }

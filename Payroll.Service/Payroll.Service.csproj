@@ -49,6 +49,7 @@
     <Compile Include="Implementations\EmployeeService.cs" />
     <Compile Include="Implementations\EmployeeWorkScheduleService.cs" />
     <Compile Include="Implementations\HolidayService.cs" />
+    <Compile Include="Implementations\TotalEmployeeHoursService.cs" />
     <Compile Include="Implementations\ValidationService.cs" />
     <Compile Include="Interfaces\IAttendanceLogService.cs" />
     <Compile Include="Implementations\CacheService.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Interfaces\IEmployeeWorkScheduleService.cs" />
     <Compile Include="Interfaces\IHolidayService.cs" />
     <Compile Include="Interfaces\ISettingService.cs" />
+    <Compile Include="Interfaces\ITotalEmployeeHoursService.cs" />
     <Compile Include="Interfaces\IValidationService.cs" />
     <Compile Include="Interfaces\IWebService.cs" />
     <Compile Include="Interfaces\Model\IPaginationModel.cs" />

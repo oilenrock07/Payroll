@@ -22,5 +22,11 @@ namespace Payroll.Repository.Repositories
                 eh.Date >= dateFrom && eh.Date <= dateTo)
                    .OrderBy(eh => eh.Date).OrderBy(eh => eh.EmployeeHoursId).ToList();
         }
+
+        public IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate)
+        {
+            return Find(eh => !eh.IsIncludedInTotal && eh.Date >= fromDate 
+                && eh.Date < toDate).OrderBy(eh => eh.EmployeeId).OrderBy(eh => eh.Date).OrderBy(eh => eh.Type).ToList();
+        }
     }
 }

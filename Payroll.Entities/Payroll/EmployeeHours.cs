@@ -13,6 +13,11 @@ namespace Payroll.Entities.Payroll
     [Table("employee_hours")]
     public class EmployeeHours : BaseEntity
     {
+        public EmployeeHours()
+        {
+            IsIncludedInTotal = false;
+        }
+
         [Key]
         public int EmployeeHoursId { get; set; }
 
@@ -27,5 +32,7 @@ namespace Payroll.Entities.Payroll
         public RateType Type { get; set; }
 
         public int OriginAttendanceId { get; set; }
+
+        public bool IsIncludedInTotal { get; set; }
     }
 }

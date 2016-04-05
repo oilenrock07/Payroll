@@ -387,5 +387,15 @@ namespace Payroll.Service.Implementations
         {
             return _employeeHoursRepository.GetByEmployeeAndDateRange(employeeId, fromDate, toDate);
         }
+
+        public IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate)
+        {
+            return _employeeHoursRepository.GetForProcessingByDateRange(fromDate, toDate);
+        }
+
+        public void Update(EmployeeHours employeeHours)
+        {
+            _employeeHoursRepository.Update(employeeHours);
+        }
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Payroll.Entities.Enums;
 
 namespace Payroll.Repository.Repositories
 {
@@ -16,6 +17,11 @@ namespace Payroll.Repository.Repositories
             : base (databaseFactory)
         {
             DbSet = databaseFactory.GetContext().TotalEmployeeHours;
+        }
+
+        public TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
+        {
+            return Find(eh => eh.EmployeeId == employeeId && eh.Date == date && eh.Type == type).First();
         }
     }
 }
