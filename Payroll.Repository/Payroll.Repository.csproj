@@ -87,6 +87,7 @@
     <Compile Include="Interface\ITotalEmployeeHoursRepository.cs" />
     <Compile Include="Models\AttendanceLogDao.cs" />
     <Compile Include="Models\EmployeeLoanDao.cs" />
+    <Compile Include="Models\Employee\EmployeeNames.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />

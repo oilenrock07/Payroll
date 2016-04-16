@@ -214,6 +214,7 @@
     <Compile Include="Models\Employee\EmployeeDepartmentViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeInfoViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeListViewModel.cs" />
+    <Compile Include="Models\Employee\EmployeeLoanViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Maintenance\LoanViewModel.cs" />
@@ -250,6 +251,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Employee\employeedetails.js" />
     <Content Include="Scripts\Employee\employeelist.js" />
+    <Content Include="Scripts\Employee\employeeloan.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -324,6 +326,7 @@
     <Content Include="Views\Maintenance\CreateLoan.cshtml" />
     <Content Include="Views\Maintenance\EditLoan.cshtml" />
     <Content Include="Views\Employee\EmployeeLoans.cshtml" />
+    <Content Include="Views\Employee\CreateEmployeeLoan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,7 @@ using Omu.ValueInjecter;
 using Payroll.Common.Enums;
 using Payroll.Common.Helpers;
 using Payroll.Entities;
+using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models;
 using Payroll.Models.Employee;
@@ -30,10 +31,11 @@ namespace Payroll.Controllers
         private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeLoanRepository _employeeLoanRepository;
+        private readonly ILoanRepository _loanRepository;
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
-            IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository, IDepartmentRepository departmentRepository)
+            IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository, IDepartmentRepository departmentRepository, ILoanRepository loanRepository)
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -44,6 +46,7 @@ namespace Payroll.Controllers
             _paymentFrequencyRepository = paymentFrequencyRepository;
             _employeeLoanRepository = employeeLoanRepository;
             _departmentRepository = departmentRepository;
+            _loanRepository = loanRepository;
         }
 
         public virtual ActionResult Index()
@@ -337,5 +340,59 @@ namespace Payroll.Controllers
             return View(result);
         }
 
+        public virtual ActionResult CreateEmployeeLoan()
+        {
+            var viewModel = new EmployeeLoanViewModel();
+            viewModel.Employees = _employeeRepository.GetEmployeeNames()
+                                  .Select(x => new SelectListItem
+                                    {
+                                        Value = x.EmployeeId.ToString(),
+                                        Text = x.FullName
+                                    });
+
+            viewModel.Loans = _loanRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            {
+                Value = x.LoanId.ToString(),
+                Text = x.LoanName
+            }).ToList();
+
+            var dayOfWeeks = new List<SelectListItem>();
+            foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                dayOfWeeks.Add(new SelectListItem
+                {
+                    Text = dayOfWeek.ToString(),
+                    Value = ((int)dayOfWeek).ToString()
+                });
+            }
+            viewModel.WeeklyPaymentDayOfWeekList = dayOfWeeks;
+
+
+            var loanPaymentFrequencies = new List<SelectListItem>();
+            foreach (Common.Enums.Frequency frequency in Enum.GetValues(typeof(Common.Enums.Frequency)))
+            {
+                loanPaymentFrequencies.Add(new SelectListItem
+                {
+                    Text = frequency.ToString(),
+                    Value = ((int)frequency).ToString()
+                });
+            }
+            viewModel.PaymentFrequencies = loanPaymentFrequencies;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public virtual ActionResult CreateEmployeeLoan(EmployeeLoanViewModel viewModel)
+        {
+            var employeeLoan = viewModel.MapItem<EmployeeLoanViewModel, EmployeeLoan>((s, d) =>
+            {
+                d.IsActive = true;
+            });
+            _employeeLoanRepository.Add(employeeLoan);
+
+            _unitOfWork.Commit();
+            return RedirectToAction("EmployeeLoans");
+        }
     }
 }

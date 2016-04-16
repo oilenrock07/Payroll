@@ -1,6 +1,7 @@
 ﻿using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using System.Collections.Generic;
+using Payroll.Repository.Models.Employee;
 
 namespace Payroll.Repository.Interface
 {
@@ -13,5 +14,6 @@ namespace Payroll.Repository.Interface
         void UpdateDepartment(IEnumerable<int> departmentIds, int employeeId);
 
         IEnumerable<Employee> SearchEmployee(string criteria);
+        IEnumerable<EmployeeNames> GetEmployeeNames();
     }
 }

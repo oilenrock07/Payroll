@@ -51,13 +51,13 @@
             @Html.DisplayFor(modelItem => item.Amount)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LoanDate.ToShortDateString())
+            @Html.Raw(item.LoanDate.ToShortDateString())
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.StartDate.ToShortDateString())
+            @Html.Raw(item.StartDate.ToShortDateString())
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EndDate.ToShortDateString())
+            @Html.Raw(item.EndDate.ToShortDateString())
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

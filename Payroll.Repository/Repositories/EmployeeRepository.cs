@@ -5,6 +5,7 @@ using Payroll.Repository.Interface;
 using Payroll.Infrastructure.Implementations;
 using System;
 using System.Collections.Generic;
+using Payroll.Repository.Models.Employee;
 
 namespace Payroll.Repository.Repositories
 {
@@ -58,6 +59,15 @@ namespace Payroll.Repository.Repositories
                 employeeDepartment.IsActive = false;
             }
 
+        }
+
+        public IEnumerable<EmployeeNames> GetEmployeeNames()
+        {
+            var result = Find(x => x.IsActive)
+                        .Select(x => new EmployeeNames {EmployeeId = x.EmployeeId, FirstName = x.FirstName, LastName = x.LastName})
+                        .ToList();
+
+            return result;
         }
 
         public IEnumerable<Employee> SearchEmployee(string criteria)
