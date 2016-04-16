@@ -12,5 +12,7 @@ namespace Payroll.Repository.Interface
     public interface ITotalEmployeeHoursRepository : IRepository<TotalEmployeeHours>
     {
         TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type);
+
+        IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo);
     }
 }

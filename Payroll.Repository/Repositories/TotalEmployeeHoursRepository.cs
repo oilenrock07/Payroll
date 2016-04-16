@@ -23,5 +23,11 @@ namespace Payroll.Repository.Repositories
         {
             return Find(eh => eh.EmployeeId == employeeId && eh.Date == date && eh.Type == type).First();
         }
+
+        public IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo)
+        {
+            return Find(eh => eh.Date >= dateFrom && eh.Date < dateTo)
+                .OrderBy(eh => eh.EmployeeId).OrderBy(eh => eh.Date).ToList();
+        }
     }
 }

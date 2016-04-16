@@ -4,6 +4,7 @@ using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Infrastructure.Implementations;
+using System.Linq;
 
 namespace Payroll.Repository.Repositories
 {
@@ -19,6 +20,11 @@ namespace Payroll.Repository.Repositories
         {
             var year = DateTime.Now.Year;
             return Find(x => x.Year == year && x.IsActive);
+        }
+
+        public Holiday GetHoliday(DateTime date)
+        {
+            return Find(h => h.Date == date && h.IsActive).FirstOrDefault();
         }
     }
 }

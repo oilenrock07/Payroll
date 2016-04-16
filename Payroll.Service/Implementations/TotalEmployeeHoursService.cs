@@ -92,5 +92,15 @@ namespace Payroll.Service.Implementations
             //Commit all change
             _unitOfWork.Commit();
         }
+
+        public TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
+        {
+            return _totalEmployeeHoursRepository.GetByEmployeeDateAndType(employeeId, date, type);
+        }
+
+        public IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo)
+        {
+            return _totalEmployeeHoursRepository.GetByDateRange(dateFrom, dateTo);
+        }
     }
 }

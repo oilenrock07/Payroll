@@ -85,7 +85,8 @@
     <Compile Include="Payroll\Deduction.cs" />
     <Compile Include="Payroll\EmployeeAdjustment.cs" />
     <Compile Include="Payroll\EmployeeLoan.cs" />
-    <Compile Include="Payroll\Payroll.cs" />
+    <Compile Include="Payroll\EmployeeDailySalary.cs" />
+    <Compile Include="Payroll\EmployeePayroll.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
