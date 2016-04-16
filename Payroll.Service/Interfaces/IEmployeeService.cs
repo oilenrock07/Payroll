@@ -9,5 +9,6 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeeService
     {
+        Employee GetById(int id);
     }
 }

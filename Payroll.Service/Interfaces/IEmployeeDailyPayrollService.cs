@@ -1,5 +1,4 @@
-﻿using Payroll.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Payroll.Service.Interfaces
 {
-    public interface IHolidayService
+    public interface IEmployeeDailyPayrollService
     {
-        void CreateNewHolidays();
-
-        Holiday GetHoliday(DateTime date);
+        void GenerateEmployeeDailySalaryByDateRange(DateTime dateFrom, DateTime dateTo);
     }
 }

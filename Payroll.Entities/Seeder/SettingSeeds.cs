@@ -15,11 +15,11 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "SCHEDULE_GRACE_PERIOD_MINUTES", Value = "5", Description = "Grace period in minutes", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_MINIMUM_OT_MINUTES", Value = "5", Description = "Minimum OT in minutes", Category = "SCHEDULE" },
 
-                new Setting { SettingId = 3, SettingKey = "RATE_OT", Value = "1.25", Description = "OT Rate", Category = "RATE" },
+                new Setting { SettingId = 3, SettingKey = "RATE_OT", Value = "0.25", Description = "OT Rate", Category = "RATE" },
                 new Setting { SettingId = 4, SettingKey = "RATE_NIGHTDIF", Value = "0.8", Description = "Night Dif", Category = "RATE" },
-                new Setting { SettingId = 5, SettingKey = "RATE_REST_DAY", Value = "1.3", Description = "Rest Day", Category = "RATE" },
-                new Setting { SettingId = 6, SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "1.3", Description = "Special Holiday", Category = "RATE" },
-                new Setting { SettingId = 7, SettingKey = "RATE_HOLIDAY_REGULAR", Value = "2", Description = "Regular Holiday", Category = "RATE" },
+                new Setting { SettingId = 5, SettingKey = "RATE_REST_DAY", Value = "0.3", Description = "Rest Day", Category = "RATE" },
+                new Setting { SettingId = 6, SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "0.3", Description = "Special Holiday", Category = "RATE" },
+                new Setting { SettingId = 7, SettingKey = "RATE_HOLIDAY_REGULAR", Value = "1", Description = "Regular Holiday", Category = "RATE" },
 
 
                 //Company Info

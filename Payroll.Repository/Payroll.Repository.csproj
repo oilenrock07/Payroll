@@ -71,6 +71,8 @@
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
     <Compile Include="Interface\IDepartmentRepository.cs" />
+    <Compile Include="Interface\IEmployeeDailySalary.cs" />
+    <Compile Include="Interface\IEmployeeDailySalaryRepository.cs" />
     <Compile Include="Interface\IEmployeeDepartmentRepository.cs" />
     <Compile Include="Interface\IEmployeeHoursRepository.cs" />
     <Compile Include="Interface\IEmployeeInfoRepository.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />
+    <Compile Include="Repositories\EmployeeDailySalaryRepository.cs" />
     <Compile Include="Repositories\EmployeeDepartmentRepository.cs" />
     <Compile Include="Repositories\EmployeeHoursRepository.cs" />
     <Compile Include="Repositories\EmployeeInfoRepository.cs" />

@@ -12,5 +12,9 @@ namespace Payroll.Service.Interfaces
         int GenerateEmployeeHours(int PaymentFrequencyId, DateTime fromDate, DateTime toDate);
 
         IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime fromDate, DateTime toDate);
+
+        IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate);
+
+        void Update(EmployeeHours employeeHourss);
     }
 }

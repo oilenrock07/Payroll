@@ -19,5 +19,10 @@ namespace Payroll.Service.Implementations
             _employeeRepository = employeeRepository;
         }
 
+        public Employee GetById(int id)
+        {
+            return _employeeRepository.GetById(id);
+        }
+
     }
 }

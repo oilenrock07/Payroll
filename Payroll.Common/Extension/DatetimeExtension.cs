@@ -48,5 +48,24 @@ namespace Payroll.Common.Extension
                 milliseconds,
                 dateTime.Kind);
         }
+
+        public static bool IsRestDay(this DateTime date, int startDay, int endDay)
+        {
+            DayOfWeek day = date.DayOfWeek;
+            DayOfWeek start_day = (DayOfWeek)startDay;
+            DayOfWeek end_day = (DayOfWeek)endDay;
+
+            if (end_day < start_day)
+                end_day += 7;
+
+            if (day < start_day)
+                day += 7;
+
+            if (day >= start_day && day <= end_day)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -6,14 +6,23 @@ using Payroll.Entities.Base;
 namespace Payroll.Entities.Payroll
 {
     [Table("payroll")]
-    public class Payroll : BaseEntity
+    public class EmployeePayroll : BaseEntity
     {
+        public EmployeePayroll(){
+            TotalNet = 0;
+            TotalDeduction = 0;
+            TotalAdjustment = 0;
+            TotalGross = 0;
+        }
+
         [Key]
         public int PayrollId { get; set; }
 
         public int EmployeeId { get; set; }
 
-        public decimal Salary { get; set; }
+        public decimal TotalNet { get; set; }
+
+        public decimal TotalGross { get; set; }
 
         public decimal TotalDeduction { get; set; }
 
@@ -25,8 +34,6 @@ namespace Payroll.Entities.Payroll
 
         public DateTime CutOffEndDate { get; set; }
 
-        public DateTime PayrollGeneratedDate { get; set; }
-
-        public decimal TotalPay { get; set; }
+        public DateTime PayrollGeneratedDate { get; set; }       
     }
 }

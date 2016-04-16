@@ -11,5 +11,7 @@ namespace Payroll.Repository.Interface
     public interface IEmployeeHoursRepository : IRepository<EmployeeHours>
     {
         IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime dateFrom, DateTime dateTo);
+
+        IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate);
     }
 }

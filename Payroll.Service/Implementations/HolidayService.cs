@@ -239,5 +239,10 @@ namespace Payroll.Service.Implementations
 
             return staticHolidays;
         }
+
+        public Holiday GetHoliday(DateTime date)
+        {
+            return _holidayRepository.GetHoliday(date);
+        }
     }
 }
