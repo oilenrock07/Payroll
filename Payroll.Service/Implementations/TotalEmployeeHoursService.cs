@@ -35,6 +35,9 @@ namespace Payroll.Service.Implementations
             RateType ? tempRate = null;
 
             TotalEmployeeHours totalEmployeeHours = null;
+
+            EmployeeHours last = employeeHoursList.Last();
+
             foreach (EmployeeHours hours in employeeHoursList)
             {
                 // If not the same type and employee as the last entry should create new total employee hours
@@ -76,6 +79,14 @@ namespace Payroll.Service.Implementations
                 else //Same Employee, Date and Rate, Update the total Employee hours data
                 {
                     totalEmployeeHours.Hours = totalEmployeeHours.Hours + hours.Hours;
+                }
+
+                //If Last Iteration and New entry  
+                    //Save
+                if (hours.Equals(last) && (totalEmployeeHours.TotalEmployeeHoursId == null 
+                    || totalEmployeeHours.TotalEmployeeHoursId <= 0))
+                {
+                    _totalEmployeeHoursRepository.Add(totalEmployeeHours);
                 }
 
                 //Set Reference data

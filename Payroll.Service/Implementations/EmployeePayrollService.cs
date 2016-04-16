@@ -32,11 +32,10 @@ namespace Payroll.Service.Implementations
             EmployeePayroll tempEmployeePayroll = null;
 
             DateTime today = new DateTime();
+            EmployeeDailyPayroll last = employeeDailyPayroll.Last();
 
             foreach (EmployeeDailyPayroll dailyPayroll in employeeDailyPayroll)
             {
-                EmployeePayroll employeePayroll = null;
-              
                 //If should create new entry
                 if (tempEmployeePayroll != null && 
                     (tempEmployeePayroll.EmployeeId != tempEmployeePayroll.EmployeeId))
@@ -44,22 +43,34 @@ namespace Payroll.Service.Implementations
                     //Save last entry if for different employee
                     _employeePayrollRepository.Add(tempEmployeePayroll);
 
-                    employeePayroll = new EmployeePayroll
+                    EmployeePayroll employeePayroll = new EmployeePayroll
                     {
                         EmployeeId = dailyPayroll.EmployeeId,
                         CutOffStartDate = dateFrom,
                         CutOffEndDate = dateTo,
                         PayrollGeneratedDate = today,
-                        PayrollDate = payrollDate
+                        PayrollDate = payrollDate,
+                        TotalNet = dailyPayroll.TotalPay
                     };
+
+                    tempEmployeePayroll = employeePayroll;
 
                 }
                 else
                 {
                     //Update last entry
+                    tempEmployeePayroll.TotalNet += dailyPayroll.TotalPay;
+                }
 
+                //If last iteration save
+                if (dailyPayroll.Equals(last))
+                {
+                    _employeePayrollRepository.Add(tempEmployeePayroll);
                 }
             }
+
+            //Commit
+            _unitOfWork.Commit();
         }
     }
 }
