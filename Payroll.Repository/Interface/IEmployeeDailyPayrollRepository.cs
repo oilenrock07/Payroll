@@ -10,5 +10,6 @@ namespace Payroll.Repository.Interface
 {
     public interface IEmployeeDailyPayrollRepository : IRepository<EmployeeDailyPayroll>
     {
+        IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo);
     }
 }

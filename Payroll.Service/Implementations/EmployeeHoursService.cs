@@ -390,6 +390,8 @@ namespace Payroll.Service.Implementations
 
         public IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate)
         {
+            toDate = toDate.AddDays(1);
+
             return _employeeHoursRepository.GetForProcessingByDateRange(fromDate, toDate);
         }
 
