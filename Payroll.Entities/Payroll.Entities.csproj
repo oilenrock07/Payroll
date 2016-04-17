@@ -77,6 +77,10 @@
     <Compile Include="Migrations\201604030717363_NewMigration.Designer.cs">
       <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604170618037_employee-hours.cs" />
+    <Compile Include="Migrations\201604170618037_employee-hours.Designer.cs">
+      <DependentUpon>201604170618037_employee-hours.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -85,7 +89,7 @@
     <Compile Include="Payroll\Deduction.cs" />
     <Compile Include="Payroll\EmployeeAdjustment.cs" />
     <Compile Include="Payroll\EmployeeLoan.cs" />
-    <Compile Include="Payroll\EmployeeDailySalary.cs" />
+    <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
     <Compile Include="Payroll\EmployeePayroll.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Position.cs" />
@@ -116,6 +120,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201604030717363_NewMigration.resx">
       <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604170618037_employee-hours.resx">
+      <DependentUpon>201604170618037_employee-hours.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

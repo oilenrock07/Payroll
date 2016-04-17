@@ -1,5 +1,4 @@
-﻿
-namespace Payroll.Repository.Models.Employee
+﻿namespace Payroll.Repository.Models.Employee
 {
     public class EmployeeNames
     {

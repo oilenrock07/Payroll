@@ -104,7 +104,7 @@ namespace Payroll.Test.Service
             repository.ExecuteSqlCommand("DELETE FROM work_schedule");
             repository.ExecuteSqlCommand("DELETE FROM employee");
 
-            unitOfwork.Commit();
+            //unitOfwork.Commit();
         }
 
         /*
@@ -174,7 +174,6 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
             Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
             Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
-
         }
 
 

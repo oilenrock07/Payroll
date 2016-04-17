@@ -46,7 +46,8 @@
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
     <Compile Include="Implementations\EmployeeInfoService.cs" />
-    <Compile Include="Implementations\EmployeeDailySalarySevice.cs" />
+    <Compile Include="Implementations\EmployeeDailyPayrollSevice.cs" />
+    <Compile Include="Implementations\EmployeePayrollService.cs" />
     <Compile Include="Implementations\EmployeeService.cs" />
     <Compile Include="Implementations\EmployeeWorkScheduleService.cs" />
     <Compile Include="Implementations\HolidayService.cs" />
@@ -60,7 +61,8 @@
     <Compile Include="Interfaces\ICacheService.cs" />
     <Compile Include="Interfaces\IEmployeeHoursService.cs" />
     <Compile Include="Interfaces\IEmployeeInfoService.cs" />
-    <Compile Include="Interfaces\IEmployeeDailySalaryService.cs" />
+    <Compile Include="Interfaces\IEmployeeDailyPayrollService.cs" />
+    <Compile Include="Interfaces\IEmployeePayrollService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\IEmployeeWorkScheduleService.cs" />
     <Compile Include="Interfaces\IHolidayService.cs" />

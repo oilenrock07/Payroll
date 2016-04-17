@@ -17,9 +17,10 @@ namespace Payroll.Entities.Enums
     {
         Regular = 1,
         OverTime = 2,
-        NightDifferential = 3,
-        RestDay = 4,
-        HolidayRegular = 5,
-        HolidaySpecial = 6
+        NightDifferential = 3
+        //,
+        //RestDay = 4,
+        //HolidayRegular = 5,
+        //HolidaySpecial = 6
     }
 }

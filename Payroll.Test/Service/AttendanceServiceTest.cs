@@ -39,16 +39,62 @@ namespace Payroll.Test.Service
             var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService);
 
-            var employeeId1 = 1001;
-            var employeeId2 = 2001;
-            var employeeId3 = 3001;
+            //Delete Data
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE attendance");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE attendance_log");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours");
+            employeeRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee");
+            employeeRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 1");
+
+            //Add employee
+            var employee1 = new Employee
+            {
+                EmployeeId = 1,
+                EmployeeCode = "11001",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1,
+                IsActive = true
+            };
+
+            var employee2 = new Employee
+            {
+                EmployeeId = 2,
+                EmployeeCode = "11002",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1,
+                IsActive = true
+            };
+
+            var employee3 = new Employee
+            {
+                EmployeeId = 3,
+                EmployeeCode = "11003",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1,
+                IsActive = true
+            };
+
+            //Insert employee
+            employeeRepository.Add(employee1);
+            employeeRepository.Add(employee2);
+            employeeRepository.Add(employee3);
 
             var dataAttendanceLog = new List<AttendanceLog>
             {
                 // Will not be considered
-                 new AttendanceLog()
+                new AttendanceLog()
                     {
-                        EmployeeId = employeeId1,
+                        EmployeeId = employee1.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 00:00:00"),
                         Type = AttendanceType.ClockIn,
                         IsRecorded = false
@@ -56,7 +102,7 @@ namespace Payroll.Test.Service
                  // Employee 2 log in
                  new AttendanceLog()
                     {
-                        EmployeeId = employeeId2,
+                        EmployeeId = employee2.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 07:00:00"),
                         Type = AttendanceType.ClockIn,
                         IsRecorded = false
@@ -65,7 +111,7 @@ namespace Payroll.Test.Service
                  // Employee 1 Logout
                  new AttendanceLog
                     {  
-                        EmployeeId = employeeId1,
+                        EmployeeId = employee1.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 04:00:00"),
                         Type = AttendanceType.ClockOut,
                         IsRecorded = false
@@ -73,7 +119,7 @@ namespace Payroll.Test.Service
                  // Employee 2 Clockout
                  new AttendanceLog
                     {
-                        EmployeeId = employeeId2,
+                        EmployeeId = employee2.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 12:00:00"),
                         Type = AttendanceType.ClockOut,
                         IsRecorded = false
@@ -81,7 +127,7 @@ namespace Payroll.Test.Service
                  //Employee 3 login
                  new AttendanceLog
                     {
-                        EmployeeId = employeeId3,
+                        EmployeeId = employee3.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 07:00:00"),
                         Type = AttendanceType.ClockIn,
                         IsRecorded = false
@@ -89,7 +135,7 @@ namespace Payroll.Test.Service
                  // Employee 2 login
                  new AttendanceLog
                     {
-                        EmployeeId = employeeId2,
+                        EmployeeId = employee2.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 13:00:00"),
                         Type = AttendanceType.ClockIn,
                         IsRecorded = false
@@ -97,7 +143,7 @@ namespace Payroll.Test.Service
                  // Employee 3 logout
                  new AttendanceLog
                     {
-                        EmployeeId = employeeId3,
+                        EmployeeId = employee3.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 18:00:00"),
                         Type = AttendanceType.ClockOut,
                         IsRecorded = false
@@ -105,7 +151,7 @@ namespace Payroll.Test.Service
                  // Employee 2 logout
                  new AttendanceLog
                     {
-                        EmployeeId = employeeId2,
+                        EmployeeId = employee2.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-02 18:00:00"),
                         Type = AttendanceType.ClockOut,
                         IsRecorded = false
@@ -113,7 +159,7 @@ namespace Payroll.Test.Service
                  // Will not be considered
                  new AttendanceLog
                     {
-                        EmployeeId = employeeId3,
+                        EmployeeId = employee3.EmployeeId,
                         ClockInOut = DateTime.Parse("2016-02-03 00:00:00"),
                         Type = AttendanceType.ClockOut,
                         IsRecorded = false
@@ -124,14 +170,14 @@ namespace Payroll.Test.Service
                 {
                     new Attendance()
                     {
-                        EmployeeId = employeeId1,
+                        Employee = employee1,
                         ClockIn = DateTime.Parse("2016-02-01 23:00:00"),
                         ClockOut = null,
                         IsManuallyEdited = false
                     },
                     new Attendance()
                     {
-                        EmployeeId = employeeId2,
+                        Employee = employee2,
                         ClockIn = DateTime.Parse("2016-02-01 23:30:00"),
                         ClockOut = DateTime.Parse("2016-02-01 23:55:00"),
                         IsManuallyEdited = false
@@ -155,15 +201,15 @@ namespace Payroll.Test.Service
             var dateTo = DateTime.Parse("2016-02-03 00:00:00");
 
             attendanceService.CreateWorkSchedulesByDateRange(dateFrom, dateTo);
-            unitOfWork.Commit();
+           // unitOfWork.Commit();
 
-            var attendanceListEmployee1 = attendanceService.GetAttendanceByDateRange(employeeId1, dateFrom, dateTo);
+            var attendanceListEmployee1 = attendanceService.GetAttendanceByDateRange(employee1.EmployeeId, dateFrom, dateTo);
             
             Assert.AreEqual(1, attendanceListEmployee1.Count());
             Assert.AreEqual(DateTime.Parse("2016-02-01 23:00:00"), attendanceListEmployee1[0].ClockIn);
             Assert.AreEqual(DateTime.Parse("2016-02-02 04:00:00"), attendanceListEmployee1[0].ClockOut);
 
-            var attendanceListEmployee2 = attendanceService.GetAttendanceByDateRange(employeeId2, dateFrom, dateTo);
+            var attendanceListEmployee2 = attendanceService.GetAttendanceByDateRange(employee2.EmployeeId, dateFrom, dateTo);
 
             Assert.AreEqual(2, attendanceListEmployee2.Count());
             Assert.AreEqual(DateTime.Parse("2016-02-02 07:00:00"), attendanceListEmployee2[0].ClockIn);
@@ -171,14 +217,14 @@ namespace Payroll.Test.Service
             Assert.AreEqual(DateTime.Parse("2016-02-02 13:00:00"), attendanceListEmployee2[1].ClockIn);
             Assert.AreEqual(DateTime.Parse("2016-02-02 18:00:00"), attendanceListEmployee2[1].ClockOut);
 
-            var attendanceListEmployee3 = attendanceService.GetAttendanceByDateRange(employeeId3, dateFrom, dateTo);
+            var attendanceListEmployee3 = attendanceService.GetAttendanceByDateRange(employee3.EmployeeId, dateFrom, dateTo);
 
             Assert.AreEqual(1, attendanceListEmployee3.Count());
             Assert.AreEqual(DateTime.Parse("2016-02-02 07:00:00"), attendanceListEmployee3[0].ClockIn);
             Assert.AreEqual(DateTime.Parse("2016-02-02 18:00:00"), attendanceListEmployee3[0].ClockOut);
 
-            //TODO Delete created data
-           
+
+
         }
     }
 }

@@ -30,78 +30,82 @@ namespace Payroll.Service.Implementations
         {
             var employeeHoursList = _employeeHoursService.GetForProcessingByDateRange(dateFrom, dateTo);
 
-            int tempEmployeeId = 0;
-            DateTime ? tempDate = null;
-            RateType ? tempRate = null;
-
-            TotalEmployeeHours totalEmployeeHours = null;
-
-            EmployeeHours last = employeeHoursList.Last();
-
-            foreach (EmployeeHours hours in employeeHoursList)
+            if (employeeHoursList != null && employeeHoursList.Count > 1)
             {
-                // If not the same type and employee as the last entry should create new total employee hours
-                if (tempEmployeeId != hours.EmployeeId ||
-                        tempDate != hours.Date || tempRate != hours.Type)
+                int tempEmployeeId = 0;
+                DateTime? tempDate = null;
+                RateType? tempRate = null;
+
+                TotalEmployeeHours totalEmployeeHours = null;
+
+                EmployeeHours last = employeeHoursList.Last();
+
+                foreach (EmployeeHours hours in employeeHoursList)
                 {
-                    //Save previous entry if any
-                    if(totalEmployeeHours != null)
+                    // If not the same date, type and employee as the last entry should create new total employee hours
+                    if (tempEmployeeId != hours.EmployeeId ||
+                            tempDate != hours.Date || tempRate != hours.Type)
                     {
-                        //Check if there's an existing total entry for the employee, rate type and date
-                        var existingTotalEmployeeHours = _totalEmployeeHoursRepository
-                            .GetByEmployeeDateAndType(totalEmployeeHours.EmployeeId, 
-                                totalEmployeeHours.Date, totalEmployeeHours.Type);
-
-                        //If yes update the value
-                        if (existingTotalEmployeeHours != null)
+                        //Save previous entry if any
+                        if (totalEmployeeHours != null)
                         {
-                            _totalEmployeeHoursRepository.Update(existingTotalEmployeeHours);
+                            //Check if there's an existing total entry for the employee, rate type and date
+                            var existingTotalEmployeeHours = _totalEmployeeHoursRepository
+                                .GetByEmployeeDateAndType(totalEmployeeHours.EmployeeId,
+                                    totalEmployeeHours.Date, totalEmployeeHours.Type);
 
-                            existingTotalEmployeeHours.Hours = 
-                                existingTotalEmployeeHours.Hours + totalEmployeeHours.Hours;
+                            //If yes update the value
+                            if (existingTotalEmployeeHours != null)
+                            {
+                                _totalEmployeeHoursRepository.Update(existingTotalEmployeeHours);
 
+                                existingTotalEmployeeHours.Hours += totalEmployeeHours.Hours;
+
+                            }
+                            else //Create new entry
+                            {
+                                _totalEmployeeHoursRepository.Add(totalEmployeeHours);
+                            }
                         }
-                        else //Create new entry
+
+                        //Create new total employee hours obj
+                        totalEmployeeHours = new TotalEmployeeHours
                         {
-                            _totalEmployeeHoursRepository.Add(totalEmployeeHours);
-                        }
+                            Date = hours.Date,
+                            EmployeeId = hours.EmployeeId,
+                            Type = hours.Type,
+                            Hours = hours.Hours
+                        };
+
+                    }
+                    else //Same Employee, Date and Rate, Update the total Employee hours data
+                    {
+                        totalEmployeeHours.Hours = totalEmployeeHours.Hours + hours.Hours;
                     }
 
-                    //Create new total employee hours obj
-                    totalEmployeeHours = new TotalEmployeeHours
-                    {
-                        Date = hours.Date,
-                        EmployeeId = hours.EmployeeId,
-                        Type = hours.Type
-                    };
-
-                }
-                else //Same Employee, Date and Rate, Update the total Employee hours data
-                {
-                    totalEmployeeHours.Hours = totalEmployeeHours.Hours + hours.Hours;
-                }
-
-                //If Last Iteration and New entry  
+                    //If Last Iteration and New entry  
                     //Save
-                if (hours.Equals(last) && (totalEmployeeHours.TotalEmployeeHoursId == null 
-                    || totalEmployeeHours.TotalEmployeeHoursId <= 0))
-                {
-                    _totalEmployeeHoursRepository.Add(totalEmployeeHours);
+                    if (hours.Equals(last) && (totalEmployeeHours.TotalEmployeeHoursId == null
+                        || totalEmployeeHours.TotalEmployeeHoursId <= 0))
+                    {
+                        _totalEmployeeHoursRepository.Add(totalEmployeeHours);
+                    }
+
+                    //Set Reference data
+                    tempDate = hours.Date;
+                    tempEmployeeId = hours.EmployeeId;
+                    tempRate = hours.Type;
+
+                    //Update employee hours IsIncludedInTotal value
+                    _employeeHoursService.Update(hours);
+
+                    hours.IsIncludedInTotal = true;
                 }
 
-                //Set Reference data
-                tempDate = hours.Date;
-                tempEmployeeId = hours.EmployeeId;
-                tempRate = hours.Type;
-
-                //Update employee hours IsIncludedInTotal value
-                _employeeHoursService.Update(hours);
-
-                hours.IsIncludedInTotal = true;
+                //Commit all change
+                _unitOfWork.Commit();
             }
-
-            //Commit all change
-            _unitOfWork.Commit();
+         
         }
 
         public TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
@@ -111,6 +115,7 @@ namespace Payroll.Service.Implementations
 
         public IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
+            dateTo = dateTo.AddDays(1);
             return _totalEmployeeHoursRepository.GetByDateRange(dateFrom, dateTo);
         }
     }
