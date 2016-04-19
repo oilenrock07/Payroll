@@ -23,4 +23,22 @@ namespace Payroll.Entities.Enums
         //HolidayRegular = 5,
         //HolidaySpecial = 6
     }
+
+    public enum FrequencyType
+    {
+        Weekly,
+        BiWeekly,
+        Monthly,
+        SemiMonthly
+    }
+
+    public enum SalaryFrequency
+    {
+        Hourly,
+        Daily,
+        Weekly,
+        BiWeekly,
+        Monthly,
+        SemiMonthly
+    }
 }

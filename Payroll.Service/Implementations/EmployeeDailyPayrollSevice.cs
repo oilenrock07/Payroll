@@ -21,6 +21,8 @@ namespace Payroll.Service.Implementations
         private IEmployeeWorkScheduleService _employeeWorkScheduleService;
         private IHolidayService _holidayService;
         private ISettingService _settingService;
+        private IEmployeeInfoService _employeeInfoService;
+
         private IEmployeeDailyPayrollRepository _employeeDailyPayrollRepository;
 
         private readonly String RATE_REST_DAY = "RATE_REST_DAY";
@@ -29,18 +31,27 @@ namespace Payroll.Service.Implementations
         private readonly String RATE_HOLIDAY_SPECIAL = "RATE_HOLIDAY_SPECIAL";
         private readonly String RATE_HOLIDAY_REGULAR = "RATE_HOLIDAY_REGULAR";
 
+        private readonly int WORK_HOURS = 8;
+
+        private readonly int SALARY_HOURLY = 1;
+        private readonly int SALARY_DAILY = 8;
+        private readonly int SALARY_WEEKLY = 40;
+        private readonly int SALARY_BIWEEKLY = 80;
+
         public EmployeeDailyPayrollService(UnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService, 
-            IEmployeeDailyPayrollRepository employeeDailyPayrollRepository)
+            IEmployeeDailyPayrollRepository employeeDailyPayrollRepository, IEmployeeInfoService employeeInfoService)
         {
             _unitOfWork = unitOfWork;
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _employeeWorkScheduleService = employeeWorkScheduleService;
             _holidayService = holidayService;
             _settingService = settingService;
+            _employeeInfoService = employeeInfoService;
             _employeeDailyPayrollRepository = employeeDailyPayrollRepository;
         } 
 
+        /*Note that this method is applicable to employees with hourly rate*/
         public void GenerateEmployeeDailySalaryByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             IList<TotalEmployeeHours> totalEmployeeHours = 
@@ -54,6 +65,36 @@ namespace Payroll.Service.Implementations
 
             foreach (TotalEmployeeHours totalHours in totalEmployeeHours)
             {
+
+                EmployeeInfo employeeInfo = _employeeInfoService.GetByEmployeeId(totalHours.EmployeeId);
+                EmployeeSalary employeeSalary = employeeInfo.EmployeeSalary;
+
+                Decimal hourlyRate = employeeSalary.Salary;
+                //TODO more salary frequency
+                switch (employeeInfo.EmployeeSalary.SalaryFrequency)
+                {
+                    case SalaryFrequency.Hourly :
+                        {
+                            hourlyRate = (employeeSalary.Salary / SALARY_HOURLY );
+                            break;
+                        }
+                    case SalaryFrequency.Daily:
+                        {
+                            hourlyRate = (employeeSalary.Salary / SALARY_DAILY);
+                            break;
+                        }
+                    case SalaryFrequency.Weekly:
+                        {
+                            hourlyRate = (employeeSalary.Salary / SALARY_WEEKLY);
+                            break;
+                        }
+                    case SalaryFrequency.BiWeekly:
+                        {
+                            hourlyRate = (employeeSalary.Salary / SALARY_BIWEEKLY);
+                            break;
+                        }
+                }
+
                 WorkSchedule workSchedule = 
                     _employeeWorkScheduleService.GetByEmployeeId(totalHours.EmployeeId).WorkSchedule;
 
@@ -79,7 +120,6 @@ namespace Payroll.Service.Implementations
                     {
                         rateMultiplier += holidateSpecialRate;
                     }
-                   
                 }
                 //if OT
                 if (totalHours.Type == RateType.OverTime)
@@ -96,7 +136,7 @@ namespace Payroll.Service.Implementations
                 {
                     EmployeeId = totalHours.EmployeeId,
                     Date = totalHours.Date,
-                    TotalPay = (decimal)(totalHours.Hours * rateMultiplier),
+                    TotalPay = ((decimal)(totalHours.Hours * rateMultiplier)) * hourlyRate,
                     TotalEmployeeHoursId = totalHours.TotalEmployeeHoursId
                 };
 
