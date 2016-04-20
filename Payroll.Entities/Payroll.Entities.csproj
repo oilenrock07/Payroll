@@ -86,6 +86,10 @@
     <Compile Include="Migrations\201604191442524_salary_obj_updates.Designer.cs">
       <DependentUpon>201604191442524_salary_obj_updates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604201330067_change_employee_info.cs" />
+    <Compile Include="Migrations\201604201330067_change_employee_info.Designer.cs">
+      <DependentUpon>201604201330067_change_employee_info.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -131,6 +135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604191442524_salary_obj_updates.resx">
       <DependentUpon>201604191442524_salary_obj_updates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604201330067_change_employee_info.resx">
+      <DependentUpon>201604201330067_change_employee_info.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -32,6 +32,8 @@ namespace Payroll.Test.Service
             var settingRepository = new SettingRepository(databaseFactory);
             var employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
             var employeeInfoRepository = new EmployeeInfoRepository(databaseFactory);
+            var frequencyRepository = new FrequencyRepository(databaseFactory);
+            var paymentFrequencyRepository = new PaymentFrequencyRepository(databaseFactory);
 
             var employeeInfoService = new EmployeeInfoService(employeeInfoRepository);
             var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
@@ -45,6 +47,8 @@ namespace Payroll.Test.Service
             var totalEmployeeHoursService = new TotalEmployeeHoursService(unitOfWork, totalEmployeeHoursRepository, employeeHoursService);
 
             //Delete info
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE frequency");
+            employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE payment_frequency");
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours");
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours_total");
             employeeRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
@@ -75,18 +79,31 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var paymentFrequencyId = 1;
+            var frequency = new Frequency
+            {
+                FrequencyName = "Weekly",
+                FrequencyType = Entities.Enums.FrequencyType.Weekly
+            };
+
+            frequencyRepository.Add(frequency);
+
+            var paymentFrequency = new PaymentFrequency
+            {
+                 Frequency = frequency
+            };
+
+            paymentFrequencyRepository.Add(paymentFrequency);
 
             var employeeInfo1 = new EmployeeInfo
             {
                 Employee = employee1,
-                PaymentFrequencyId = paymentFrequencyId
+                PaymentFrequency = paymentFrequency
             };
 
             var employeeInfo2 = new EmployeeInfo
             {
                 Employee = employee2,
-                PaymentFrequencyId = paymentFrequencyId
+                PaymentFrequency = paymentFrequency
             };
 
             employeeInfoRepository.Add(employeeInfo1);
