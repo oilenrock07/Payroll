@@ -23,7 +23,7 @@ namespace Payroll.Entities
 
         [ForeignKey("EmployeeSalary")]
         public int ? EmployeeSalaryId { get; set; }
-        public EmployeeSalary EmployeeSalary { get; set; }
+        public virtual EmployeeSalary EmployeeSalary { get; set; }
 
         public decimal ? Allowance { get; set; }
 

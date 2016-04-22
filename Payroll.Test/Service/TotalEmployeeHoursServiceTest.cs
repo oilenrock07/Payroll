@@ -47,11 +47,11 @@ namespace Payroll.Test.Service
             var totalEmployeeHoursService = new TotalEmployeeHoursService(unitOfWork, totalEmployeeHoursRepository, employeeHoursService);
 
             //Delete info
+            employeeRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE frequency");
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE payment_frequency");
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours");
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours_total");
-            employeeRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee");
             employeeRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 1");
 

@@ -115,8 +115,8 @@ namespace Payroll.Test.Service
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_info");
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_workschedule");
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours");
-            repository.ExecuteSqlCommand("DELETE FROM work_schedule");
-            repository.ExecuteSqlCommand("DELETE FROM employee");
+            repository.ExecuteSqlCommand("TRUNCATE TABLE work_schedule");
+            repository.ExecuteSqlCommand("TRUNCATE TABLE employee");
             repository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 1");
 
             //unitOfwork.Commit();
