@@ -62,7 +62,6 @@ namespace Payroll.Service.Implementations
 
             foreach (TotalEmployeeHours totalHours in totalEmployeeHours)
             {
-
                 EmployeeInfo employeeInfo = _employeeInfoService.GetByEmployeeId(totalHours.EmployeeId);
 
                 var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employeeInfo);
@@ -98,17 +97,21 @@ namespace Payroll.Service.Implementations
                 {
                     rateMultiplier += OTRate;
                 }
+
+                var totalPayment = ((decimal)(totalHours.Hours * rateMultiplier)) * hourlyRate;
+
                 //if NightDif
                 if (totalHours.Type == RateType.NightDifferential)
                 {
-                    rateMultiplier += nightDiffRate;
+                    //rateMultiplier += nightDiffRate;
+                    totalPayment += (decimal)(nightDiffRate * totalHours.Hours);
                 }
 
                 var employeeDailySalary = new EmployeeDailyPayroll
                 {
                     EmployeeId = totalHours.EmployeeId,
                     Date = totalHours.Date,
-                    TotalPay = ((decimal)(totalHours.Hours * rateMultiplier)) * hourlyRate,
+                    TotalPay = totalPayment,
                     TotalEmployeeHoursId = totalHours.TotalEmployeeHoursId
                 };
 
