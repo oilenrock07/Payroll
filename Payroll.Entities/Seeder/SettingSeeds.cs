@@ -39,7 +39,10 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "PAGINATION_ITEMS_PER_PAGE", Value = "30", Description = "Conrtrols the item count to display within the pagination", Category = "APP" },
 
                 //for login display
-                new Setting { SettingKey = "DISPLAY_LOGIN_URL", Value = "http://payroll.logindisplay/api/payrollapi/", Description = "Route of display picture upon login", Category = "URL" }
+                new Setting { SettingKey = "DISPLAY_LOGIN_URL", Value = "http://payroll.logindisplay/api/payrollapi/", Description = "Route of display picture upon login", Category = "URL" },
+
+                //settings for deduction
+                new Setting { SettingKey = "HDMF_MAX_MONTHLY_COMPENSATION", Value = "5000", Description = "HDMF Maximum Monthly Compensation Contributions", Category = "PAYROLL_DEDUCTIONS"}
             };
         }
     }

@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
+    <Compile Include="Interface\IDeductionAmountRepository.cs" />
     <Compile Include="Interface\IDepartmentRepository.cs" />
     <Compile Include="Interface\IEmployeeDailyPayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeDepartmentRepository.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Models\Employee\EmployeeNames.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
+    <Compile Include="Repositories\DeductionAmountRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />
     <Compile Include="Repositories\EmployeeDailyPayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeDepartmentRepository.cs" />
