@@ -9,5 +9,8 @@ namespace Payroll.Repository.Interface
         EmployeeInfo GetByEmployeeId(int employeeId);
 
         IList<EmployeeInfo> GetActiveByPaymentFrequency(int PaymentFrequencyId);
+
+        IList<EmployeeInfo> GetAllActive();
+
     }
 }

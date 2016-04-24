@@ -28,5 +28,9 @@ namespace Payroll.Service.Implementations
         {
             return _employeeInfoRepository.GetActiveByPaymentFrequency(PaymentFrequencyId);
         }
+
+        public IList<EmployeeInfo> GetAllActive() {
+            return _employeeInfoRepository.GetAllActive();
+        }
     }
 }

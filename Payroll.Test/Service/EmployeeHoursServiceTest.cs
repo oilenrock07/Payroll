@@ -153,7 +153,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -225,7 +225,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -311,7 +311,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -397,7 +397,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -483,7 +483,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -561,7 +561,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -639,7 +639,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -712,7 +712,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -815,7 +815,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -942,7 +942,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1079,7 +1079,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1217,7 +1217,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1280,7 +1280,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1352,7 +1352,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1484,7 +1484,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1655,7 +1655,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1781,7 +1781,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1889,7 +1889,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -1968,7 +1968,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -2017,7 +2017,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -2067,7 +2067,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -2115,7 +2115,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
@@ -2187,7 +2187,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
             var dateTo = DateTime.Parse("2016-02-02 00:00:00");
 
-            employeeHoursService.GenerateEmployeeHours(paymentFrequencyId, dateFrom, dateTo);
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
 
             var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
 
