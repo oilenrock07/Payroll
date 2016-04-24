@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\CachedSettingService.cs" />
+    <Compile Include="Implementations\EmployeeSalaryService.cs" />
     <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Interfaces\IEmployeeInfoService.cs" />
     <Compile Include="Interfaces\IEmployeeDailyPayrollService.cs" />
     <Compile Include="Interfaces\IEmployeePayrollService.cs" />
+    <Compile Include="Interfaces\IEmployeeSalaryService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\IEmployeeWorkScheduleService.cs" />
     <Compile Include="Interfaces\IHolidayService.cs" />

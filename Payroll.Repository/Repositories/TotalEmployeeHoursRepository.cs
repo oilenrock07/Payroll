@@ -21,12 +21,12 @@ namespace Payroll.Repository.Repositories
 
         public TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
         {
-            return Find(eh => eh.EmployeeId == employeeId && eh.Date == date && eh.Type == type).FirstOrDefault();
+            return Find(eh => eh.IsActive && eh.EmployeeId == employeeId && eh.Date == date && eh.Type == type).FirstOrDefault();
         }
 
         public IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
-            return Find(eh => eh.Date >= dateFrom && eh.Date < dateTo)
+            return Find(eh => eh.IsActive && eh.Date >= dateFrom && eh.Date < dateTo)
                 .OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
         }
     }

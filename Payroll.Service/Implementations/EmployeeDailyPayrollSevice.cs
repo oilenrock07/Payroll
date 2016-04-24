@@ -22,6 +22,7 @@ namespace Payroll.Service.Implementations
         private IHolidayService _holidayService;
         private ISettingService _settingService;
         private IEmployeeInfoService _employeeInfoService;
+        private IEmployeeSalaryService _employeeSalaryService;
 
         private IEmployeeDailyPayrollRepository _employeeDailyPayrollRepository;
 
@@ -33,14 +34,9 @@ namespace Payroll.Service.Implementations
 
         private readonly int WORK_HOURS = 8;
 
-        private readonly int SALARY_HOURLY = 1;
-        private readonly int SALARY_DAILY = 8;
-        private readonly int SALARY_WEEKLY = 40;
-        private readonly int SALARY_BIWEEKLY = 80;
-
         public EmployeeDailyPayrollService(UnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService, 
-            IEmployeeDailyPayrollRepository employeeDailyPayrollRepository, IEmployeeInfoService employeeInfoService)
+            IEmployeeDailyPayrollRepository employeeDailyPayrollRepository, IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService)
         {
             _unitOfWork = unitOfWork;
             _totalEmployeeHoursService = totalEmployeeHoursService;
@@ -49,6 +45,7 @@ namespace Payroll.Service.Implementations
             _settingService = settingService;
             _employeeInfoService = employeeInfoService;
             _employeeDailyPayrollRepository = employeeDailyPayrollRepository;
+            _employeeSalaryService = employeeSalaryService;
         } 
 
         /*Note that this method is applicable to employees with hourly rate*/
@@ -67,33 +64,8 @@ namespace Payroll.Service.Implementations
             {
 
                 EmployeeInfo employeeInfo = _employeeInfoService.GetByEmployeeId(totalHours.EmployeeId);
-                EmployeeSalary employeeSalary = employeeInfo.EmployeeSalary;
 
-                Decimal hourlyRate = employeeSalary.Salary;
-                //TODO more salary frequency
-                switch (employeeInfo.EmployeeSalary.SalaryFrequency)
-                {
-                    case SalaryFrequency.Hourly :
-                        {
-                            hourlyRate = (employeeSalary.Salary / SALARY_HOURLY );
-                            break;
-                        }
-                    case SalaryFrequency.Daily:
-                        {
-                            hourlyRate = (employeeSalary.Salary / SALARY_DAILY);
-                            break;
-                        }
-                    case SalaryFrequency.Weekly:
-                        {
-                            hourlyRate = (employeeSalary.Salary / SALARY_WEEKLY);
-                            break;
-                        }
-                    case SalaryFrequency.BiWeekly:
-                        {
-                            hourlyRate = (employeeSalary.Salary / SALARY_BIWEEKLY);
-                            break;
-                        }
-                }
+                var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employeeInfo);
 
                 WorkSchedule workSchedule = 
                     _employeeWorkScheduleService.GetByEmployeeId(totalHours.EmployeeId).WorkSchedule;

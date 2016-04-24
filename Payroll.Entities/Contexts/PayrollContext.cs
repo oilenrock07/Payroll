@@ -5,7 +5,7 @@ using Payroll.Entities.Users;
 
 namespace Payroll.Entities.Contexts
 {
-    //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class PayrollContext : DbContext
     {
         public PayrollContext() : base(ConnectionString)
@@ -44,6 +44,7 @@ namespace Payroll.Entities.Contexts
         public virtual IDbSet<EmployeeDailyPayroll> EmployeeDailyPayroll { get; set; }
         public virtual IDbSet<EmployeeHours> EmployeeHours { get; set; }
         public virtual IDbSet<TotalEmployeeHours> TotalEmployeeHours { get; set; }
+        public virtual IDbSet<EmployeeSalary> EmployeeSalary { get; set; }
 
         //Users
         public virtual IDbSet<Role> Roles { get; set; }
