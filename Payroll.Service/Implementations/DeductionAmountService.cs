@@ -22,5 +22,10 @@ namespace Payroll.Service.Implementations
         {
             return _deductionAmountRepository.GetByDeduction(deductionId);
         }
+
+        public DeductionAmount GetByDeductionAndAmount(int deductionId, decimal amount)
+        {
+            return _deductionAmountRepository.GetByDeductionAndAmount(deductionId, amount);
+        }
     }
 }

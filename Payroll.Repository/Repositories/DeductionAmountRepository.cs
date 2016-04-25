@@ -22,5 +22,10 @@ namespace Payroll.Repository.Repositories
         {
             return Find(d => d.IsActive && d.DeductionId == deductionId).OrderBy(d => d.Frequency).ToList();
         }
+        
+        public DeductionAmount GetByDeductionAndAmount(int deductionId, decimal amount)
+        {
+            return Find(d => d.IsActive && amount >= d.MinBaseAmount && amount <= d.MaxBaseAmount).First();
+        }
     }
 }

@@ -9,6 +9,6 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeePayrollDeductionService
     {
-        void GenerateDeductionsByPayroll(EmployeePayroll employeePayroll);
+        void GenerateDeductionsByPayroll(DateTime payrollStartDate, DateTime payrollEndDate);
     }
 }

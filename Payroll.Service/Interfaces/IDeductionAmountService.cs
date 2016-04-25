@@ -10,5 +10,7 @@ namespace Payroll.Service.Interfaces
     public interface IDeductionAmountService
     {
         IList<DeductionAmount> GetByDeduction(int deductionId);
+
+        DeductionAmount GetByDeductionAndAmount(int deductionId, decimal amount);
     }
 }

@@ -13,5 +13,7 @@ namespace Payroll.Repository.Interface
     public interface IDeductionAmountRepository : IRepository<DeductionAmount>
     {
         IList<DeductionAmount> GetByDeduction(int deductionId);
+
+        DeductionAmount GetByDeductionAndAmount(int deductionId,  decimal amount);
     }
 }
