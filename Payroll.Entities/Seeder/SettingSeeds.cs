@@ -39,7 +39,20 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "PAGINATION_ITEMS_PER_PAGE", Value = "30", Description = "Conrtrols the item count to display within the pagination", Category = "APP" },
 
                 //for login display
-                new Setting { SettingKey = "DISPLAY_LOGIN_URL", Value = "http://payroll.logindisplay/api/payrollapi/", Description = "Route of display picture upon login", Category = "URL" }
+                new Setting { SettingKey = "DISPLAY_LOGIN_URL", Value = "http://payroll.logindisplay/api/payrollapi/", Description = "Route of display picture upon login", Category = "URL" },
+
+                /* Settings for PAYROLL */
+
+                //settings for deduction
+                new Setting { SettingKey = "HDMF_MAX_MONTHLY_COMPENSATION", Value = "5000", Description = "HDMF Maximum Monthly Compensation Contributions", Category = "PAYROLL_DEDUCTIONS"},
+                //Schedule of deductions
+                new Setting { SettingKey = "DEDUCTION_IS_SEMIMONTHLY", Value = "1", Description = "If deduction computation is semi monthly or monthly. 1 if semimonthly, 0 if monthly", Category = "PAYROLL_DEDUCTIONS"},
+                new Setting { SettingKey = "DEDUCTION_SEMIMONTHLY_SCHEDULE_1", Value = "15", Description = "Date of first deduction", Category = "PAYROLL_DEDUCTIONS"},
+                new Setting { SettingKey = "DEDUCTION_SEMIMONTHLY_SCHEDULE_2", Value = "30", Description = "Date of second deduction", Category = "PAYROLL_DEDUCTIONS"},
+                new Setting { SettingKey = "DEDUCTION_MONTHLY_SCHEDULE", Value = "30", Description = "Date of deduction", Category = "PAYROLL_DEDUCTIONS"},
+
+                new Setting { SettingKey = "DEDUCTION_MONTHLY_TOTAL_HOURS", Value = "184", Description = "Number of hours if monthly", Category = "PAYROLL_DEDUCTIONS"},
+                new Setting { SettingKey = "DEDUCTION_SEMIMONTHLY_TOTAL_HOURS", Value = "92", Description = "Number of hours if semimonthly", Category = "PAYROLL_DEDUCTIONS"}
             };
         }
     }

@@ -52,10 +52,10 @@ namespace Payroll.Service.Implementations
             _employeeInfoService = employeeInfoService;
         }
 
-        public int GenerateEmployeeHours(int PaymentFrequencyId, DateTime fromDate, DateTime toDate)
+        public int GenerateEmployeeHours(DateTime fromDate, DateTime toDate)
         {
             //Get all active employee with the same frequency
-            IList<EmployeeInfo> employees = _employeeInfoService.GetActiveByPaymentFrequency(PaymentFrequencyId);
+            IList<EmployeeInfo> employees = _employeeInfoService.GetAllActive();
 
             foreach (var employee in employees)
             {
@@ -390,6 +390,8 @@ namespace Payroll.Service.Implementations
 
         public IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate)
         {
+            toDate = toDate.AddDays(1);
+
             return _employeeHoursRepository.GetForProcessingByDateRange(fromDate, toDate);
         }
 

@@ -24,5 +24,9 @@ namespace Payroll.Repository.Repositories
         {
             return Find(e => e.Employee.IsActive && e.PaymentFrequencyId == paymentFrequencyId).ToList();
         }
+
+        public IList<EmployeeInfo> GetAllActive() {
+            return Find(e => e.Employee.IsActive).ToList();
+        }
     }
 }

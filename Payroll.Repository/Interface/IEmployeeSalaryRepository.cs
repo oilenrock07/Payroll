@@ -1,4 +1,4 @@
-﻿using Payroll.Entities.Payroll;
+﻿using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Payroll.Repository.Interface
 {
-    public interface IEmployeeDailyPayrollRepository : IRepository<EmployeeDailyPayroll>
+    public interface IEmployeeSalaryRepository : IRepository<EmployeeSalary>
     {
-        IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo);
+
     }
 }

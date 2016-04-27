@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
+    <Compile Include="Interface\IDeductionAmountRepository.cs" />
     <Compile Include="Interface\IDepartmentRepository.cs" />
     <Compile Include="Interface\IEmployeeDailyPayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeDepartmentRepository.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Interface\IEmployeeLoanRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />
+    <Compile Include="Interface\IEmployeeSalaryRepository.cs" />
     <Compile Include="Interface\IEmployeeworkScheduleRepository.cs" />
     <Compile Include="Interface\IFrequencyRepository.cs" />
     <Compile Include="Interface\IHolidayRepository.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Models\Employee\EmployeeNames.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
+    <Compile Include="Repositories\DeductionAmountRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />
     <Compile Include="Repositories\EmployeeDailyPayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeDepartmentRepository.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="Repositories\EmployeePayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\EmployeeSalaryRepository.cs" />
     <Compile Include="Repositories\EmployeeWorkScheduleRepository.cs" />
     <Compile Include="Repositories\FrequencyRepository.cs" />
     <Compile Include="Repositories\HolidayRepository.cs" />

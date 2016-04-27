@@ -266,7 +266,8 @@ namespace Payroll.Controllers
             employeeInfo.EmploymentStatus = viewModel.EmployeeInfo.EmploymentStatus;
             employeeInfo.PhilHealth = viewModel.EmployeeInfo.PhilHealth;
             employeeInfo.SSS = viewModel.EmployeeInfo.SSS;
-            employeeInfo.Salary = viewModel.EmployeeInfo.Salary;
+            //TODO change saving of salary
+            //employeeInfo.Salary = viewModel.EmployeeInfo.Salary;
             employeeInfo.TIN = viewModel.EmployeeInfo.TIN;
             employeeInfo.EmploymentStatus = viewModel.EmploymentStatus;
 
@@ -405,6 +406,7 @@ namespace Payroll.Controllers
 
             //should also display a grid under (should have a hide link to hide the content)
             //grid should have employee name, date leaves leave type, isapproved, approvedBy, cancel
+            return View();
         }
     }
 }

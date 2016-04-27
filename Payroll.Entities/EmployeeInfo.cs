@@ -15,11 +15,15 @@ namespace Payroll.Entities
         public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
 
+        [ForeignKey("PaymentFrequency")]
         public int ? PaymentFrequencyId { get; set; }
+        public virtual PaymentFrequency PaymentFrequency{ get; set; }
 
         public int ? PositionId { get; set; }
 
-        public decimal Salary { get; set; }
+        [ForeignKey("EmployeeSalary")]
+        public int ? EmployeeSalaryId { get; set; }
+        public virtual EmployeeSalary EmployeeSalary { get; set; }
 
         public decimal ? Allowance { get; set; }
 
@@ -28,7 +32,6 @@ namespace Payroll.Entities
 
         [StringLength(50)]
         public string SSS { get; set; }
-
 
         [StringLength(50)]
         public string GSIS { get; set; }

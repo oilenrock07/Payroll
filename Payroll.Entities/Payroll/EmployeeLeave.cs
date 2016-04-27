@@ -14,7 +14,7 @@ namespace Payroll.Entities.Payroll
 
         public int EmployeeId { get; set; }
 
-        [ForeignKey("LeaveId")]
+        [ForeignKey("Leave")]
         public int LeaveId { get; set; }
         public virtual Leave Leave { get; set; }
 
@@ -25,8 +25,9 @@ namespace Payroll.Entities.Payroll
 
         public bool IsApproved { get; set; }
 
-        [ForeignKey("Id")]
-        public int ApprovedBy { get; set; } //ManagerId
+        [ForeignKey("User")]
+        [Column("Id")]
+        public string ApprovedBy { get; set; } //ManagerId
         public virtual User User { get; set; }
 
         public int Hours { get; set; } //Default 8 hrs, 1 day

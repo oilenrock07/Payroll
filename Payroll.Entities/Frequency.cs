@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Payroll.Entities.Base;
+using Payroll.Entities.Enums;
 
 namespace Payroll.Entities
 {
@@ -12,5 +13,7 @@ namespace Payroll.Entities
 
         [StringLength(50)]
         public string FrequencyName { get; set; }
+
+        public FrequencyType? FrequencyType { get; set; }
     }
 }
