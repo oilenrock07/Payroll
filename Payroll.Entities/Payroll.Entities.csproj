@@ -60,12 +60,15 @@
     <Compile Include="AttendanceLog.cs" />
     <Compile Include="Base\BaseEntity.cs" />
     <Compile Include="Contexts\PayrollContext.cs" />
+    <Compile Include="DeductionAmount.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="DepartmentManager.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="EmployeeDepartment.cs" />
     <Compile Include="EmployeeFile.cs" />
     <Compile Include="EmployeeInfo.cs" />
+    <Compile Include="EmployeePayrollDeduction.cs" />
+    <Compile Include="EmployeeSalary.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="Frequency.cs" />
@@ -73,17 +76,14 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
-    <Compile Include="Migrations\201604030717363_NewMigration.cs" />
-    <Compile Include="Migrations\201604030717363_NewMigration.Designer.cs">
-      <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604160853123_seed.cs" />
-    <Compile Include="Migrations\201604160853123_seed.Designer.cs">
-      <DependentUpon>201604160853123_seed.cs</DependentUpon>
+    <Compile Include="Migrations\201604271450440_newmigration.cs" />
+    <Compile Include="Migrations\201604271450440_newmigration.Designer.cs">
+      <DependentUpon>201604271450440_newmigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
+    <Compile Include="Payroll\EmployeeDeduction.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
     <Compile Include="Payroll\EmployeeLeave.cs" />
     <Compile Include="Enums\Enums.cs" />
@@ -118,11 +118,8 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604030717363_NewMigration.resx">
-      <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604160853123_seed.resx">
-      <DependentUpon>201604160853123_seed.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201604271450440_newmigration.resx">
+      <DependentUpon>201604271450440_newmigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
