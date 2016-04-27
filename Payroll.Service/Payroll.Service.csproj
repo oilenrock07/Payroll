@@ -45,7 +45,9 @@
     <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\DeductionAmountService.cs" />
+    <Compile Include="Implementations\DeductionService.cs" />
     <Compile Include="Implementations\EmployeeDailyPayrollSevice.cs" />
+    <Compile Include="Implementations\EmployeeDeductionService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
     <Compile Include="Implementations\EmployeeInfoService.cs" />
     <Compile Include="Implementations\EmployeePayrollDeductionService.cs" />
@@ -63,7 +65,9 @@
     <Compile Include="Interfaces\IAttendanceService.cs" />
     <Compile Include="Interfaces\ICacheService.cs" />
     <Compile Include="Interfaces\IDeductionAmountService.cs" />
+    <Compile Include="Interfaces\IDeductionService.cs" />
     <Compile Include="Interfaces\IEmployeeDailyPayrollService.cs" />
+    <Compile Include="Interfaces\IEmployeeDeductionService.cs" />
     <Compile Include="Interfaces\IEmployeeHoursService.cs" />
     <Compile Include="Interfaces\IEmployeeInfoService.cs" />
     <Compile Include="Interfaces\IEmployeePayrollDeductionService.cs" />

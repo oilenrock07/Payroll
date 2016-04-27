@@ -67,7 +67,6 @@
     <Compile Include="EmployeeDepartment.cs" />
     <Compile Include="EmployeeFile.cs" />
     <Compile Include="EmployeeInfo.cs" />
-    <Compile Include="EmployeePayrollDeduction.cs" />
     <Compile Include="EmployeeSalary.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
     <Compile Include="Files.cs" />
@@ -91,10 +90,13 @@
     <Compile Include="Payroll\EmployeeAdjustment.cs" />
     <Compile Include="Payroll\EmployeeLoan.cs" />
     <Compile Include="Payroll\EmployeePayroll.cs" />
+    <Compile Include="Payroll\EmployeePayrollDeduction.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="Seeder\DeductionAmountSeeds.cs" />
+    <Compile Include="Seeder\DeductionSeeds.cs" />
     <Compile Include="Seeder\DepartmentSeeds.cs" />
     <Compile Include="Seeder\FrequencySeeds.cs" />
     <Compile Include="Seeder\HolidaySeeds.cs" />
