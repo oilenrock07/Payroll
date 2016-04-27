@@ -44,9 +44,13 @@
     <Compile Include="Caching\CachedSettingService.cs" />
     <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
+    <Compile Include="Implementations\DeductionAmountService.cs" />
     <Compile Include="Implementations\EmployeeDailyPayrollSevice.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
     <Compile Include="Implementations\EmployeeInfoService.cs" />
+    <Compile Include="Implementations\EmployeePayrollDeductionService.cs" />
+    <Compile Include="Implementations\EmployeePayrollService.cs" />
+    <Compile Include="Implementations\EmployeeSalaryService.cs" />
     <Compile Include="Implementations\EmployeeService.cs" />
     <Compile Include="Implementations\EmployeeWorkScheduleService.cs" />
     <Compile Include="Implementations\HolidayService.cs" />
@@ -58,9 +62,13 @@
     <Compile Include="Implementations\WebService.cs" />
     <Compile Include="Interfaces\IAttendanceService.cs" />
     <Compile Include="Interfaces\ICacheService.cs" />
+    <Compile Include="Interfaces\IDeductionAmountService.cs" />
     <Compile Include="Interfaces\IEmployeeDailyPayrollService.cs" />
     <Compile Include="Interfaces\IEmployeeHoursService.cs" />
     <Compile Include="Interfaces\IEmployeeInfoService.cs" />
+    <Compile Include="Interfaces\IEmployeePayrollDeductionService.cs" />
+    <Compile Include="Interfaces\IEmployeePayrollService.cs" />
+    <Compile Include="Interfaces\IEmployeeSalaryService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\IEmployeeWorkScheduleService.cs" />
     <Compile Include="Interfaces\IHolidayService.cs" />
