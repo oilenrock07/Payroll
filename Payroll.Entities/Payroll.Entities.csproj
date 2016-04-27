@@ -66,7 +66,7 @@
     <Compile Include="EmployeeDepartment.cs" />
     <Compile Include="EmployeeFile.cs" />
     <Compile Include="EmployeeInfo.cs" />
-    <Compile Include="EmployeePayrollDeduction.cs" />
+    <Compile Include="Payroll\EmployeePayrollDeduction.cs" />
     <Compile Include="EmployeeSalary.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
     <Compile Include="Files.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Payroll.Entities.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace Payroll.Entities.Payroll
 {
     [Table("employee_deduction")]
-    public class EmployeeDeduction
+    public class EmployeeDeduction : BaseEntity
     {
         [Key]
         public int EmployeeDeductionId { get; set; }

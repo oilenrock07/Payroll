@@ -5,7 +5,7 @@ using Payroll.Entities.Base;
 
 namespace Payroll.Entities.Payroll
 {
-    [Table("Employee_Daily_Payroll")]
+    [Table("employee_daily_payroll")]
     public class EmployeeDailyPayroll : BaseEntity
     {
         [Key]

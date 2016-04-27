@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Payroll.Service.Interfaces
 {
-    public interface IEmployeePayrollDeductionService
+    public interface IEmployeeDeductionService
     {
-        void GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate);
+        EmployeeDeduction GetByDeductionAndEmployee(int deductionId, int employeeId);
     }
 }

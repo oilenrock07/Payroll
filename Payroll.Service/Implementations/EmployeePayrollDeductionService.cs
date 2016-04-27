@@ -1,5 +1,8 @@
 ﻿using Payroll.Entities;
 using Payroll.Entities.Payroll;
+using Payroll.Infrastructure.Implementations;
+using Payroll.Infrastructure.Interfaces;
+using Payroll.Repository.Interface;
 using Payroll.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,9 +14,14 @@ namespace Payroll.Service.Implementations
 {
     public class EmployeePayrollDeductionService : IEmployeePayrollDeductionService
     {
+        private IUnitOfWork _unitOfWork;
         private ISettingService _settingService;
         private IEmployeeSalaryService _employeeSalaryService;
         private IEmployeeInfoService _employeeInfoService;
+        private IEmployeeDeductionService _employeeDeductionService;
+        private IDeductionService _deductionService;
+
+        private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
 
         private readonly String IS_DEDUCTION_SEMIMONTHLY    = "DEDUCTION_IS_SEMIMONTHLY";
 
@@ -24,14 +32,21 @@ namespace Payroll.Service.Implementations
         private readonly String SEMIMONTHLY_TOTAL_HOURS     = "DEDUCTION_SEMIMONTHLY_TOTAL_HOURS";
         private readonly String MONTHLY_TOTAL_HOURS         = "DEDUCTION_MONTHLY_TOTAL_HOURS";
 
-        public EmployeePayrollDeductionService(ISettingService settingService, IEmployeeSalaryService employeeSalaryService, IEmployeeInfoService employeeInfoService)
+        public EmployeePayrollDeductionService(IUnitOfWork unitOfWork, ISettingService settingService, 
+            IEmployeeSalaryService employeeSalaryService, IEmployeeInfoService employeeInfoService,
+            IEmployeeDeductionService employeeDeductionService, IDeductionService deductionService,
+            IEmployeePayrollDeductionRepository employeePayrollDeductionRepository)
         {
+            _unitOfWork = unitOfWork;
             _settingService = settingService;
             _employeeSalaryService = employeeSalaryService;
             _employeeInfoService = employeeInfoService;
+            _employeeDeductionService = employeeDeductionService;
+            _deductionService = deductionService;
+            _employeePayrollDeductionRepository = employeePayrollDeductionRepository;
         }
 
-        public void GenerateDeductionsByPayroll(DateTime payrollStartDate, DateTime payrollEndDate)
+        public void GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
         {
             //Get settings if monthly or semimonthly
             bool isSemiMonthly = _settingService.GetByKey(IS_DEDUCTION_SEMIMONTHLY).Equals("1");
@@ -74,14 +89,14 @@ namespace Payroll.Service.Implementations
 
             double totalHours = 0;
             //Get total number of hours
-            if (isSemiMonthly)
+           /* if (isSemiMonthly)
             {
                 totalHours = Double.Parse(_settingService.GetByKey(SEMIMONTHLY_TOTAL_HOURS));
             }
             else
             {
                 totalHours = Double.Parse(_settingService.GetByKey(MONTHLY_TOTAL_HOURS));
-            }
+            }*/
 
             //Get employees
             var employeeList = _employeeInfoService.GetAllActive();
@@ -89,15 +104,37 @@ namespace Payroll.Service.Implementations
             foreach(EmployeeInfo employee in employeeList)
             {
                 //Compute basic pay
-                decimal basicPay = (_employeeSalaryService.GetEmployeeHourlyRate(employee) * (decimal)totalHours);
-
+                //decimal basicPay = (_employeeSalaryService.GetEmployeeHourlyRate(employee) * (decimal)totalHours);
                 //Compute HDMF Deduction
-
-
                 //Compute SSS contribution
-            }
 
-            throw new NotImplementedException();
+                //No computations from employee deductions info
+                //Get all deductions
+                var deductionList = _deductionService.GetAllActive();
+
+                //Every deductions check for available deduction for employee
+                foreach (Deduction deduction in deductionList)
+                {
+                    var employeeDeduction = _employeeDeductionService
+                        .GetByDeductionAndEmployee(deduction.DeductionId, employee.EmployeeId);
+
+                    if (employeeDeduction != null)
+                    {
+                        //Create a deduction entry
+                        EmployeePayrollDeduction employeePayrollDeduction = 
+                            new EmployeePayrollDeduction
+                        {
+                            DeductionId = deduction.DeductionId,
+                            Amount = employeeDeduction.Amount,
+                            PayrollDate = payrollDate
+                        };
+
+                        _employeePayrollDeductionRepository.Add(employeePayrollDeduction);
+                    }
+                }
+
+                _unitOfWork.Commit();   
+            }
         }
 
     }
