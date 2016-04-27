@@ -66,8 +66,6 @@
     <Compile Include="EmployeeDepartment.cs" />
     <Compile Include="EmployeeFile.cs" />
     <Compile Include="EmployeeInfo.cs" />
-    <Compile Include="Payroll\EmployeePayrollDeduction.cs" />
-    <Compile Include="EmployeeSalary.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="Frequency.cs" />
@@ -79,35 +77,24 @@
     <Compile Include="Migrations\201604030717363_NewMigration.Designer.cs">
       <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604170618037_employee-hours.cs" />
-    <Compile Include="Migrations\201604170618037_employee-hours.Designer.cs">
-      <DependentUpon>201604170618037_employee-hours.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604191442524_salary_obj_updates.cs" />
-    <Compile Include="Migrations\201604191442524_salary_obj_updates.Designer.cs">
-      <DependentUpon>201604191442524_salary_obj_updates.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604201330067_change_employee_info.cs" />
-    <Compile Include="Migrations\201604201330067_change_employee_info.Designer.cs">
-      <DependentUpon>201604201330067_change_employee_info.cs</DependentUpon>
+    <Compile Include="Migrations\201604160853123_seed.cs" />
+    <Compile Include="Migrations\201604160853123_seed.Designer.cs">
+      <DependentUpon>201604160853123_seed.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
-    <Compile Include="Payroll\EmployeeDeduction.cs" />
+    <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
     <Compile Include="Payroll\EmployeeLeave.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Payroll\Deduction.cs" />
     <Compile Include="Payroll\EmployeeAdjustment.cs" />
     <Compile Include="Payroll\EmployeeLoan.cs" />
-    <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
     <Compile Include="Payroll\EmployeePayroll.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
-    <Compile Include="Seeder\DeductionAmountSeeds.cs" />
-    <Compile Include="Seeder\DeductionSeeds.cs" />
     <Compile Include="Seeder\DepartmentSeeds.cs" />
     <Compile Include="Seeder\FrequencySeeds.cs" />
     <Compile Include="Seeder\HolidaySeeds.cs" />
@@ -116,7 +103,6 @@
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
     <Compile Include="Setting.cs" />
-    <Compile Include="DeductionAmount.cs" />
     <Compile Include="Tax.cs" />
     <Compile Include="Users\Role.cs" />
     <Compile Include="Users\User.cs" />
@@ -135,14 +121,8 @@
     <EmbeddedResource Include="Migrations\201604030717363_NewMigration.resx">
       <DependentUpon>201604030717363_NewMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604170618037_employee-hours.resx">
-      <DependentUpon>201604170618037_employee-hours.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604191442524_salary_obj_updates.resx">
-      <DependentUpon>201604191442524_salary_obj_updates.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604201330067_change_employee_info.resx">
-      <DependentUpon>201604201330067_change_employee_info.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201604160853123_seed.resx">
+      <DependentUpon>201604160853123_seed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

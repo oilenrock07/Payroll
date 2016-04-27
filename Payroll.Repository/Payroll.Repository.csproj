@@ -78,6 +78,7 @@
     <Compile Include="Interface\IEmployeeDepartmentRepository.cs" />
     <Compile Include="Interface\IEmployeeHoursRepository.cs" />
     <Compile Include="Interface\IEmployeeInfoRepository.cs" />
+    <Compile Include="Interface\IEmployeeLeaveRepository.cs" />
     <Compile Include="Interface\IEmployeeLoanRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollDeductionRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollRepository.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Repositories\EmployeeDepartmentRepository.cs" />
     <Compile Include="Repositories\EmployeeHoursRepository.cs" />
     <Compile Include="Repositories\EmployeeInfoRepository.cs" />
+    <Compile Include="Repositories\EmployeeLeaveRepository.cs" />
     <Compile Include="Repositories\EmployeeLoanRepository.cs" />
     <Compile Include="Repositories\EmployeePayrollDeductionRepository.cs" />
     <Compile Include="Repositories\EmployeePayrollRepository.cs" />

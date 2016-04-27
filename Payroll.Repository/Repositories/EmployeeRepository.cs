@@ -58,7 +58,6 @@ namespace Payroll.Repository.Repositories
                 _employeeDepartmentRepository.Update(employeeDepartment);
                 employeeDepartment.IsActive = false;
             }
-
         }
 
         public IEnumerable<EmployeeNames> GetEmployeeNames()

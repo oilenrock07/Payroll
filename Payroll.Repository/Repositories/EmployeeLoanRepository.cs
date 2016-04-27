@@ -19,7 +19,7 @@ namespace Payroll.Repository.Repositories
 
         public virtual IEnumerable<EmployeeLoanDao> GetActiveEmployeeLoans()
         {
-            var result = Find(x => x.IsActive);
+            var result = Find(x => x.IsActive).ToList();
             return result.MapCollection<EmployeeLoan, EmployeeLoanDao>((s, d) =>
             {
                 d.FirstName = s.Employee.FirstName;

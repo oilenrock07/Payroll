@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Payroll.Entities.Base;
+using Payroll.Entities.Users;
 
 namespace Payroll.Entities.Payroll
 {
@@ -13,7 +14,9 @@ namespace Payroll.Entities.Payroll
 
         public int EmployeeId { get; set; }
 
+        [ForeignKey("Leave")]
         public int LeaveId { get; set; }
+        public virtual Leave Leave { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -22,7 +25,10 @@ namespace Payroll.Entities.Payroll
 
         public bool IsApproved { get; set; }
 
-        public int ApprovedBy { get; set; } //ManagerId
+        [ForeignKey("User")]
+        [Column("Id")]
+        public string ApprovedBy { get; set; } //ManagerId
+        public virtual User User { get; set; }
 
         public int Hours { get; set; } //Default 8 hrs, 1 day
     }

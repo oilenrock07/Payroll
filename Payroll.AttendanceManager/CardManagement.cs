@@ -171,7 +171,7 @@ namespace Payroll.AttendanceManager
                     _employeeRepository.Update(employee);
                     employee.EmployeeCode = txtCardnumber.Text;
                     employee.EnrolledToRfid = true;
-                    employee.Enabled = chbEnabled.Checked;
+                    //employee.Enabled = chbEnabled.Checked;
                     _unitOfWork.Commit();
                 }
                 catch (Exception ex)
