@@ -20,5 +20,9 @@ namespace Payroll.Entities.Users
         
         [StringLength(500)]
         public string Discriminator { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
     }
 }

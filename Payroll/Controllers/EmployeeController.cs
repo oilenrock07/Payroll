@@ -32,6 +32,7 @@ namespace Payroll.Controllers
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeLoanRepository _employeeLoanRepository;
         private readonly ILoanRepository _loanRepository;
+        private readonly IEmployeeLeaveRepository _employeeLeaveRepository;
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
@@ -239,7 +240,6 @@ namespace Payroll.Controllers
             return RedirectToAction("Index");
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult Edit(EmployeeInfoViewModel viewModel)
@@ -393,6 +393,18 @@ namespace Payroll.Controllers
 
             _unitOfWork.Commit();
             return RedirectToAction("EmployeeLoans");
+        }
+
+        public virtual ActionResult EmployeeLeaves(int month, int year)
+        {
+            var employeeLeaves = _employeeLeaveRepository.GetEmployeeLeavesByDate(month, year);
+
+            //should display the employee leaves per month
+            //should have a calendar wihch marks all the employee leaves for the month
+            //upon double click or click, display a modal which displays the employee name
+
+            //should also display a grid under (should have a hide link to hide the content)
+            //grid should have employee name, date leaves leave type, isapproved, approvedBy, cancel
         }
     }
 }

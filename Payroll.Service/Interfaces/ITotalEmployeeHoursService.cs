@@ -1,4 +1,5 @@
-﻿using Payroll.Entities.Payroll;
+﻿using Payroll.Entities.Enums;
+using Payroll.Entities.Payroll;
 using System;
 using System.Collections.Generic;
 using System.Linq;

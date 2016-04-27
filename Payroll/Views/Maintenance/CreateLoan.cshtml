@@ -25,7 +25,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Loan.Min, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Loan.Min, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Loan.Min, new { @class = "form-control", placeholder = "Minimum amount that can be loan" })
+                <div class="label-info label">You can leave this to 0</div>
                 @Html.ValidationMessageFor(model => model.Loan.Min)
             </div>
         </div>
@@ -33,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Loan.Max, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Loan.Max, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Loan.Max, new { @class = "form-control", placeholder = "Maximum amount that can be loan"  })
                 @Html.ValidationMessageFor(model => model.Loan.Max)
             </div>
         </div>
@@ -41,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Loan.LoanPeriod, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-4">
-                @Html.TextBoxFor(model => model.Loan.LoanPeriodNumber, new { @class = "form-control", placeholder ="Number of period" })                
+                @Html.TextBoxFor(model => model.Loan.LoanPeriodNumber, new { @class = "form-control", placeholder ="How long the loan should be paid" })                
             </div>
             <div class="col-md-3">
                 @Html.DropDownListFor(model => model.Loan.LoanPeriod, Model.LoanPaymentPeriod, new { @class = "form-control" })
@@ -52,9 +53,10 @@
             @Html.LabelFor(model => model.Loan.Interest, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 <div class="input-group">
-                    @Html.TextBoxFor(model => model.Loan.Interest, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Loan.Interest, new { @class = "form-control", placeholder = "Loan interest" })
                     <span class="input-group-addon">%</span>
                 </div>
+                <div class="label-info label">You can leave this to 0</div>
                 @Html.ValidationMessageFor(model => model.Loan.Interest)
             </div>
         </div>
@@ -70,3 +72,10 @@
 <div>
     @Html.ActionLink("Back to List", "Loan")
 </div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('input:text').val('');
+    </script>
+}
