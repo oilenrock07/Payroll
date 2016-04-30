@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Payroll.Entities.Base;
+using Payroll.Entities.Enums;
 
 namespace Payroll.Entities
 {
@@ -13,6 +14,8 @@ namespace Payroll.Entities
         [ForeignKey("Frequency")]
         public int FrequencyId { get; set; }
         public virtual Frequency Frequency { get; set; }
+
+        public FrequencyType FrequencyType { get; set; }
 
         public int ? WeeklyStartDayOfWeek { get; set; }
 

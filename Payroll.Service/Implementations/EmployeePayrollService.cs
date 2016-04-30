@@ -25,7 +25,7 @@ namespace Payroll.Service.Implementations
             _employeePayrollRepository = employeeePayrollRepository;
         }
 
-        public void GeneratePayrollByDateRange(FrequencyType frequency, DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
+        public void GeneratePayrollByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
         {
             var employeeDailyPayroll = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
 

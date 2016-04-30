@@ -25,22 +25,22 @@ namespace Payroll.Service
             //TODO more salary frequency
             switch (employeeSalary.SalaryFrequency)
             {
-                case SalaryFrequency.Hourly:
+                case FrequencyType.Hourly:
                     {
                         hourlyRate = (employeeSalary.Salary / SALARY_HOURLY);
                         break;
                     }
-                case SalaryFrequency.Daily:
+                case FrequencyType.Daily:
                     {
                         hourlyRate = (employeeSalary.Salary / SALARY_DAILY);
                         break;
                     }
-                case SalaryFrequency.Weekly:
+                case FrequencyType.Weekly:
                     {
                         hourlyRate = (employeeSalary.Salary / SALARY_WEEKLY);
                         break;
                     }
-                case SalaryFrequency.BiWeekly:
+                case FrequencyType.BiWeekly:
                     {
                         hourlyRate = (employeeSalary.Salary / SALARY_BIWEEKLY);
                         break;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
@@ -59,15 +60,15 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var frequency = new Frequency
+            /*var frequency = new Frequency
             {
                 FrequencyName = "Weekly",
                 FrequencyType = Entities.Enums.FrequencyType.Weekly
-            };
+            };*/
 
             var paymentFrequency = new PaymentFrequency
             {
-                Frequency = frequency
+                FrequencyType = FrequencyType.Weekly
             };
 
             var employeeInfo = new EmployeeInfo

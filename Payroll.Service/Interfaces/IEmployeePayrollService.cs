@@ -9,6 +9,6 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeePayrollService
     {
-        void GeneratePayrollByDateRange(FrequencyType frequency, DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
+        void GeneratePayrollByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
     }
 }

@@ -104,6 +104,7 @@
     <Compile Include="Seeder\LeaveSeeds.cs" />
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
+    <Compile Include="Seeder\TaxSeeder.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Tax.cs" />
     <Compile Include="Users\Role.cs" />

@@ -121,14 +121,14 @@ namespace Payroll.Test.Service
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 100,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Hourly
+                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 3000,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Weekly
+                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };
 
             _employeeSalaryRepository.Add(EmployeeSalary1);
@@ -377,14 +377,14 @@ namespace Payroll.Test.Service
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 100,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Hourly
+                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 3000,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Weekly
+                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };
 
             _employeeSalaryRepository.Add(EmployeeSalary1);
@@ -668,14 +668,14 @@ namespace Payroll.Test.Service
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 100,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Hourly
+                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 3000,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Weekly
+                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };
 
             _employeeSalaryRepository.Add(EmployeeSalary1);
@@ -943,14 +943,14 @@ namespace Payroll.Test.Service
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 100,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Hourly
+                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
                 EmployeeInfoId = employeeId1,
                 Salary = 3000,
-                SalaryFrequency = Entities.Enums.SalaryFrequency.Weekly
+                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };
 
             _employeeSalaryRepository.Add(EmployeeSalary1);
