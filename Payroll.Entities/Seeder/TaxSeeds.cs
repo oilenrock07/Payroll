@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Payroll.Entities.Seeder
 {
-    public class TaxSeeder : ISeeders<Tax>
+    public class TaxSeeds : ISeeders<Tax>
     {
         public IEnumerable<Tax> GetDefaultSeeds()
         {
