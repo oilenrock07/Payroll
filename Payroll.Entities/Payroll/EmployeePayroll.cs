@@ -13,6 +13,7 @@ namespace Payroll.Entities.Payroll
             TotalDeduction = 0;
             TotalAdjustment = 0;
             TotalGross = 0;
+            TaxableIncome = 0;
         }
 
         [Key]
@@ -25,6 +26,8 @@ namespace Payroll.Entities.Payroll
         public decimal TotalGross { get; set; }
 
         public decimal TotalDeduction { get; set; }
+
+        public decimal TaxableIncome { get; set; } 
 
         public decimal TotalAdjustment { get; set; }
 

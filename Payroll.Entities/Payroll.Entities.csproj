@@ -83,6 +83,10 @@
     <Compile Include="Migrations\201604300620559_payment_frequency.Designer.cs">
       <DependentUpon>201604300620559_payment_frequency.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604300703309_add-taxable-income-payroll.cs" />
+    <Compile Include="Migrations\201604300703309_add-taxable-income-payroll.Designer.cs">
+      <DependentUpon>201604300703309_add-taxable-income-payroll.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -130,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604300620559_payment_frequency.resx">
       <DependentUpon>201604300620559_payment_frequency.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604300703309_add-taxable-income-payroll.resx">
+      <DependentUpon>201604300703309_add-taxable-income-payroll.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
