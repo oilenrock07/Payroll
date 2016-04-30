@@ -75,9 +75,13 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
-    <Compile Include="Migrations\201604271450440_newmigration.cs" />
-    <Compile Include="Migrations\201604271450440_newmigration.Designer.cs">
-      <DependentUpon>201604271450440_newmigration.cs</DependentUpon>
+    <Compile Include="Migrations\201604300559510_tax-changes.cs" />
+    <Compile Include="Migrations\201604300559510_tax-changes.Designer.cs">
+      <DependentUpon>201604300559510_tax-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604300620559_payment_frequency.cs" />
+    <Compile Include="Migrations\201604300620559_payment_frequency.Designer.cs">
+      <DependentUpon>201604300620559_payment_frequency.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -121,8 +125,11 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604271450440_newmigration.resx">
-      <DependentUpon>201604271450440_newmigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201604300559510_tax-changes.resx">
+      <DependentUpon>201604300559510_tax-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604300620559_payment_frequency.resx">
+      <DependentUpon>201604300620559_payment_frequency.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -109,8 +109,8 @@ namespace Payroll.Test.Service
         public void DeleteInfo(EmployeeRepository repository, UnitOfWork unitOfwork)
         {
             repository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
-            repository.ExecuteSqlCommand("TRUNCATE TABLE frequency");
             repository.ExecuteSqlCommand("TRUNCATE TABLE payment_frequency");
+            repository.ExecuteSqlCommand("TRUNCATE TABLE frequency");
             repository.ExecuteSqlCommand("TRUNCATE TABLE attendance");
             repository.ExecuteSqlCommand("TRUNCATE TABLE attendance_log");
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_info");
