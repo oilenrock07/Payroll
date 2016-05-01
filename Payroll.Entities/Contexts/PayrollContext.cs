@@ -56,6 +56,10 @@ namespace Payroll.Entities.Contexts
         public virtual IDbSet<UserLogin> UserLogIns { get; set; }
         public virtual IDbSet<UserRole> UserRoles { get; set; }
 
+        //Machine
+        public virtual IDbSet<Machine> Machines { get; set; }
+        public virtual IDbSet<EmployeeMachine> EmployeeMachines { get; set; }
+
         static string ConnectionString
         {
 

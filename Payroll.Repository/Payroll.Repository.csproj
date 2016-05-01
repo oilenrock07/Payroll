@@ -87,6 +87,7 @@
     <Compile Include="Interface\IEmployeeworkScheduleRepository.cs" />
     <Compile Include="Interface\IFrequencyRepository.cs" />
     <Compile Include="Interface\IHolidayRepository.cs" />
+    <Compile Include="Interface\IMachineRepository.cs" />
     <Compile Include="Interface\ILeaveRepository.cs" />
     <Compile Include="Interface\ILoanRepository.cs" />
     <Compile Include="Interface\IPaymentFrequencyRepository.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Repositories\HolidayRepository.cs" />
     <Compile Include="Repositories\LeaveRepository.cs" />
     <Compile Include="Repositories\LoanRepository.cs" />
+    <Compile Include="Repositories\MachineRepository.cs" />
     <Compile Include="Repositories\PaymentFrequencyRepository.cs" />
     <Compile Include="Repositories\PositionRepository.cs" />
     <Compile Include="Repositories\SettingRepository.cs" />

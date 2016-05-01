@@ -25,7 +25,9 @@ namespace AttendanceManager
         public static IEnumerable<Setting> _settings;
 
         public static CZKEMClass _czkemClass;
-        public static PayrollMain _mainForm;
+        //public static PayrollMain _mainForm;
+        public static MainForm _mainForm;
+        
         public static bool _connected = false;
 
         //todo: load the error codes
@@ -43,8 +45,10 @@ namespace AttendanceManager
 
             LoadSettings();
 
-            _mainForm = new PayrollMain();
+            //_mainForm = new PayrollMain();
+            _mainForm = new MainForm();
             _czkemClass = new CZKEMClass();
+            
 
             Application.Run(_mainForm);
         }

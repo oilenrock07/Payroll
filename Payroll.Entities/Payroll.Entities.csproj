@@ -67,6 +67,7 @@
     <Compile Include="EmployeeDepartment.cs" />
     <Compile Include="EmployeeFile.cs" />
     <Compile Include="EmployeeInfo.cs" />
+    <Compile Include="EmployeeMachine.cs" />
     <Compile Include="EmployeeSalary.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
     <Compile Include="Files.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
+    <Compile Include="Machine.cs" />
     <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.cs" />
     <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.Designer.cs">
       <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
@@ -86,6 +88,14 @@
     <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.cs" />
     <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.Designer.cs">
       <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605011404360_machineentities.cs" />
+    <Compile Include="Migrations\201605011404360_machineentities.Designer.cs">
+      <DependentUpon>201605011404360_machineentities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605011409126_employeemachine.cs" />
+    <Compile Include="Migrations\201605011409126_employeemachine.Designer.cs">
+      <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -137,6 +147,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605010459244_add-employee-payroll-istaxed.resx">
       <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605011404360_machineentities.resx">
+      <DependentUpon>201605011404360_machineentities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605011409126_employeemachine.resx">
+      <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
