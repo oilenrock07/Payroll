@@ -30,6 +30,8 @@ namespace AttendanceManager
         
         public static bool _connected = false;
 
+        public static int _port = 4370;
+
         //todo: load the error codes
         public static Dictionary<int, string> _errorCodes;
  

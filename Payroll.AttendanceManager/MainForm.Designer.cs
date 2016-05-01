@@ -32,6 +32,7 @@
             this.MachineId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.gvMachine)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,11 +76,22 @@
             this.label1.TabIndex = 49;
             this.label1.Text = "Registered Machine";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(363, 9);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(107, 33);
+            this.button1.TabIndex = 50;
+            this.button1.Text = "Load Form";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(481, 498);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.gvMachine);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -98,5 +110,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MachineId;
         private System.Windows.Forms.DataGridViewTextBoxColumn IpAddress;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }

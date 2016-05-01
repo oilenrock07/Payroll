@@ -112,6 +112,12 @@
     <Compile Include="CardManagement.Designer.cs">
       <DependentUpon>CardManagement.cs</DependentUpon>
     </Compile>
+    <Compile Include="MachineForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MachineForm.Designer.cs">
+      <DependentUpon>MachineForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CardManagement.resx">
       <DependentUpon>CardManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MachineForm.resx">
+      <DependentUpon>MachineForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
