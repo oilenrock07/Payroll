@@ -10,5 +10,6 @@ namespace Payroll.Repository.Interface
 {
     public interface IEmployeePayrollRepository : IRepository<EmployeePayroll>
     {
+        IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId);
     }
 }

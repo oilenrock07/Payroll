@@ -91,6 +91,14 @@
     <Compile Include="Migrations\201605010152148_remove-fk-workschedule.Designer.cs">
       <DependentUpon>201605010152148_remove-fk-workschedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605010239189_add-tax-maxAmount.cs" />
+    <Compile Include="Migrations\201605010239189_add-tax-maxAmount.Designer.cs">
+      <DependentUpon>201605010239189_add-tax-maxAmount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.cs" />
+    <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.Designer.cs">
+      <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -144,6 +152,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605010152148_remove-fk-workschedule.resx">
       <DependentUpon>201605010152148_remove-fk-workschedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605010239189_add-tax-maxAmount.resx">
+      <DependentUpon>201605010239189_add-tax-maxAmount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605010459244_add-employee-payroll-istaxed.resx">
+      <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
