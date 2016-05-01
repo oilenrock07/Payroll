@@ -90,7 +90,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule,
-                Employee = employee
+                EmployeeId = 1
             };
 
             employeeWorkScheduleRepository.Add(employeeWorkSchedule);

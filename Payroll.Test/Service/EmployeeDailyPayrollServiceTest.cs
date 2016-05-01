@@ -145,7 +145,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule,
-                Employee = employee1
+                EmployeeId = employeeId1
             };
 
             var workSchedule2 = new WorkSchedule
@@ -159,7 +159,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule2 = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule2,
-                Employee = employee2
+                EmployeeId = employeeId2
             };
 
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule);
@@ -401,7 +401,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule,
-                Employee = employee1
+                EmployeeId = employeeId1
             };
 
             var workSchedule2 = new WorkSchedule
@@ -415,7 +415,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule2 = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule2,
-                Employee = employee2
+                EmployeeId = employeeId2
             };
 
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule);
@@ -692,7 +692,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule,
-                Employee = employee1
+                EmployeeId = employeeId1
             };
 
             var workSchedule2 = new WorkSchedule
@@ -706,7 +706,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule2 = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule2,
-                Employee = employee2
+                EmployeeId = employeeId2
             };
 
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule);
@@ -967,7 +967,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule,
-                Employee = employee1
+                EmployeeId = employeeId1
             };
 
             var workSchedule2 = new WorkSchedule
@@ -981,7 +981,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule2 = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule2,
-                Employee = employee2
+                EmployeeId = employeeId2
             };
 
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule);

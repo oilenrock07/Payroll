@@ -7,12 +7,12 @@ namespace Payroll.Entities.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.payroll", "TaxableIncome", c => c.Decimal(nullable: false, precision: 18, scale: 2));
+            AddColumn("payroll", "TaxableIncome", c => c.Decimal(nullable: false, precision: 18, scale: 2));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.payroll", "TaxableIncome");
+            DropColumn("payroll", "TaxableIncome");
         }
     }
 }

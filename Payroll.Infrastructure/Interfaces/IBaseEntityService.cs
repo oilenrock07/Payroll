@@ -12,6 +12,7 @@ namespace Payroll.Infrastructure.Interfaces
     {
         T GetById(int id);
         IQueryable<T> GetAll();
+        IQueryable<T> GetAllActive();
         IQueryable<T> Find(Expression<Func<T, bool>> expression);
 
         T Add(T entity);
