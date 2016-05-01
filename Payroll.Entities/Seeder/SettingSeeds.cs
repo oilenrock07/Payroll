@@ -21,11 +21,9 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingId = 6, SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "0.3", Description = "Special Holiday", Category = "RATE" },
                 new Setting { SettingId = 7, SettingKey = "RATE_HOLIDAY_REGULAR", Value = "1", Description = "Regular Holiday", Category = "RATE" },
 
-
                 //Company Info
                 new Setting { SettingKey = "COMPANY_NAME", Value = "Lychee Co", Description = "Company Name", Category = "COMPANY_INFO" },
                 new Setting { SettingKey = "COMPANY_TYPE", Value = "Private", Description = "Company Is Private or Public? For SSS OR GSIS Field", Category = "COMPANY_INFO" },
-
 
                 //Company Settings
                 new Setting { SettingKey = "SUPPORT_REFUNDABLE_LEAVE", Value = "true", Description = "Whether or not, the company supports refundable leaves", Category = "COMPANY_SETTING" },

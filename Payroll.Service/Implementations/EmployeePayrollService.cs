@@ -1,4 +1,5 @@
-﻿using Payroll.Entities.Enums;
+﻿using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Interface;
@@ -25,9 +26,10 @@ namespace Payroll.Service.Implementations
             _employeePayrollRepository = employeeePayrollRepository;
         }
 
-        public void GeneratePayrollByDateRange(FrequencyType frequency, DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
+        public IList<EmployeePayroll> GeneratePayrollNetPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
         {
             var employeeDailyPayroll = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var employeePayrollList = new List<EmployeePayroll>();
 
             //Hold last payroll processed
             EmployeePayroll tempEmployeePayroll = null;
@@ -43,6 +45,7 @@ namespace Payroll.Service.Implementations
                 {
                     //Save last entry if for different employee
                     _employeePayrollRepository.Add(tempEmployeePayroll);
+                    employeePayrollList.Add(tempEmployeePayroll);
 
                     EmployeePayroll employeePayroll = new EmployeePayroll
                     {
@@ -67,11 +70,19 @@ namespace Payroll.Service.Implementations
                 if (dailyPayroll.Equals(last))
                 {
                     _employeePayrollRepository.Add(tempEmployeePayroll);
+                    employeePayrollList.Add(tempEmployeePayroll);
                 }
             }
 
             //Commit
             _unitOfWork.Commit();
+
+            return employeePayrollList;
+        }
+
+        public void Update(EmployeePayroll employeePayroll)
+        {
+            _employeePayrollRepository.Update(employeePayroll);
         }
     }
 }

@@ -92,6 +92,7 @@
     <Compile Include="Interface\IPaymentFrequencyRepository.cs" />
     <Compile Include="Interface\IPositionRepository.cs" />
     <Compile Include="Interface\ISettingRepository.cs" />
+    <Compile Include="Interface\ITaxRepository.cs" />
     <Compile Include="Interface\ITotalEmployeeHoursRepository.cs" />
     <Compile Include="Models\AttendanceLogDao.cs" />
     <Compile Include="Models\EmployeeLoanDao.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Repositories\PaymentFrequencyRepository.cs" />
     <Compile Include="Repositories\PositionRepository.cs" />
     <Compile Include="Repositories\SettingRepository.cs" />
+    <Compile Include="Repositories\TaxRepository.cs" />
     <Compile Include="Repositories\TotalEmployeeHoursRepository.cs" />
   </ItemGroup>
   <ItemGroup>

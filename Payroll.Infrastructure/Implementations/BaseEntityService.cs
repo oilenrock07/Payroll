@@ -44,6 +44,11 @@ namespace Payroll.Infrastructure.Implementations
             return _repository.GetAll();
         }
 
+        public IQueryable<T> GetAllActive()
+        {
+            return _repository.GetAllActive();
+        }
+
         public T GetById(int id)
         {
             return _repository.GetById(id);

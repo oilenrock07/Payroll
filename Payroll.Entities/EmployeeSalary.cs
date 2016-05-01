@@ -18,7 +18,7 @@ namespace Payroll.Entities
 
         public decimal Salary { get; set; }
 
-        public SalaryFrequency SalaryFrequency { get; set; }
+        public FrequencyType SalaryFrequency { get; set; }
 
         public int EmployeeInfoId { get; set;}
     }

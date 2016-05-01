@@ -26,19 +26,11 @@ namespace Payroll.Entities.Enums
 
     public enum FrequencyType
     {
-        Weekly,
-        BiWeekly,
-        Monthly,
-        SemiMonthly
-    }
-
-    public enum SalaryFrequency
-    {
-        Hourly,
-        Daily,
-        Weekly,
-        BiWeekly,
-        Monthly,
-        SemiMonthly
+        Hourly = 1,
+        Daily = 2,
+        Weekly = 3,
+        BiWeekly = 4,
+        SemiMonthly = 5,
+        Monthly = 6
     }
 }

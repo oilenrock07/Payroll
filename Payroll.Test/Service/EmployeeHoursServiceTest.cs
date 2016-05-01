@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
@@ -59,15 +60,15 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var frequency = new Frequency
+            /*var frequency = new Frequency
             {
                 FrequencyName = "Weekly",
                 FrequencyType = Entities.Enums.FrequencyType.Weekly
-            };
+            };*/
 
             var paymentFrequency = new PaymentFrequency
             {
-                Frequency = frequency
+                FrequencyType = FrequencyType.Weekly
             };
 
             var employeeInfo = new EmployeeInfo
@@ -89,7 +90,7 @@ namespace Payroll.Test.Service
             var employeeWorkSchedule = new EmployeeWorkSchedule
             {
                 WorkSchedule = workSchedule,
-                Employee = employee
+                EmployeeId = 1
             };
 
             employeeWorkScheduleRepository.Add(employeeWorkSchedule);
@@ -108,8 +109,8 @@ namespace Payroll.Test.Service
         public void DeleteInfo(EmployeeRepository repository, UnitOfWork unitOfwork)
         {
             repository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
-            repository.ExecuteSqlCommand("TRUNCATE TABLE frequency");
             repository.ExecuteSqlCommand("TRUNCATE TABLE payment_frequency");
+            repository.ExecuteSqlCommand("TRUNCATE TABLE frequency");
             repository.ExecuteSqlCommand("TRUNCATE TABLE attendance");
             repository.ExecuteSqlCommand("TRUNCATE TABLE attendance_log");
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_info");
