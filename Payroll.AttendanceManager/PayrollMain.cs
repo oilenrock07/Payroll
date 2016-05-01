@@ -14,14 +14,11 @@ namespace RTEvents
     public partial class PayrollMain : Form
     {
         private int childFormNumber = 0;
-
-        private RTEventsMain frmEvents;
         private CardMaintenance frmCardMaintenance;
 
         public PayrollMain()
         {
             InitializeComponent();
-            frmEvents = new RTEventsMain();
             frmCardMaintenance = new CardMaintenance();
         }
 
@@ -112,7 +109,7 @@ namespace RTEvents
 
         private void eventsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (frmEvents.IsDisposed) frmEvents = new RTEventsMain();
+            var frmEvents = new RTEventsMain();
             ShowForm(frmEvents);
         }
 

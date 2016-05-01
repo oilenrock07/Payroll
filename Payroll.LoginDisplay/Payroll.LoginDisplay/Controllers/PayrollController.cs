@@ -18,7 +18,7 @@ namespace Payroll.LoginDisplay.Controllers
         }
 
         [HttpGet]
-        public ActionResult DisplayTimeInOut(int id, AttendanceCode attCode, string timeInOut)
+        public PartialViewResult DisplayTimeInOut(int id, AttendanceCode attCode, string timeInOut)
         {
             var viewModel = new LogInViewModel
             {
@@ -27,20 +27,20 @@ namespace Payroll.LoginDisplay.Controllers
                 EmployeeId = id
             };
 
-            return View(viewModel);
+            return PartialView(viewModel);
         }
 
         //find a way to create a permanent duration
         //duration value is 1 month
         [HttpGet]
         //[OutputCache(Duration = 2592000, VaryByParam = "id", VaryByCustom = "payroll:employeeinformation")]
-        public ActionResult EmployeeInformation(int id)
+        public PartialViewResult EmployeeInformation(int id)
         {
             var employee = _employeeRepository.GetById(id);
             var viewModel = (LogInViewModel)(new LogInViewModel().InjectFrom(employee));
             viewModel.ImagePath = Url.Content(employee.Picture ?? "~/Images/noimage.jpg");
 
-            return View(viewModel);
+            return PartialView(viewModel);
         }
 
         [HttpGet]

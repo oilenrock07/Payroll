@@ -40,5 +40,11 @@ namespace Payroll.Entities.Payroll
 
         public int MonthlyPaymentDate { get; set; }
 
+        [NotMapped]
+        public int TotalPeriodOfPayment 
+        {
+            get { return 0; } 
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Web.Http;
 using Microsoft.AspNet.SignalR;
 using Payroll.Common.Enums;
@@ -8,11 +8,14 @@ namespace Payroll.LoginDisplay.Controllers
 {
     public class PayrollApiController : ApiController
     {
-        //timeinout should be converted to sqldate format (1989-10-30)
-        public void Get(int id, AttendanceCode attCode, string timeInOut)
+        public void Get(int id, string ipAddress, AttendanceCode attCode, string timeInOut)
         {
-            var context = GlobalHost.ConnectionManager.GetHubContext<PayrollHub>();
-            context.Clients.All.addNewMessageToPage(id, attCode, timeInOut);
+            var connection = PayrollHub.Connections.FirstOrDefault(x => x.IpAddress == ipAddress);
+            if (connection != null)
+            {
+                var context = GlobalHost.ConnectionManager.GetHubContext<PayrollHub>();
+                context.Clients.Client(connection.ConnectionId).broadcastMessage(id, attCode, timeInOut);
+            }    
         }
     }
 }

@@ -240,6 +240,7 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Payroll\ConnectionDetails.cs" />
     <Compile Include="Models\Payroll\LogInViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
@@ -299,13 +300,14 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Payroll\DisplayTimeInOut.cshtml" />
     <Content Include="Views\Payroll\Index.cshtml" />
     <Content Include="Views\Payroll\EmployeeInformation.cshtml" />
+    <Content Include="Views\Payroll\Registration.cshtml" />
+    <Content Include="Views\Payroll\Timer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

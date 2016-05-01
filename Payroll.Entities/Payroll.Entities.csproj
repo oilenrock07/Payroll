@@ -75,9 +75,9 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
-    <Compile Include="Migrations\201604271450440_newmigration.cs" />
-    <Compile Include="Migrations\201604271450440_newmigration.Designer.cs">
-      <DependentUpon>201604271450440_newmigration.cs</DependentUpon>
+    <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.cs" />
+    <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.Designer.cs">
+      <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -120,8 +120,8 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604271450440_newmigration.resx">
-      <DependentUpon>201604271450440_newmigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201604271531059_NewMigration2016-04-27.resx">
+      <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
