@@ -1,4 +1,6 @@
-﻿using Payroll.Entities.Payroll;
+﻿using Payroll.Entities;
+using Payroll.Entities.Payroll;
+using Payroll.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,6 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeePayrollDeductionService
     {
-        void GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate);
+        int GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate, IList<EmployeePayroll> employeePayrolls);
     }
 }

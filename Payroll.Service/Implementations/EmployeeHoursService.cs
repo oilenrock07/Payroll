@@ -55,7 +55,7 @@ namespace Payroll.Service.Implementations
         public int GenerateEmployeeHours(DateTime fromDate, DateTime toDate)
         {
             //Get all active employee with the same frequency
-            IList<EmployeeInfo> employees = _employeeInfoService.GetAllActive();
+           var employees = _employeeInfoService.GetAllActive();
 
             foreach (var employee in employees)
             {

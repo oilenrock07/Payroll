@@ -1,4 +1,6 @@
 ﻿using Payroll.Entities.Enums;
+using Payroll.Entities.Payroll;
+using Payroll.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeePayrollService
     {
-        void GeneratePayrollByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
+        IList<EmployeePayroll> GeneratePayrollNetPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
+
+        void Update(EmployeePayroll employeePayroll);
     }
 }
