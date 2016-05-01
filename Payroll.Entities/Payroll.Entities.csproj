@@ -79,6 +79,14 @@
     <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.Designer.cs">
       <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605010239189_add-tax-maxAmount.cs" />
+    <Compile Include="Migrations\201605010239189_add-tax-maxAmount.Designer.cs">
+      <DependentUpon>201605010239189_add-tax-maxAmount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.cs" />
+    <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.Designer.cs">
+      <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -122,6 +130,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201604271531059_NewMigration2016-04-27.resx">
       <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605010239189_add-tax-maxAmount.resx">
+      <DependentUpon>201605010239189_add-tax-maxAmount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605010459244_add-employee-payroll-istaxed.resx">
+      <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

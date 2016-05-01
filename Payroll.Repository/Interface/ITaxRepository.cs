@@ -1,4 +1,5 @@
 ﻿using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Payroll.Repository.Interface
 {
     public interface ITaxRepository : IRepository<Tax>
     {
+        Tax GetByTaxableAmount(FrequencyType frequency, int numberOfDependents, decimal TaxableAmount);
     }
 }

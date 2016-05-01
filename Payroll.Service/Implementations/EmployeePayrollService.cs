@@ -54,7 +54,8 @@ namespace Payroll.Service.Implementations
                         CutOffEndDate = dateTo,
                         PayrollGeneratedDate = today,
                         PayrollDate = payrollDate,
-                        TotalNet = dailyPayroll.TotalPay
+                        TotalNet = dailyPayroll.TotalPay,
+                        TaxableIncome = dailyPayroll.TotalPay
                     };
 
                     tempEmployeePayroll = employeePayroll;
@@ -83,6 +84,11 @@ namespace Payroll.Service.Implementations
         public void Update(EmployeePayroll employeePayroll)
         {
             _employeePayrollRepository.Update(employeePayroll);
+        }
+
+        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId)
+        {
+            return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId);
         }
     }
 }

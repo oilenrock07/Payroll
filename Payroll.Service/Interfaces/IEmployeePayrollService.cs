@@ -14,5 +14,7 @@ namespace Payroll.Service.Interfaces
         IList<EmployeePayroll> GeneratePayrollNetPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
 
         void Update(EmployeePayroll employeePayroll);
+
+        IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
@@ -16,6 +17,14 @@ namespace Payroll.Repository.Repositories
             : base (databaseFactory)
         {
             DbSet = databaseFactory.GetContext().Taxes;
+        }
+
+        public Tax GetByTaxableAmount(FrequencyType frequency, int numberOfDependents, decimal taxableAmount)
+        {
+            return Find(t => t.IsActive && t.Frequency == frequency
+                && t.NoOfDependents == numberOfDependents
+                && taxableAmount >= t.BaseAmount 
+                && (taxableAmount <= t.MaxAmount || t.MaxAmount == 0)).FirstOrDefault();
         }
     }
 }

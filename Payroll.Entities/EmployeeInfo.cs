@@ -8,6 +8,10 @@ namespace Payroll.Entities
     [Table("employee_info")]
     public class EmployeeInfo : BaseEntity
     {
+        public EmployeeInfo(){
+            Dependents = 0;
+        }
+
         [Key]
         public int EmploymentInfoId { get; set; }
 

@@ -12,5 +12,7 @@ namespace Payroll.Service.Interfaces
     public interface IEmployeePayrollDeductionService
     {
         int GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate, IList<EmployeePayroll> employeePayrolls);
+
+        EmployeePayrollDeduction Add(EmployeePayrollDeduction employeePayrollDeduction);
     }
 }

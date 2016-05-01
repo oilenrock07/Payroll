@@ -37,6 +37,8 @@ namespace Payroll.Entities.Payroll
 
         public DateTime CutOffEndDate { get; set; }
 
-        public DateTime PayrollGeneratedDate { get; set; }       
+        public DateTime PayrollGeneratedDate { get; set; }
+
+        public bool IsTaxed { get; set; }      
     }
 }

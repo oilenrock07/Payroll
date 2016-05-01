@@ -97,6 +97,7 @@ namespace Payroll.Service.Implementations
                         EmployeePayrollDeduction employeePayrollDeduction =
                             new EmployeePayrollDeduction
                             {
+                                EmployeeId = employee.EmployeeId,
                                 DeductionId = deduction.DeductionId,
                                 Amount = employeeDeduction.Amount,
                                 PayrollDate = payrollDate
@@ -121,9 +122,7 @@ namespace Payroll.Service.Implementations
             {
                 return 0;
             }
-
             return 1;
-            
         }
 
         private bool proceedDeduction(DateTime payrollStartDate, DateTime payrollEndDate)
@@ -162,6 +161,11 @@ namespace Payroll.Service.Implementations
             }
 
             return proceed;
+        }
+    
+        public EmployeePayrollDeduction Add(EmployeePayrollDeduction employeePayrollDeduction)
+        {
+            return _employeePayrollDeductionRepository.Add(employeePayrollDeduction);
         }
     }
 }

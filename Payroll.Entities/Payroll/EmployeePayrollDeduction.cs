@@ -15,10 +15,13 @@ namespace Payroll.Entities
         [Key]
         public int EmployeePayrollDeductionId { get; set; }
 
+        public int EmployeeId { get; set; }
+
         public int DeductionId { get; set; }
 
         public DateTime PayrollDate { get; set; }
 
         public decimal Amount { get; set; }
+
     }
 }

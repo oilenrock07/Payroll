@@ -20,6 +20,8 @@ namespace Payroll.Entities
 
         public decimal BaseAmount { get; set; }
 
+        public decimal MaxAmount { get; set; }
+
         public decimal BaseTaxAmount { get; set; }
 
         public int OverPercentage { get; set; }

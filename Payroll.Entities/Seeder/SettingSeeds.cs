@@ -50,7 +50,9 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "DEDUCTION_MONTHLY_SCHEDULE", Value = "30", Description = "Date of deduction", Category = "PAYROLL_DEDUCTIONS"},
 
                 new Setting { SettingKey = "DEDUCTION_MONTHLY_TOTAL_HOURS", Value = "184", Description = "Number of hours if monthly", Category = "PAYROLL_DEDUCTIONS"},
-                new Setting { SettingKey = "DEDUCTION_SEMIMONTHLY_TOTAL_HOURS", Value = "92", Description = "Number of hours if semimonthly", Category = "PAYROLL_DEDUCTIONS"}
+                new Setting { SettingKey = "DEDUCTION_SEMIMONTHLY_TOTAL_HOURS", Value = "92", Description = "Number of hours if semimonthly", Category = "PAYROLL_DEDUCTIONS"},
+
+                new Setting { SettingKey = "TAX_FREQUENCY", Value = "6", Description = "Computation of tax frequency", Category="TAX"}
             };
         }
     }
