@@ -70,6 +70,15 @@ namespace Payroll.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IP Address Already exists.
+        /// </summary>
+        internal static string MACHINE_EXISTS {
+            get {
+                return ResourceManager.GetString("MACHINE_EXISTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Birthdate is required.
         /// </summary>
         internal static string REQUIRED_BIRTHDATE {

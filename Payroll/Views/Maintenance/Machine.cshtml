@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Payroll.Entities.Machine>
+
+@{
+    ViewBag.Title = "Machines";
+}
+
+<h2>Machine</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateMachine")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IpAddress)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MachineId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IpAddress)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditMachine", new { id = item.MachineId }) |
+            @Html.ActionLink("Delete", "DeleteMachine", new { id = item.MachineId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

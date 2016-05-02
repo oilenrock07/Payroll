@@ -10,6 +10,7 @@ namespace Payroll.Entities
         [Key]
         public int MachineId { get; set; }
 
+        [Required]
         public string IpAddress { get; set; }
     }
 }
