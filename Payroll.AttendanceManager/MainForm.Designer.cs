@@ -48,6 +48,7 @@
             this.gvMachine.Margin = new System.Windows.Forms.Padding(4);
             this.gvMachine.Name = "gvMachine";
             this.gvMachine.ReadOnly = true;
+            this.gvMachine.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvMachine.Size = new System.Drawing.Size(457, 434);
             this.gvMachine.TabIndex = 48;
             // 

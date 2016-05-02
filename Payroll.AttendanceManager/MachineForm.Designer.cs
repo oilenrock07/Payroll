@@ -29,11 +29,6 @@
         private void InitializeComponent()
         {
             this.GridView = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CardNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EnrolledToRfid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Enabled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -51,6 +46,11 @@
             this.lblState = new System.Windows.Forms.Label();
             this.lbRTShow = new System.Windows.Forms.ListBox();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CardNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Enabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.GridView)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.SuspendLayout();
@@ -62,54 +62,17 @@
             this.GridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.GridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Id,
-            this.FullName,
+            this.FirstName,
+            this.LastName,
             this.CardNumber,
-            this.EnrolledToRfid,
             this.Enabled});
             this.GridView.Location = new System.Drawing.Point(13, 44);
             this.GridView.Margin = new System.Windows.Forms.Padding(4);
             this.GridView.Name = "GridView";
             this.GridView.ReadOnly = true;
+            this.GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.GridView.Size = new System.Drawing.Size(764, 314);
             this.GridView.TabIndex = 48;
-            // 
-            // Id
-            // 
-            this.Id.DataPropertyName = "EmployeeId";
-            this.Id.HeaderText = "Id";
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            // 
-            // FullName
-            // 
-            this.FullName.DataPropertyName = "FullName";
-            this.FullName.HeaderText = "Name";
-            this.FullName.Name = "FullName";
-            this.FullName.ReadOnly = true;
-            this.FullName.Width = 300;
-            // 
-            // CardNumber
-            // 
-            this.CardNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.CardNumber.DataPropertyName = "EmployeeCode";
-            this.CardNumber.HeaderText = "Card Number";
-            this.CardNumber.Name = "CardNumber";
-            this.CardNumber.ReadOnly = true;
-            this.CardNumber.Width = 113;
-            // 
-            // EnrolledToRfid
-            // 
-            this.EnrolledToRfid.DataPropertyName = "EnrolledToRfid";
-            this.EnrolledToRfid.HeaderText = "Enrolled";
-            this.EnrolledToRfid.Name = "EnrolledToRfid";
-            this.EnrolledToRfid.ReadOnly = true;
-            // 
-            // Enabled
-            // 
-            this.Enabled.DataPropertyName = "Enabled";
-            this.Enabled.HeaderText = "Enabled";
-            this.Enabled.Name = "Enabled";
-            this.Enabled.ReadOnly = true;
             // 
             // label1
             // 
@@ -277,6 +240,47 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
+            // Id
+            // 
+            this.Id.DataPropertyName = "EmployeeId";
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            // 
+            // FirstName
+            // 
+            this.FirstName.DataPropertyName = "FirstName";
+            this.FirstName.HeaderText = "FirstName";
+            this.FirstName.Name = "FirstName";
+            this.FirstName.ReadOnly = true;
+            this.FirstName.Width = 150;
+            // 
+            // LastName
+            // 
+            this.LastName.DataPropertyName = "LastName";
+            this.LastName.HeaderText = "LastName";
+            this.LastName.Name = "LastName";
+            this.LastName.ReadOnly = true;
+            this.LastName.Width = 150;
+            // 
+            // CardNumber
+            // 
+            this.CardNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.CardNumber.DataPropertyName = "EmployeeCode";
+            this.CardNumber.HeaderText = "Card Number";
+            this.CardNumber.Name = "CardNumber";
+            this.CardNumber.ReadOnly = true;
+            this.CardNumber.Width = 113;
+            // 
+            // Enabled
+            // 
+            this.Enabled.DataPropertyName = "Enabled";
+            this.Enabled.HeaderText = "Enrolled";
+            this.Enabled.Name = "Enabled";
+            this.Enabled.ReadOnly = true;
+            this.Enabled.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Enabled.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // MachineForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -307,11 +311,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView GridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FullName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn EnrolledToRfid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Enabled;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox5;
@@ -329,5 +328,10 @@
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.ListBox lbRTShow;
         private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Enabled;
     }
 }

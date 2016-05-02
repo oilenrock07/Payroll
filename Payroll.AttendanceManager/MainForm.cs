@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
+using System;
 
 namespace AttendanceManager
 {
@@ -23,10 +24,12 @@ namespace AttendanceManager
 
         private void button1_Click(object sender, System.EventArgs e)
         {
+            var machineId = gvMachine.CurrentRow.Cells[0].Value;
             var ipAddress = gvMachine.CurrentRow.Cells[1].Value;
 
             var newForm = new MachineForm();
             newForm._ipAddress = ipAddress.ToString();
+            newForm._machineNumber = Convert.ToInt32(machineId);
             newForm.Show();
         }
     }

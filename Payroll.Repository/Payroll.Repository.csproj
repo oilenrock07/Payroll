@@ -80,6 +80,7 @@
     <Compile Include="Interface\IEmployeeInfoRepository.cs" />
     <Compile Include="Interface\IEmployeeLeaveRepository.cs" />
     <Compile Include="Interface\IEmployeeLoanRepository.cs" />
+    <Compile Include="Interface\IEmployeeMachineRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollDeductionRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Interface\ITotalEmployeeHoursRepository.cs" />
     <Compile Include="Models\AttendanceLogDao.cs" />
     <Compile Include="Models\EmployeeLoanDao.cs" />
+    <Compile Include="Models\Employee\EmployeeMachineDao.cs" />
     <Compile Include="Models\Employee\EmployeeNames.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="Repositories\EmployeeInfoRepository.cs" />
     <Compile Include="Repositories\EmployeeLeaveRepository.cs" />
     <Compile Include="Repositories\EmployeeLoanRepository.cs" />
+    <Compile Include="Repositories\EmployeeMachineRepository.cs" />
     <Compile Include="Repositories\EmployeePayrollDeductionRepository.cs" />
     <Compile Include="Repositories\EmployeePayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
 using System.Net;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
+using Payroll.Service.Implementations;
+using Payroll.Service.Interfaces;
 using zkemkeeper;
 using Payroll.Common.Extension;
 
@@ -14,21 +17,28 @@ namespace AttendanceManager
     {
         public string _ipAddress = "";
         public bool _connected = false;
-        private int _iMachineNumber = 1;
+        public int _machineNumber = 1;
 
         public static CZKEMClass _czkemClass;
         private readonly IAttendanceLogRepository _attendanceLogRepository;
+        private readonly IEmployeeMachineService _employeeMachineService;
 
         public MachineForm()
         {
             InitializeComponent();
             _attendanceLogRepository = new AttendanceLogRepository(Program._databaseFactory, Program._employeeRepository);
+            _employeeMachineService = new EmployeeMachineService(new EmployeeMachineRepository(Program._databaseFactory), Program._employeeRepository);
         }
 
         private void Form_Load(object sender, EventArgs e)
         {
             lblIpAddress.Text = _ipAddress;
             _czkemClass = new CZKEMClass();
+
+            //load the employees that are registered to this machine
+            var employees = _employeeMachineService.GetEmployees(_ipAddress);
+            GridView.AutoGenerateColumns = false;
+            GridView.DataSource = employees;
         }
 
         private void axCZKEM1_OnVerify(int iUserID)
@@ -126,9 +136,9 @@ namespace AttendanceManager
         //When you are using these two functions, it will request data from the device forwardly.
         private void rtTimer_Tick(object sender, EventArgs e)
         {
-            if (_czkemClass.ReadRTLog(_iMachineNumber))
+            if (_czkemClass.ReadRTLog(_machineNumber))
             {
-                while (_czkemClass.GetRTLog(_iMachineNumber))
+                while (_czkemClass.GetRTLog(_machineNumber))
                 {
                     ;
                 }
@@ -171,9 +181,9 @@ namespace AttendanceManager
                 btnConnect.Text = "Disconnect";
                 btnConnect.Refresh();
                 lblState.Text = "Connected";
-                _iMachineNumber = 1;//In fact,when you are using the tcp/ip communication,this parameter will be ignored,that is any integer will all right.Here we use 1.
+                _machineNumber = 1;//In fact,when you are using the tcp/ip communication,this parameter will be ignored,that is any integer will all right.Here we use 1.
                 
-                if (_czkemClass.RegEvent(_iMachineNumber, 65535))//Here you can register the realtime events that you want to be triggered(the parameters 65535 means registering all)
+                if (_czkemClass.RegEvent(_machineNumber, 65535))//Here you can register the realtime events that you want to be triggered(the parameters 65535 means registering all)
                 {
                     _czkemClass.OnVerify += new zkemkeeper._IZKEMEvents_OnVerifyEventHandler(axCZKEM1_OnVerify);
                     _czkemClass.OnAttTransactionEx += new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);

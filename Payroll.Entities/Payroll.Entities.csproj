@@ -97,6 +97,10 @@
     <Compile Include="Migrations\201605011409126_employeemachine.Designer.cs">
       <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.cs" />
+    <Compile Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.Designer.cs">
+      <DependentUpon>201605021304355_EmployeeMachineEntitiesChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -122,7 +126,6 @@
     <Compile Include="Seeder\LeaveSeeds.cs" />
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
-    <Compile Include="Seeder\TaxSeeds.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Tax.cs" />
     <Compile Include="Users\Role.cs" />
@@ -153,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605011409126_employeemachine.resx">
       <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.resx">
+      <DependentUpon>201605021304355_EmployeeMachineEntitiesChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
