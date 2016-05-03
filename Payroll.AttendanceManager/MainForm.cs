@@ -14,7 +14,11 @@ namespace AttendanceManager
         public MainForm()
         {
             InitializeComponent();
+            LoadData();
+        }
 
+        private void LoadData()
+        {
             _machineRepository = new MachineRepository(Program._databaseFactory);
             var machines = _machineRepository.Find(x => x.IsActive).ToList();
 
@@ -31,6 +35,16 @@ namespace AttendanceManager
             newForm._ipAddress = ipAddress.ToString();
             newForm._machineNumber = Convert.ToInt32(machineId);
             newForm.Show();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void GridView_DoubleClick(object sender, EventArgs e)
+        {
+            button1_Click(sender, e);
         }
     }
 }

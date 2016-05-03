@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
 using System.Net;
+using Payroll.Infrastructure.Implementations;
+using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Implementations;
@@ -17,30 +19,33 @@ namespace AttendanceManager
     {
         public string _ipAddress = "";
         public bool _connected = false;
-        public int _machineNumber = 1;
+        public int _machineNumber = 0;
+        public int _sdkMachineNumber = 1;
+        private bool _isNewEmployee = true;
 
         public static CZKEMClass _czkemClass;
+
         private readonly IAttendanceLogRepository _attendanceLogRepository;
         private readonly IEmployeeMachineService _employeeMachineService;
+        private readonly IEmployeeMachineRepository _employeeMachineRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        public static IDatabaseFactory _databaseFactory;
+        public static IUnitOfWork _unitOfWork;
 
         public MachineForm()
         {
             InitializeComponent();
-            _attendanceLogRepository = new AttendanceLogRepository(Program._databaseFactory, Program._employeeRepository);
-            _employeeMachineService = new EmployeeMachineService(new EmployeeMachineRepository(Program._databaseFactory), Program._employeeRepository);
+
+            _databaseFactory = new DatabaseFactory();
+            _unitOfWork = new UnitOfWork(_databaseFactory);
+
+            _employeeMachineRepository = new EmployeeMachineRepository(_databaseFactory);
+            _employeeRepository = new EmployeeRepository(_databaseFactory, new EmployeeDepartmentRepository(_databaseFactory));
+            _employeeMachineService = new EmployeeMachineService(_employeeMachineRepository, _employeeRepository);
+            _attendanceLogRepository = new AttendanceLogRepository(_databaseFactory, _employeeRepository);
         }
 
-        private void Form_Load(object sender, EventArgs e)
-        {
-            lblIpAddress.Text = _ipAddress;
-            _czkemClass = new CZKEMClass();
-
-            //load the employees that are registered to this machine
-            var employees = _employeeMachineService.GetEmployees(_ipAddress);
-            GridView.AutoGenerateColumns = false;
-            GridView.DataSource = employees;
-        }
-
+        #region SDK Events
         private void axCZKEM1_OnVerify(int iUserID)
         {
             lbRTShow.Items.Add("RTEvent OnVerify Has been Triggered,Verifying...");
@@ -69,7 +74,7 @@ namespace AttendanceManager
                 };
 
                 _attendanceLogRepository.Add(attendaceLog);
-                Program._unitOfWork.Commit();
+                _unitOfWork.Commit();
 
                 //display the picture to screen
                 var url = Program.GetSettingValue("DISPLAY_LOGIN_URL", "http://payroll.logindisplay/api/payrollapi/");
@@ -136,15 +141,43 @@ namespace AttendanceManager
         //When you are using these two functions, it will request data from the device forwardly.
         private void rtTimer_Tick(object sender, EventArgs e)
         {
-            if (_czkemClass.ReadRTLog(_machineNumber))
+            if (_czkemClass.ReadRTLog(_sdkMachineNumber))
             {
-                while (_czkemClass.GetRTLog(_machineNumber))
+                while (_czkemClass.GetRTLog(_sdkMachineNumber))
                 {
                     ;
                 }
             }
         }
+        #endregion
 
+        #region Form Events
+        private void Form_Load(object sender, EventArgs e)
+        {
+            lblIpAddress.Text = _ipAddress;
+            _czkemClass = new CZKEMClass();
+            Rebind();
+        }
+
+        private void Rebind(bool showOnlyNotRegistered = false)
+        {
+            //load the employees that are registered to this machine
+            var employees = showOnlyNotRegistered
+                ? _employeeMachineService.GetEmployeesNotRegistered(_machineNumber)
+                : _employeeMachineService.GetEmployees(_machineNumber);
+
+            GridView.AutoGenerateColumns = false;
+            GridView.DataSource = employees;
+
+            foreach (var control in this.Controls)
+            {
+                var box = control as TextBox;
+                if (box != null)
+                {
+                    box.Text = "";
+                }
+            }
+        }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
@@ -159,18 +192,7 @@ namespace AttendanceManager
             Cursor = Cursors.WaitCursor;
             if (_connected)
             {
-                _czkemClass.Disconnect();
-
-                _czkemClass.OnVerify -= new zkemkeeper._IZKEMEvents_OnVerifyEventHandler(axCZKEM1_OnVerify);
-                _czkemClass.OnAttTransactionEx -= new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);
-                _czkemClass.OnNewUser -= new zkemkeeper._IZKEMEvents_OnNewUserEventHandler(axCZKEM1_OnNewUser);
-                _czkemClass.OnHIDNum -= new zkemkeeper._IZKEMEvents_OnHIDNumEventHandler(axCZKEM1_OnHIDNum);
-                _czkemClass.OnWriteCard -= new zkemkeeper._IZKEMEvents_OnWriteCardEventHandler(axCZKEM1_OnWriteCard);
-                _czkemClass.OnEmptyCard -= new zkemkeeper._IZKEMEvents_OnEmptyCardEventHandler(axCZKEM1_OnEmptyCard);
-
-                _connected = false;
-                btnConnect.Text = "Connect";
-                lblState.Text = "Disconnected";
+                Disconnect();
                 Cursor = Cursors.Default;
                 return;
             }
@@ -181,9 +203,9 @@ namespace AttendanceManager
                 btnConnect.Text = "Disconnect";
                 btnConnect.Refresh();
                 lblState.Text = "Connected";
-                _machineNumber = 1;//In fact,when you are using the tcp/ip communication,this parameter will be ignored,that is any integer will all right.Here we use 1.
+                _sdkMachineNumber = 1;//In fact,when you are using the tcp/ip communication,this parameter will be ignored,that is any integer will all right.Here we use 1.
                 
-                if (_czkemClass.RegEvent(_machineNumber, 65535))//Here you can register the realtime events that you want to be triggered(the parameters 65535 means registering all)
+                if (_czkemClass.RegEvent(_sdkMachineNumber, 65535))//Here you can register the realtime events that you want to be triggered(the parameters 65535 means registering all)
                 {
                     _czkemClass.OnVerify += new zkemkeeper._IZKEMEvents_OnVerifyEventHandler(axCZKEM1_OnVerify);
                     _czkemClass.OnAttTransactionEx += new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);
@@ -201,6 +223,134 @@ namespace AttendanceManager
                 MessageBox.Show("Unable to connect the device,ErrorCode=" + idwErrorCode, "Error");
             }
             Cursor = Cursors.Default;
+        }
+
+        private void GridView_DoubleClick(object sender, EventArgs e)
+        {
+            var grid = (DataGridView)sender;
+            txtUserID.Text = grid.CurrentRow.Cells["Id"].Value.ToString();
+            txtName.Text = GetNameFromGrid(grid.CurrentRow.Cells);
+            txtCardnumber.Text = (grid.CurrentRow.Cells["CardNumber"].Value ?? "").ToString();
+            _isNewEmployee = grid.CurrentRow.Cells["CardNumber"].Value == null;
+        }
+        #endregion
+
+        private string GetNameFromGrid(DataGridViewCellCollection cell)
+        {
+            return String.Format("{0} {1}", cell["FirstName"].Value, cell["LastName"].Value);
+        }
+
+        private void btnSetStrCardNumber_Click(object sender, EventArgs e)
+        {
+            if (_connected == false)
+            {
+                MessageBox.Show("Please connect the device first!", "Error");
+                return;
+            }
+
+            if (String.IsNullOrEmpty(txtUserID.Text))
+            {
+                MessageBox.Show("Please select employee to register", "Error");
+                return;
+            }
+
+            var sCardnumber = txtCardnumber.Text.Trim();
+            
+            Cursor = Cursors.WaitCursor;
+            _czkemClass.EnableDevice(_sdkMachineNumber, false);
+            RegisterToMachine(sCardnumber, Convert.ToInt32(txtUserID.Text), txtName.Text);
+
+            _czkemClass.RefreshData(_sdkMachineNumber);//the data in the device should be refreshed
+            _czkemClass.EnableDevice(_sdkMachineNumber, true);
+            Cursor = Cursors.Default;
+
+        }
+
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            Rebind();
+        }
+
+        private void Disconnect()
+        {
+            _czkemClass.Disconnect();
+
+            _czkemClass.OnVerify -= new zkemkeeper._IZKEMEvents_OnVerifyEventHandler(axCZKEM1_OnVerify);
+            _czkemClass.OnAttTransactionEx -= new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);
+            _czkemClass.OnNewUser -= new zkemkeeper._IZKEMEvents_OnNewUserEventHandler(axCZKEM1_OnNewUser);
+            _czkemClass.OnHIDNum -= new zkemkeeper._IZKEMEvents_OnHIDNumEventHandler(axCZKEM1_OnHIDNum);
+            _czkemClass.OnWriteCard -= new zkemkeeper._IZKEMEvents_OnWriteCardEventHandler(axCZKEM1_OnWriteCard);
+            _czkemClass.OnEmptyCard -= new zkemkeeper._IZKEMEvents_OnEmptyCardEventHandler(axCZKEM1_OnEmptyCard);
+
+            _connected = false;
+            btnConnect.Text = "Connect";
+            lblState.Text = "Disconnected";
+        }
+
+        private void MachineForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(_connected) Disconnect();
+        }
+
+        private void RegisterToMachine(string employeeCode, int employeeId, string name, bool alertOnSuccess = true)
+        {
+            var idwErrorCode = 0;
+            _czkemClass.SetStrCardNumber(employeeCode);//Before you using function SetUserInfo,set the card number to make sure you can upload it to the device
+            if (_czkemClass.SSR_SetUserInfo(_sdkMachineNumber, employeeCode, name, "", 0, true))//upload the user's information(card number included)
+            {
+                //update the record in db
+                try
+                {
+                    var employeeMachine = new EmployeeMachine
+                    {
+                        EmployeeId = Convert.ToInt32(employeeId),
+                        MachineId = _machineNumber,
+                        UpdateDate = DateTime.Now
+                    };
+
+                    _employeeMachineRepository.Add(employeeMachine);
+                    _unitOfWork.Commit();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                if (alertOnSuccess) MessageBox.Show("Employee Successfully Registered");
+                Rebind();
+            }
+            else
+            {
+                _czkemClass.GetLastError(ref idwErrorCode);
+                MessageBox.Show("Operation failed, ErrorCode=" + idwErrorCode, "Error" + "\nPlease Try Again");
+            }
+        }
+
+        private void btnRegisterAll_Click(object sender, EventArgs e)
+        {
+            if (_connected == false)
+            {
+                MessageBox.Show("Please connect the device first!", "Error");
+                return;
+            }
+
+            foreach (DataGridViewRow row in GridView.Rows)
+            {
+                var checkbox = row.Cells["Enrolled"] as DataGridViewCheckBoxCell;
+                var cardNumber = row.Cells["CardNumber"].Value;
+                if (!(bool)checkbox.Value && cardNumber != null)
+                {
+                    var cells = row.Cells;
+                    RegisterToMachine(cardNumber.ToString(), Convert.ToInt32(cells["Id"].Value), GetNameFromGrid(cells), false);
+                }
+            }
+
+            Rebind();
+        }
+
+        private void chkShowNotRegistered_CheckedChanged(object sender, EventArgs e)
+        {
+            Rebind(chkShowNotRegistered.Checked);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Payroll.Entities.Base
     {
         protected BaseEntity() {
             IsActive = true;
-            CreateDate = new DateTime();
+            CreateDate = DateTime.Now;
         }
 
         public bool IsActive { get; set; }

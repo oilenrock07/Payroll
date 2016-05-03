@@ -5,6 +5,7 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeeMachineService
     {
-        IEnumerable<EmployeeMachineDao> GetEmployees(string ipAddress);
+        IEnumerable<EmployeeMachineDao> GetEmployees(int machineId);
+        IEnumerable<EmployeeMachineDao> GetEmployeesNotRegistered(int machineId);
     }
 }

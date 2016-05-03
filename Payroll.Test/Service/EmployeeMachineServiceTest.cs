@@ -9,7 +9,7 @@ namespace Payroll.Test.Service
     public class EmployeeMachineServiceTest
     {
         [TestMethod]
-        public void CreateWorkSchedulesByDateRange()
+        public void GetAllEmployeesToTheMachine()
         {
             //Arrange
             var databaseFactory = new DatabaseFactory();
@@ -19,7 +19,22 @@ namespace Payroll.Test.Service
             var employeeMachineRepository = new EmployeeMachineRepository(databaseFactory);
             var employeeMachineService = new EmployeeMachineService(employeeMachineRepository, employeeRepository);
 
-            var employees = employeeMachineService.GetEmployees("192.168.254.1");
+            var employees = employeeMachineService.GetEmployees(4);
+            Assert.IsNotNull(employees);
+        }
+
+        [TestMethod]
+        public void GetAllNotRegisteredEmployeesToTheMachine()
+        {
+            //Arrange
+            var databaseFactory = new DatabaseFactory();
+
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
+            var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
+            var employeeMachineRepository = new EmployeeMachineRepository(databaseFactory);
+            var employeeMachineService = new EmployeeMachineService(employeeMachineRepository, employeeRepository);
+
+            var employees = employeeMachineService.GetEmployeesNotRegistered(4);
             Assert.IsNotNull(employees);
         }
     }

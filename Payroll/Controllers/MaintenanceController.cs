@@ -428,7 +428,7 @@ namespace Payroll.Controllers
         public virtual ActionResult CreateMachine(Machine machine)
         {
             //Validate if machine already exists
-            var existingMaching = _machineRepository.Find(x => x.IpAddress == machine.IpAddress).FirstOrDefault();
+            var existingMaching = _machineRepository.Find(x => x.IpAddress == machine.IpAddress && x.IsActive).FirstOrDefault();
             if (existingMaching != null)
             {
                 ModelState.AddModelError("", ErrorMessages.MACHINE_EXISTS);
@@ -453,6 +453,14 @@ namespace Payroll.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult EditMachine(Machine model)
         {
+            //Validate if machine already exists
+            var existingMaching = _machineRepository.Find(x => x.IpAddress == model.IpAddress && x.IsActive && x.MachineId != model.MachineId).FirstOrDefault();
+            if (existingMaching != null)
+            {
+                ModelState.AddModelError("", ErrorMessages.MACHINE_EXISTS);
+                return View(model);
+            }
+
             var machine = _machineRepository.GetById(model.MachineId);
             _machineRepository.Update(machine);
 
