@@ -1,4 +1,5 @@
 ﻿using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
@@ -23,6 +24,7 @@ namespace Payroll.Service.Implementations
         private IEmployeePayrollService _employeePayrollService;
 
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
+        private ITaxService _taxService;
 
         private readonly String IS_DEDUCTION_SEMIMONTHLY = "DEDUCTION_IS_SEMIMONTHLY";
 
@@ -33,11 +35,15 @@ namespace Payroll.Service.Implementations
         private readonly String SEMIMONTHLY_TOTAL_HOURS = "DEDUCTION_SEMIMONTHLY_TOTAL_HOURS";
         private readonly String MONTHLY_TOTAL_HOURS = "DEDUCTION_MONTHLY_TOTAL_HOURS";
 
+        private readonly int MAX_DEPENDENT = 4;
+        private readonly String TAX_DEDUCTION_NAME = "Tax";
+        private readonly string TAX_FREQUENCY = "TAX_FREQUENCY";
+
         public EmployeePayrollDeductionService(IUnitOfWork unitOfWork, ISettingService settingService,
             IEmployeeSalaryService employeeSalaryService, IEmployeeInfoService employeeInfoService,
             IEmployeeDeductionService employeeDeductionService, IDeductionService deductionService,
             IEmployeePayrollDeductionRepository employeePayrollDeductionRepository,
-            IEmployeePayrollService employeePayrollService)
+            IEmployeePayrollService employeePayrollService, ITaxService taxService)
         {
             _unitOfWork = unitOfWork;
             _settingService = settingService;
@@ -47,6 +53,7 @@ namespace Payroll.Service.Implementations
             _deductionService = deductionService;
             _employeePayrollDeductionRepository = employeePayrollDeductionRepository;
             _employeePayrollService = employeePayrollService;
+            _taxService = taxService;
         }
 
         public int GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, 
@@ -110,8 +117,30 @@ namespace Payroll.Service.Implementations
 
                 //Update employeePayroll total deductions and taxable income
                 _employeePayrollService.Update(payroll);
-                payroll.TotalDeduction = totalDeductions;
-                payroll.TaxableIncome = payroll.TotalNet - payroll.TotalDeduction;
+                payroll.TaxableIncome = payroll.TotalNet - totalDeductions;
+
+                //Tax computation
+                //Get old payroll for tax computation
+                var payrollForTaxProcessing = _employeePayrollService
+                    .GetForTaxProcessingByEmployee(employee.EmployeeId, payrollDate);
+
+                decimal totalTaxableIncome = payroll.TaxableIncome;
+                foreach (EmployeePayroll employeePayroll in payrollForTaxProcessing)
+                {
+                    totalTaxableIncome += employeePayroll.TaxableIncome;
+
+                    //Update Payroll
+                    _employeePayrollService.Update(employeePayroll);
+                    employeePayroll.IsTaxed = true;
+                }
+
+                //Compute tax
+                var totalTax = ComputeTax(payrollDate, employee, totalTaxableIncome);
+                
+                //Update payroll for total deductions and total grosss
+                payroll.TotalDeduction = totalDeductions + totalTax;
+                payroll.TotalGross = payroll.TotalNet - payroll.TotalDeduction;
+                payroll.IsTaxed = true;
             }
 
             try
@@ -123,6 +152,34 @@ namespace Payroll.Service.Implementations
                 return 0;
             }
             return 1;
+        }
+
+        public decimal ComputeTax(DateTime payrollDate, EmployeeInfo employeeInfo, decimal totalTaxableIncome)
+        {
+            var taxDeduction = _deductionService.GetByName(TAX_DEDUCTION_NAME);
+            var frequency = _settingService.GetByKey(TAX_FREQUENCY);
+            var noOfDependents =
+                employeeInfo.Dependents > MAX_DEPENDENT ? 4 : employeeInfo.Dependents;
+
+            FrequencyType taxFrequency = (FrequencyType)Convert.ToInt32(frequency);
+
+            var taxAmount = _taxService.ComputeTax(taxFrequency, noOfDependents, totalTaxableIncome);
+
+            //Create deductions
+            if (taxAmount > 0)
+            {
+                var employeePayrollDeduction = new EmployeePayrollDeduction
+                {
+                    EmployeeId = employeeInfo.EmployeeId,
+                    DeductionId = taxDeduction.DeductionId,
+                    Amount = taxAmount,
+                    PayrollDate = payrollDate
+                };
+
+                _employeePayrollDeductionRepository.Add(employeePayrollDeduction);
+            }
+
+            return taxAmount;
         }
 
         private bool proceedDeduction(DateTime payrollStartDate, DateTime payrollEndDate)

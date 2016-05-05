@@ -15,6 +15,8 @@ namespace Payroll.Service.Interfaces
 
         void Update(EmployeePayroll employeePayroll);
 
-        IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId);
+        IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate);
+
+        int GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
     }
 }

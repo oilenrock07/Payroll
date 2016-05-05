@@ -22,5 +22,10 @@ namespace Payroll.Service.Implementations
         {
             return _deductionRepository.GetAllActive().ToList();
         }
+
+        public Deduction GetByName(string name)
+        {
+            return _deductionRepository.GetByName(name);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Payroll.Entities;
+﻿using Payroll.Common.Extension;
+using Payroll.Entities;
 using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
@@ -17,13 +18,20 @@ namespace Payroll.Service.Implementations
         private UnitOfWork _unitOfWork;
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeeDailyPayrollService _employeeDailyPayrollService;
+        private IEmployeePayrollDeductionService _employeePayrollDeductionService;
+        private ISettingService _settingService;
+
+        private readonly String PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
+        private readonly String PAYROLL_WEEK_START = "PAYROLL_WEEK_START";
+        private readonly String PAYROLL_WEEK_END = "PAYROLL_WEEK_END";
 
         public EmployeePayrollService(UnitOfWork unitOfWork, IEmployeeDailyPayrollService employeeDailyPayrollService, 
-            IEmployeePayrollRepository employeeePayrollRepository)
+            IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService)
         {
             _unitOfWork = unitOfWork;
             _employeeDailyPayrollService = employeeDailyPayrollService;
             _employeePayrollRepository = employeeePayrollRepository;
+            _settingService = settingService;
         }
 
         public IList<EmployeePayroll> GeneratePayrollNetPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
@@ -86,9 +94,52 @@ namespace Payroll.Service.Implementations
             _employeePayrollRepository.Update(employeePayroll);
         }
 
-        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId)
+        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate)
         {
-            return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId);
+            return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId, payrollDate);
+        }
+
+        public int GeneratePayroll()
+        {
+            var payrollDate = new DateTime();
+            var frequency = (FrequencyType)Convert.
+                ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
+
+            DateTime today = new DateTime();
+
+            DateTime payrollStartDate = today;
+            DateTime payrollEndDate = today;
+
+            //TODO more frequency support
+            switch (frequency)
+            {
+                case FrequencyType.Weekly:
+                    //Note that the job should always schedule the day after the payroll end date
+                    var startOfWeeklyPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
+                        _settingService.GetByKey(PAYROLL_WEEK_START));
+                    var endOfWeekPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), 
+                        _settingService.GetByKey(PAYROLL_WEEK_END));
+                    
+                    payrollStartDate = today.StartOfWeek(startOfWeeklyPayroll);
+                    payrollEndDate = today.StartOfWeek(endOfWeekPayroll);
+                    break;
+            }
+
+            //Generate employee payroll and net pay
+            var employeePayrollList = GeneratePayrollNetPayByDateRange(payrollDate, payrollStartDate, payrollEndDate);
+
+            //Generate deductions such as SSS, HDMF, Philhealth
+            _employeePayrollDeductionService.GenerateDeductionsByPayroll(today, 
+                payrollStartDate, payrollEndDate, employeePayrollList);
+
+            //Generate employee tax
+
+            return 0;
+        }
+
+        public int GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

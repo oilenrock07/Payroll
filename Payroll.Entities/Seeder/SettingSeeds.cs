@@ -29,8 +29,7 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "SUPPORT_REFUNDABLE_LEAVE", Value = "true", Description = "Whether or not, the company supports refundable leaves", Category = "COMPANY_SETTING" },
                 new Setting { SettingKey = "HOLIDAY_CURRENT_YEAR", Value = "2016", Description = "This will be changed every year. This value will only be used in Payroll.Scheduler", Category = "COMPANY_SETTING" },
                 new Setting { SettingKey = "IS_PRIVATE_COMPANY", Value = "true", Description = "Will Determine if SSS or GSIS", Category = "COMPANY_SETTING" },
-
-
+                
                 //Application Settings
                 new Setting { SettingKey = "EMPLOYEE_IMAGE_PATH", Value = "~/Images/Employee/", Description = "Relative image path of the employee's pictures", Category = "APP" },
                 new Setting { SettingKey = "ALLOW_EXTERNAL_LOGIN", Value = "false", Description = "Should allow the app to have external login e.g. facebook, twitter, gmail", Category = "APP" },
@@ -40,9 +39,14 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "DISPLAY_LOGIN_URL", Value = "http://payroll.logindisplay/api/payrollapi/", Description = "Route of display picture upon login", Category = "URL" },
 
                 /* Settings for PAYROLL */
-
+                //Settings of payroll
+                new Setting { SettingKey = "PAYROLL_FREQUENCY", Value = "3", Description = "Payroll Frequency", Category = "PAYROLL_SCHEDULE"},
+                new Setting { SettingKey = "PAYROLL_WEEK_START", Value = "3", Description = "Payroll Week Start", Category = "PAYROLL_SCHEDULE"},
+                new Setting { SettingKey = "PAYROLL_WEEK_END", Value = "4", Description = "Payroll Week End", Category = "PAYROLL_SCHEDULE"},
+                
                 //settings for deduction
                 new Setting { SettingKey = "HDMF_MAX_MONTHLY_COMPENSATION", Value = "5000", Description = "HDMF Maximum Monthly Compensation Contributions", Category = "PAYROLL_DEDUCTIONS"},
+                
                 //Schedule of deductions
                 new Setting { SettingKey = "DEDUCTION_IS_SEMIMONTHLY", Value = "0", Description = "If deduction computation is semi monthly or monthly. 1 if semimonthly, 0 if monthly", Category = "PAYROLL_DEDUCTIONS"},
                 new Setting { SettingKey = "DEDUCTION_SEMIMONTHLY_SCHEDULE_1", Value = "15", Description = "Date of first deduction", Category = "PAYROLL_DEDUCTIONS"},

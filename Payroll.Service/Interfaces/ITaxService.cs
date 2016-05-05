@@ -1,4 +1,5 @@
 ﻿using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using System;
@@ -11,6 +12,7 @@ namespace Payroll.Service.Interfaces
 {
     public interface ITaxService : IBaseEntityService<Tax>
     {
-        int ComputeTax(Deduction taxDeduction, EmployeeInfo employeeInfo);
+        decimal ComputeTax(FrequencyType frequency, int dependentCount, decimal totalTaxableIncome);
     }
+
 }

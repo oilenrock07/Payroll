@@ -18,10 +18,10 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().EmployeePayroll;
         }
 
-        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId)
+        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate)
         {
-            return Find(p => p.IsActive && !p.IsTaxed && p.EmployeeId == employeeId)
-                .OrderByDescending( p => p.PayrollDate).ToList();
+            return Find(p => p.IsActive && !p.IsTaxed && p.EmployeeId == employeeId 
+                && p.PayrollDate < payrollDate).OrderByDescending( p => p.PayrollDate).ToList();
         }
     }
 }

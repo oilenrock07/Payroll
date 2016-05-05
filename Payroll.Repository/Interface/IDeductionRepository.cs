@@ -10,5 +10,6 @@ namespace Payroll.Repository.Interface
 {
     public interface IDeductionRepository : IRepository<Deduction>
     {
+        Deduction GetByName(String name);
     }
 }

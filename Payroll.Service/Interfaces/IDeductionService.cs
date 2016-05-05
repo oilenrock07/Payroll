@@ -10,5 +10,7 @@ namespace Payroll.Service.Interfaces
     public interface IDeductionService
     {
         IList<Deduction> GetAllActive();
+
+        Deduction GetByName(String name);
     }
 }

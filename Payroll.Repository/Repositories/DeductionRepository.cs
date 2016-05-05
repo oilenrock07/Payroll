@@ -18,5 +18,9 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().Deductions;
         }
 
+        public Deduction GetByName(string name)
+        {
+            return Find(d => d.IsActive && d.DeductionName == name).FirstOrDefault();
+        }
     }
 }
