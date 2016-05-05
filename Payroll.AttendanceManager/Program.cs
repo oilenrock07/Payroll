@@ -19,14 +19,13 @@ namespace AttendanceManager
         public static IDatabaseFactory _databaseFactory;
         public static IUnitOfWork _unitOfWork;
         public static ISettingRepository _settingRepository;
-        public static IEmployeeRepository _employeeRepository;
-        public static IEmployeeDepartmentRepository _employeeDepartmentRepository;
 
         public static IEnumerable<Setting> _settings;
 
-        public static CZKEMClass _czkemClass;
-        public static PayrollMain _mainForm;
-        public static bool _connected = false;
+        //public static PayrollMain _mainForm;
+        public static MainForm _mainForm;
+
+        public static int _port = 4370;
 
         //todo: load the error codes
         public static Dictionary<int, string> _errorCodes;
@@ -38,13 +37,11 @@ namespace AttendanceManager
             
             _databaseFactory = new DatabaseFactory();
             _unitOfWork = new UnitOfWork(_databaseFactory);
-            _employeeDepartmentRepository = new EmployeeDepartmentRepository(_databaseFactory);
-            _employeeRepository = new EmployeeRepository(_databaseFactory, _employeeDepartmentRepository);
 
             LoadSettings();
 
-            _mainForm = new PayrollMain();
-            _czkemClass = new CZKEMClass();
+            //_mainForm = new PayrollMain();
+            _mainForm = new MainForm();          
 
             Application.Run(_mainForm);
         }

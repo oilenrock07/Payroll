@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -20,12 +20,9 @@
                 @Html.ActionLink("Frisco Foundry", "Index", "Payroll", new { area = "" }, new { @class = "navbar-brand" })
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="container body-content">
         @RenderBody()
-        <footer>
-            @*<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>*@
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
@@ -34,17 +31,93 @@
     <script src="~/signalr/hubs"></script>
 
     <script type="text/javascript">
-    $(function () {
-        var chat = $.connection.payrollHub;
-        chat.client.addNewMessageToPage = function (id, attCode, datetime) {
-            window.location = '/Payroll/DisplayTimeInOut/' + id + '/' + attCode + '/' + datetime;
-        };
         
-        $.connection.hub.start();
-    });
-    </script>
+        //private functions
+        function handleBroadCastMessageSuccess(response) {
+            $('#timeintimeout').html(response);
+            displayPanel('timeintimeout');
+        }
 
+        function handleRegisterClick(payrollHub) {
+            $('.js-error').addClass('hidden');
+            var ipAddress = $('#txtIpAddress').val();
+            if (ipAddress != '') {
+                payrollHub.server.connect(ipAddress);
+            } else {
+                $('.js-error').removeClass('hidden');
+            }
+        }
+
+        function displayPanel(panelId) {
+            $('.js-container').addClass('hidden');
+            $('#' + panelId).removeClass('hidden');
+        }
+
+
+        //client events
+        function registerClientEvents(payrollHub) {
+            payrollHub.client.onConnected = function () {
+                displayPanel('timer');
+            };
+
+            payrollHub.client.broadcastMessage = function (id, attCode, datetime) {
+                $.ajax({
+                    url: '/Payroll/DisplayTimeInOut/' + id + '/' + attCode + '/' + datetime,
+                    method: 'GET',
+                    data: { id: id, attCode: attCode, datetime: datetime },
+                    success: handleBroadCastMessageSuccess
+                });
+            };
+        }
+
+        $(function () {
+            var payrollHub = $.connection.payrollHub;
+            registerClientEvents(payrollHub);
+
+
+            //$.connection.hub.start();
+            $.connection.hub.start().done(function () {
+                $('#Register').click(function () { handleRegisterClick(payrollHub); });
+            });
+        });
+    </script>
     
+    
+    <script type="text/javascript">
+    function formatTime(i) {
+        if (i < 10) { i = "0" + i; };  // add zero in front of numbers < 10
+        return i;
+    }
+
+    function startTimer() {
+
+        var today = new Date();
+        var locale = "en-us";
+
+        var year = today.getFullYear();
+        var month = today.toLocaleString(locale, { month: "long" });
+        var day = formatTime(today.getDate());
+
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        var strTime = h > 12 ? ' pm' : ' am';
+
+        h = formatTime(h > 12 ? h - 12 : h);
+        m = formatTime(m);
+        s = formatTime(s);
+
+        $('#time').html(h + ':' + m + ':' + s + strTime);
+        $('#date').html(month + ' ' + day + ' ' + year);
+
+        setTimeout(startTimer, 1000);
+    }
+
+    $(document).ready(function () {
+        startTimer();
+    });
+
+    </script>
 
     @RenderSection("scripts", required: false)
 </body>

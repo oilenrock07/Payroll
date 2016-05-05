@@ -21,8 +21,13 @@ namespace Payroll.LoginDisplay
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "PayrollApiRouteClient",
+                routeTemplate: "api/{controller}/{name}/{message}"
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "PayrollApiRoute",
-                routeTemplate: "api/{controller}/{id}/{attCode}/{timeInOut}"
+                routeTemplate: "api/{controller}/{id}/{ipAddress}/{attCode}/{timeInOut}"
             );
 
             config.Routes.MapHttpRoute(

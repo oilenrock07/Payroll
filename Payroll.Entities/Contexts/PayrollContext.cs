@@ -5,7 +5,7 @@ using Payroll.Entities.Users;
 
 namespace Payroll.Entities.Contexts
 {
-    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
+    //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class PayrollContext : DbContext
     {
         public PayrollContext() : base(ConnectionString)
@@ -55,6 +55,10 @@ namespace Payroll.Entities.Contexts
         public virtual IDbSet<UserClaim> UserClaims { get; set; }
         public virtual IDbSet<UserLogin> UserLogIns { get; set; }
         public virtual IDbSet<UserRole> UserRoles { get; set; }
+
+        //Machine
+        public virtual IDbSet<Machine> Machines { get; set; }
+        public virtual IDbSet<EmployeeMachine> EmployeeMachines { get; set; }
 
         static string ConnectionString
         {

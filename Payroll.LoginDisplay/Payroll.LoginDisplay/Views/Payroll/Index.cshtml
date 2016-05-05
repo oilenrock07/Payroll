@@ -1,49 +1,17 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Payroll Login Display";
 }
 
-<div class="welcome">
-    <div id="date"></div>
-    <div id="time"></div>
+<div class="container row">
+    <div class="js-container" id="registration">
+        @Html.Partial("Registration")
+    </div>
+    
+    <div class="js-timeinTcontainerimeout hidden" id="timeintimeout">
+        @Html.Partial("DisplayTimeInOut", null)
+    </div>
+    
+    <div class="js-container hidden" id="timer">
+        @Html.Partial("Timer")
+    </div>
 </div>
-
-
-@section scripts
-{
-    <script type="text/javascript">
-        function formatTime(i) {
-            if (i < 10) { i = "0" + i; };  // add zero in front of numbers < 10
-            return i;
-        }
-
-        function startTimer() {
-
-            var today = new Date();
-            var locale = "en-us";
-
-            var year = today.getFullYear();
-            var month = today.toLocaleString(locale, { month: "long" });
-            var day = formatTime(today.getDate());
-
-            var h = today.getHours();
-            var m = today.getMinutes();
-            var s = today.getSeconds();
-            var strTime = h > 12 ? ' pm' : ' am';
-
-            h = formatTime(h > 12 ? h - 12 : h);
-            m = formatTime(m);
-            s = formatTime(s);
-            
-            $('#time').html(h + ':' + m + ':' + s + strTime);
-            $('#date').html(month + ' ' + day + ' ' + year);
-
-            setTimeout(startTimer, 1000);
-        }
-
-        $(document).ready(function() {
-            startTimer();
-        });
-
-    </script>
-}

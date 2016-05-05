@@ -1,0 +1,42 @@
+﻿@model Payroll.Entities.Machine
+
+@{
+    ViewBag.Title = "Edit Machine";
+}
+
+<h2>EditMachine</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Machine</h4>
+        <hr />
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IpAddress, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.IpAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IpAddress)
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.MachineId)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Machine")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -67,6 +67,7 @@
     <Compile Include="EmployeeDepartment.cs" />
     <Compile Include="EmployeeFile.cs" />
     <Compile Include="EmployeeInfo.cs" />
+    <Compile Include="EmployeeMachine.cs" />
     <Compile Include="EmployeeSalary.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
     <Compile Include="Files.cs" />
@@ -75,21 +76,10 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
-    <Compile Include="Migrations\201604300559510_tax-changes.cs" />
-    <Compile Include="Migrations\201604300559510_tax-changes.Designer.cs">
-      <DependentUpon>201604300559510_tax-changes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604300620559_payment_frequency.cs" />
-    <Compile Include="Migrations\201604300620559_payment_frequency.Designer.cs">
-      <DependentUpon>201604300620559_payment_frequency.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604300703309_add-taxable-income-payroll.cs" />
-    <Compile Include="Migrations\201604300703309_add-taxable-income-payroll.Designer.cs">
-      <DependentUpon>201604300703309_add-taxable-income-payroll.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605010152148_remove-fk-workschedule.cs" />
-    <Compile Include="Migrations\201605010152148_remove-fk-workschedule.Designer.cs">
-      <DependentUpon>201605010152148_remove-fk-workschedule.cs</DependentUpon>
+    <Compile Include="Machine.cs" />
+    <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.cs" />
+    <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.Designer.cs">
+      <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201605010239189_add-tax-maxAmount.cs" />
     <Compile Include="Migrations\201605010239189_add-tax-maxAmount.Designer.cs">
@@ -98,6 +88,18 @@
     <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.cs" />
     <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.Designer.cs">
       <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605011404360_machineentities.cs" />
+    <Compile Include="Migrations\201605011404360_machineentities.Designer.cs">
+      <DependentUpon>201605011404360_machineentities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605011409126_employeemachine.cs" />
+    <Compile Include="Migrations\201605011409126_employeemachine.Designer.cs">
+      <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.cs" />
+    <Compile Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.Designer.cs">
+      <DependentUpon>201605021304355_EmployeeMachineEntitiesChanges.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -124,7 +126,6 @@
     <Compile Include="Seeder\LeaveSeeds.cs" />
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
-    <Compile Include="Seeder\TaxSeeds.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Tax.cs" />
     <Compile Include="Users\Role.cs" />
@@ -141,23 +142,23 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604300559510_tax-changes.resx">
-      <DependentUpon>201604300559510_tax-changes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604300620559_payment_frequency.resx">
-      <DependentUpon>201604300620559_payment_frequency.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604300703309_add-taxable-income-payroll.resx">
-      <DependentUpon>201604300703309_add-taxable-income-payroll.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605010152148_remove-fk-workschedule.resx">
-      <DependentUpon>201605010152148_remove-fk-workschedule.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201604271531059_NewMigration2016-04-27.resx">
+      <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605010239189_add-tax-maxAmount.resx">
       <DependentUpon>201605010239189_add-tax-maxAmount.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605010459244_add-employee-payroll-istaxed.resx">
       <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605011404360_machineentities.resx">
+      <DependentUpon>201605011404360_machineentities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605011409126_employeemachine.resx">
+      <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.resx">
+      <DependentUpon>201605021304355_EmployeeMachineEntitiesChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -170,7 +170,7 @@ namespace Payroll.AttendanceManager
                     var employee = _employeeRepository.GetById(Convert.ToInt32(sdwEnrollNumber));
                     _employeeRepository.Update(employee);
                     employee.EmployeeCode = txtCardnumber.Text;
-                    employee.EnrolledToRfid = true;
+                    //employee.EnrolledToRfid = true;
                     //employee.Enabled = chbEnabled.Checked;
                     _unitOfWork.Commit();
                 }

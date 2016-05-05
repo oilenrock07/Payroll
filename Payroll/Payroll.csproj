@@ -327,6 +327,9 @@
     <Content Include="Views\Maintenance\EditLoan.cshtml" />
     <Content Include="Views\Employee\EmployeeLoans.cshtml" />
     <Content Include="Views\Employee\CreateEmployeeLoan.cshtml" />
+    <Content Include="Views\Maintenance\Machine.cshtml" />
+    <Content Include="Views\Maintenance\CreateMachine.cshtml" />
+    <Content Include="Views\Maintenance\EditMachine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

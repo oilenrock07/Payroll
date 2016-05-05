@@ -10,6 +10,7 @@ using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models.Maintenance;
 using Payroll.Repository.Interface;
+using Payroll.Resources;
 using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
@@ -25,10 +26,11 @@ namespace Payroll.Controllers
         private readonly IHolidayRepository _holidayRepository;
         private readonly ILeaveRepository _leaveRepository;
         private readonly ILoanRepository _loanRepository;
+        private readonly IMachineRepository _machineRepository;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
-            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, IWebService webService)
+            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, IMachineRepository machineRepository, IWebService webService)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
@@ -38,6 +40,7 @@ namespace Payroll.Controllers
             _holidayRepository = holidayRepository;
             _leaveRepository = leaveRepository;
             _loanRepository = loanRepository;
+            _machineRepository = machineRepository;
             _webService = webService;
         }
 
@@ -406,6 +409,78 @@ namespace Payroll.Controllers
 
             return RedirectToAction("Loan");
         }
+        #endregion
+
+        #region Machines
+        public virtual ActionResult Machine()
+        {
+            var machine = _machineRepository.Find(x => x.IsActive);
+            return View(machine);
+        }
+
+        public virtual ActionResult CreateMachine()
+        {
+            return View(new Machine());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateMachine(Machine machine)
+        {
+            //Validate if machine already exists
+            var existingMaching = _machineRepository.Find(x => x.IpAddress == machine.IpAddress && x.IsActive).FirstOrDefault();
+            if (existingMaching != null)
+            {
+                ModelState.AddModelError("", ErrorMessages.MACHINE_EXISTS);
+                return View(machine);
+            }
+
+            machine.IsActive = true;
+
+            _machineRepository.Add(machine);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Machine");
+        }
+
+        public virtual ActionResult EditMachine(int id)
+        {
+            var model = _machineRepository.GetById(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditMachine(Machine model)
+        {
+            //Validate if machine already exists
+            var existingMaching = _machineRepository.Find(x => x.IpAddress == model.IpAddress && x.IsActive && x.MachineId != model.MachineId).FirstOrDefault();
+            if (existingMaching != null)
+            {
+                ModelState.AddModelError("", ErrorMessages.MACHINE_EXISTS);
+                return View(model);
+            }
+
+            var machine = _machineRepository.GetById(model.MachineId);
+            _machineRepository.Update(machine);
+
+            machine.IpAddress = model.IpAddress;
+            machine.IsActive = true;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Machine");
+        }
+
+        public virtual ActionResult DeleteMachine(int id)
+        {
+            var machine = _machineRepository.GetById(id);
+            _machineRepository.Update(machine);
+            machine.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Machine");
+        }
+
         #endregion
     }
 }
