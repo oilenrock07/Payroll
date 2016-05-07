@@ -119,14 +119,14 @@ namespace Payroll.Test.Service
 
             var EmployeeSalary1 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 100,
                 SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 3000,
                 SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };
@@ -375,14 +375,14 @@ namespace Payroll.Test.Service
 
             var EmployeeSalary1 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 100,
                 SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 3000,
                 SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };
@@ -666,14 +666,14 @@ namespace Payroll.Test.Service
 
             var EmployeeSalary1 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 100,
                 SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 3000,
                 SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };
@@ -941,14 +941,14 @@ namespace Payroll.Test.Service
 
             var EmployeeSalary1 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 100,
                 SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var EmployeeSalary2 = new EmployeeSalary
             {
-                EmployeeInfoId = employeeId1,
+                EmployeeId = employeeId1,
                 Salary = 3000,
                 SalaryFrequency = Entities.Enums.FrequencyType.Weekly
             };

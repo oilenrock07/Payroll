@@ -20,6 +20,6 @@ namespace Payroll.Entities
 
         public FrequencyType SalaryFrequency { get; set; }
 
-        public int EmployeeInfoId { get; set;}
+        public int EmployeeId { get; set;}
     }
 }
