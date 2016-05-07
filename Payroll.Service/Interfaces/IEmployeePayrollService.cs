@@ -17,6 +17,8 @@ namespace Payroll.Service.Interfaces
 
         IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate);
 
-        int GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
+        void GeneratePayroll();
+
+        void GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
     }
 }

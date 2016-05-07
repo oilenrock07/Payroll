@@ -99,9 +99,8 @@ namespace Payroll.Service.Implementations
             return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId, payrollDate);
         }
 
-        public int GeneratePayroll()
+        public void GeneratePayroll()
         {
-            var payrollDate = new DateTime();
             var frequency = (FrequencyType)Convert.
                 ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
 
@@ -125,21 +124,17 @@ namespace Payroll.Service.Implementations
                     break;
             }
 
+            GeneratePayroll(today, payrollStartDate, payrollEndDate);
+        }
+
+        public void GeneratePayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
+        {
             //Generate employee payroll and net pay
             var employeePayrollList = GeneratePayrollNetPayByDateRange(payrollDate, payrollStartDate, payrollEndDate);
 
-            //Generate deductions such as SSS, HDMF, Philhealth
-            _employeePayrollDeductionService.GenerateDeductionsByPayroll(today, 
+            //Generate deductions such as SSS, HDMF, Philhealth and TAX
+            _employeePayrollDeductionService.GenerateDeductionsByPayroll(payrollDate,
                 payrollStartDate, payrollEndDate, employeePayrollList);
-
-            //Generate employee tax
-
-            return 0;
-        }
-
-        public int GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
-        {
-            throw new NotImplementedException();
         }
     }
 }
