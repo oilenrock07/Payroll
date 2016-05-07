@@ -80,7 +80,8 @@ namespace Payroll.Test.Service
                 new AttendanceLogService(_attendanceLogRepository);
             AttendanceService _attendanceService = 
                 new AttendanceService(unitOfWork, _attendanceRepository, _attendanceLogService);
-            EmployeeInfoService _employeeInfoService = 
+
+            EmployeeInfoService _employeeInfoService =
                 new EmployeeInfoService(_employeeInfoRepository);
             EmployeeHoursService _employeeHoursService = 
                 new EmployeeHoursService(unitOfWork, _employeeHoursRepository, _attendanceService, _settingService, _employeeWorkScheduleService, _employeeInfoService);
@@ -321,6 +322,7 @@ namespace Payroll.Test.Service
                 new AttendanceLogService(_attendanceLogRepository);
             AttendanceService _attendanceService =
                 new AttendanceService(unitOfWork, _attendanceRepository, _attendanceLogService);
+
             EmployeeInfoService _employeeInfoService =
                 new EmployeeInfoService(_employeeInfoRepository);
             EmployeeHoursService _employeeHoursService =

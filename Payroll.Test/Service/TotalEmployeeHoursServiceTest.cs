@@ -39,7 +39,6 @@ namespace Payroll.Test.Service
             var employeeInfoService = new EmployeeInfoService(employeeInfoRepository);
             var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService);
-            var employeeService = new EmployeeService(employeeRepository);
             var settingService = new SettingService(settingRepository);
             var employeeWorkScheduleService = new EmployeeWorkScheduleService(employeeWorkScheduleRepository);
 
@@ -298,7 +297,7 @@ namespace Payroll.Test.Service
             var employeeInfoService = new EmployeeInfoService(employeeInfoRepository);
             var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService);
-            var employeeService = new EmployeeService(employeeRepository);
+
             var settingService = new SettingService(settingRepository);
             var employeeWorkScheduleService = new EmployeeWorkScheduleService(employeeWorkScheduleRepository);
 
