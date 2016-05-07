@@ -77,33 +77,9 @@
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
     <Compile Include="Machine.cs" />
-    <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.cs" />
-    <Compile Include="Migrations\201604271531059_NewMigration2016-04-27.Designer.cs">
-      <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605010239189_add-tax-maxAmount.cs" />
-    <Compile Include="Migrations\201605010239189_add-tax-maxAmount.Designer.cs">
-      <DependentUpon>201605010239189_add-tax-maxAmount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.cs" />
-    <Compile Include="Migrations\201605010459244_add-employee-payroll-istaxed.Designer.cs">
-      <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605011404360_machineentities.cs" />
-    <Compile Include="Migrations\201605011404360_machineentities.Designer.cs">
-      <DependentUpon>201605011404360_machineentities.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605011409126_employeemachine.cs" />
-    <Compile Include="Migrations\201605011409126_employeemachine.Designer.cs">
-      <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.cs" />
-    <Compile Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.Designer.cs">
-      <DependentUpon>201605021304355_EmployeeMachineEntitiesChanges.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605070349376_db-update.cs" />
-    <Compile Include="Migrations\201605070349376_db-update.Designer.cs">
-      <DependentUpon>201605070349376_db-update.cs</DependentUpon>
+    <Compile Include="Migrations\201605071005272_NewMigration.cs" />
+    <Compile Include="Migrations\201605071005272_NewMigration.Designer.cs">
+      <DependentUpon>201605071005272_NewMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -146,26 +122,8 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604271531059_NewMigration2016-04-27.resx">
-      <DependentUpon>201604271531059_NewMigration2016-04-27.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605010239189_add-tax-maxAmount.resx">
-      <DependentUpon>201605010239189_add-tax-maxAmount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605010459244_add-employee-payroll-istaxed.resx">
-      <DependentUpon>201605010459244_add-employee-payroll-istaxed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605011404360_machineentities.resx">
-      <DependentUpon>201605011404360_machineentities.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605011409126_employeemachine.resx">
-      <DependentUpon>201605011409126_employeemachine.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605021304355_EmployeeMachineEntitiesChanges.resx">
-      <DependentUpon>201605021304355_EmployeeMachineEntitiesChanges.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605070349376_db-update.resx">
-      <DependentUpon>201605070349376_db-update.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605071005272_NewMigration.resx">
+      <DependentUpon>201605071005272_NewMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,7 +6,7 @@ using Payroll.Entities.Enums;
 
 namespace Payroll.Entities
 {
-    [Table("employee_info")]
+    [Table("employee_info_history")]
     public class EmployeeInfoHistory : BaseEntity
     {
         public EmployeeInfoHistory()

@@ -8,6 +8,7 @@ using Omu.ValueInjecter;
 using Payroll.Common.Enums;
 using Payroll.Common.Helpers;
 using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models;
@@ -28,7 +29,6 @@ namespace Payroll.Controllers
         private readonly ISettingRepository _settingRepository;
         private readonly IPositionRepository _positionRepository;
         private readonly IWebService _webService;
-        private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeLoanRepository _employeeLoanRepository;
         private readonly ILoanRepository _loanRepository;
@@ -36,7 +36,7 @@ namespace Payroll.Controllers
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
-            IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository, IDepartmentRepository departmentRepository, ILoanRepository loanRepository)
+            IWebService webService, IDepartmentRepository departmentRepository, ILoanRepository loanRepository)
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -44,7 +44,6 @@ namespace Payroll.Controllers
             _employeeInfoRepository = employeeInfoRepository;
             _positionRepository = positionRepository;
             _webService = webService;
-            _paymentFrequencyRepository = paymentFrequencyRepository;
             _employeeLoanRepository = employeeLoanRepository;
             _departmentRepository = departmentRepository;
             _loanRepository = loanRepository;
@@ -140,11 +139,15 @@ namespace Payroll.Controllers
                 Value = x.PositionId.ToString()
             }).ToList();
 
-            var paymentFrequencies = _paymentFrequencyRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            var paymentFrequencies = new List<SelectListItem>();
+            foreach (FrequencyType frquency in Enum.GetValues(typeof(FrequencyType)))
             {
-                Text = x.Frequency.FrequencyName,
-                Value = x.FrequencyId.ToString()
-            }).ToList();
+                paymentFrequencies.Add(new SelectListItem
+                {
+                    Text = frquency.ToString(),
+                    Value = ((int)frquency).ToString()
+                });
+            }
 
             var genders = new List<SelectListItem>();
             foreach (Gender gender in Enum.GetValues(typeof(Gender)))
