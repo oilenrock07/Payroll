@@ -66,15 +66,15 @@ namespace Payroll.Test.Service
                 FrequencyType = Entities.Enums.FrequencyType.Weekly
             };*/
 
-            var paymentFrequency = new PaymentFrequency
-            {
-                FrequencyType = FrequencyType.Weekly
-            };
+            //var paymentFrequency = new PaymentFrequency
+            //{
+            //    FrequencyType = FrequencyType.Weekly
+            //};
 
             var employeeInfo = new EmployeeInfo
             {
                 Employee = employee,
-                PaymentFrequency = paymentFrequency
+                SalaryFrequency = FrequencyType.Weekly
             };
 
             employeeInfoRepository.Add(employeeInfo);

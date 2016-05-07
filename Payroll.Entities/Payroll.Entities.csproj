@@ -66,9 +66,9 @@
     <Compile Include="Employee.cs" />
     <Compile Include="EmployeeDepartment.cs" />
     <Compile Include="EmployeeFile.cs" />
+    <Compile Include="EmployeeInfoHistory.cs" />
     <Compile Include="EmployeeInfo.cs" />
     <Compile Include="EmployeeMachine.cs" />
-    <Compile Include="EmployeeSalary.cs" />
     <Compile Include="EmployeeWorkSchedule.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="Frequency.cs" />

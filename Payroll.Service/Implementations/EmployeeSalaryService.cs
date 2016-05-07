@@ -1,9 +1,5 @@
 ﻿using Payroll.Service.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
 
@@ -18,31 +14,31 @@ namespace Payroll.Service
 
         public decimal GetEmployeeHourlyRate(EmployeeInfo employeeInfo)
         {
-            EmployeeSalary employeeSalary = employeeInfo.EmployeeSalary;
+            //EmployeeSalary employeeSalary = employeeInfo.EmployeeSalary;
 
-            Decimal hourlyRate = employeeSalary.Salary;
+            Decimal hourlyRate = employeeInfo.Salary;
 
             //TODO more salary frequency
-            switch (employeeSalary.SalaryFrequency)
+            switch (employeeInfo.SalaryFrequency)
             {
                 case FrequencyType.Hourly:
                     {
-                        hourlyRate = (employeeSalary.Salary / SALARY_HOURLY);
+                        hourlyRate = (employeeInfo.Salary / SALARY_HOURLY);
                         break;
                     }
                 case FrequencyType.Daily:
                     {
-                        hourlyRate = (employeeSalary.Salary / SALARY_DAILY);
+                        hourlyRate = (employeeInfo.Salary / SALARY_DAILY);
                         break;
                     }
                 case FrequencyType.Weekly:
                     {
-                        hourlyRate = (employeeSalary.Salary / SALARY_WEEKLY);
+                        hourlyRate = (employeeInfo.Salary / SALARY_WEEKLY);
                         break;
                     }
                 case FrequencyType.BiWeekly:
                     {
-                        hourlyRate = (employeeSalary.Salary / SALARY_BIWEEKLY);
+                        hourlyRate = (employeeInfo.Salary / SALARY_BIWEEKLY);
                         break;
                     }
             }

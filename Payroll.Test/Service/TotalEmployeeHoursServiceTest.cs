@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Repositories;
@@ -97,13 +98,13 @@ namespace Payroll.Test.Service
             var employeeInfo1 = new EmployeeInfo
             {
                 Employee = employee1,
-                PaymentFrequency = paymentFrequency
+                SalaryFrequency = FrequencyType.Weekly
             };
 
             var employeeInfo2 = new EmployeeInfo
             {
                 Employee = employee2,
-                PaymentFrequency = paymentFrequency
+                SalaryFrequency = FrequencyType.Weekly
             };
 
             employeeInfoRepository.Add(employeeInfo1);
@@ -336,18 +337,20 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var paymentFrequencyId = 1;
+            //var paymentFrequencyId = 1;
 
             var employeeInfo1 = new EmployeeInfo
             {
                 Employee = employee1,
-                PaymentFrequencyId = paymentFrequencyId
+                SalaryFrequency = FrequencyType.Hourly,
+                //PaymentFrequencyId = paymentFrequencyId
             };
 
             var employeeInfo2 = new EmployeeInfo
             {
                 Employee = employee2,
-                PaymentFrequencyId = paymentFrequencyId
+                SalaryFrequency = FrequencyType.Hourly,
+                //PaymentFrequencyId = paymentFrequencyId
             };
 
             employeeInfoRepository.Add(employeeInfo1);

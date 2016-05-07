@@ -84,7 +84,6 @@
     <Compile Include="Interface\IEmployeePayrollDeductionRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />
-    <Compile Include="Interface\IEmployeeSalaryRepository.cs" />
     <Compile Include="Interface\IEmployeeworkScheduleRepository.cs" />
     <Compile Include="Interface\IFrequencyRepository.cs" />
     <Compile Include="Interface\IHolidayRepository.cs" />
@@ -117,7 +116,6 @@
     <Compile Include="Repositories\EmployeePayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\EmployeeSalaryRepository.cs" />
     <Compile Include="Repositories\EmployeeWorkScheduleRepository.cs" />
     <Compile Include="Repositories\FrequencyRepository.cs" />
     <Compile Include="Repositories\HolidayRepository.cs" />

@@ -22,7 +22,7 @@ namespace Payroll.Repository.Repositories
 
         public IList<EmployeeInfo> GetActiveByPaymentFrequency(int paymentFrequencyId)
         {
-            return Find(e => e.Employee.IsActive && e.PaymentFrequencyId == paymentFrequencyId).ToList();
+            return Find(e => e.Employee.IsActive /*&& e.PaymentFrequencyId == paymentFrequencyId*/).ToList();
         }
 
         public IList<EmployeeInfo> GetAllActive() {

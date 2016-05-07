@@ -124,7 +124,7 @@ namespace Payroll.Controllers
                 viewModel.EmployeeInfo = employeeInfo;
                 viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "/Images/noimage.jpg";
                 viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
-                viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
+                //viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
                 viewModel.Gender = employeeInfo.Employee.Gender;
                 viewModel.EmploymentStatus = employeeInfo.EmploymentStatus;
             }
@@ -214,7 +214,7 @@ namespace Payroll.Controllers
             var employeeInfo = new EmployeeInfo
             {
                 Employee = employee,
-                PaymentFrequencyId = viewModel.PaymentFrequency != 0 ? viewModel.PaymentFrequency : (int?) null,
+                //SalaryFrequency = viewModel.PaymentFrequency != 0 ? viewModel.PaymentFrequency : (int?) null,
                 PositionId = viewModel.PositionId != 0 ? viewModel.PositionId : (int?)null,
             };
 
@@ -272,7 +272,7 @@ namespace Payroll.Controllers
             employeeInfo.EmploymentStatus = viewModel.EmploymentStatus;
 
             employeeInfo.PositionId = viewModel.PositionId;
-            employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
+            //employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
             employeeInfo.Employee.InjectFrom( viewModel.EmployeeInfo.Employee);
             employeeInfo.Employee.Gender = viewModel.Gender;
 

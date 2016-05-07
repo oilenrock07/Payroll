@@ -7,32 +7,25 @@ using Payroll.Entities.Enums;
 namespace Payroll.Entities
 {
     [Table("employee_info")]
-    public class EmployeeInfo : BaseEntity
+    public class EmployeeInfoHistory : BaseEntity
     {
-        public EmployeeInfo(){
+        public EmployeeInfoHistory()
+        {
             Dependents = 0;
         }
 
         [Key]
-        public int EmploymentInfoId { get; set; }
+        public int EmployeeInfoHistoryId { get; set; }
 
         [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
-
-        //[ForeignKey("PaymentFrequency")]
-        //public int ? PaymentFrequencyId { get; set; }
-        //public virtual PaymentFrequency PaymentFrequency{ get; set; }
         
         public int ? PositionId { get; set; }
 
         public decimal Salary { get; set; }
 
         public FrequencyType SalaryFrequency { get; set; }
-
-        //[ForeignKey("EmployeeSalary")]
-        //public int? EmployeeSalaryId { get; set; }
-        //public virtual EmployeeSalary EmployeeSalary { get; set; }
 
         public decimal ? Allowance { get; set; }
 

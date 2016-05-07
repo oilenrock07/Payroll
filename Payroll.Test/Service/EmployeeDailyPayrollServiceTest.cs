@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Repositories;
@@ -66,8 +67,8 @@ namespace Payroll.Test.Service
                 new EmployeeInfoRepository(databaseFactory);
             EmployeeDailyPayrollRepository _employeeDailyPayrollRepository = 
                 new EmployeeDailyPayrollRepository(databaseFactory);
-            EmployeeSalaryRepository _employeeSalaryRepository = 
-                new EmployeeSalaryRepository(databaseFactory);
+            //EmployeeSalaryRepository _employeeSalaryRepository = 
+            //    new EmployeeSalaryRepository(databaseFactory);
 
             EmployeeWorkScheduleService _employeeWorkScheduleService = 
                 new EmployeeWorkScheduleService(_employeeWorkScheduleRepository);
@@ -117,23 +118,6 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var EmployeeSalary1 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 100,
-                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
-            };
-
-            var EmployeeSalary2 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 3000,
-                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
-            };
-
-            _employeeSalaryRepository.Add(EmployeeSalary1);
-            _employeeSalaryRepository.Add(EmployeeSalary2);
-
             var workSchedule = new WorkSchedule
             {
                 TimeStart = new TimeSpan(0, 7, 0, 0),
@@ -168,13 +152,15 @@ namespace Payroll.Test.Service
             var employeeInfo1 = new EmployeeInfo
             {
                 Employee = employee1,
-                EmployeeSalary = EmployeeSalary1
+                Salary = 100,
+                SalaryFrequency = FrequencyType.Hourly
             };
 
             var employeeInfo2 = new EmployeeInfo
             {
                 Employee = employee2,
-                EmployeeSalary = EmployeeSalary2
+                Salary = 3000,
+                SalaryFrequency = FrequencyType.Weekly
             };
 
             _employeeInfoRepository.Add(employeeInfo1);
@@ -322,8 +308,8 @@ namespace Payroll.Test.Service
                 new EmployeeInfoRepository(databaseFactory);
             EmployeeDailyPayrollRepository _employeeDailyPayrollRepository =
                 new EmployeeDailyPayrollRepository(databaseFactory);
-            EmployeeSalaryRepository _employeeSalaryRepository =
-                new EmployeeSalaryRepository(databaseFactory);
+            //EmployeeSalaryRepository _employeeSalaryRepository =
+            //    new EmployeeSalaryRepository(databaseFactory);
 
             EmployeeWorkScheduleService _employeeWorkScheduleService =
                 new EmployeeWorkScheduleService(_employeeWorkScheduleRepository);
@@ -373,22 +359,22 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var EmployeeSalary1 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 100,
-                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
-            };
+            //var EmployeeSalary1 = new EmployeeSalary
+            //{
+            //    EmployeeId = employeeId1,
+            //    Salary = 100,
+            //    SalaryFrequency = Entities.Enums.FrequencyType.Hourly
+            //};
 
-            var EmployeeSalary2 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 3000,
-                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
-            };
+            //var EmployeeSalary2 = new EmployeeSalary
+            //{
+            //    EmployeeId = employeeId1,
+            //    Salary = 3000,
+            //    SalaryFrequency = Entities.Enums.FrequencyType.Weekly
+            //};
 
-            _employeeSalaryRepository.Add(EmployeeSalary1);
-            _employeeSalaryRepository.Add(EmployeeSalary2);
+            //_employeeSalaryRepository.Add(EmployeeSalary1);
+            //_employeeSalaryRepository.Add(EmployeeSalary2);
 
             var workSchedule = new WorkSchedule
             {
@@ -424,13 +410,15 @@ namespace Payroll.Test.Service
             var employeeInfo1 = new EmployeeInfo
             {
                 Employee = employee1,
-                EmployeeSalary = EmployeeSalary1
+                Salary = 100,
+                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
             };
 
             var employeeInfo2 = new EmployeeInfo
             {
                 Employee = employee2,
-                EmployeeSalary = EmployeeSalary2
+                SalaryFrequency = FrequencyType.Weekly,
+                Salary = 3000
             };
 
             _employeeInfoRepository.Add(employeeInfo1);
@@ -613,8 +601,8 @@ namespace Payroll.Test.Service
                 new EmployeeInfoRepository(databaseFactory);
             EmployeeDailyPayrollRepository _employeeDailyPayrollRepository =
                 new EmployeeDailyPayrollRepository(databaseFactory);
-            EmployeeSalaryRepository _employeeSalaryRepository =
-                new EmployeeSalaryRepository(databaseFactory);
+            //EmployeeSalaryRepository _employeeSalaryRepository =
+            //    new EmployeeSalaryRepository(databaseFactory);
 
             EmployeeWorkScheduleService _employeeWorkScheduleService =
                 new EmployeeWorkScheduleService(_employeeWorkScheduleRepository);
@@ -664,22 +652,22 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var EmployeeSalary1 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 100,
-                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
-            };
+            //var EmployeeSalary1 = new EmployeeSalary
+            //{
+            //    EmployeeId = employeeId1,
+            //    Salary = 100,
+            //    SalaryFrequency = Entities.Enums.FrequencyType.Hourly
+            //};
 
-            var EmployeeSalary2 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 3000,
-                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
-            };
+            //var EmployeeSalary2 = new EmployeeSalary
+            //{
+            //    EmployeeId = employeeId1,
+            //    Salary = 3000,
+            //    SalaryFrequency = Entities.Enums.FrequencyType.Weekly
+            //};
 
-            _employeeSalaryRepository.Add(EmployeeSalary1);
-            _employeeSalaryRepository.Add(EmployeeSalary2);
+            //_employeeSalaryRepository.Add(EmployeeSalary1);
+            //_employeeSalaryRepository.Add(EmployeeSalary2);
 
             var workSchedule = new WorkSchedule
             {
@@ -715,13 +703,15 @@ namespace Payroll.Test.Service
             var employeeInfo1 = new EmployeeInfo
             {
                 Employee = employee1,
-                EmployeeSalary = EmployeeSalary1
+                Salary = 100,
+                SalaryFrequency = FrequencyType.Hourly
             };
 
             var employeeInfo2 = new EmployeeInfo
             {
                 Employee = employee2,
-                EmployeeSalary = EmployeeSalary2
+                Salary = 3000,
+                SalaryFrequency = FrequencyType.Weekly
             };
 
             _employeeInfoRepository.Add(employeeInfo1);
@@ -869,8 +859,8 @@ namespace Payroll.Test.Service
                 new EmployeeInfoRepository(databaseFactory);
             EmployeeDailyPayrollRepository _employeeDailyPayrollRepository =
                 new EmployeeDailyPayrollRepository(databaseFactory);
-            EmployeeSalaryRepository _employeeSalaryRepository =
-                new EmployeeSalaryRepository(databaseFactory);
+            //EmployeeSalaryRepository _employeeSalaryRepository =
+            //    new EmployeeSalaryRepository(databaseFactory);
 
             EmployeeWorkScheduleService _employeeWorkScheduleService =
                 new EmployeeWorkScheduleService(_employeeWorkScheduleRepository);
@@ -939,22 +929,22 @@ namespace Payroll.Test.Service
                 IsActive = true
             };
 
-            var EmployeeSalary1 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 100,
-                SalaryFrequency = Entities.Enums.FrequencyType.Hourly
-            };
+            //var EmployeeSalary1 = new EmployeeSalary
+            //{
+            //    EmployeeId = employeeId1,
+            //    Salary = 100,
+            //    SalaryFrequency = Entities.Enums.FrequencyType.Hourly
+            //};
 
-            var EmployeeSalary2 = new EmployeeSalary
-            {
-                EmployeeId = employeeId1,
-                Salary = 3000,
-                SalaryFrequency = Entities.Enums.FrequencyType.Weekly
-            };
+            //var EmployeeSalary2 = new EmployeeSalary
+            //{
+            //    EmployeeId = employeeId1,
+            //    Salary = 3000,
+            //    SalaryFrequency = Entities.Enums.FrequencyType.Weekly
+            //};
 
-            _employeeSalaryRepository.Add(EmployeeSalary1);
-            _employeeSalaryRepository.Add(EmployeeSalary2);
+            //_employeeSalaryRepository.Add(EmployeeSalary1);
+            //_employeeSalaryRepository.Add(EmployeeSalary2);
 
             var workSchedule = new WorkSchedule
             {
@@ -990,13 +980,15 @@ namespace Payroll.Test.Service
             var employeeInfo1 = new EmployeeInfo
             {
                 Employee = employee1,
-                EmployeeSalary = EmployeeSalary1
+                Salary = 100,
+                SalaryFrequency = FrequencyType.Hourly
             };
 
             var employeeInfo2 = new EmployeeInfo
             {
                 Employee = employee2,
-                EmployeeSalary = EmployeeSalary2
+                Salary = 3000,
+                SalaryFrequency = FrequencyType.Weekly
             };
 
             _employeeInfoRepository.Add(employeeInfo1);
