@@ -44,7 +44,7 @@ namespace Payroll.Test.Service
 
             var employeeHoursService = new EmployeeHoursService(unitOfWork, employeeHoursRepository, 
                 attendanceService, settingService, employeeWorkScheduleService, employeeInfoService);
-            var totalEmployeeHoursService = new TotalEmployeeHoursService(unitOfWork, totalEmployeeHoursRepository, employeeHoursService);
+            var totalEmployeeHoursService = new TotalEmployeeHoursService(unitOfWork, totalEmployeeHoursRepository, employeeHoursService, settingService);
 
             //Delete info
             employeeRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
@@ -303,7 +303,7 @@ namespace Payroll.Test.Service
 
             var employeeHoursService = new EmployeeHoursService(unitOfWork, employeeHoursRepository,
                 attendanceService, settingService, employeeWorkScheduleService, employeeInfoService);
-            var totalEmployeeHoursService = new TotalEmployeeHoursService(unitOfWork, totalEmployeeHoursRepository, employeeHoursService);
+            var totalEmployeeHoursService = new TotalEmployeeHoursService(unitOfWork, totalEmployeeHoursRepository, employeeHoursService, settingService);
 
             //Delete info
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours");

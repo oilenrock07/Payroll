@@ -31,7 +31,6 @@ namespace Payroll.Test.Service
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours");
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours_total"); 
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee_daily_payroll");
-            repository.ExecuteSqlCommand("TRUNCATE TABLE employee_salary");
             repository.ExecuteSqlCommand("TRUNCATE TABLE work_schedule");
             repository.ExecuteSqlCommand("TRUNCATE TABLE employee");
             repository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 1");
@@ -86,7 +85,7 @@ namespace Payroll.Test.Service
             EmployeeHoursService _employeeHoursService = 
                 new EmployeeHoursService(unitOfWork, _employeeHoursRepository, _attendanceService, _settingService, _employeeWorkScheduleService, _employeeInfoService);
             TotalEmployeeHoursService _totalEmployeeHoursService =
-                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService);
+                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService, _settingService);
             EmployeeSalaryService _employeeSalaryService = new EmployeeSalaryService();
             EmployeeDailyPayrollService employeeDailyPayrollService = 
                 new EmployeeDailyPayrollService(unitOfWork, _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeDailyPayrollRepository, _employeeInfoService, _employeeSalaryService);
@@ -328,7 +327,7 @@ namespace Payroll.Test.Service
             EmployeeHoursService _employeeHoursService =
                 new EmployeeHoursService(unitOfWork, _employeeHoursRepository, _attendanceService, _settingService, _employeeWorkScheduleService, _employeeInfoService);
             TotalEmployeeHoursService _totalEmployeeHoursService =
-                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService);
+                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService, _settingService);
             EmployeeSalaryService _employeeSalaryService = new EmployeeSalaryService();
             EmployeeDailyPayrollService employeeDailyPayrollService =
                 new EmployeeDailyPayrollService(unitOfWork, _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeDailyPayrollRepository, _employeeInfoService, _employeeSalaryService);
@@ -621,7 +620,7 @@ namespace Payroll.Test.Service
             EmployeeHoursService _employeeHoursService =
                 new EmployeeHoursService(unitOfWork, _employeeHoursRepository, _attendanceService, _settingService, _employeeWorkScheduleService, _employeeInfoService);
             TotalEmployeeHoursService _totalEmployeeHoursService =
-                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService);
+                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService, _settingService);
             EmployeeSalaryService _employeeSalaryService = new EmployeeSalaryService();
             EmployeeDailyPayrollService employeeDailyPayrollService =
                 new EmployeeDailyPayrollService(unitOfWork, _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeDailyPayrollRepository, _employeeInfoService, _employeeSalaryService);
@@ -879,7 +878,7 @@ namespace Payroll.Test.Service
             EmployeeHoursService _employeeHoursService =
                 new EmployeeHoursService(unitOfWork, _employeeHoursRepository, _attendanceService, _settingService, _employeeWorkScheduleService, _employeeInfoService);
             TotalEmployeeHoursService _totalEmployeeHoursService =
-                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService);
+                new TotalEmployeeHoursService(unitOfWork, _totalEmployeeHoursRepository, _employeeHoursService, _settingService);
             EmployeeSalaryService _employeeSalaryService = new EmployeeSalaryService();
             EmployeeDailyPayrollService employeeDailyPayrollService =
                 new EmployeeDailyPayrollService(unitOfWork, _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeDailyPayrollRepository, _employeeInfoService, _employeeSalaryService);
