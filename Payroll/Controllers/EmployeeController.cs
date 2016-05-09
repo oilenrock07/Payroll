@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Omu.ValueInjecter;
 using Payroll.Common.Enums;
-using Payroll.Common.Helpers;
 using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
-using Payroll.Models;
 using Payroll.Models.Employee;
 using Payroll.Repository.Interface;
 using Payroll.Common.Extension;
@@ -28,15 +26,15 @@ namespace Payroll.Controllers
         private readonly ISettingRepository _settingRepository;
         private readonly IPositionRepository _positionRepository;
         private readonly IWebService _webService;
-        private readonly IPaymentFrequencyRepository _paymentFrequencyRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeLoanRepository _employeeLoanRepository;
         private readonly ILoanRepository _loanRepository;
         private readonly IEmployeeLeaveRepository _employeeLeaveRepository;
+        private readonly IEmployeeInfoHistoryRepository _employeeInfoHistoryRepository;
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
-            IWebService webService, IPaymentFrequencyRepository paymentFrequencyRepository, IDepartmentRepository departmentRepository, ILoanRepository loanRepository)
+            IWebService webService, IDepartmentRepository departmentRepository, ILoanRepository loanRepository, IEmployeeInfoHistoryRepository employeeInfoHistoryRepository)
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -44,10 +42,10 @@ namespace Payroll.Controllers
             _employeeInfoRepository = employeeInfoRepository;
             _positionRepository = positionRepository;
             _webService = webService;
-            _paymentFrequencyRepository = paymentFrequencyRepository;
             _employeeLoanRepository = employeeLoanRepository;
             _departmentRepository = departmentRepository;
             _loanRepository = loanRepository;
+            _employeeInfoHistoryRepository = employeeInfoHistoryRepository;
         }
 
         public virtual ActionResult Index()
@@ -124,7 +122,6 @@ namespace Payroll.Controllers
                 viewModel.EmployeeInfo = employeeInfo;
                 viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "/Images/noimage.jpg";
                 viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
-                //viewModel.PaymentFrequency = Convert.ToInt32(employeeInfo.PaymentFrequencyId);
                 viewModel.Gender = employeeInfo.Employee.Gender;
                 viewModel.EmploymentStatus = employeeInfo.EmploymentStatus;
             }
@@ -140,11 +137,15 @@ namespace Payroll.Controllers
                 Value = x.PositionId.ToString()
             }).ToList();
 
-            var paymentFrequencies = _paymentFrequencyRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            var paymentFrequencies = new List<SelectListItem>();
+            foreach (FrequencyType frquency in Enum.GetValues(typeof(FrequencyType)))
             {
-                Text = x.Frequency.FrequencyName,
-                Value = x.FrequencyId.ToString()
-            }).ToList();
+                paymentFrequencies.Add(new SelectListItem
+                {
+                    Text = frquency.ToString(),
+                    Value = ((int)frquency).ToString()
+                });
+            }
 
             var genders = new List<SelectListItem>();
             foreach (Gender gender in Enum.GetValues(typeof(Gender)))
@@ -211,14 +212,15 @@ namespace Payroll.Controllers
 
             var employee = viewModel.EmployeeInfo.Employee.MapItem<Employee>();
             employee.Gender = viewModel.Gender;
-            var employeeInfo = new EmployeeInfo
-            {
-                Employee = employee,
-                //SalaryFrequency = viewModel.PaymentFrequency != 0 ? viewModel.PaymentFrequency : (int?) null,
-                PositionId = viewModel.PositionId != 0 ? viewModel.PositionId : (int?)null,
-            };
+            var employeeInfo = viewModel.EmployeeInfo;
+            employeeInfo.Employee = employee;
+            employeeInfo.PositionId = viewModel.PositionId != 0 ? viewModel.PositionId : (int?) null;
+            employeeInfo.SalaryFrequency = (FrequencyType)viewModel.PaymentFrequency;
+            employeeInfo.EmploymentStatus = viewModel.EmploymentStatus;
 
             var newEmployee = _employeeInfoRepository.Add(employeeInfo).Employee;
+            _employeeInfoHistoryRepository.Add(employeeInfo.MapItem<EmployeeInfoHistory>());
+
             _unitOfWork.Commit();
 
             var departments = viewModel.CheckedDepartments != null
@@ -266,13 +268,12 @@ namespace Payroll.Controllers
             employeeInfo.EmploymentStatus = viewModel.EmployeeInfo.EmploymentStatus;
             employeeInfo.PhilHealth = viewModel.EmployeeInfo.PhilHealth;
             employeeInfo.SSS = viewModel.EmployeeInfo.SSS;
-            //TODO change saving of salary
-            //employeeInfo.Salary = viewModel.EmployeeInfo.Salary;
+            employeeInfo.Salary = viewModel.EmployeeInfo.Salary;
             employeeInfo.TIN = viewModel.EmployeeInfo.TIN;
             employeeInfo.EmploymentStatus = viewModel.EmploymentStatus;
 
             employeeInfo.PositionId = viewModel.PositionId;
-            //employeeInfo.PaymentFrequencyId = viewModel.PaymentFrequency;
+            employeeInfo.SalaryFrequency = (FrequencyType)viewModel.PaymentFrequency;
             employeeInfo.Employee.InjectFrom( viewModel.EmployeeInfo.Employee);
             employeeInfo.Employee.Gender = viewModel.Gender;
 
@@ -280,6 +281,7 @@ namespace Payroll.Controllers
                             ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)
                             : new List<int>();
             _employeeRepository.UpdateDepartment(departments, viewModel.EmployeeInfo.EmployeeId);
+            _employeeInfoHistoryRepository.Add(employeeInfo.MapItem<EmployeeInfoHistory>());
             _unitOfWork.Commit();
 
             //upload the picture and update the record

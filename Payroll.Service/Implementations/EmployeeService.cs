@@ -1,12 +1,6 @@
 ﻿using Payroll.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Payroll.Entities;
 using Payroll.Repository.Interface;
-using Payroll.Infrastructure.Interfaces;
 
 namespace Payroll.Service.Implementations
 {
@@ -23,6 +17,5 @@ namespace Payroll.Service.Implementations
         {
             return _employeeRepository.GetById(id);
         }
-
     }
 }

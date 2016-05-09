@@ -3,12 +3,12 @@ namespace Payroll.Entities.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class taxchanges : DbMigration
+    public partial class NewMigration : DbMigration
     {
         public override void Up()
         {
             CreateTable(
-                "attendance_log",
+                "dbo.attendance_log",
                 c => new
                     {
                         AttendanceLogId = c.Int(nullable: false, identity: true),
@@ -24,7 +24,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.AttendanceLogId);
             
             CreateTable(
-                "attendance",
+                "dbo.attendance",
                 c => new
                     {
                         AttendanceId = c.Int(nullable: false, identity: true),
@@ -37,11 +37,11 @@ namespace Payroll.Entities.Migrations
                         UpdateDate = c.DateTime(precision: 0),
                     })
                 .PrimaryKey(t => t.AttendanceId)
-                .ForeignKey("employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("dbo.employee", t => t.EmployeeId, cascadeDelete: true)
                 .Index(t => t.EmployeeId);
             
             CreateTable(
-                "employee",
+                "dbo.employee",
                 c => new
                     {
                         EmployeeId = c.Int(nullable: false, identity: true),
@@ -54,8 +54,6 @@ namespace Payroll.Entities.Migrations
                         Picture = c.String(maxLength: 500, storeType: "nvarchar"),
                         Gender = c.Int(nullable: false),
                         Privilege = c.Int(nullable: false),
-                        EnrolledToRfid = c.Boolean(nullable: false),
-                        EnrolledToBiometrics = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
                         CreateDate = c.DateTime(nullable: false, precision: 0),
                         UpdateDate = c.DateTime(precision: 0),
@@ -63,7 +61,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.EmployeeId);
             
             CreateTable(
-                "deduction_amount",
+                "dbo.deduction_amount",
                 c => new
                     {
                         DeductionAmountId = c.Int(nullable: false, identity: true),
@@ -81,7 +79,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.DeductionAmountId);
             
             CreateTable(
-                "deduction",
+                "dbo.deduction",
                 c => new
                     {
                         DeductionId = c.Int(nullable: false, identity: true),
@@ -94,7 +92,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.DeductionId);
             
             CreateTable(
-                "department_manager",
+                "dbo.department_manager",
                 c => new
                     {
                         DepartmentManagerId = c.Int(nullable: false, identity: true),
@@ -107,7 +105,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.DepartmentManagerId);
             
             CreateTable(
-                "department",
+                "dbo.department",
                 c => new
                     {
                         DepartmentId = c.Int(nullable: false, identity: true),
@@ -119,7 +117,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.DepartmentId);
             
             CreateTable(
-                "employee_adjustment",
+                "dbo.employee_adjustment",
                 c => new
                     {
                         AdjustmentId = c.Int(nullable: false, identity: true),
@@ -135,7 +133,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.AdjustmentId);
             
             CreateTable(
-                "employee_daily_payroll",
+                "dbo.employee_daily_payroll",
                 c => new
                     {
                         EmployeeDailySalaryId = c.Int(nullable: false, identity: true),
@@ -150,7 +148,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.EmployeeDailySalaryId);
             
             CreateTable(
-                "employee_deduction",
+                "dbo.employee_deduction",
                 c => new
                     {
                         EmployeeDeductionId = c.Int(nullable: false, identity: true),
@@ -164,7 +162,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.EmployeeDeductionId);
             
             CreateTable(
-                "employee_department",
+                "dbo.employee_department",
                 c => new
                     {
                         EmployeeDepartmentId = c.Int(nullable: false, identity: true),
@@ -177,7 +175,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.EmployeeDepartmentId);
             
             CreateTable(
-                "employee_files",
+                "dbo.employee_files",
                 c => new
                     {
                         EmployeeFileId = c.Int(nullable: false, identity: true),
@@ -190,7 +188,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.EmployeeFileId);
             
             CreateTable(
-                "employee_hours",
+                "dbo.employee_hours",
                 c => new
                     {
                         EmployeeHoursId = c.Int(nullable: false, identity: true),
@@ -205,18 +203,51 @@ namespace Payroll.Entities.Migrations
                         UpdateDate = c.DateTime(precision: 0),
                     })
                 .PrimaryKey(t => t.EmployeeHoursId)
-                .ForeignKey("employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("dbo.employee", t => t.EmployeeId, cascadeDelete: true)
                 .Index(t => t.EmployeeId);
             
             CreateTable(
-                "employee_info",
+                "dbo.employee_info_history",
+                c => new
+                    {
+                        EmployeeInfoHistoryId = c.Int(nullable: false, identity: true),
+                        EmployeeId = c.Int(nullable: false),
+                        PositionId = c.Int(),
+                        Salary = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        SalaryFrequency = c.Int(nullable: false),
+                        Allowance = c.Decimal(precision: 18, scale: 2),
+                        TIN = c.String(maxLength: 50, storeType: "nvarchar"),
+                        SSS = c.String(maxLength: 50, storeType: "nvarchar"),
+                        GSIS = c.String(maxLength: 50, storeType: "nvarchar"),
+                        PAGIBIG = c.String(maxLength: 50, storeType: "nvarchar"),
+                        PhilHealth = c.String(maxLength: 50, storeType: "nvarchar"),
+                        Dependents = c.Int(nullable: false),
+                        Married = c.Boolean(nullable: false),
+                        DateHired = c.DateTime(nullable: false, precision: 0),
+                        EmploymentStatus = c.Int(nullable: false),
+                        CustomDate1 = c.DateTime(precision: 0),
+                        CustomDate2 = c.DateTime(precision: 0),
+                        CustomString1 = c.String(maxLength: 250, storeType: "nvarchar"),
+                        CustomString2 = c.String(maxLength: 250, storeType: "nvarchar"),
+                        CustomDecimal1 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        CustomDecimal2 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        IsActive = c.Boolean(nullable: false),
+                        CreateDate = c.DateTime(nullable: false, precision: 0),
+                        UpdateDate = c.DateTime(precision: 0),
+                    })
+                .PrimaryKey(t => t.EmployeeInfoHistoryId)
+                .ForeignKey("dbo.employee", t => t.EmployeeId, cascadeDelete: true)
+                .Index(t => t.EmployeeId);
+            
+            CreateTable(
+                "dbo.employee_info",
                 c => new
                     {
                         EmploymentInfoId = c.Int(nullable: false, identity: true),
                         EmployeeId = c.Int(nullable: false),
-                        PaymentFrequencyId = c.Int(),
                         PositionId = c.Int(),
-                        EmployeeSalaryId = c.Int(),
+                        Salary = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        SalaryFrequency = c.Int(nullable: false),
                         Allowance = c.Decimal(precision: 18, scale: 2),
                         TIN = c.String(maxLength: 50, storeType: "nvarchar"),
                         SSS = c.String(maxLength: 50, storeType: "nvarchar"),
@@ -238,60 +269,11 @@ namespace Payroll.Entities.Migrations
                         UpdateDate = c.DateTime(precision: 0),
                     })
                 .PrimaryKey(t => t.EmploymentInfoId)
-                .ForeignKey("employee", t => t.EmployeeId, cascadeDelete: true)
-                .ForeignKey("employee_salary", t => t.EmployeeSalaryId)
-                .ForeignKey("payment_frequency", t => t.PaymentFrequencyId)
-                .Index(t => t.EmployeeId)
-                .Index(t => t.PaymentFrequencyId)
-                .Index(t => t.EmployeeSalaryId);
+                .ForeignKey("dbo.employee", t => t.EmployeeId, cascadeDelete: true)
+                .Index(t => t.EmployeeId);
             
             CreateTable(
-                "employee_salary",
-                c => new
-                    {
-                        EmploymentSalaryId = c.Int(nullable: false, identity: true),
-                        Salary = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        SalaryFrequency = c.Int(nullable: false),
-                        EmployeeInfoId = c.Int(nullable: false),
-                        IsActive = c.Boolean(nullable: false),
-                        CreateDate = c.DateTime(nullable: false, precision: 0),
-                        UpdateDate = c.DateTime(precision: 0),
-                    })
-                .PrimaryKey(t => t.EmploymentSalaryId);
-            
-            CreateTable(
-                "payment_frequency",
-                c => new
-                    {
-                        PaymentFrequencyId = c.Int(nullable: false, identity: true),
-                        FrequencyId = c.Int(nullable: false),
-                        FrequencyType = c.Int(nullable: false),
-                        WeeklyStartDayOfWeek = c.Int(),
-                        MonthlyStartDay = c.Int(),
-                        MonthlyEndDay = c.Int(),
-                        IsActive = c.Boolean(nullable: false),
-                        CreateDate = c.DateTime(nullable: false, precision: 0),
-                        UpdateDate = c.DateTime(precision: 0),
-                    })
-                .PrimaryKey(t => t.PaymentFrequencyId)
-                .ForeignKey("frequency", t => t.FrequencyId, cascadeDelete: true)
-                .Index(t => t.FrequencyId);
-            
-            CreateTable(
-                "frequency",
-                c => new
-                    {
-                        FrequencyId = c.Int(nullable: false, identity: true),
-                        FrequencyName = c.String(maxLength: 50, storeType: "nvarchar"),
-                        FrequencyType = c.Int(),
-                        IsActive = c.Boolean(nullable: false),
-                        CreateDate = c.DateTime(nullable: false, precision: 0),
-                        UpdateDate = c.DateTime(precision: 0),
-                    })
-                .PrimaryKey(t => t.FrequencyId);
-            
-            CreateTable(
-                "employee_leave",
+                "dbo.employee_leave",
                 c => new
                     {
                         EmployeeLeaveId = c.Int(nullable: false, identity: true),
@@ -307,13 +289,13 @@ namespace Payroll.Entities.Migrations
                         UpdateDate = c.DateTime(precision: 0),
                     })
                 .PrimaryKey(t => t.EmployeeLeaveId)
-                .ForeignKey("leave", t => t.LeaveId, cascadeDelete: true)
-                .ForeignKey("AspNetUsers", t => t.Id)
+                .ForeignKey("dbo.leave", t => t.LeaveId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.Id)
                 .Index(t => t.LeaveId)
                 .Index(t => t.Id);
             
             CreateTable(
-                "leave",
+                "dbo.leave",
                 c => new
                     {
                         LeaveId = c.Int(nullable: false, identity: true),
@@ -328,7 +310,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.LeaveId);
             
             CreateTable(
-                "AspNetUsers",
+                "dbo.AspNetUsers",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
@@ -342,7 +324,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "employee_loan",
+                "dbo.employee_loan",
                 c => new
                     {
                         EmployeeLoanId = c.Int(nullable: false, identity: true),
@@ -363,13 +345,13 @@ namespace Payroll.Entities.Migrations
                         UpdateDate = c.DateTime(precision: 0),
                     })
                 .PrimaryKey(t => t.EmployeeLoanId)
-                .ForeignKey("employee", t => t.EmployeeId, cascadeDelete: true)
-                .ForeignKey("loan", t => t.LoanId, cascadeDelete: true)
+                .ForeignKey("dbo.employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("dbo.loan", t => t.LoanId, cascadeDelete: true)
                 .Index(t => t.EmployeeId)
                 .Index(t => t.LoanId);
             
             CreateTable(
-                "loan",
+                "dbo.loan",
                 c => new
                     {
                         LoanId = c.Int(nullable: false, identity: true),
@@ -386,7 +368,34 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.LoanId);
             
             CreateTable(
-                "payroll",
+                "dbo.employee_machine",
+                c => new
+                    {
+                        EmployeeMachineId = c.Int(nullable: false, identity: true),
+                        EmployeeId = c.Int(nullable: false),
+                        MachineId = c.Int(nullable: false),
+                        IsActive = c.Boolean(nullable: false),
+                        CreateDate = c.DateTime(nullable: false, precision: 0),
+                        UpdateDate = c.DateTime(precision: 0),
+                    })
+                .PrimaryKey(t => t.EmployeeMachineId)
+                .ForeignKey("dbo.machines", t => t.MachineId, cascadeDelete: true)
+                .Index(t => t.MachineId);
+            
+            CreateTable(
+                "dbo.machines",
+                c => new
+                    {
+                        MachineId = c.Int(nullable: false, identity: true),
+                        IpAddress = c.String(nullable: false, unicode: false),
+                        IsActive = c.Boolean(nullable: false),
+                        CreateDate = c.DateTime(nullable: false, precision: 0),
+                        UpdateDate = c.DateTime(precision: 0),
+                    })
+                .PrimaryKey(t => t.MachineId);
+            
+            CreateTable(
+                "dbo.payroll",
                 c => new
                     {
                         PayrollId = c.Int(nullable: false, identity: true),
@@ -394,11 +403,13 @@ namespace Payroll.Entities.Migrations
                         TotalNet = c.Decimal(nullable: false, precision: 18, scale: 2),
                         TotalGross = c.Decimal(nullable: false, precision: 18, scale: 2),
                         TotalDeduction = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        TaxableIncome = c.Decimal(nullable: false, precision: 18, scale: 2),
                         TotalAdjustment = c.Decimal(nullable: false, precision: 18, scale: 2),
                         PayrollDate = c.DateTime(nullable: false, precision: 0),
                         CutOffStartDate = c.DateTime(nullable: false, precision: 0),
                         CutOffEndDate = c.DateTime(nullable: false, precision: 0),
                         PayrollGeneratedDate = c.DateTime(nullable: false, precision: 0),
+                        IsTaxed = c.Boolean(nullable: false),
                         IsActive = c.Boolean(nullable: false),
                         CreateDate = c.DateTime(nullable: false, precision: 0),
                         UpdateDate = c.DateTime(precision: 0),
@@ -406,10 +417,11 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.PayrollId);
             
             CreateTable(
-                "employee_payroll_deduction",
+                "dbo.employee_payroll_deduction",
                 c => new
                     {
                         EmployeePayrollDeductionId = c.Int(nullable: false, identity: true),
+                        EmployeeId = c.Int(nullable: false),
                         DeductionId = c.Int(nullable: false),
                         PayrollDate = c.DateTime(nullable: false, precision: 0),
                         Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
@@ -420,7 +432,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.EmployeePayrollDeductionId);
             
             CreateTable(
-                "employee_workschedule",
+                "dbo.employee_workschedule",
                 c => new
                     {
                         EmployeeWorkScheduleId = c.Int(nullable: false, identity: true),
@@ -431,13 +443,11 @@ namespace Payroll.Entities.Migrations
                         UpdateDate = c.DateTime(precision: 0),
                     })
                 .PrimaryKey(t => t.EmployeeWorkScheduleId)
-                .ForeignKey("employee", t => t.EmployeeId, cascadeDelete: true)
-                .ForeignKey("work_schedule", t => t.WorkScheduleId, cascadeDelete: true)
-                .Index(t => t.EmployeeId)
+                .ForeignKey("dbo.work_schedule", t => t.WorkScheduleId, cascadeDelete: true)
                 .Index(t => t.WorkScheduleId);
             
             CreateTable(
-                "work_schedule",
+                "dbo.work_schedule",
                 c => new
                     {
                         WorkScheduleId = c.Int(nullable: false, identity: true),
@@ -453,7 +463,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.WorkScheduleId);
             
             CreateTable(
-                "files",
+                "dbo.files",
                 c => new
                     {
                         FileId = c.Int(nullable: false, identity: true),
@@ -465,7 +475,20 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.FileId);
             
             CreateTable(
-                "holiday",
+                "dbo.frequency",
+                c => new
+                    {
+                        FrequencyId = c.Int(nullable: false, identity: true),
+                        FrequencyName = c.String(maxLength: 50, storeType: "nvarchar"),
+                        FrequencyType = c.Int(),
+                        IsActive = c.Boolean(nullable: false),
+                        CreateDate = c.DateTime(nullable: false, precision: 0),
+                        UpdateDate = c.DateTime(precision: 0),
+                    })
+                .PrimaryKey(t => t.FrequencyId);
+            
+            CreateTable(
+                "dbo.holiday",
                 c => new
                     {
                         HolidayId = c.Int(nullable: false, identity: true),
@@ -481,7 +504,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.HolidayId);
             
             CreateTable(
-                "loan_payment",
+                "dbo.loan_payment",
                 c => new
                     {
                         LoanPaymentId = c.Int(nullable: false, identity: true),
@@ -495,7 +518,25 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.LoanPaymentId);
             
             CreateTable(
-                "positions",
+                "dbo.payment_frequency",
+                c => new
+                    {
+                        PaymentFrequencyId = c.Int(nullable: false, identity: true),
+                        FrequencyId = c.Int(),
+                        FrequencyType = c.Int(nullable: false),
+                        WeeklyStartDayOfWeek = c.Int(),
+                        MonthlyStartDay = c.Int(),
+                        MonthlyEndDay = c.Int(),
+                        IsActive = c.Boolean(nullable: false),
+                        CreateDate = c.DateTime(nullable: false, precision: 0),
+                        UpdateDate = c.DateTime(precision: 0),
+                    })
+                .PrimaryKey(t => t.PaymentFrequencyId)
+                .ForeignKey("dbo.frequency", t => t.FrequencyId)
+                .Index(t => t.FrequencyId);
+            
+            CreateTable(
+                "dbo.positions",
                 c => new
                     {
                         PositionId = c.Int(nullable: false, identity: true),
@@ -508,7 +549,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.PositionId);
             
             CreateTable(
-                "AspNetRoles",
+                "dbo.AspNetRoles",
                 c => new
                     {
                         RoleId = c.Int(nullable: false, identity: true),
@@ -518,7 +559,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.RoleId);
             
             CreateTable(
-                "schedule",
+                "dbo.schedule",
                 c => new
                     {
                         ScheduleId = c.Int(nullable: false, identity: true),
@@ -534,7 +575,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.ScheduleId);
             
             CreateTable(
-                "settings",
+                "dbo.settings",
                 c => new
                     {
                         SettingId = c.Int(nullable: false, identity: true),
@@ -549,7 +590,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.SettingId);
             
             CreateTable(
-                "tax",
+                "dbo.tax",
                 c => new
                     {
                         TaxId = c.Int(nullable: false, identity: true),
@@ -557,6 +598,7 @@ namespace Payroll.Entities.Migrations
                         Frequency = c.Int(nullable: false),
                         NoOfDependents = c.Int(nullable: false),
                         BaseAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        MaxAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
                         BaseTaxAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
                         OverPercentage = c.Int(nullable: false),
                         IsActive = c.Boolean(nullable: false),
@@ -566,7 +608,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.TaxId);
             
             CreateTable(
-                "employee_hours_total",
+                "dbo.employee_hours_total",
                 c => new
                     {
                         TotalEmployeeHoursId = c.Int(nullable: false, identity: true),
@@ -581,7 +623,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.TotalEmployeeHoursId);
             
             CreateTable(
-                "AspNetUserClaims",
+                "dbo.AspNetUserClaims",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -592,7 +634,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "AspNetUserLogins",
+                "dbo.AspNetUserLogins",
                 c => new
                     {
                         UserLoginId = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
@@ -603,7 +645,7 @@ namespace Payroll.Entities.Migrations
                 .PrimaryKey(t => t.UserLoginId);
             
             CreateTable(
-                "AspNetUserRoles",
+                "dbo.AspNetUserRoles",
                 c => new
                     {
                         UserRoleId = c.Int(nullable: false, identity: true),
@@ -616,68 +658,68 @@ namespace Payroll.Entities.Migrations
         
         public override void Down()
         {
-            DropForeignKey("employee_workschedule", "WorkScheduleId", "work_schedule");
-            DropForeignKey("employee_workschedule", "EmployeeId", "employee");
-            DropForeignKey("employee_loan", "LoanId", "loan");
-            DropForeignKey("employee_loan", "EmployeeId", "employee");
-            DropForeignKey("employee_leave", "Id", "AspNetUsers");
-            DropForeignKey("employee_leave", "LeaveId", "leave");
-            DropForeignKey("employee_info", "PaymentFrequencyId", "payment_frequency");
-            DropForeignKey("payment_frequency", "FrequencyId", "frequency");
-            DropForeignKey("employee_info", "EmployeeSalaryId", "employee_salary");
-            DropForeignKey("employee_info", "EmployeeId", "employee");
-            DropForeignKey("employee_hours", "EmployeeId", "employee");
-            DropForeignKey("attendance", "EmployeeId", "employee");
-            DropIndex("employee_workschedule", new[] { "WorkScheduleId" });
-            DropIndex("employee_workschedule", new[] { "EmployeeId" });
-            DropIndex("employee_loan", new[] { "LoanId" });
-            DropIndex("employee_loan", new[] { "EmployeeId" });
-            DropIndex("employee_leave", new[] { "Id" });
-            DropIndex("employee_leave", new[] { "LeaveId" });
-            DropIndex("payment_frequency", new[] { "FrequencyId" });
-            DropIndex("employee_info", new[] { "EmployeeSalaryId" });
-            DropIndex("employee_info", new[] { "PaymentFrequencyId" });
-            DropIndex("employee_info", new[] { "EmployeeId" });
-            DropIndex("employee_hours", new[] { "EmployeeId" });
-            DropIndex("attendance", new[] { "EmployeeId" });
-            DropTable("AspNetUserRoles");
-            DropTable("AspNetUserLogins");
-            DropTable("AspNetUserClaims");
-            DropTable("employee_hours_total");
-            DropTable("tax");
-            DropTable("settings");
-            DropTable("schedule");
-            DropTable("AspNetRoles");
-            DropTable("positions");
-            DropTable("loan_payment");
-            DropTable("holiday");
-            DropTable("files");
-            DropTable("work_schedule");
-            DropTable("employee_workschedule");
-            DropTable("employee_payroll_deduction");
-            DropTable("payroll");
-            DropTable("loan");
-            DropTable("employee_loan");
-            DropTable("AspNetUsers");
-            DropTable("leave");
-            DropTable("employee_leave");
-            DropTable("frequency");
-            DropTable("payment_frequency");
-            DropTable("employee_salary");
-            DropTable("employee_info");
-            DropTable("employee_hours");
-            DropTable("employee_files");
-            DropTable("employee_department");
-            DropTable("employee_deduction");
-            DropTable("employee_daily_payroll");
-            DropTable("employee_adjustment");
-            DropTable("department");
-            DropTable("department_manager");
-            DropTable("deduction");
-            DropTable("deduction_amount");
-            DropTable("employee");
-            DropTable("attendance");
-            DropTable("attendance_log");
+            DropForeignKey("dbo.payment_frequency", "FrequencyId", "dbo.frequency");
+            DropForeignKey("dbo.employee_workschedule", "WorkScheduleId", "dbo.work_schedule");
+            DropForeignKey("dbo.employee_machine", "MachineId", "dbo.machines");
+            DropForeignKey("dbo.employee_loan", "LoanId", "dbo.loan");
+            DropForeignKey("dbo.employee_loan", "EmployeeId", "dbo.employee");
+            DropForeignKey("dbo.employee_leave", "Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.employee_leave", "LeaveId", "dbo.leave");
+            DropForeignKey("dbo.employee_info", "EmployeeId", "dbo.employee");
+            DropForeignKey("dbo.employee_info_history", "EmployeeId", "dbo.employee");
+            DropForeignKey("dbo.employee_hours", "EmployeeId", "dbo.employee");
+            DropForeignKey("dbo.attendance", "EmployeeId", "dbo.employee");
+            DropIndex("dbo.payment_frequency", new[] { "FrequencyId" });
+            DropIndex("dbo.employee_workschedule", new[] { "WorkScheduleId" });
+            DropIndex("dbo.employee_machine", new[] { "MachineId" });
+            DropIndex("dbo.employee_loan", new[] { "LoanId" });
+            DropIndex("dbo.employee_loan", new[] { "EmployeeId" });
+            DropIndex("dbo.employee_leave", new[] { "Id" });
+            DropIndex("dbo.employee_leave", new[] { "LeaveId" });
+            DropIndex("dbo.employee_info", new[] { "EmployeeId" });
+            DropIndex("dbo.employee_info_history", new[] { "EmployeeId" });
+            DropIndex("dbo.employee_hours", new[] { "EmployeeId" });
+            DropIndex("dbo.attendance", new[] { "EmployeeId" });
+            DropTable("dbo.AspNetUserRoles");
+            DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.AspNetUserClaims");
+            DropTable("dbo.employee_hours_total");
+            DropTable("dbo.tax");
+            DropTable("dbo.settings");
+            DropTable("dbo.schedule");
+            DropTable("dbo.AspNetRoles");
+            DropTable("dbo.positions");
+            DropTable("dbo.payment_frequency");
+            DropTable("dbo.loan_payment");
+            DropTable("dbo.holiday");
+            DropTable("dbo.frequency");
+            DropTable("dbo.files");
+            DropTable("dbo.work_schedule");
+            DropTable("dbo.employee_workschedule");
+            DropTable("dbo.employee_payroll_deduction");
+            DropTable("dbo.payroll");
+            DropTable("dbo.machines");
+            DropTable("dbo.employee_machine");
+            DropTable("dbo.loan");
+            DropTable("dbo.employee_loan");
+            DropTable("dbo.AspNetUsers");
+            DropTable("dbo.leave");
+            DropTable("dbo.employee_leave");
+            DropTable("dbo.employee_info");
+            DropTable("dbo.employee_info_history");
+            DropTable("dbo.employee_hours");
+            DropTable("dbo.employee_files");
+            DropTable("dbo.employee_department");
+            DropTable("dbo.employee_deduction");
+            DropTable("dbo.employee_daily_payroll");
+            DropTable("dbo.employee_adjustment");
+            DropTable("dbo.department");
+            DropTable("dbo.department_manager");
+            DropTable("dbo.deduction");
+            DropTable("dbo.deduction_amount");
+            DropTable("dbo.employee");
+            DropTable("dbo.attendance");
+            DropTable("dbo.attendance_log");
         }
     }
 }
