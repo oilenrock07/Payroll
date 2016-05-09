@@ -24,11 +24,11 @@ namespace Payroll.Service.Implementations
             _attendanceLogService = attendanceLogService;
         }
 
-        public int CreateWorkSchedule(int employeeId, AttendanceCode attCode, DateTime datetime)
+        public int CreateWorkSchedule(int employeeId, AttendanceType attCode, DateTime datetime)
         {
             try
             {
-                if (attCode == AttendanceCode.ClockIn)
+                if (attCode == AttendanceType.ClockIn)
                 {
                     var attendace = new Attendance()
                     {
@@ -39,7 +39,7 @@ namespace Payroll.Service.Implementations
 
                     _attendanceRepository.Add(attendace);
                 }
-                else if (attCode == AttendanceCode.ClockOut)
+                else if (attCode == AttendanceType.ClockOut)
                 {
                     var attendance = _attendanceRepository.GetLastAttendance(employeeId);
                     attendance.ClockOut = datetime;

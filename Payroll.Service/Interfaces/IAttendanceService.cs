@@ -2,12 +2,13 @@
 using Payroll.Common.Enums;
 using Payroll.Entities;
 using System.Collections.Generic;
+using Payroll.Entities.Enums;
 
 namespace Payroll.Service.Interfaces
 {
     public interface IAttendanceService
     {
-        int CreateWorkSchedule(int employeeId, AttendanceCode attCode, DateTime datetime);
+        int CreateWorkSchedule(int employeeId, AttendanceType attCode, DateTime datetime);
 
         int CreateWorkSchedule(int employeeId, DateTime clockIn, DateTime clockOut);
 

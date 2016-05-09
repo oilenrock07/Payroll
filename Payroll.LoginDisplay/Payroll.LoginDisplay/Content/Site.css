@@ -16,9 +16,14 @@ textarea {
     max-width: 280px;
 }
 
-.welcome {
+.welcome-md {
     text-align: center;
     font-size: 150px;
+}
+
+.welcome-xs {
+    text-align: center;
+    font-size: 75px;
 }
 
 .timeinout {

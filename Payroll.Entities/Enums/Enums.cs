@@ -3,8 +3,10 @@ namespace Payroll.Entities.Enums
 {
     public enum AttendanceType
     {
-        ClockIn = 1,
-        ClockOut = 2
+        ClockIn = 0,
+        ClockOut = 1,
+        ClockInOt = 4,
+        ClockOutOt = 5
     }
 
     public enum TimePeriod
@@ -32,5 +34,12 @@ namespace Payroll.Entities.Enums
         BiWeekly = 4,
         SemiMonthly = 5,
         Monthly = 6
+    }
+
+    public enum LeaveStatus
+    {
+        Pending = 1,
+        Approved = 2,
+        NotApproved = 3
     }
 }

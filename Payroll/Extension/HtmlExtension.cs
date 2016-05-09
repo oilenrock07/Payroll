@@ -13,7 +13,7 @@ namespace Payroll.Extension
             textbox.Attributes.Add("name", name);
             textbox.Attributes.Add("id", name);
 
-            if (value != null)
+            if (value != null && value != DateTime.MinValue)
             {
                 textbox.Attributes.Add("value", Convert.ToDateTime(value).ToString("MM/dd/yyyy"));
             }
@@ -31,7 +31,7 @@ namespace Payroll.Extension
             textbox.Attributes.Add("name", name);
             textbox.Attributes.Add("id", name);
 
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value) && Convert.ToDateTime(value) != DateTime.MinValue)
             {
                 textbox.Attributes.Add("value", value);
             }

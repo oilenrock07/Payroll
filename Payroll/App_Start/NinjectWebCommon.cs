@@ -92,6 +92,10 @@ namespace Payroll.App_Start
             kernel.Bind<IEmployeeLoanRepository>().To<EmployeeLoanRepository>().InRequestScope();
             kernel.Bind<IMachineRepository>().To<MachineRepository>().InRequestScope();
             kernel.Bind<IEmployeeInfoHistoryRepository>().To<EmployeeInfoHistoryRepository>().InRequestScope();
+            kernel.Bind<IEmployeeLeaveRepository>().To<EmployeeLeaveRepository>().InRequestScope();
+            kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
+            kernel.Bind<IUserRoleRepository>().To<UserRoleRepository>().InRequestScope();
+            kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
 
             //Caching
             //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();

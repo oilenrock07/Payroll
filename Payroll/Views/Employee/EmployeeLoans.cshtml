@@ -1,4 +1,5 @@
 ﻿@using Payroll.Common.Enums
+@using Payroll.Entities.Enums
 @model IEnumerable<Payroll.Repository.Models.EmployeeLoanDao>
 
 @{
@@ -45,7 +46,7 @@
             @Html.DisplayFor(modelItem => item.LoanName)
         </td>
         <td>
-            @(((Frequency) item.FrequencyId).ToString())
+            @(((FrequencyType) item.FrequencyId).ToString())
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Amount)

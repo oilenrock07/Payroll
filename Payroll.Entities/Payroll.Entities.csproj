@@ -81,6 +81,14 @@
     <Compile Include="Migrations\201605071005272_NewMigration.Designer.cs">
       <DependentUpon>201605071005272_NewMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605080337327_EmployeeLeaveSchemaFix.cs" />
+    <Compile Include="Migrations\201605080337327_EmployeeLeaveSchemaFix.Designer.cs">
+      <DependentUpon>201605080337327_EmployeeLeaveSchemaFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.cs" />
+    <Compile Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.Designer.cs">
+      <DependentUpon>201605081355280_InheritUserEntitiesToBaseClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -105,7 +113,10 @@
     <Compile Include="Seeder\ISeeders.cs" />
     <Compile Include="Seeder\LeaveSeeds.cs" />
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
+    <Compile Include="Seeder\RoleSeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
+    <Compile Include="Seeder\UserRoleSeeds.cs" />
+    <Compile Include="Seeder\UserSeeds.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Tax.cs" />
     <Compile Include="Users\Role.cs" />
@@ -124,6 +135,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201605071005272_NewMigration.resx">
       <DependentUpon>201605071005272_NewMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605080337327_EmployeeLeaveSchemaFix.resx">
+      <DependentUpon>201605080337327_EmployeeLeaveSchemaFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.resx">
+      <DependentUpon>201605081355280_InheritUserEntitiesToBaseClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

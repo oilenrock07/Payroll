@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Payroll.Repository.Models.User.UserRoleDao>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Register New", "Register")
+</p>
+<table class="table table-responsive">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>Roles</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @foreach (var role in item.Roles)
+            {
+                <div class="row">
+                    <div class="col-sm-2">@role.Name</div>
+                    <div class="col-sm-4">
+                        @Html.ActionLink("Delete", "DeleteRole", "Account", new { userId = item.Id, roleId=role.Id }, new { @class = "js-maintenanceDelete" })
+                    </div>
+                </div>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
+            @Html.ActionLink("Delete", "Delete", new {  id=item.Id  }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

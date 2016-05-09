@@ -1,15 +1,16 @@
 ﻿@using Payroll.Common.Enums
-@model Payroll.LoginDisplay.Models.Payroll.LogInViewModel
-           
+@using Payroll.Entities.Enums
+@model Payroll.LoginDisplay.Models.Payroll.LogInViewModel       
+
 @if (Model != null)
 {
     <div class="row">
         <div class="col-xs-12">
-            @if (Model.AttendanceCode == AttendanceCode.ClockIn)
+            @if (Model.AttendanceCode == AttendanceType.ClockIn)
             {
                 <span class="clockin">Clock in success!</span>
             }
-            @if (Model.AttendanceCode == AttendanceCode.ClockOut)
+            @if (Model.AttendanceCode == AttendanceType.ClockOut)
             {
                 <span class="clockout">Clock out success!</span>
             }

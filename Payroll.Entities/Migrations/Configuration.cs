@@ -41,6 +41,9 @@ namespace Payroll.Entities.Migrations
             //context.Taxes.AddOrUpdate(t => t.TaxId, new TaxSeeds().GetDefaultSeeds().ToArray());
             context.Deductions.AddOrUpdate(d => d.DeductionId, new DeductionSeeds().GetDefaultSeeds().ToArray());
             context.DeductionAmounts.AddOrUpdate(d => d.DeductionAmountId, new DeductionAmountSeeds().GetDefaultSeeds().ToArray());
+            context.Users.AddOrUpdate(d => d.Id, new UserSeeds().GetDefaultSeeds().ToArray());
+            context.Roles.AddOrUpdate(d => d.Id, new RoleSeeds().GetDefaultSeeds().ToArray());
+            context.UserRoles.AddOrUpdate(d => d.UserRoleId, new UserRoleSeeds().GetDefaultSeeds().ToArray());
         }
     }
 }

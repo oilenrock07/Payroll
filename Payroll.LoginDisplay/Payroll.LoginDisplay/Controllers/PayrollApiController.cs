@@ -2,13 +2,14 @@
 using System.Web.Http;
 using Microsoft.AspNet.SignalR;
 using Payroll.Common.Enums;
+using Payroll.Entities.Enums;
 using Payroll.LoginDisplay.Hubs;
 
 namespace Payroll.LoginDisplay.Controllers
 {
     public class PayrollApiController : ApiController
     {
-        public void Get(int id, string ipAddress, AttendanceCode attCode, string timeInOut)
+        public void Get(int id, string ipAddress, AttendanceType attCode, string timeInOut)
         {
             var connection = PayrollHub.Connections.FirstOrDefault(x => x.IpAddress == ipAddress);
             if (connection != null)

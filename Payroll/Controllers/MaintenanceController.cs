@@ -7,6 +7,7 @@ using Omu.ValueInjecter;
 using Payroll.Common.Enums;
 using Payroll.Common.Extension;
 using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models.Maintenance;
 using Payroll.Repository.Interface;
@@ -118,7 +119,7 @@ namespace Payroll.Controllers
         {
             
             var frequencies = new List<SelectListItem>();
-            foreach (Common.Enums.Frequency val in Enum.GetValues(typeof(Common.Enums.Frequency)))
+            foreach (FrequencyType val in Enum.GetValues(typeof(FrequencyType)))
             {
                 frequencies.Add(new SelectListItem
                 {

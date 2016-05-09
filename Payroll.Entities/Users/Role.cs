@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Payroll.Entities.Base;
 
 namespace Payroll.Entities.Users
 {
     [Table("AspNetRoles")]
-    public class Role
+    public class Role : BaseEntity
     {
         [Key]
         public int RoleId { get; set; }

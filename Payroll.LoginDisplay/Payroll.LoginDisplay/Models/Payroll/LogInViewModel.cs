@@ -1,5 +1,6 @@
 ﻿using System;
 using Payroll.Common.Enums;
+using Payroll.Entities.Enums;
 
 namespace Payroll.LoginDisplay.Models.Payroll
 {
@@ -10,7 +11,7 @@ namespace Payroll.LoginDisplay.Models.Payroll
         public string LastName { get; set; }
         public DateTime Datetime { get; set; }
         public string ImagePath { get; set; }
-        public AttendanceCode AttendanceCode { get; set; }
+        public AttendanceType AttendanceCode { get; set; }
 
         public string FullName
         {

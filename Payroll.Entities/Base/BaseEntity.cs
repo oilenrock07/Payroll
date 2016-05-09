@@ -2,7 +2,7 @@
 
 namespace Payroll.Entities.Base
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity 
     {
         protected BaseEntity() {
             IsActive = true;

@@ -1,0 +1,85 @@
+﻿@using Payroll.Extension
+@model Payroll.Models.Employee.EmployeeLeaveCreateViewModel
+
+@{
+    ViewBag.Title = "Create Employee Leave";
+}
+
+<h2>Create Employee Leave</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, new {@class = "form-control"})
+                @Html.ValidationMessageFor(model => model.EmployeeId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LeaveId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.LeaveId, Model.Leaves, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LeaveId)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DatePickerFor("Date", DateTime.Now, new { @class = "form-control datepicker" })
+                @Html.ValidationMessageFor(model => model.Date)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Hours, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.Hours, Model.LeaveHours, new { @class = "form-control js-leaveHours" })
+                @Html.ValidationMessageFor(model => model.Hours)
+            </div>
+            <div class="col-md-4 js-leaveSpecifiedHours hidden">
+                @Html.TextBoxFor(model => model.SpecifiedHours, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.Reason, new {@class="form-control"})
+                @Html.ValidationMessageFor(model => model.Reason)
+            </div>
+        </div>
+
+        <div class="form-group">
+            
+            <div class="col-md-offset-2 col-md-4">
+                @Html.CheckBoxFor(model => model.MarkAsApproved)
+                @Html.LabelFor(model => model.MarkAsApproved, htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year})
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="/Scripts/Employee/employeeleave.js"></script>
+}

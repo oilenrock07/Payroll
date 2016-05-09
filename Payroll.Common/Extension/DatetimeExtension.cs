@@ -25,6 +25,11 @@ namespace Payroll.Common.Extension
             return new DateTime(year, month, day, hour, minute, second);
         }
 
+        public static DateTime TruncateTime(this DateTime date)
+        {
+            return Convert.ToDateTime(date.ToShortDateString());
+        }
+
         public static bool IsValidBirthDate(this DateTime birthdate)
         {
             return !((birthdate > DateTime.Now) || birthdate < new DateTime(1900, 1, 1));

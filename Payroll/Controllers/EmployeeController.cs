@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Omu.ValueInjecter;
 using Payroll.Common.Enums;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
+using Payroll.Models;
 using Payroll.Models.Employee;
 using Payroll.Repository.Interface;
 using Payroll.Common.Extension;
@@ -17,7 +19,7 @@ using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Manager")]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -31,10 +33,14 @@ namespace Payroll.Controllers
         private readonly ILoanRepository _loanRepository;
         private readonly IEmployeeLeaveRepository _employeeLeaveRepository;
         private readonly IEmployeeInfoHistoryRepository _employeeInfoHistoryRepository;
+        private readonly ILeaveRepository _leaveRepository;
+
+        public UserManager<ApplicationUser> UserManager { get; private set; }
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
-            IWebService webService, IDepartmentRepository departmentRepository, ILoanRepository loanRepository, IEmployeeInfoHistoryRepository employeeInfoHistoryRepository)
+            IWebService webService, IDepartmentRepository departmentRepository, ILoanRepository loanRepository, IEmployeeInfoHistoryRepository employeeInfoHistoryRepository, IEmployeeLeaveRepository employeeLeaveRepository,
+            ILeaveRepository leaveRepository) 
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -46,6 +52,8 @@ namespace Payroll.Controllers
             _departmentRepository = departmentRepository;
             _loanRepository = loanRepository;
             _employeeInfoHistoryRepository = employeeInfoHistoryRepository;
+            _employeeLeaveRepository = employeeLeaveRepository;
+            _leaveRepository = leaveRepository;
         }
 
         public virtual ActionResult Index()
@@ -371,15 +379,25 @@ namespace Payroll.Controllers
             viewModel.WeeklyPaymentDayOfWeekList = dayOfWeeks;
 
 
-            var loanPaymentFrequencies = new List<SelectListItem>();
-            foreach (Common.Enums.Frequency frequency in Enum.GetValues(typeof(Common.Enums.Frequency)))
+            var loanPaymentFrequencies = new List<SelectListItem>
             {
-                loanPaymentFrequencies.Add(new SelectListItem
+                new SelectListItem
                 {
-                    Text = frequency.ToString(),
-                    Value = ((int)frequency).ToString()
-                });
-            }
+                    Text = FrequencyType.Weekly.ToString(),
+                    Value =((int)FrequencyType.Weekly).ToString() 
+                },
+                new SelectListItem
+                {
+                    Text = FrequencyType.SemiMonthly.ToString(),
+                    Value =((int)FrequencyType.SemiMonthly).ToString() 
+                },
+                new SelectListItem
+                {
+                    Text = FrequencyType.Monthly.ToString(),
+                    Value =((int)FrequencyType.Monthly).ToString() 
+                }
+            };
+
             viewModel.PaymentFrequencies = loanPaymentFrequencies;
 
             return View(viewModel);
@@ -398,17 +416,213 @@ namespace Payroll.Controllers
             return RedirectToAction("EmployeeLoans");
         }
 
+        #region EmployeeLeave
+
         public virtual ActionResult EmployeeLeaves(int month, int year)
         {
-            var employeeLeaves = _employeeLeaveRepository.GetEmployeeLeavesByDate(month, year);
+            var employeeLeaves = _employeeLeaveRepository.GetEmployeeLeavesByDate(month, year).ToList();
+            var employees = new List<EmployeeLeaveViewModel>();
+            
+            var startDate = new DateTime(year, month, 1);
+            var endDate = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);
+
+            while (startDate <= endDate)
+            {
+                employees.Add(new EmployeeLeaveViewModel
+                {
+                    Date = startDate,
+                    Employees = employeeLeaves.Where(x => x.Date == startDate).ToList()
+                });
+                startDate = startDate.AddDays(1);
+            }
+
+            var years = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = DateTime.Now.AddYears(-1).Year.ToString(),
+                    Value = DateTime.Now.AddYears(-1).Year.ToString(),
+                },
+                new SelectListItem
+                {
+                    Text = DateTime.Now.Year.ToString(),
+                    Value = DateTime.Now.Year.ToString(),
+                },
+                new SelectListItem
+                {
+                    Text = DateTime.Now.AddYears(1).Year.ToString(),
+                    Value = DateTime.Now.AddYears(1).Year.ToString(),
+                }
+            };
+
+            var viewModel = new EmployeeLeaveListViewModel
+            {
+                Employees = employees,
+                Month = month,
+                Year = year,
+                Years = years
+            };
 
             //should display the employee leaves per month
             //should have a calendar wihch marks all the employee leaves for the month
             //upon double click or click, display a modal which displays the employee name
-
-            //should also display a grid under (should have a hide link to hide the content)
-            //grid should have employee name, date leaves leave type, isapproved, approvedBy, cancel
-            return View();
+            return View(viewModel);
         }
+
+        public virtual ActionResult CreateEmployeeLeave()
+        {
+
+            var employees = _employeeRepository.GetEmployeeNames()
+                                  .Select(x => new SelectListItem
+                                    {
+                                        Value = x.EmployeeId.ToString(),
+                                        Text = x.FullName
+                                    });
+
+            var leaves = _leaveRepository.Find(x => x.IsActive)
+                                  .Select(x => new SelectListItem
+                                    {
+                                        Value = x.LeaveId.ToString(),
+                                        Text = x.LeaveName
+                                    });
+            var hours = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Value = "8",
+                    Text = "Whole Day"
+                },
+                new SelectListItem
+                {
+                    Value = "4",
+                    Text = "Half Day"
+                },
+                new SelectListItem
+                {
+                    Value = "-1",
+                    Text = "Specify Hours"
+                }
+            };
+
+            var viewModel = new EmployeeLeaveCreateViewModel
+            {
+                Date = DateTime.Now.AddDays(1),
+                Employees = employees,
+                Leaves = leaves,
+                LeaveHours = hours
+            };
+
+            return View(viewModel);
+        }
+
+        public virtual ActionResult EditEmployeeLeave(int id)
+        {
+            var leaves = _leaveRepository.Find(x => x.IsActive)
+                                  .Select(x => new SelectListItem
+                                  {
+                                      Value = x.LeaveId.ToString(),
+                                      Text = x.LeaveName
+                                  });
+            var hours = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Value = "8",
+                    Text = "Whole Day"
+                },
+                new SelectListItem
+                {
+                    Value = "4",
+                    Text = "Half Day"
+                },
+                new SelectListItem
+                {
+                    Value = "-1",
+                    Text = "Specify Hours"
+                }
+            };
+
+            var employeeLeave = _employeeLeaveRepository.GetById(id);
+
+            var viewModel = new EmployeeLeaveCreateViewModel
+            {
+                Date = employeeLeave.Date,
+                Leaves = leaves,
+                LeaveHours = hours,
+                Hours = employeeLeave.Hours,
+                SpecifiedHours = employeeLeave.Hours,
+                EmployeeId = employeeLeave.EmployeeId,
+                EmployeeName = employeeLeave.Employee.FullName,
+                LeaveId = employeeLeave.LeaveId,
+                Reason = employeeLeave.Reason,
+                EmployeeLeaveId = id
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public virtual ActionResult CreateEmployeeLeave(EmployeeLeaveCreateViewModel viewModel)
+        {
+            var employeeLeave = viewModel.MapItem<EmployeeLeave>();
+            employeeLeave.Hours = viewModel.Hours > 0 ? viewModel.Hours : viewModel.SpecifiedHours;
+            employeeLeave.IsActive = true;
+            employeeLeave.LeaveStatus = LeaveStatus.Pending;
+            employeeLeave.ApprovedBy = null;
+
+            if (viewModel.MarkAsApproved)
+            {
+                employeeLeave.ApprovedBy = User.Identity.GetUserId();
+                employeeLeave.LeaveStatus = LeaveStatus.Approved;
+            }
+                
+
+            _employeeLeaveRepository.Add(employeeLeave);
+            _unitOfWork.Commit();
+            return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year});
+        }
+
+        [HttpPost]
+        public virtual ActionResult EditEmployeeLeave(EmployeeLeaveCreateViewModel viewModel)
+        {
+            var employeeLeave = _employeeLeaveRepository.GetById(viewModel.EmployeeLeaveId);
+            _employeeLeaveRepository.Update(employeeLeave);
+
+            employeeLeave.Hours = viewModel.Hours > 0 ? viewModel.Hours : viewModel.SpecifiedHours;
+            employeeLeave.Date = viewModel.Date;
+            employeeLeave.Reason = viewModel.Reason;
+            employeeLeave.LeaveId = viewModel.LeaveId;
+
+            if (viewModel.MarkAsApproved)
+            {
+                employeeLeave.ApprovedBy = User.Identity.GetUserId();
+                employeeLeave.LeaveStatus = LeaveStatus.Approved;
+            }
+
+
+            _unitOfWork.Commit();
+            return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year });
+        }
+
+        public virtual ActionResult ApproveRejectLeave(int id, LeaveStatus status)
+        {
+            var employeeLeave = _employeeLeaveRepository.GetById(id);
+            _employeeLeaveRepository.Update(employeeLeave);
+            employeeLeave.LeaveStatus = status;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year });
+        }
+
+        public virtual ActionResult DeleteEmployeeLeave(int id)
+        {
+            var employeeLeave = _employeeLeaveRepository.GetById(id);
+            _employeeLeaveRepository.Update(employeeLeave);
+            employeeLeave.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year });
+        }
+        #endregion
     }
 }

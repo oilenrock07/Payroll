@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Payroll.Entities.Base;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Users;
 
 namespace Payroll.Entities.Payroll
@@ -12,7 +13,9 @@ namespace Payroll.Entities.Payroll
         [Key]
         public int EmployeeLeaveId { get; set; }
 
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; }
 
         [ForeignKey("Leave")]
         public int LeaveId { get; set; }
@@ -23,7 +26,7 @@ namespace Payroll.Entities.Payroll
         [StringLength(5000)]
         public string Reason { get; set; }
 
-        public bool IsApproved { get; set; }
+        public LeaveStatus LeaveStatus { get; set; }
 
         [ForeignKey("User")]
         [Column("Id")]

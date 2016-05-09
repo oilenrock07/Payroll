@@ -8,20 +8,37 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Payroll.Entities.Users;
+using Payroll.Infrastructure.Interfaces;
 using Payroll.Models;
+using Payroll.Repository.Interface;
+using Payroll.Repository.Repositories;
+using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        public AccountController() : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        private readonly IRoleRepository _roleRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRoleService _userRoleService;
+
+        public AccountController(IRoleRepository roleRepository, IUserRoleRepository userRoleRepository, IUserRepository userRepository, IUnitOfWork unitOfWork, IUserRoleService userRoleService)
+            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())), roleRepository, userRoleRepository, userRepository, unitOfWork, userRoleService)
         {
         }
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager, IRoleRepository roleRepository, IUserRoleRepository userRoleRepository, IUserRepository userRepository, IUnitOfWork unitOfWork, IUserRoleService userRoleService)
         {
             UserManager = userManager;
+            _roleRepository = roleRepository;
+            _userRoleRepository = userRoleRepository;
+            _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
+            _userRoleService = userRoleService;
         }
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
@@ -63,10 +80,21 @@ namespace Payroll.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
-            return View();
+            var roles = _roleRepository.Find(x => x.IsActive && x.Id != "Admin").ToList();
+
+            var viewModel = new RegisterViewModel
+            {
+                Roles = roles.Select(x => new SelectListItem()
+                {
+                    Text = x.Name,
+                    Value = x.Id
+                })
+            };
+
+            return View(viewModel);
         }
 
         //
@@ -82,8 +110,21 @@ namespace Payroll.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    //update user firstname and lastname
+                    var usr = _userRepository.Find(x => x.Id == user.Id).FirstOrDefault();
+                    _userRepository.Update(usr);
+                    usr.FirstName = model.FirstName;
+                    usr.LastName = model.LastName;
+
+                    _userRoleRepository.Add(new UserRole
+                    {
+                        RoleId = model.RoleId,
+                        UserId = user.Id
+                    });
+                    _unitOfWork.Commit();
+
+                    //await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Account");
                 }
                 else
                 {
@@ -307,6 +348,40 @@ namespace Payroll.Controllers
             var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Index()
+        {
+            var users = _userRoleService.GetUsers();
+            return View(users);
+        }
+
+        public ActionResult DeleteRole(string userId, string roleId)
+        {
+            var userRole = _userRoleRepository.FindUserByRole(userId, roleId);
+            _userRoleRepository.Update(userRole);
+            userRole.IsActive = false;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Delete(string userId)
+        {
+            var user = _userRepository.Find(x => x.Id == userId).FirstOrDefault();
+            _userRepository.Update(user);
+            user.IsActive = false;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Edit(string userId)
+        {
+            var user = _userRepository.Find(x => x.Id == userId).FirstOrDefault();
+
+            return RedirectToAction("Edit");
         }
 
         protected override void Dispose(bool disposing)

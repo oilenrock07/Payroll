@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Omu.ValueInjecter;
 using Payroll.Common.Enums;
 using Payroll.Common.Extension;
+using Payroll.Entities.Enums;
 using Payroll.LoginDisplay.Models.Payroll;
 using Payroll.Repository.Interface;
 
@@ -18,7 +19,7 @@ namespace Payroll.LoginDisplay.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult DisplayTimeInOut(int id, AttendanceCode attCode, string timeInOut)
+        public PartialViewResult DisplayTimeInOut(int id, AttendanceType attCode, string timeInOut)
         {
             var viewModel = new LogInViewModel
             {
