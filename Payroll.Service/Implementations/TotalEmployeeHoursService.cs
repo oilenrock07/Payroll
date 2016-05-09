@@ -19,6 +19,7 @@ namespace Payroll.Service.Implementations
         private IEmployeeHoursService _employeeHoursService;
         private IUnitOfWork _unitOfWork;
         private ISettingService _settingService;
+        private readonly string SCHEDULE_MINIMUM_OT_MINUTES = "SCHEDULE_MINIMUM_OT_MINUTES";
 
         public TotalEmployeeHoursService(IUnitOfWork unitOfWork, 
             ITotalEmployeeHoursRepository totalEmployeeHoursRepository,
@@ -121,9 +122,10 @@ namespace Payroll.Service.Implementations
             double total = TotalHours;
             //Total employee hours minimum butal is 5 mins
             //Get minimum OT minutes value
-            int minimumOTInMinutes = (Convert.ToInt32(_settingService.GetByKey("SCHEDULE_MINIMUM_OT_MINUTES")) / 60) * 100;
+            double minimumOTInMinutes = (Convert.ToDouble
+                (_settingService.GetByKey(SCHEDULE_MINIMUM_OT_MINUTES)) / (double)60);
             double totalMinutes = total - Math.Truncate(total);
-            if (minimumOTInMinutes > totalMinutes)
+            if (Math.Round(minimumOTInMinutes, 3) > Math.Round(totalMinutes, 3))
             {
                 //Set total hours to floor
                 total = Math.Floor(total);
