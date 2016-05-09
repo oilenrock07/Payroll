@@ -1,6 +1,8 @@
 ﻿using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
+using Payroll.Infrastructure.Interfaces;
+using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Interfaces;
 using System;
@@ -13,17 +15,20 @@ namespace Payroll.Service.Implementations
 {
     public class TotalEmployeeHoursService : ITotalEmployeeHoursService
     {
-        private TotalEmployeeHoursRepository _totalEmployeeHoursRepository;
-        private EmployeeHoursService _employeeHoursService;
-        private UnitOfWork _unitOfWork;
+        private ITotalEmployeeHoursRepository _totalEmployeeHoursRepository;
+        private IEmployeeHoursService _employeeHoursService;
+        private IUnitOfWork _unitOfWork;
+        private ISettingService _settingService;
 
-        public TotalEmployeeHoursService(UnitOfWork unitOfWork, 
-            TotalEmployeeHoursRepository totalEmployeeHoursRepository,
-            EmployeeHoursService employeeHoursService)
+        public TotalEmployeeHoursService(IUnitOfWork unitOfWork, 
+            ITotalEmployeeHoursRepository totalEmployeeHoursRepository,
+            IEmployeeHoursService employeeHoursService,
+            ISettingService settingService)
         {
             _unitOfWork = unitOfWork;
             _totalEmployeeHoursRepository = totalEmployeeHoursRepository;
             _employeeHoursService = employeeHoursService;
+            _settingService = settingService;
         }
 
         public void GenerateTotalByDateRange(DateTime dateFrom, DateTime dateTo)
@@ -58,12 +63,13 @@ namespace Payroll.Service.Implementations
                             if (existingTotalEmployeeHours != null)
                             {
                                 _totalEmployeeHoursRepository.Update(existingTotalEmployeeHours);
-
                                 existingTotalEmployeeHours.Hours += totalEmployeeHours.Hours;
 
                             }
                             else //Create new entry
                             {
+                                totalEmployeeHours.Hours = ComputeTotalAllowedHours(totalEmployeeHours.Hours);
+
                                 _totalEmployeeHoursRepository.Add(totalEmployeeHours);
                             }
                         }
@@ -88,6 +94,8 @@ namespace Payroll.Service.Implementations
                     if (hours.Equals(last) && (totalEmployeeHours.TotalEmployeeHoursId == null
                         || totalEmployeeHours.TotalEmployeeHoursId <= 0))
                     {
+                        totalEmployeeHours.Hours = ComputeTotalAllowedHours(totalEmployeeHours.Hours);
+
                         _totalEmployeeHoursRepository.Add(totalEmployeeHours);
                     }
 
@@ -106,6 +114,22 @@ namespace Payroll.Service.Implementations
                 _unitOfWork.Commit();
             }
          
+        }
+
+        public double ComputeTotalAllowedHours(double TotalHours)
+        {
+            double total = TotalHours;
+            //Total employee hours minimum butal is 5 mins
+            //Get minimum OT minutes value
+            int minimumOTInMinutes = (Convert.ToInt32(_settingService.GetByKey("SCHEDULE_MINIMUM_OT_MINUTES")) / 60) * 100;
+            double totalMinutes = total - Math.Truncate(total);
+            if (minimumOTInMinutes > totalMinutes)
+            {
+                //Set total hours to floor
+                total = Math.Floor(total);
+            }
+
+            return total;
         }
 
         public TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
