@@ -64,7 +64,8 @@ namespace Payroll.Service.Implementations
                             if (existingTotalEmployeeHours != null)
                             {
                                 _totalEmployeeHoursRepository.Update(existingTotalEmployeeHours);
-                                existingTotalEmployeeHours.Hours += totalEmployeeHours.Hours;
+
+                                existingTotalEmployeeHours.Hours = ComputeTotalAllowedHours(existingTotalEmployeeHours.Hours + totalEmployeeHours.Hours);
 
                             }
                             else //Create new entry
