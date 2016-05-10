@@ -81,7 +81,6 @@ namespace Payroll.App_Start
             kernel.Bind<ISettingRepository>().To<SettingRepository>().InRequestScope();
             kernel.Bind<IEmployeeInfoRepository>().To<EmployeeInfoRepository>().InRequestScope();
             kernel.Bind<IPositionRepository>().To<PositionRepository>().InRequestScope();
-            kernel.Bind<IWebService>().To<WebService>().InRequestScope();
             kernel.Bind<IPaymentFrequencyRepository>().To<PaymentFrequencyRepository>().InRequestScope();
             kernel.Bind<IDepartmentRepository>().To<DepartmentRepository>().InRequestScope();
             kernel.Bind<IEmployeeDepartmentRepository>().To<EmployeeDepartmentRepository>().InRequestScope();
@@ -96,6 +95,10 @@ namespace Payroll.App_Start
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InRequestScope();
             kernel.Bind<IUserRoleRepository>().To<UserRoleRepository>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
+
+            //Service
+            kernel.Bind<IUserRoleService>().To<UserRoleService>().InRequestScope();
+            kernel.Bind<IWebService>().To<WebService>().InRequestScope();
 
             //Caching
             //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();

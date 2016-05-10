@@ -6,6 +6,7 @@ namespace Payroll.Repository.Models.User
 {
     public class UserRoleDao
     {
+        public string UserName { get; set; }
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

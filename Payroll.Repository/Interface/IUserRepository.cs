@@ -5,5 +5,7 @@ namespace Payroll.Repository.Interface
 {
     public interface IUserRepository : IRepository<User>
     {
+        User GetUserByUserNameAndPassword(string username, string hashedPassword);
+        User GetById(string userId);
     }
 }

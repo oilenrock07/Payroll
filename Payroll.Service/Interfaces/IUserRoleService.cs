@@ -6,5 +6,6 @@ namespace Payroll.Service.Interfaces
     public interface IUserRoleService
     {
         IEnumerable<UserRoleDao> GetUsers();
+        UserRoleDao GetUserRole(string userId);
     }
 }

@@ -39,5 +39,23 @@ namespace Payroll.Service.Implementations
 
             return items;
         }
+
+        public virtual UserRoleDao GetUserRole(string userId)
+        {
+            var user = _userRepository.GetById(userId);
+            var result = from usr in _userRoleRepository.GetAllActive()
+                         join role in _roleRepository.GetAllActive() on usr.RoleId equals role.Id
+                         where usr.UserId == user.Id
+                         select role;
+
+            return new UserRoleDao
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                UserName = user.UserName,
+                Roles = result.ToList()
+            };
+        }
     }
 }
