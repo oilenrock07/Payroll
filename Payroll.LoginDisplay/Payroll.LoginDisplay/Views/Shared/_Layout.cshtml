@@ -9,18 +9,6 @@
 
 </head>
 <body>
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Frisco Foundry", "Index", "Payroll", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-        </div>
-    </div>*@
     <div class="container body-content">
         @RenderBody()
     </div>
@@ -31,11 +19,15 @@
     <script src="~/signalr/hubs"></script>
 
     <script type="text/javascript">
-        
+
         //private functions
         function handleBroadCastMessageSuccess(response) {
             $('#timeintimeout').html(response);
             displayPanel('timeintimeout');
+
+            window.setTimeout(function () {
+                displayPanel('timer');
+            }, 2000);
         }
 
         function handleRegisterClick(payrollHub) {
@@ -81,44 +73,43 @@
             });
         });
     </script>
-    
-    
+
+
     <script type="text/javascript">
-    function formatTime(i) {
-        if (i < 10) { i = "0" + i; };  // add zero in front of numbers < 10
-        return i;
-    }
+        function formatTime(i) {
+            if (i < 10) { i = "0" + i; };  // add zero in front of numbers < 10
+            return i;
+        }
 
-    function startTimer() {
+        function startTimer() {
 
-        var today = new Date();
-        var locale = "en-us";
+            var today = new Date();
+            var locale = "en-us";
 
-        var year = today.getFullYear();
-        var month = today.toLocaleString(locale, { month: "long" });
-        var day = formatTime(today.getDate());
+            var year = today.getFullYear();
+            var month = today.toLocaleString(locale, { month: "long" });
+            var day = formatTime(today.getDate());
 
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        var strTime = h > 12 ? ' pm' : ' am';
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            var strTime = h > 12 ? ' pm' : ' am';
 
-        h = formatTime(h > 12 ? h - 12 : h);
-        m = formatTime(m);
-        s = formatTime(s);
+            h = formatTime(h > 12 ? h - 12 : h);
+            m = formatTime(m);
+            s = formatTime(s);
 
-        $('.time').html(h + ':' + m + ':' + s + strTime);
-        $('.date').html(month + ' ' + day + ' ' + year);
+            $('.time').html(h + ':' + m + ':' + s + strTime);
+            $('.date').html(month + ' ' + day + ' ' + year);
 
-        setTimeout(startTimer, 1000);
-    }
+            setTimeout(startTimer, 1000);
+        }
 
-    $(document).ready(function () {
-        startTimer();
-    });
+        $(document).ready(function () {
+            startTimer();
+        });
 
     </script>
-
     @RenderSection("scripts", required: false)
 </body>
 </html>

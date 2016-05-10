@@ -35,9 +35,9 @@ namespace Payroll.LoginDisplay.Controllers
         //duration value is 1 month
         [HttpGet]
         //[OutputCache(Duration = 2592000, VaryByParam = "id", VaryByCustom = "payroll:employeeinformation")]
-        public PartialViewResult EmployeeInformation(int id)
+        public PartialViewResult EmployeeInformation(string id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee = _employeeRepository.GetByCode(id);
             var viewModel = (LogInViewModel)(new LogInViewModel().InjectFrom(employee));
             viewModel.ImagePath = Url.Content(employee.Picture ?? "~/Images/noimage.jpg");
 
