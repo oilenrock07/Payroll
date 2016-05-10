@@ -16,7 +16,7 @@ namespace Payroll.Test.Service
     [TestClass]
     public class TotalEmployeeHoursServiceTest
     {
-       // [TestMethod]
+       [TestMethod]
         public void GenerateTotalByDateRange()
         {
             //Arrange
@@ -276,7 +276,7 @@ namespace Payroll.Test.Service
 
         }
 
-       // [TestMethod]
+        [TestMethod]
         public void GenerateTotalByDateRangeWithExisting()
         {
             //Arrange
