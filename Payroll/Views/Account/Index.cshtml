@@ -30,18 +30,10 @@
             @Html.DisplayFor(modelItem => item.LastName)
         </td>
         <td>
-            @foreach (var role in item.Roles)
-            {
-                <div class="row">
-                    <div class="col-sm-2">@role.Name</div>
-                    <div class="col-sm-4">
-                        @Html.ActionLink("Delete", "DeleteRole", "Account", new { userId = item.Id, roleId=role.Id }, new { @class = "js-maintenanceDelete" })
-                    </div>
-                </div>
-            }
+            @String.Join(",", item.Roles.Select(x => x.Name))
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
+            @Html.ActionLink("Edit", "Edit", new { userId = item.Id }) |
             @Html.ActionLink("Delete", "Delete", new {  id=item.Id  }, new { @class = "js-maintenanceDelete" })
         </td>
     </tr>

@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using Payroll.Entities.Users;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models;
+using Payroll.Models.Account;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Interfaces;
@@ -26,8 +27,11 @@ namespace Payroll.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRoleService _userRoleService;
 
-        public AccountController(IRoleRepository roleRepository, IUserRoleRepository userRoleRepository, IUserRepository userRepository, IUnitOfWork unitOfWork, IUserRoleService userRoleService)
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())), roleRepository, userRoleRepository, userRepository, unitOfWork, userRoleService)
+        public AccountController(IRoleRepository roleRepository, IUserRoleRepository userRoleRepository,
+            IUserRepository userRepository, IUnitOfWork unitOfWork, IUserRoleService userRoleService)
+            : this(
+                new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())),
+                roleRepository, userRoleRepository, userRepository, unitOfWork, userRoleService)
         {
         }
 
@@ -62,10 +66,12 @@ namespace Payroll.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+                //var user = await UserManager.FindAsync(model.UserName, model.Password);
+                var user = _userRepository.Find(x => x.UserName == model.UserName && x.IsActive).FirstOrDefault();
+                if (user != null && UserManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, model.Password) == PasswordVerificationResult.Success)
                 {
-                    await SignInAsync(user, model.RememberMe);
+                    var usr = await UserManager.FindByIdAsync(user.Id);
+                    await SignInAsync(usr, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -111,7 +117,7 @@ namespace Payroll.Controllers
                 if (result.Succeeded)
                 {
                     //update user firstname and lastname
-                    var usr = _userRepository.Find(x => x.Id == user.Id).FirstOrDefault();
+                    var usr = _userRepository.GetById(user.Id);
                     _userRepository.Update(usr);
                     usr.FirstName = model.FirstName;
                     usr.LastName = model.LastName;
@@ -379,9 +385,48 @@ namespace Payroll.Controllers
 
         public ActionResult Edit(string userId)
         {
-            var user = _userRepository.Find(x => x.Id == userId).FirstOrDefault();
+            var userRoles = _userRoleService.GetUserRole(userId);
+            var roles = _roleRepository.Find(x => x.IsActive && x.Id != "Admin");
 
-            return RedirectToAction("Edit");
+            var viewModel = new EditUserRoleViewModel
+            {
+                Roles = roles,
+                UserRole = userRoles
+            };
+
+            return View(viewModel);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Edit(EditUserRoleViewModel viewModel)
+        {
+            var selectedRoles = viewModel.CheckedRoles != null
+                                ? viewModel.CheckedRoles.Split(',').Select(x => x.ToString())
+                                : new List<string>();
+
+            //check first if user have roles
+            if (!selectedRoles.Any())
+            {
+                ModelState.AddModelError("", "No selected role");
+                var roles = _roleRepository.Find(x => x.IsActive && x.Id != "Admin");
+                viewModel.Roles = roles;
+                return View(viewModel);
+            }
+
+            //update user
+            var user = _userRepository.GetById(viewModel.UserRole.Id);
+            _userRepository.Update(user);
+            user.FirstName = viewModel.UserRole.FirstName;
+            user.LastName = viewModel.UserRole.LastName;
+            user.PasswordHash = UserManager.PasswordHasher.HashPassword(viewModel.Password);
+            user.UserName = viewModel.UserRole.UserName;
+
+            //update roles
+            _userRoleRepository.UpdateUserRole(viewModel.UserRole.Id, selectedRoles);
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
