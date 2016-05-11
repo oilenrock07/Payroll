@@ -202,6 +202,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MaintenanceController.cs" />
+    <Compile Include="Controllers\PayrollController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SiteContentController.cs" />
     <Compile Include="Extension\HtmlExtension.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Maintenance\LoanViewModel.cs" />
     <Compile Include="Models\Maintenance\PaymentFrequencyViewModel.cs" />
+    <Compile Include="Models\Payroll\PayrollViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ErrorMessages.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -341,6 +343,7 @@
     <Content Include="Views\Employee\EditEmployeeLeave.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Payroll\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

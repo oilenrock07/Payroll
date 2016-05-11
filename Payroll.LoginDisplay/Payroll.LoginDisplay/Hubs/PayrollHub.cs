@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNet.SignalR;
 using Payroll.LoginDisplay.Models.Payroll;
 
@@ -10,15 +11,19 @@ namespace Payroll.LoginDisplay.Hubs
 
         public void Connect(string ipAddress)
         {
+            var connection = Connections.FirstOrDefault(x => x.IpAddress == ipAddress);
+            if (connection != null)
+            {
+                //replace the existing connectionId
+                Connections.Remove(connection);
+            }
+
             var connectionId = Context.ConnectionId;
             Connections.Add(new ConnectionDetails
             {
                 ConnectionId = connectionId,
                 IpAddress = ipAddress
             });
-
-            //Check if ip address is valid
-
 
             //Show the timer div
             Clients.Caller.onConnected();

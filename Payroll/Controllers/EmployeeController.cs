@@ -282,8 +282,10 @@ namespace Payroll.Controllers
 
             employeeInfo.PositionId = viewModel.PositionId;
             employeeInfo.SalaryFrequency = (FrequencyType)viewModel.PaymentFrequency;
+            var picture = employeeInfo.Employee.Picture;
             employeeInfo.Employee.InjectFrom( viewModel.EmployeeInfo.Employee);
             employeeInfo.Employee.Gender = viewModel.Gender;
+            employeeInfo.Employee.Picture = picture;
 
             var departments = viewModel.CheckedDepartments != null
                             ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)

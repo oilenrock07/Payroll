@@ -78,7 +78,7 @@ namespace AttendanceManager
 
                 //display the picture to screen
                 var url = Program.GetSettingValue("DISPLAY_LOGIN_URL", "http://payroll.logindisplay/api/payrollapi/");
-                var client = WebRequest.Create(String.Format("{0}/{1}/{2}/{3}", url, sEnrollNumber, iAttState, DateTime.Now.Serialize()));
+                var client = WebRequest.Create(String.Format("{0}/{1}/{2}/{3}/{4}", url, sEnrollNumber,_ipAddress, iAttState, DateTime.Now.Serialize()));
                 client.GetResponse();
             }
 

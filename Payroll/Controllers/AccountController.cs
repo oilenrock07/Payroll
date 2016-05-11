@@ -410,7 +410,10 @@ namespace Payroll.Controllers
             {
                 ModelState.AddModelError("", "No selected role");
                 var roles = _roleRepository.Find(x => x.IsActive && x.Id != "Admin");
+                var userRoles = _userRoleService.GetUserRole(viewModel.UserRole.Id);
+
                 viewModel.Roles = roles;
+                viewModel.UserRole = userRoles;
                 return View(viewModel);
             }
 
