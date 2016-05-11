@@ -28,6 +28,12 @@ namespace Payroll
             //);
 
             routes.MapRoute(
+                name: "PayrollRoute",
+                url: "PayrollController/{action}/{date}",
+                defaults: new { controller = "Payroll", action = "Index", date = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
                 name: "EmplloyeeLeaveRoute",
                 url: "EmployeeController/{action}/{month}/{year}",
                 defaults: new { controller = "Employee", action = "EmployeeLeaves", month = UrlParameter.Optional, year = UrlParameter.Optional }

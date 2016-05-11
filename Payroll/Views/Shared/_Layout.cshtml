@@ -31,6 +31,12 @@
                                 <li>@Html.ActionLink("Employee Leaves", "EmployeeLeaves", "Employee", new { month = DateTime.Now.Month, year = DateTime.Now.Year }, null)</li>
                             </ul>
                         </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Payroll <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Generate Payroll", "Index", "Payroll")</li>
+                            </ul>
+                        </li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
@@ -47,7 +53,7 @@
                             </ul>
                         </li>
                     }
-                    
+
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="dropdown">
