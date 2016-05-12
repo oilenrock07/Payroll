@@ -3,6 +3,7 @@ using Payroll.Entities;
 using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
+using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Service.Interfaces;
 using System;
@@ -15,7 +16,7 @@ namespace Payroll.Service.Implementations
 {
     public class EmployeePayrollService : IEmployeePayrollService
     {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeeDailyPayrollService _employeeDailyPayrollService;
         private IEmployeePayrollDeductionService _employeePayrollDeductionService;
@@ -25,7 +26,7 @@ namespace Payroll.Service.Implementations
         private readonly String PAYROLL_WEEK_START = "PAYROLL_WEEK_START";
         private readonly String PAYROLL_WEEK_END = "PAYROLL_WEEK_END";
 
-        public EmployeePayrollService(UnitOfWork unitOfWork, IEmployeeDailyPayrollService employeeDailyPayrollService, 
+        public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeeDailyPayrollService employeeDailyPayrollService, 
             IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService)
         {
             _unitOfWork = unitOfWork;
