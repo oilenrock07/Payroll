@@ -15,7 +15,6 @@ namespace Payroll.Service.Implementations
 {
     public class TaxService : BaseEntityService<Tax>, ITaxService
     {
-        private IUnitOfWork _unitOfWork;
         private ITaxRepository _taxRepository;
 
         public TaxService(ITaxRepository taxRepository)
@@ -37,9 +36,12 @@ namespace Payroll.Service.Implementations
                 totalTaxAmount = tax.BaseTaxAmount;
             
                 //For excess of base amount
-                if (totalTaxableIncome > tax.BaseTaxAmount)
+                if (totalTaxableIncome > tax.BaseAmount)
                 {
-                    totalTaxAmount += (totalTaxableIncome - tax.BaseTaxAmount) * (tax.OverPercentage / 100);
+                    var test = (decimal)(totalTaxableIncome - tax.BaseAmount);
+                    var test2 = (decimal)tax.OverPercentage / (decimal)100;
+
+                    totalTaxAmount += (decimal)(totalTaxableIncome - tax.BaseAmount) * ((decimal)tax.OverPercentage / (decimal)100);
                 }
             }
 
