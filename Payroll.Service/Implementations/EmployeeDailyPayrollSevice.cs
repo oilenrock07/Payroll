@@ -98,13 +98,21 @@ namespace Payroll.Service.Implementations
                     rateMultiplier += OTRate;
                 }
 
-                var totalPayment = ((decimal)(totalHours.Hours * rateMultiplier)) * hourlyRate;
+                decimal totalPayment = 0;
 
                 //if NightDif
                 if (totalHours.Type == RateType.NightDifferential)
                 {
                     //rateMultiplier += nightDiffRate;
+                    if (rateMultiplier > 1)
+                    {
+                        totalPayment = (((decimal)(totalHours.Hours * (rateMultiplier - 1))) * hourlyRate);
+                    }
                     totalPayment += (decimal)(nightDiffRate * totalHours.Hours);
+                }
+                else
+                {
+                    totalPayment = ((decimal)(totalHours.Hours * rateMultiplier)) * hourlyRate;
                 }
 
                 var employeeDailySalary = new EmployeeDailyPayroll

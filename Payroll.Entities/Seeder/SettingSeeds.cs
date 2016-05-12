@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿    using System.Collections.Generic;
 
 namespace Payroll.Entities.Seeder
 {
@@ -9,17 +9,17 @@ namespace Payroll.Entities.Seeder
             return new List<Setting>()
             {
                 //Payroll Settings
-                new Setting { SettingId = 1, SettingKey = "SCHEDULE_NIGHTDIF_TIME_START", Value= "10:00:00 PM", Description="Night Differential Start Time", Category= "SCHEDULE" },
-                new Setting { SettingId = 2, SettingKey = "SCHEDULE_NIGHTDIF_TIME_END", Value = "7:59:00 AM", Description = "Night Differential End Time", Category = "SCHEDULE" },
+                new Setting { SettingKey = "SCHEDULE_NIGHTDIF_TIME_START", Value= "10:00:00 PM", Description="Night Differential Start Time", Category= "SCHEDULE" },
+                new Setting { SettingKey = "SCHEDULE_NIGHTDIF_TIME_END", Value = "7:59:00 AM", Description = "Night Differential End Time", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_ADVANCE_OT_PERIOD_MINUTES", Value = "15", Description = "Advance OT Period in minutes", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_GRACE_PERIOD_MINUTES", Value = "5", Description = "Grace period in minutes", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_MINIMUM_OT_MINUTES", Value = "5", Description = "Minimum OT in minutes", Category = "SCHEDULE" },
 
-                new Setting { SettingId = 3, SettingKey = "RATE_OT", Value = "0.25", Description = "OT Rate", Category = "RATE" },
-                new Setting { SettingId = 4, SettingKey = "RATE_NIGHTDIF", Value = "0.8", Description = "Night Dif", Category = "RATE" },
-                new Setting { SettingId = 5, SettingKey = "RATE_REST_DAY", Value = "0.3", Description = "Rest Day", Category = "RATE" },
-                new Setting { SettingId = 6, SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "0.3", Description = "Special Holiday", Category = "RATE" },
-                new Setting { SettingId = 7, SettingKey = "RATE_HOLIDAY_REGULAR", Value = "1", Description = "Regular Holiday", Category = "RATE" },
+                new Setting { SettingKey = "RATE_OT", Value = "0.25", Description = "OT Rate", Category = "RATE" },
+                new Setting { SettingKey = "RATE_NIGHTDIF", Value = "0.8", Description = "Night Dif", Category = "RATE" },
+                new Setting { SettingKey = "RATE_REST_DAY", Value = "0.3", Description = "Rest Day", Category = "RATE" },
+                new Setting { SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "0.3", Description = "Special Holiday", Category = "RATE" },
+                new Setting { SettingKey = "RATE_HOLIDAY_REGULAR", Value = "1", Description = "Regular Holiday", Category = "RATE" },
 
                 //Company Info
                 new Setting { SettingKey = "COMPANY_NAME", Value = "Lychee Co", Description = "Company Name", Category = "COMPANY_INFO" },
