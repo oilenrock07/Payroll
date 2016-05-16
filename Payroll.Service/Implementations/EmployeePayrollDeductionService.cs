@@ -159,7 +159,7 @@ namespace Payroll.Service.Implementations
             var taxDeduction = _deductionService.GetByName(TAX_DEDUCTION_NAME);
             var frequency = _settingService.GetByKey(TAX_FREQUENCY);
             var noOfDependents =
-                employeeInfo.Dependents > MAX_DEPENDENT ? 4 : employeeInfo.Dependents;
+                employeeInfo.Dependents > MAX_DEPENDENT ? MAX_DEPENDENT : employeeInfo.Dependents;
 
             FrequencyType taxFrequency = (FrequencyType)Convert.ToInt32(frequency);
 

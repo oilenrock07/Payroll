@@ -119,6 +119,7 @@
     <Compile Include="Seeder\PaymentFrequencySeeds.cs" />
     <Compile Include="Seeder\RoleSeeds.cs" />
     <Compile Include="Seeder\SettingSeeds.cs" />
+    <Compile Include="Seeder\TaxSeeds.cs" />
     <Compile Include="Seeder\UserRoleSeeds.cs" />
     <Compile Include="Seeder\UserSeeds.cs" />
     <Compile Include="Setting.cs" />
