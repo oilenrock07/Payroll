@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Payroll.Entities;
@@ -23,14 +25,16 @@ namespace AttendanceManager
         public int _sdkMachineNumber = 1;
         private bool _isNewEmployee = true;
 
-        public static CZKEMClass _czkemClass;
+        public CZKEMClass _czkemClass;
 
         private readonly IAttendanceLogRepository _attendanceLogRepository;
         private readonly IEmployeeMachineService _employeeMachineService;
         private readonly IEmployeeMachineRepository _employeeMachineRepository;
         private readonly IEmployeeRepository _employeeRepository;
-        public static IDatabaseFactory _databaseFactory;
-        public static IUnitOfWork _unitOfWork;
+        private readonly IDatabaseFactory _databaseFactory;
+        private readonly IUnitOfWork _unitOfWork;
+
+        private Dictionary<string, int> _employeeCodes; 
 
         public MachineForm()
         {
@@ -48,14 +52,14 @@ namespace AttendanceManager
         #region SDK Events
         private void axCZKEM1_OnVerify(int iUserID)
         {
-            lbRTShow.Items.Add("RTEvent OnVerify Has been Triggered,Verifying...");
+            lbRTShow.Items.Add("**OnVerify**");
             if (iUserID != -1)
             {
                 lbRTShow.Items.Add("Verified OK,the UserID is " + iUserID.ToString());
             }
             else
             {
-                lbRTShow.Items.Add("Verified Failed... ");
+                lbRTShow.Items.Add("Verified Failed");
             }
         }
 
@@ -66,11 +70,14 @@ namespace AttendanceManager
             if (iIsInValid == 0)
             {
                 //insert to database
+                var employeeId = _employeeCodes[sEnrollNumber];
                 var attendaceLog = new AttendanceLog
                 {
-                    EmployeeId = Convert.ToInt32(sEnrollNumber),
+                    EmployeeId = employeeId,
                     ClockInOut = DateTime.Now,
-                    Type = (AttendanceType)Convert.ToInt16(iAttState)
+                    Type = (AttendanceType)Convert.ToInt16(iAttState),
+                    IpAddress = _ipAddress,
+                    MachineId = _machineNumber
                 };
 
                 _attendanceLogRepository.Add(attendaceLog);
@@ -84,70 +91,21 @@ namespace AttendanceManager
 
 
 
-            lbRTShow.Items.Add("RTEvent OnAttTrasactionEx Has been Triggered,Verified OK");
-            lbRTShow.Items.Add("...UserID:" + sEnrollNumber);
-            lbRTShow.Items.Add("...isInvalid:" + iIsInValid.ToString());
-            lbRTShow.Items.Add("...attState:" + iAttState.ToString());
-            lbRTShow.Items.Add("...VerifyMethod:" + iVerifyMethod.ToString());
-            lbRTShow.Items.Add("...Workcode:" + iWorkCode.ToString());//the difference between the event OnAttTransaction and OnAttTransactionEx
-            lbRTShow.Items.Add("...Time:" + iYear.ToString() + "-" + iMonth.ToString() + "-" + iDay.ToString() + " " + iHour.ToString() + ":" + iMinute.ToString() + ":" + iSecond.ToString());
+            lbRTShow.Items.Add("**OnAttTrasactionEx**");
+            lbRTShow.Items.Add("\tUserID:" + sEnrollNumber);
+            lbRTShow.Items.Add("\tisInvalid:" + iIsInValid.ToString());
+            lbRTShow.Items.Add("\tattState:" + iAttState.ToString());
+            lbRTShow.Items.Add("\tVerifyMethod:" + iVerifyMethod.ToString());
+            lbRTShow.Items.Add("\tWorkcode:" + iWorkCode.ToString());//the difference between the event OnAttTransaction and OnAttTransactionEx
+            lbRTShow.Items.Add("\tTime:" + iYear.ToString() + "-" + iMonth.ToString() + "-" + iDay.ToString() + " " + iHour.ToString() + ":" + iMinute.ToString() + ":" + iSecond.ToString());
         }
 
-        //When you have enrolled a new user,this event will be triggered.
-        private void axCZKEM1_OnNewUser(int iEnrollNumber)
-        {
-            lbRTShow.Items.Add("RTEvent OnNewUser Has been Triggered...");
-            lbRTShow.Items.Add("...NewUserID=" + iEnrollNumber.ToString());
-        }
 
         //When you swipe a card to the device, this event will be triggered to show you the card number.
         private void axCZKEM1_OnHIDNum(int iCardNumber)
         {
-            lbRTShow.Items.Add("RTEvent OnHIDNum Has been Triggered...");
-            lbRTShow.Items.Add("...Cardnumber=" + iCardNumber.ToString());
-        }
-
-        //When you have emptyed the Mifare card,this event will be triggered.
-        private void axCZKEM1_OnEmptyCard(int iActionResult)
-        {
-            lbRTShow.Items.Add("RTEvent OnEmptyCard Has been Triggered...");
-            if (iActionResult == 0)
-            {
-                lbRTShow.Items.Add("...Empty Mifare Card OK");
-            }
-            else
-            {
-                lbRTShow.Items.Add("...Empty Failed");
-            }
-        }
-
-        //When you have written into the Mifare card ,this event will be triggered.
-        private void axCZKEM1_OnWriteCard(int iEnrollNumber, int iActionResult, int iLength)
-        {
-            lbRTShow.Items.Add("RTEvent OnWriteCard Has been Triggered...");
-            if (iActionResult == 0)
-            {
-                lbRTShow.Items.Add("...Write Mifare Card OK");
-                lbRTShow.Items.Add("...EnrollNumber=" + iEnrollNumber.ToString());
-                lbRTShow.Items.Add("...TmpLength=" + iLength.ToString());
-            }
-            else
-            {
-                lbRTShow.Items.Add("...Write Failed");
-            }
-        }
-
-        //After function GetRTLog() is called ,RealTime Events will be triggered. 
-        //When you are using these two functions, it will request data from the device forwardly.
-        private void rtTimer_Tick(object sender, EventArgs e)
-        {
-            if (_czkemClass.ReadRTLog(_sdkMachineNumber))
-            {
-                while (_czkemClass.GetRTLog(_sdkMachineNumber))
-                {
-                    ;
-                }
-            }
+            lbRTShow.Items.Add("**OnHIDNum**");
+            lbRTShow.Items.Add("\tCardnumber=" + iCardNumber.ToString());
         }
         #endregion
 
@@ -156,6 +114,7 @@ namespace AttendanceManager
         {
             lblIpAddress.Text = _ipAddress;
             _czkemClass = new CZKEMClass();
+            _employeeCodes = new Dictionary<string, int>();
             Rebind();
         }
 
@@ -165,6 +124,12 @@ namespace AttendanceManager
             var employees = showOnlyNotRegistered
                 ? _employeeMachineService.GetEmployeesNotRegistered(_machineNumber)
                 : _employeeMachineService.GetEmployees(_machineNumber);
+
+            _employeeCodes.Clear();
+            foreach (var employee in employees)
+            {
+                _employeeCodes.Add(employee.EmployeeCode,employee.EmployeeId);
+            }
 
             GridView.AutoGenerateColumns = false;
             GridView.DataSource = employees;
@@ -204,15 +169,12 @@ namespace AttendanceManager
                 btnConnect.Refresh();
                 lblState.Text = "Connected";
                 _sdkMachineNumber = 1;//In fact,when you are using the tcp/ip communication,this parameter will be ignored,that is any integer will all right.Here we use 1.
-                
+
                 if (_czkemClass.RegEvent(_sdkMachineNumber, 65535))//Here you can register the realtime events that you want to be triggered(the parameters 65535 means registering all)
                 {
                     _czkemClass.OnVerify += new zkemkeeper._IZKEMEvents_OnVerifyEventHandler(axCZKEM1_OnVerify);
                     _czkemClass.OnAttTransactionEx += new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);
-                    _czkemClass.OnNewUser += new zkemkeeper._IZKEMEvents_OnNewUserEventHandler(axCZKEM1_OnNewUser);
                     _czkemClass.OnHIDNum += new zkemkeeper._IZKEMEvents_OnHIDNumEventHandler(axCZKEM1_OnHIDNum);
-                    _czkemClass.OnWriteCard += new zkemkeeper._IZKEMEvents_OnWriteCardEventHandler(axCZKEM1_OnWriteCard);
-                    _czkemClass.OnEmptyCard += new zkemkeeper._IZKEMEvents_OnEmptyCardEventHandler(axCZKEM1_OnEmptyCard);
                 }
 
                 _connected = true;
@@ -254,8 +216,10 @@ namespace AttendanceManager
                 return;
             }
 
+
+
             var sCardnumber = txtCardnumber.Text.Trim();
-            
+
             Cursor = Cursors.WaitCursor;
             _czkemClass.EnableDevice(_sdkMachineNumber, false);
             RegisterToMachine(sCardnumber, Convert.ToInt32(txtUserID.Text), txtName.Text);
@@ -277,10 +241,10 @@ namespace AttendanceManager
 
             _czkemClass.OnVerify -= new zkemkeeper._IZKEMEvents_OnVerifyEventHandler(axCZKEM1_OnVerify);
             _czkemClass.OnAttTransactionEx -= new zkemkeeper._IZKEMEvents_OnAttTransactionExEventHandler(axCZKEM1_OnAttTransactionEx);
-            _czkemClass.OnNewUser -= new zkemkeeper._IZKEMEvents_OnNewUserEventHandler(axCZKEM1_OnNewUser);
+            //_czkemClass.OnNewUser -= new zkemkeeper._IZKEMEvents_OnNewUserEventHandler(axCZKEM1_OnNewUser);
             _czkemClass.OnHIDNum -= new zkemkeeper._IZKEMEvents_OnHIDNumEventHandler(axCZKEM1_OnHIDNum);
-            _czkemClass.OnWriteCard -= new zkemkeeper._IZKEMEvents_OnWriteCardEventHandler(axCZKEM1_OnWriteCard);
-            _czkemClass.OnEmptyCard -= new zkemkeeper._IZKEMEvents_OnEmptyCardEventHandler(axCZKEM1_OnEmptyCard);
+            //_czkemClass.OnWriteCard -= new zkemkeeper._IZKEMEvents_OnWriteCardEventHandler(axCZKEM1_OnWriteCard);
+            //_czkemClass.OnEmptyCard -= new zkemkeeper._IZKEMEvents_OnEmptyCardEventHandler(axCZKEM1_OnEmptyCard);
 
             _connected = false;
             btnConnect.Text = "Connect";
@@ -295,34 +259,65 @@ namespace AttendanceManager
         private void RegisterToMachine(string employeeCode, int employeeId, string name, bool alertOnSuccess = true)
         {
             var idwErrorCode = 0;
-            _czkemClass.SetStrCardNumber(employeeCode);//Before you using function SetUserInfo,set the card number to make sure you can upload it to the device
-            if (_czkemClass.SSR_SetUserInfo(_sdkMachineNumber, employeeCode, name, "", 0, true))//upload the user's information(card number included)
+            var canUpload = false;
+            var isSuccess = false;
+            var retryNumber = 10;
+
+            //force register the card to machine
+            //This will retry to register the employee for 10 times
+            for (int i = 0; i <= retryNumber && !isSuccess; i++)
             {
-                //update the record in db
-                try
+                canUpload = _czkemClass.SetStrCardNumber(employeeCode);//Before you using function SetUserInfo,set the card number to make sure you can upload it to the device
+                if (canUpload)
                 {
-                    var employeeMachine = new EmployeeMachine
+                    if (_czkemClass.SSR_SetUserInfo(_sdkMachineNumber, employeeCode, name, null, 0, true))//upload the user's information(card number included)
                     {
-                        EmployeeId = Convert.ToInt32(employeeId),
-                        MachineId = _machineNumber,
-                        UpdateDate = DateTime.Now
-                    };
+                        //update the record in db
+                        try
+                        {
+                            if (!_isNewEmployee)
+                            {
+                                var existingEmployeeMachine = _employeeMachineRepository.GetByEmployeeId(employeeId, _machineNumber);
+                                if (existingEmployeeMachine != null)
+                                {
+                                    _employeeMachineRepository.Update(existingEmployeeMachine);
+                                    existingEmployeeMachine.IsActive = false;
+                                }
+                            }
 
-                    _employeeMachineRepository.Add(employeeMachine);
-                    _unitOfWork.Commit();
+                            var employeeMachine = new EmployeeMachine
+                            {
+                                EmployeeId = Convert.ToInt32(employeeId),
+                                MachineId = _machineNumber,
+                                UpdateDate = DateTime.Now
+                            };
+
+                            _employeeMachineRepository.Add(employeeMachine);
+                            _unitOfWork.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                        isSuccess = true;
+                        _czkemClass.RefreshData(_sdkMachineNumber);
+                        if (alertOnSuccess) MessageBox.Show("Employee Successfully Registered");
+                        Rebind();
+                    }
+                    else
+                    {
+                        if (i == retryNumber)
+                        {
+                            _czkemClass.GetLastError(ref idwErrorCode);
+                            MessageBox.Show("Operation failed, ErrorCode=" + idwErrorCode, "Error" + "\nPlease Try Again");
+                        }
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-
+                    MessageBox.Show("Unable to register employee to device");
                 }
-
-                if (alertOnSuccess) MessageBox.Show("Employee Successfully Registered");
-                Rebind();
-            }
-            else
-            {
-                _czkemClass.GetLastError(ref idwErrorCode);
-                MessageBox.Show("Operation failed, ErrorCode=" + idwErrorCode, "Error" + "\nPlease Try Again");
             }
         }
 
@@ -351,6 +346,23 @@ namespace AttendanceManager
         private void chkShowNotRegistered_CheckedChanged(object sender, EventArgs e)
         {
             Rebind(chkShowNotRegistered.Checked);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var directory = String.Format("{0}/{1}", Environment.CurrentDirectory, DateTime.Now.ToString("yyyyMMdd")); 
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            var fileName = "log.txt";
+            var fullFileName = Path.Combine(directory, fileName);
+            using (var streamWriter = new StreamWriter(fullFileName))
+            {
+                streamWriter.Write(lbRTShow.Text);
+            }
+            
+            
+            lbRTShow.ResetText();
         }
     }
 }

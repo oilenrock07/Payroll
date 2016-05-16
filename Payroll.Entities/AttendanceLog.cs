@@ -18,6 +18,10 @@ namespace Payroll.Entities
 
         public AttendanceType Type { get; set; }
 
+        public int MachineId { get; set; }
+
+        public string IpAddress { get; set; }
+
         public bool IsRecorded { get; set; }
 
         public bool IsConsidered { get; set; }

@@ -21,7 +21,7 @@ namespace Payroll.Service.Implementations
         public virtual IEnumerable<EmployeeMachineDao> GetEmployees(int machineId)
         {
             var employees = _employeeRepository.GetAll();
-            var employeeMachines = _employeeMachineRepository.Find(x => x.Machine.IsActive && x.MachineId == machineId);
+            var employeeMachines = _employeeMachineRepository.Find(x => x.Machine.IsActive && x.MachineId == machineId && x.IsActive);
 
             var query = from employee in employees
                         join empMachine in employeeMachines on employee.EmployeeId equals empMachine.EmployeeId into result

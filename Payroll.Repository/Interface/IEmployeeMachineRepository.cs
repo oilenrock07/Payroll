@@ -5,5 +5,6 @@ namespace Payroll.Repository.Interface
 {
     public interface IEmployeeMachineRepository : IRepository<EmployeeMachine>
     {
+        EmployeeMachine GetByEmployeeId(int employeeId, int machineId);
     }
 }

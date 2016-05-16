@@ -51,6 +51,7 @@
             this.btnConnect = new System.Windows.Forms.Button();
             this.chkShowNotRegistered = new System.Windows.Forms.CheckBox();
             this.btnReload = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.GridView)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.SuspendLayout();
@@ -251,7 +252,8 @@
             this.lbRTShow.ItemHeight = 16;
             this.lbRTShow.Location = new System.Drawing.Point(784, 44);
             this.lbRTShow.Name = "lbRTShow";
-            this.lbRTShow.Size = new System.Drawing.Size(445, 500);
+            this.lbRTShow.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lbRTShow.Size = new System.Drawing.Size(355, 500);
             this.lbRTShow.TabIndex = 56;
             // 
             // btnConnect
@@ -285,11 +287,22 @@
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1145, 44);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 54);
+            this.button1.TabIndex = 69;
+            this.button1.Text = "Clear and Export";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MachineForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1229, 550);
+            this.ClientSize = new System.Drawing.Size(1229, 587);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnReload);
             this.Controls.Add(this.chkShowNotRegistered);
             this.Controls.Add(this.btnConnect);
@@ -339,5 +352,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
         private System.Windows.Forms.DataGridViewTextBoxColumn CardNumber;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Enrolled;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -6,6 +6,8 @@
             <th>Name</th>
             <th>Date and Time</th>
             <th>Type</th>
+            <th>Machine Number</th>
+            <th>Ip Address</th>
             <th>Is Recorded</th>
         </tr>
         @foreach (var item in Model)
@@ -19,6 +21,12 @@
                 </td>
                 <td>
                     @item.Type
+                </td>
+                <td>
+                    @item.MachineId
+                </td>
+                <td>
+                    @item.IpAddress
                 </td>
                 <td>
                     @item.IsRecorded
