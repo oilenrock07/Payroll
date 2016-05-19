@@ -18,6 +18,12 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().EmployeePayroll;
         }
 
+        public IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd)
+        {
+            return Find(p => p.IsActive && p.PayrollDate >= dateStart && p.PayrollDate < dateEnd)
+                .OrderByDescending(p => p.PayrollDate).ToList();
+        }
+
         public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate)
         {
             return Find(p => p.IsActive && !p.IsTaxed && p.EmployeeId == employeeId 

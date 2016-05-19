@@ -20,5 +20,10 @@ namespace Payroll.Service.Interfaces
         void GeneratePayroll();
 
         void GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
+
+        /*
+         * This will return payroll with payroll date between date start and date end
+         */
+        IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd);
     }
 }

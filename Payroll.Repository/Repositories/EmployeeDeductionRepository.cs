@@ -17,7 +17,7 @@ namespace Payroll.Repository.Repositories
         public EmployeeDeduction GetByDeductionAndEmployee(int deductionId, int employeeId)
         {
             return Find(ed => ed.IsActive && ed.DeductionId == deductionId &&
-                ed.EmployeeId == employeeId).First();
+                ed.EmployeeId == employeeId).FirstOrDefault();
         }
     }
 }

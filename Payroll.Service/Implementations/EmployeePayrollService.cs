@@ -137,5 +137,11 @@ namespace Payroll.Service.Implementations
             _employeePayrollDeductionService.GenerateDeductionsByPayroll(payrollDate,
                 payrollStartDate, payrollEndDate, employeePayrollList);
         }
+
+        public IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd)
+        {
+            dateEnd = dateEnd.AddDays(1);
+            return _employeePayrollRepository.GetByDateRange(dateStart, dateEnd);
+        }
     }
 }

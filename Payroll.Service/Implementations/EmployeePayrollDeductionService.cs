@@ -107,7 +107,8 @@ namespace Payroll.Service.Implementations
                                 EmployeeId = employee.EmployeeId,
                                 DeductionId = deduction.DeductionId,
                                 Amount = employeeDeduction.Amount,
-                                PayrollDate = payrollDate
+                                DeductionDate = new DateTime(),
+                                EmployeePayrollId = payroll.PayrollId
                             };
 
                         _employeePayrollDeductionRepository.Add(employeePayrollDeduction);
@@ -135,7 +136,7 @@ namespace Payroll.Service.Implementations
                 }
 
                 //Compute tax
-                var totalTax = ComputeTax(payrollDate, employee, totalTaxableIncome);
+                var totalTax = ComputeTax(payroll.PayrollId, employee, totalTaxableIncome);
                 
                 //Update payroll for total deductions and total grosss
                 payroll.TotalDeduction = totalDeductions + totalTax;
@@ -154,7 +155,7 @@ namespace Payroll.Service.Implementations
             return 1;
         }
 
-        public decimal ComputeTax(DateTime payrollDate, EmployeeInfo employeeInfo, decimal totalTaxableIncome)
+        public decimal ComputeTax(int payrollId, EmployeeInfo employeeInfo, decimal totalTaxableIncome)
         {
             var taxDeduction = _deductionService.GetByName(TAX_DEDUCTION_NAME);
             var frequency = _settingService.GetByKey(TAX_FREQUENCY);
@@ -173,7 +174,8 @@ namespace Payroll.Service.Implementations
                     EmployeeId = employeeInfo.EmployeeId,
                     DeductionId = taxDeduction.DeductionId,
                     Amount = taxAmount,
-                    PayrollDate = payrollDate
+                    DeductionDate = new DateTime(),
+                    EmployeePayrollId = payrollId
                 };
 
                 _employeePayrollDeductionRepository.Add(employeePayrollDeduction);

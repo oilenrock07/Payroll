@@ -19,7 +19,9 @@ namespace Payroll.Entities
 
         public int DeductionId { get; set; }
 
-        public DateTime PayrollDate { get; set; }
+        public int EmployeePayrollId { get; set; }
+
+        public DateTime DeductionDate { get; set; }
 
         public decimal Amount { get; set; }
 

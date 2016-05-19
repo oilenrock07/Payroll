@@ -14,6 +14,7 @@ namespace Payroll.Entities.Payroll
             TotalAdjustment = 0;
             TotalGross = 0;
             TaxableIncome = 0;
+            IsTaxed = false;
         }
 
         [Key]

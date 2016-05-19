@@ -11,5 +11,10 @@ namespace Payroll.Repository.Interface
     public interface IEmployeePayrollRepository : IRepository<EmployeePayroll>
     {
         IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate);
+
+        /*
+         * This will return payroll with payroll date between date start and date end
+        */
+        IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd);
     }
 }
