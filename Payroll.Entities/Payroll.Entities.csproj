@@ -89,6 +89,10 @@
     <Compile Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.Designer.cs">
       <DependentUpon>201605081355280_InheritUserEntitiesToBaseClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs" />
+    <Compile Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.Designer.cs">
+      <DependentUpon>201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -142,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.resx">
       <DependentUpon>201605081355280_InheritUserEntitiesToBaseClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.resx">
+      <DependentUpon>201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

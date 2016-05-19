@@ -7,5 +7,7 @@ namespace Payroll.Models.Attendance
         public string IsRecorded { get; set; }
         public string Datetime { get; set; }
         public string Type { get; set; }
+        public int MachineId { get; set; }
+        public string IpAddress { get; set; }
     }
 }

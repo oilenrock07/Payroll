@@ -29,6 +29,9 @@
             Id
         </th>
         <th>
+            Code
+        </th>
+        <th>
             First Name
         </th>
         <th>
@@ -60,6 +63,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.EmployeeCode)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Employee.FirstName)

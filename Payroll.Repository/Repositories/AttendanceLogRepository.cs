@@ -29,7 +29,7 @@ namespace Payroll.Repository.Repositories
 
         public IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate)
         {
-            var attendanceLog = Find(a => a.ClockInOut >= fromDate && a.ClockInOut < toDate);
+            var attendanceLog = Find(a => a.ClockInOut >= fromDate && a.ClockInOut < toDate && a.IsActive);
 
             var result = from attendance in attendanceLog
                         join employee in _employeeRepository.GetAll() on attendance.EmployeeId equals employee.EmployeeId
@@ -43,7 +43,9 @@ namespace Payroll.Repository.Repositories
                             Type = attendance.Type,
                             LastName = employee.LastName,
                             FirstName = employee.FirstName,
-                            MiddleName = employee.MiddleName
+                            MiddleName = employee.MiddleName,
+                            IpAddress = attendance.IpAddress,
+                            MachineId = attendance.MachineId
                         };
 
             return result.ToList();
