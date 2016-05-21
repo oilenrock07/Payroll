@@ -24,7 +24,7 @@ namespace Payroll.Repository.Repositories
             return Find(t => t.IsActive && t.Frequency == frequency
                 && t.NoOfDependents == numberOfDependents
                 && taxableAmount >= t.BaseAmount 
-                && (taxableAmount <= t.MaxAmount || t.MaxAmount == 0)).FirstOrDefault();
+                && (taxableAmount < t.MaxAmount || t.MaxAmount == 0)).FirstOrDefault();
         }
     }
 }
