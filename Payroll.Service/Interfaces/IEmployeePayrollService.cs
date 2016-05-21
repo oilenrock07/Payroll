@@ -11,7 +11,7 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeePayrollService
     {
-        IList<EmployeePayroll> GeneratePayrollNetPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
+        IList<EmployeePayroll> GeneratePayrollGrossPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
 
         void Update(EmployeePayroll employeePayroll);
 

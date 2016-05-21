@@ -3,6 +3,7 @@ using Payroll.Entities;
 using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
+using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Interfaces;
@@ -16,7 +17,7 @@ namespace Payroll.Service.Implementations
 {
     public class EmployeeDailyPayrollService : IEmployeeDailyPayrollService
     {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private ITotalEmployeeHoursService _totalEmployeeHoursService;
         private IEmployeeWorkScheduleService _employeeWorkScheduleService;
         private IHolidayService _holidayService;
@@ -34,7 +35,7 @@ namespace Payroll.Service.Implementations
 
         private readonly int WORK_HOURS = 8;
 
-        public EmployeeDailyPayrollService(UnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
+        public EmployeeDailyPayrollService(IUnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService, 
             IEmployeeDailyPayrollRepository employeeDailyPayrollRepository, IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService)
         {

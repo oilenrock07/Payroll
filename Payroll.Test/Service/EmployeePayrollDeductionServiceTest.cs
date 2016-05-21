@@ -63,11 +63,11 @@ namespace Payroll.Test.Service
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
             _employeeDeductionService = new EmployeeDeductionService(_employeeDeductionRepository);
             _deductionService = new DeductionService(_deductionRepository);
-            _employeePayrollService = new EmployeePayrollService(_unitOfWork, null, _employeePayrollRepository, _settingService);
+
             _taxService = new TaxService(_taxRepository);
 
+            _employeePayrollService = new EmployeePayrollService(_unitOfWork, null, _employeePayrollRepository, _settingService, null);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _employeePayrollService, _taxService);
-
         }
 
         private void DeleteInfo()
