@@ -13,7 +13,7 @@ namespace Payroll.Entities.Seeder
         {
             return new List<Deduction>
             {
-                new Deduction {DeductionName = "Tax", Remarks = "Tax Deductions"},
+                new Deduction {DeductionName = "Tax", Remarks = "Tax Deductions", IsCustomizable = false},
                 new Deduction {DeductionName = "HDMF", Remarks = "HDMF / Pag-Ibig Contribution"},
                 new Deduction {DeductionName = "SSS", Remarks = "SSS Contribution"},
                 new Deduction {DeductionName = "Philhealth", Remarks = "Philhealth Contribution"}

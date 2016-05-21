@@ -7,6 +7,11 @@ namespace Payroll.Entities.Payroll
     [Table("deduction")]
     public class Deduction : BaseEntity
     {
+        public Deduction()
+        {
+            IsCustomizable = true;
+        }
+
         [Key]
         public int DeductionId { get; set; }
 
@@ -15,5 +20,7 @@ namespace Payroll.Entities.Payroll
 
         [StringLength(2500)]
         public string Remarks { get; set; }
+
+        public bool IsCustomizable { get; set; }
     }
 }

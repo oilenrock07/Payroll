@@ -11,5 +11,6 @@ namespace Payroll.Repository.Interface
 {
     public interface IEmployeePayrollDeductionRepository : IRepository<EmployeePayrollDeduction>
     {
+        IList<EmployeePayrollDeduction> GetByPayroll(int payrollId);
     }
 }

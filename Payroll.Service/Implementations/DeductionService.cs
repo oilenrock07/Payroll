@@ -23,6 +23,11 @@ namespace Payroll.Service.Implementations
             return _deductionRepository.GetAllActive().ToList();
         }
 
+        public IList<Deduction> GetAllCustomizable()
+        {
+            return _deductionRepository.GetAllCustomizable();
+        }
+
         public Deduction GetByName(string name)
         {
             return _deductionRepository.GetByName(name);

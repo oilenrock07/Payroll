@@ -131,42 +131,42 @@ namespace Payroll.Test.Service
             {
                 EmployeeId = 1,
                 DeductionId = HDMF_DEDUCTION_ID,
-                Amount = 101.10M
+                Amount = 100.10M
             };
 
             var employeeDeduction2 = new EmployeeDeduction
             {
                 EmployeeId = 1,
                 DeductionId = SSS_DEDUCTION_ID,
-                Amount = 202.25M
+                Amount = 50.25M
             };
 
             var employeeDeduction3 = new EmployeeDeduction
             {
                 EmployeeId = 1,
                 DeductionId = PHILHEALTH_DEDUCTION_ID,
-                Amount = 350
+                Amount = 50.25M
             };
 
             var employeeDeduction4 = new EmployeeDeduction
             {
                 EmployeeId = 2,
                 DeductionId = HDMF_DEDUCTION_ID,
-                Amount = 551.20M
+                Amount = 100.20M
             };
 
             var employeeDeduction5 = new EmployeeDeduction
             {
                 EmployeeId = 2,
                 DeductionId = SSS_DEDUCTION_ID,
-                Amount = 100.5M
+                Amount = 45.5M
             };
 
             var employeeDeduction6 = new EmployeeDeduction
             {
                 EmployeeId = 2,
                 DeductionId = PHILHEALTH_DEDUCTION_ID,
-                Amount = 999.90M
+                Amount = 55.90M
             };
 
             _employeeDeductionRepository.Add(employeeDeduction);
@@ -180,33 +180,36 @@ namespace Payroll.Test.Service
             {
                 EmployeeId = 1,
                 IsTaxed = false,
-                TaxableIncome = 1200,
+                TaxableIncome = 1500,
+                TotalNet = 1500,
                 CutOffStartDate = DateTime.Parse("05/04/2016"),
                 CutOffEndDate = DateTime.Parse("05/10/2016"),
                 PayrollDate = DateTime.Parse("05/11/2016"),
-                TotalGross = 1200
+                TotalGross = 1500
             };
 
             var employeePayroll2 = new EmployeePayroll
             {
                 EmployeeId = 1,
                 IsTaxed = false,
-                TaxableIncome = 1100.25M,
+                TaxableIncome = 1300.25M,
+                TotalNet = 1300.25M,
                 CutOffStartDate = DateTime.Parse("05/11/2016"),
                 CutOffEndDate = DateTime.Parse("05/17/2016"),
                 PayrollDate = DateTime.Parse("05/18/2016"),
-                TotalGross = 1100
+                TotalGross = 1300.25M
             };
 
             var employeePayroll3 = new EmployeePayroll
             {
                 EmployeeId = 1,
                 IsTaxed = false,
-                TaxableIncome = 1000.25M,
+                TaxableIncome = 1500.25M,
+                TotalNet = 1500.25M,
                 CutOffStartDate = DateTime.Parse("05/18/2016"),
                 CutOffEndDate = DateTime.Parse("05/24/2016"),
                 PayrollDate = DateTime.Parse("05/25/2016"),
-                TotalGross = 1000.25M
+                TotalGross = 1500.25M
             };
 
             var employeePayroll4 = new EmployeePayroll
@@ -214,6 +217,7 @@ namespace Payroll.Test.Service
                 EmployeeId = 1,
                 IsTaxed = false,
                 TaxableIncome = 950.50M,
+                TotalNet = 950.50M,
                 CutOffStartDate = DateTime.Parse("05/25/2016"),
                 CutOffEndDate = DateTime.Parse("05/31/2016"),
                 PayrollDate = DateTime.Parse("06/01/2016"),
@@ -224,33 +228,36 @@ namespace Payroll.Test.Service
             {
                 EmployeeId = 2,
                 IsTaxed = false,
-                TaxableIncome = 900.05M,
+                TaxableIncome = 2000.05M,
+                TotalNet = 2000.05M,
                 CutOffStartDate = DateTime.Parse("05/04/2016"),
                 CutOffEndDate = DateTime.Parse("05/10/2016"),
                 PayrollDate = DateTime.Parse("05/11/2016"),
-                TotalGross = 900.05M
+                TotalGross = 2000.05M
             };
 
             var employeePayroll6 = new EmployeePayroll
             {
                 EmployeeId = 2,
                 IsTaxed = false,
-                TaxableIncome = 800,
+                TaxableIncome = 2100,
+                TotalNet = 2100,
                 CutOffStartDate = DateTime.Parse("05/11/2016"),
                 CutOffEndDate = DateTime.Parse("05/17/2016"),
                 PayrollDate = DateTime.Parse("05/18/2016"),
-                TotalGross = 800
+                TotalGross = 2100
             };
 
             var employeePayroll7 = new EmployeePayroll
             {
                 EmployeeId = 2,
                 IsTaxed = false,
-                TaxableIncome = 750.50M,
+                TaxableIncome = 2200.50M,
+                TotalNet = 2200.50M,
                 CutOffStartDate = DateTime.Parse("05/18/2016"),
                 CutOffEndDate = DateTime.Parse("05/24/2016"),
                 PayrollDate = DateTime.Parse("05/25/2016"),
-                TotalGross = 750.50M
+                TotalGross = 2200.50M
             };
 
             var employeePayroll8 = new EmployeePayroll
@@ -258,6 +265,7 @@ namespace Payroll.Test.Service
                 EmployeeId = 2,
                 IsTaxed = false,
                 TaxableIncome = 750.50M,
+                TotalNet = 750.50M,
                 CutOffStartDate = DateTime.Parse("05/25/2016"),
                 CutOffEndDate = DateTime.Parse("05/31/2016"),
                 PayrollDate = DateTime.Parse("06/01/2016"),
@@ -279,7 +287,7 @@ namespace Payroll.Test.Service
             //Current payroll
             IList<EmployeePayroll> payrollList = new List<EmployeePayroll>();
             payrollList.Add(employeePayroll4);
-            payrollList.Add(employeePayroll7);
+            payrollList.Add(employeePayroll8);
 
             //Test
             _employeePayrollDeductionService.GenerateDeductionsByPayroll(
@@ -295,17 +303,78 @@ namespace Payroll.Test.Service
             Assert.IsNotNull(finalizedPayroll);
 
             Assert.AreEqual(2, finalizedPayroll.Count());
-
             Assert.AreEqual(1, finalizedPayroll[0].EmployeeId);
             Assert.AreEqual(true, finalizedPayroll[0].IsTaxed);
             Assert.AreEqual(DateTime.Parse("05/25/2016"), finalizedPayroll[0].CutOffStartDate);
             Assert.AreEqual(DateTime.Parse("05/31/2016"), finalizedPayroll[0].CutOffEndDate);
             Assert.AreEqual(DateTime.Parse("06/01/2016"), finalizedPayroll[0].PayrollDate);
-            Assert.AreEqual(297.15M, finalizedPayroll[0].TaxableIncome);
+            Assert.AreEqual(749.9M, finalizedPayroll[0].TaxableIncome);
             Assert.AreEqual(950.50M, finalizedPayroll[0].TotalGross);
-            Assert.AreEqual(653.35M, finalizedPayroll[0].TotalDeduction);
-            Assert.AreEqual(297.15M, finalizedPayroll[0].TotalNet);
-        }
+            Assert.AreEqual(247.31M, finalizedPayroll[0].TotalDeduction);
+            Assert.AreEqual(703.190M, finalizedPayroll[0].TotalNet);
 
+            //Get all deductions
+            IList<EmployeePayrollDeduction> employeePayrollDeduction 
+                = _employeePayrollDeductionService.GetByPayroll(4);
+
+            Assert.AreEqual(4, employeePayrollDeduction.Count());
+
+            Assert.AreEqual(employeePayrollDeduction[0].EmployeeId, 1);
+            Assert.AreEqual(employeePayrollDeduction[0].EmployeePayrollId, 4);
+            Assert.AreEqual(employeePayrollDeduction[0].Amount, 100.10M);
+            Assert.AreEqual(employeePayrollDeduction[0].DeductionId, HDMF_DEDUCTION_ID);
+
+            Assert.AreEqual(employeePayrollDeduction[1].EmployeeId, 1);
+            Assert.AreEqual(employeePayrollDeduction[1].EmployeePayrollId, 4);
+            Assert.AreEqual(employeePayrollDeduction[1].Amount, 50.25M);
+            Assert.AreEqual(employeePayrollDeduction[1].DeductionId, SSS_DEDUCTION_ID);
+
+            Assert.AreEqual(employeePayrollDeduction[2].EmployeeId, 1);
+            Assert.AreEqual(employeePayrollDeduction[2].EmployeePayrollId, 4);
+            Assert.AreEqual(employeePayrollDeduction[2].Amount, 50.25M);
+            Assert.AreEqual(employeePayrollDeduction[2].DeductionId, PHILHEALTH_DEDUCTION_ID);
+
+            //Check Tax
+            Assert.AreEqual(employeePayrollDeduction[3].EmployeeId, 1);
+            Assert.AreEqual(employeePayrollDeduction[3].EmployeePayrollId, 4);
+            Assert.AreEqual(employeePayrollDeduction[3].Amount, 46.71M);
+            Assert.AreEqual(employeePayrollDeduction[3].DeductionId, TAX_DEDUCTION_ID);
+        
+            Assert.AreEqual(2, finalizedPayroll[1].EmployeeId);
+            Assert.AreEqual(true, finalizedPayroll[1].IsTaxed);
+            Assert.AreEqual(DateTime.Parse("05/25/2016"), finalizedPayroll[1].CutOffStartDate);
+            Assert.AreEqual(DateTime.Parse("05/31/2016"), finalizedPayroll[1].CutOffEndDate);
+            Assert.AreEqual(DateTime.Parse("06/01/2016"), finalizedPayroll[1].PayrollDate);
+            Assert.AreEqual(548.90M, finalizedPayroll[1].TaxableIncome);
+            Assert.AreEqual(750.50M, finalizedPayroll[1].TotalGross);
+            Assert.AreEqual(437.2975M, finalizedPayroll[1].TotalDeduction);
+            Assert.AreEqual(313.2025M, finalizedPayroll[1].TotalNet);
+
+            employeePayrollDeduction
+               = _employeePayrollDeductionService.GetByPayroll(8);
+
+            Assert.AreEqual(4, employeePayrollDeduction.Count());
+
+            Assert.AreEqual(employeePayrollDeduction[0].EmployeeId, 2);
+            Assert.AreEqual(employeePayrollDeduction[0].EmployeePayrollId, 8);
+            Assert.AreEqual(employeePayrollDeduction[0].Amount, 100.20M);
+            Assert.AreEqual(employeePayrollDeduction[0].DeductionId, HDMF_DEDUCTION_ID);
+
+            Assert.AreEqual(employeePayrollDeduction[1].EmployeeId, 2);
+            Assert.AreEqual(employeePayrollDeduction[1].EmployeePayrollId, 8);
+            Assert.AreEqual(employeePayrollDeduction[1].Amount, 45.5M);
+            Assert.AreEqual(employeePayrollDeduction[1].DeductionId, SSS_DEDUCTION_ID);
+
+            Assert.AreEqual(employeePayrollDeduction[2].EmployeeId, 2);
+            Assert.AreEqual(employeePayrollDeduction[2].EmployeePayrollId, 8);
+            Assert.AreEqual(employeePayrollDeduction[2].Amount, 55.90M);
+            Assert.AreEqual(employeePayrollDeduction[2].DeductionId, PHILHEALTH_DEDUCTION_ID);
+
+            //Check Tax
+            Assert.AreEqual(employeePayrollDeduction[3].EmployeeId, 2);
+            Assert.AreEqual(employeePayrollDeduction[3].EmployeePayrollId, 8);
+            Assert.AreEqual(employeePayrollDeduction[3].Amount, 235.6975M);
+            Assert.AreEqual(employeePayrollDeduction[3].DeductionId, TAX_DEDUCTION_ID);
+        }
     }
 }

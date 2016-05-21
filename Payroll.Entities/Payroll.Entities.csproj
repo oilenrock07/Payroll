@@ -93,6 +93,10 @@
     <Compile Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.Designer.cs">
       <DependentUpon>201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605191336261_deduction-change.cs" />
+    <Compile Include="Migrations\201605191336261_deduction-change.Designer.cs">
+      <DependentUpon>201605191336261_deduction-change.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -149,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.resx">
       <DependentUpon>201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605191336261_deduction-change.resx">
+      <DependentUpon>201605191336261_deduction-change.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

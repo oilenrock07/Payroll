@@ -22,5 +22,10 @@ namespace Payroll.Repository.Repositories
         {
             return Find(d => d.IsActive && d.DeductionName == name).FirstOrDefault();
         }
+
+        public IList<Deduction> GetAllCustomizable()
+        {
+            return Find(d => d.IsActive && d.IsCustomizable).ToList();
+        }
     }
 }

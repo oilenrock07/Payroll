@@ -12,5 +12,7 @@ namespace Payroll.Service.Interfaces
         IList<Deduction> GetAllActive();
 
         Deduction GetByName(String name);
+
+        IList<Deduction> GetAllCustomizable();
     }
 }

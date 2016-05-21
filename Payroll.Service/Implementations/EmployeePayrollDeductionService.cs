@@ -89,7 +89,7 @@ namespace Payroll.Service.Implementations
                 //No computations from employee deductions info
                 //Get all deductions
                 var employee = _employeeInfoService.GetByEmployeeId(payroll.EmployeeId);
-                var deductionList = _deductionService.GetAllActive();
+                var deductionList = _deductionService.GetAllCustomizable();
 
                 decimal totalDeductions = 0;
                 //Every deductions check for available deduction for employee
@@ -118,7 +118,7 @@ namespace Payroll.Service.Implementations
 
                 //Update employeePayroll total deductions and taxable income
                 _employeePayrollService.Update(payroll);
-                payroll.TaxableIncome = payroll.TotalNet - totalDeductions;
+                payroll.TaxableIncome = payroll.TotalGross - totalDeductions;
 
                 //Tax computation
                 //Get old payroll for tax computation
@@ -140,7 +140,7 @@ namespace Payroll.Service.Implementations
                 
                 //Update payroll for total deductions and total grosss
                 payroll.TotalDeduction = totalDeductions + totalTax;
-                payroll.TotalGross = payroll.TotalNet - payroll.TotalDeduction;
+                payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
                 payroll.IsTaxed = true;
             }
 
@@ -225,6 +225,11 @@ namespace Payroll.Service.Implementations
         public EmployeePayrollDeduction Add(EmployeePayrollDeduction employeePayrollDeduction)
         {
             return _employeePayrollDeductionRepository.Add(employeePayrollDeduction);
+        }
+
+        public IList<EmployeePayrollDeduction> GetByPayroll(int payrollId)
+        {
+            return _employeePayrollDeductionRepository.GetByPayroll(payrollId);
         }
     }
 }

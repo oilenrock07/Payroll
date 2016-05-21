@@ -10,12 +10,17 @@ using System.Threading.Tasks;
 
 namespace Payroll.Repository.Repositories
 {
-    public class EmployeePayrollDeductionRepository: Repository<EmployeePayrollDeduction>, IEmployeePayrollDeductionRepository
+    public class EmployeePayrollDeductionRepository : Repository<EmployeePayrollDeduction>, IEmployeePayrollDeductionRepository
     {
         public EmployeePayrollDeductionRepository(IDatabaseFactory databaseFactory)
-            : base (databaseFactory)
+            : base(databaseFactory)
         {
             DbSet = databaseFactory.GetContext().EmployeePayrollDeductions;
+        }
+
+        public IList<EmployeePayrollDeduction> GetByPayroll(int payrollId)
+        {
+            return Find(d => d.IsActive && d.EmployeePayrollId == payrollId).ToList();
         }
     }
 }

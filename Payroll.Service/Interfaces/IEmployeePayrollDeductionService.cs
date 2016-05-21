@@ -14,5 +14,7 @@ namespace Payroll.Service.Interfaces
         int GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate, IList<EmployeePayroll> employeePayrolls);
 
         EmployeePayrollDeduction Add(EmployeePayrollDeduction employeePayrollDeduction);
+
+        IList<EmployeePayrollDeduction> GetByPayroll(int payrollId);
     }
 }
