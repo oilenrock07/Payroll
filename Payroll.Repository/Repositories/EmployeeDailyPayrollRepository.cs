@@ -18,9 +18,15 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().EmployeeDailyPayroll;
         }
 
+        public EmployeeDailyPayroll GetByDate(int employeeId, DateTime date)
+        {
+            return Find(p => p.IsActive && p.EmployeeId == employeeId
+                    && p.Date == date).FirstOrDefault();
+        }
+
         public IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
-            return Find(p => p.Date >= dateFrom && p.Date < dateTo)
+            return Find(p => p.IsActive && p.Date >= dateFrom && p.Date < dateTo)
                 .OrderBy(p => p.EmployeeId).ThenByDescending(p => p.Date).ToList();
         }
     }

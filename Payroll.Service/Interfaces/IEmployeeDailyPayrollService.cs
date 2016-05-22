@@ -12,5 +12,7 @@ namespace Payroll.Service.Interfaces
         void GenerateEmployeeDailySalaryByDateRange(DateTime dateFrom, DateTime dateTo);
 
         IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo);
+
+        void GenerateEmployeeHolidayPay(DateTime payrollStartDate, DateTime payrollEndDate);
     }
 }

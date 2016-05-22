@@ -13,7 +13,7 @@ namespace Payroll.Entities.Payroll
 
         public int EmployeeId { get; set; }
         
-        public int TotalEmployeeHoursId { get; set; }
+        public int ? TotalEmployeeHoursId { get; set; }
 
         public DateTime Date { get; set; }
 

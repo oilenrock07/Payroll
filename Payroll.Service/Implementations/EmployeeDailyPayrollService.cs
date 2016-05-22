@@ -126,15 +126,70 @@ namespace Payroll.Service.Implementations
 
                 //Save
                 _employeeDailyPayrollRepository.Add(employeeDailySalary);
-
-                _unitOfWork.Commit();
+               // _unitOfWork.Commit();
             }
+
+            _unitOfWork.Commit();
+
+            //Generate holiday pays
+            GenerateEmployeeHolidayPay(dateFrom, dateTo);
+            _unitOfWork.Commit();
         }
 
         public IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             dateTo = dateTo.AddDays(1);
             return _employeeDailyPayrollRepository.GetByDateRange(dateFrom, dateTo);
+        }
+
+        public void GenerateEmployeeHolidayPay(DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            //Get all active employees
+            IList<EmployeeInfo> employees = _employeeInfoService.GetAllActive();
+
+            foreach (DateTime day in DatetimeExtension.EachDay(payrollStartDate, payrollEndDate))
+            {
+                //Check if holiday
+                var holiday = _holidayService.GetHoliday(day);
+
+                if (holiday != null)
+                {
+                    foreach (EmployeeInfo employee in employees)
+                    {
+                        WorkSchedule workSchedule =_employeeWorkScheduleService.GetByEmployeeId(employee.EmployeeId).WorkSchedule;
+
+                        if (workSchedule != null)
+                        {
+                            //Check if within schedule
+                            if (day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
+                            {
+                                //Don't proceed
+                                return;
+                            }
+                        }
+
+                        //If with schedule on this date, generate holiday pay
+
+                        //Check if already have daily entry
+                        EmployeeDailyPayroll dailyPayroll = _employeeDailyPayrollRepository.GetByDate(employee.EmployeeId, day);
+
+                        //If null create a holiday pay
+                        if (dailyPayroll == null)
+                        {
+                            var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
+
+                            EmployeeDailyPayroll newDailyPayroll = new EmployeeDailyPayroll
+                            {
+                                EmployeeId = employee.EmployeeId,
+                                Date = day,
+                                TotalPay = hourlyRate * WORK_HOURS
+                            };
+
+                            _employeeDailyPayrollRepository.Add(newDailyPayroll);
+                        }
+                    }
+                }             
+            }
         }
     }
 }
