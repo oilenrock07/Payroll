@@ -109,32 +109,66 @@ namespace Payroll.Service.Implementations
             return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId, payrollDate);
         }
 
-        public void GeneratePayroll()
+        public DateTime GetNextPayrollStartDate(FrequencyType frequency, DateTime? date)
         {
-            var frequency = (FrequencyType)Convert.
-                ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
+            DateTime? payrollStartDate = _employeePayrollRepository.GetNextPayrollStartDate();
+            if (payrollStartDate == null)
+            {
+                var d = DateTime.Now;
+                if (date != null)
+                {
+                    d = date.Value;
+                }
+                //TODO more frequency support
+                switch (frequency)
+                {
+                    case FrequencyType.Weekly:
+                        //Note that the job should always schedule the day after the payroll end date
+                        var startOfWeeklyPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
+                            _settingService.GetByKey(PAYROLL_WEEK_START));
+                        
+                        if (d.DayOfWeek == startOfWeeklyPayroll)
+                        {
+                            d = d.AddDays(-7);
+                        }
 
-            DateTime today = new DateTime();
+                        payrollStartDate = d.StartOfWeek(startOfWeeklyPayroll);
 
-            DateTime payrollStartDate = today;
-            DateTime payrollEndDate = today;
+                        break;
+                }
+            }
+            return payrollStartDate.Value;
+        }
+
+        public DateTime GetNextPayrollEndDate(FrequencyType frequency, DateTime payrollStartDate)
+        {
+            DateTime payrollEndDate = payrollStartDate;
 
             //TODO more frequency support
             switch (frequency)
             {
                 case FrequencyType.Weekly:
                     //Note that the job should always schedule the day after the payroll end date
-                    var startOfWeeklyPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
-                        _settingService.GetByKey(PAYROLL_WEEK_START));
-                    var endOfWeekPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), 
+                    var endOfWeekPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
                         _settingService.GetByKey(PAYROLL_WEEK_END));
-                    
-                    payrollStartDate = today.StartOfWeek(startOfWeeklyPayroll);
-                    payrollEndDate = today.StartOfWeek(endOfWeekPayroll);
+
+                    payrollEndDate = payrollStartDate.AddDays(7).StartOfWeek(endOfWeekPayroll);
+
                     break;
             }
+        
+            return payrollEndDate;
+        }
 
-            GeneratePayroll(today, payrollStartDate, payrollEndDate);
+        public void GeneratePayroll(DateTime? date)
+        {
+            var frequency = (FrequencyType)Convert
+                .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
+
+            DateTime payrollStartDate = GetNextPayrollStartDate(frequency, date);
+            DateTime payrollEndDate = GetNextPayrollEndDate(frequency, payrollStartDate);
+            
+            GeneratePayroll(DateTime.Now, payrollStartDate, payrollEndDate);
         }
 
         public void GeneratePayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)

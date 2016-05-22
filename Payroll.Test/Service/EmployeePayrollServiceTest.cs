@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
@@ -51,6 +52,88 @@ namespace Payroll.Test.Service
         {
             _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_daily_payroll");
             _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE payroll");
+        }
+
+        [TestMethod]
+        public void GetPayrollNextDate()
+        {
+            Initialize();
+            DeleteInfo();
+
+            var frequency = FrequencyType.Weekly;
+            DateTime date = DateTime.Parse("04/27/2016");
+
+            DateTime payrollStartDate = _employeePayrollService
+                .GetNextPayrollStartDate(frequency, date);
+
+            Assert.AreEqual(DateTime.Parse("04/20/2016"), payrollStartDate);
+
+            DateTime payrollEndDate = _employeePayrollService
+                .GetNextPayrollEndDate(frequency, payrollStartDate);
+
+            Assert.AreEqual(DateTime.Parse("04/26/2016"), payrollEndDate);
+        }
+
+        [TestMethod]
+        public void GetPayrollNextStartDate2()
+        {
+            Initialize();
+            DeleteInfo();
+
+            var frequency = FrequencyType.Weekly;
+            DateTime date = DateTime.Parse("05/17/2016");
+
+            DateTime payrollStartDate = _employeePayrollService
+                .GetNextPayrollStartDate(frequency, date);
+
+            Assert.AreEqual(DateTime.Parse("05/11/2016"), payrollStartDate);
+
+            DateTime payrollEndDate = _employeePayrollService
+              .GetNextPayrollEndDate(frequency, payrollStartDate);
+
+            Assert.AreEqual(DateTime.Parse("05/17/2016"), payrollEndDate);
+        }
+
+        [TestMethod]
+        public void GetPayrollNextStartDate3()
+        {
+            Initialize();
+            DeleteInfo();
+
+            var employeePayroll = new EmployeePayroll()
+            {
+                CutOffEndDate = DateTime.Parse("05/17/2016"),
+                CutOffStartDate = DateTime.Parse("05/11/2016"),
+                PayrollDate = DateTime.Parse("05/18/2016"),
+                PayrollGeneratedDate = DateTime.Parse("05/18/2016"),
+                EmployeeId = 1
+            };
+
+            var employeePayroll2 = new EmployeePayroll()
+            {
+                CutOffEndDate = DateTime.Parse("05/10/2016"),
+                CutOffStartDate = DateTime.Parse("05/04/2016"),
+                PayrollDate = DateTime.Parse("05/11/2016"),
+                PayrollGeneratedDate = DateTime.Parse("05/11/2016"),
+                EmployeeId = 1
+            };
+
+            _employeePayrollRepository.Add(employeePayroll);
+            _employeePayrollRepository.Add(employeePayroll2);
+
+            _unitOfWork.Commit();
+
+            var frequency = FrequencyType.Weekly;
+
+            DateTime payrollStartDate = _employeePayrollService
+                .GetNextPayrollStartDate(frequency, null);
+
+            Assert.AreEqual(DateTime.Parse("05/18/2016"), payrollStartDate);
+
+            DateTime payrollEndDate = _employeePayrollService
+                .GetNextPayrollEndDate(frequency, payrollStartDate);
+
+            Assert.AreEqual(DateTime.Parse("05/24/2016"), payrollEndDate);
         }
 
         [TestMethod]

@@ -17,10 +17,14 @@ namespace Payroll.Service.Interfaces
 
         IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate);
 
-        void GeneratePayroll();
+        void GeneratePayroll(DateTime? date);
 
         void GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
 
+        DateTime GetNextPayrollStartDate(FrequencyType frequency, DateTime? date);
+
+        DateTime GetNextPayrollEndDate(FrequencyType frequency, DateTime payrollStartDate);
+    
         /*
          * This will return payroll with payroll date between date start and date end
          */

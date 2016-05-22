@@ -16,5 +16,8 @@ namespace Payroll.Repository.Interface
          * This will return payroll with payroll date between date start and date end
         */
         IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd);
+
+        //Get last payroll end date
+        DateTime? GetNextPayrollStartDate();
     }
 }

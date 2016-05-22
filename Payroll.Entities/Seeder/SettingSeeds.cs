@@ -42,7 +42,7 @@ namespace Payroll.Entities.Seeder
                 //Settings of payroll
                 new Setting { SettingKey = "PAYROLL_FREQUENCY", Value = "3", Description = "Payroll Frequency", Category = "PAYROLL_SCHEDULE"},
                 new Setting { SettingKey = "PAYROLL_WEEK_START", Value = "3", Description = "Payroll Week Start", Category = "PAYROLL_SCHEDULE"},
-                new Setting { SettingKey = "PAYROLL_WEEK_END", Value = "4", Description = "Payroll Week End", Category = "PAYROLL_SCHEDULE"},
+                new Setting { SettingKey = "PAYROLL_WEEK_END", Value = "2", Description = "Payroll Week End", Category = "PAYROLL_SCHEDULE"},
                 
                 //settings for deduction
                 new Setting { SettingKey = "HDMF_MAX_MONTHLY_COMPENSATION", Value = "5000", Description = "HDMF Maximum Monthly Compensation Contributions", Category = "PAYROLL_DEDUCTIONS"},
