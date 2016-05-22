@@ -24,11 +24,13 @@ namespace Payroll.Test.Service
         private IEmployeePayrollDeductionService _employeePayrollDeductionService;
         private ISettingService _settingService;
         private IEmployeePayrollService _employeePayrollService;
+        private IEmployeeInfoService _employeeInfoService;
 
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
         private IEmployeeDailyPayrollRepository _employeeDailyPayrollRepository;
         private ISettingRepository _settingRepository;
+        private IEmployeeInfoRepository _employeeInfoRepository;
 
         public void Initialize()
         {
@@ -40,12 +42,14 @@ namespace Payroll.Test.Service
             _employeePayrollRepository = new EmployeePayrollRepository(databaseFactory);
             _settingRepository = new SettingRepository(databaseFactory);
             _employeePayrollDeductionRepository = new EmployeePayrollDeductionRepository(databaseFactory);
-
+            _employeeInfoRepository = new EmployeeInfoRepository(databaseFactory);
+                
             _settingService = new SettingService(_settingRepository);
             _employeeDailyPayrollService = new EmployeeDailyPayrollService(_unitOfWork, 
                 null, null, null, null, _employeeDailyPayrollRepository, null, null);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, null, null, null,null, null, null);
-            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService);
+            _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
+            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService);
         }
 
         private void DeleteInfo()

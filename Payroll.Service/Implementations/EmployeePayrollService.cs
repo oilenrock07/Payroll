@@ -21,19 +21,25 @@ namespace Payroll.Service.Implementations
         private IEmployeeDailyPayrollService _employeeDailyPayrollService;
         private IEmployeePayrollDeductionService _employeePayrollDeductionService;
         private ISettingService _settingService;
+        private IEmployeeInfoService _employeeInfoService;
 
         private readonly String PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
         private readonly String PAYROLL_WEEK_START = "PAYROLL_WEEK_START";
         private readonly String PAYROLL_WEEK_END = "PAYROLL_WEEK_END";
+        private readonly String ALLOWANCE_WEEK_SCHEDULE = "ALLOWANCE_WEEK_SCHEDULE";
+        private readonly String ALLOWANCE_DAY_SCHEDULE = "ALLOWANCE_DAY_SCHEDULE";
+        private readonly String ALLOWANCE_TOTAL_DAYS = "ALLOWANCE_TOTAL_DAYS";
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeeDailyPayrollService employeeDailyPayrollService, 
-            IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService)
+            IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
+            IEmployeeInfoService employeeInfoService)
         {
             _unitOfWork = unitOfWork;
             _employeeDailyPayrollService = employeeDailyPayrollService;
             _employeePayrollRepository = employeeePayrollRepository;
             _settingService = settingService;
             _employeePayrollDeductionService = employeePayrollDeductionService;
+            _employeeInfoService = employeeInfoService;
         }
 
         public IList<EmployeePayroll> GeneratePayrollGrossPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
@@ -179,12 +185,46 @@ namespace Payroll.Service.Implementations
             //Generate deductions such as SSS, HDMF, Philhealth and TAX
             _employeePayrollDeductionService.GenerateDeductionsByPayroll(payrollDate,
                 payrollStartDate, payrollEndDate, employeePayrollList);
+
+            //Generate Allowance
+
         }
 
         public IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd)
         {
             dateEnd = dateEnd.AddDays(1);
             return _employeePayrollRepository.GetByDateRange(dateStart, dateEnd);
+        }
+
+        public void GenerateAllowance(DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            //Get allowance schedule
+            //If 1st, 2nd, 3rd or 4th of the week
+            int weekSchedule = Convert.ToInt32(_settingService.GetByKey(ALLOWANCE_WEEK_SCHEDULE));
+            //If monday, tuesday ... so on
+            DayOfWeek daySchedule = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
+                            _settingService.GetByKey(ALLOWANCE_DAY_SCHEDULE));
+            
+            //Get schedule
+            var allowanceDateByStartDate = DatetimeExtension
+                .GetNthWeekofMonth(payrollStartDate, weekSchedule, daySchedule);
+
+            var allowanceDateByEndDate = DatetimeExtension
+               .GetNthWeekofMonth(payrollEndDate, weekSchedule, daySchedule);
+
+            if ((allowanceDateByStartDate >= payrollStartDate && allowanceDateByStartDate < payrollStartDate.AddDays(1)) ||
+                    (allowanceDateByEndDate >= payrollStartDate && allowanceDateByEndDate < payrollStartDate.AddDays(1)))
+            {
+                //Generate allowance
+                var totalDays = Convert.ToInt32(_settingService.GetByKey(ALLOWANCE_TOTAL_DAYS));
+                // Get all active employees
+                var employees = _employeeInfoService.GetAllWithAllowance();
+
+                foreach (EmployeeInfo employee in employees)
+                {
+                    //Compute here
+                }
+            }
         }
     }
 }
