@@ -42,4 +42,21 @@ namespace Payroll.Entities.Enums
         Approved = 2,
         NotApproved = 3
     }
+
+    public enum AuditTrailTransaction
+    {
+        Employee = 1,
+        Maintenance = 2,
+        Payroll = 3,
+        Attendance = 4,
+        Users = 5
+    }
+
+    public enum AuditTrailTransactionType
+    {
+        Create = 1,
+        View = 2,
+        Update = 3,
+        Delete = 4,
+    }
 }

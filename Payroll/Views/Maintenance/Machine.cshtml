@@ -4,7 +4,7 @@
     ViewBag.Title = "Machines";
 }
 
-<h2>Machine</h2>
+<h2>Machines</h2>
 
 <p>
     @Html.ActionLink("Create New", "CreateMachine")
@@ -29,6 +29,7 @@
             @Html.DisplayFor(modelItem => item.IpAddress)
         </td>
         <td>
+            @Html.ActionLink("View Enrolled Employees", "EnrolledEmployees", new { id = item.MachineId }) |
             @Html.ActionLink("Edit", "EditMachine", new { id = item.MachineId }) |
             @Html.ActionLink("Delete", "DeleteMachine", new { id = item.MachineId }, new { @class = "js-maintenanceDelete" })
         </td>

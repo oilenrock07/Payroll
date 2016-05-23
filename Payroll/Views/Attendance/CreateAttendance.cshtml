@@ -1,0 +1,68 @@
+﻿@using Payroll.Extension
+
+@model Payroll.Models.Attendance.CreateAttendanceViewModel
+
+@{
+    ViewBag.Title = "Create Attendance";
+}
+
+<h2>Create Attendance</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    if (ViewData["CreateSuccess"] != null)
+    {
+        <div class="alert alert-success">@ViewData["CreateSuccess"]</div>
+    }
+
+    <div class="form-horizontal">
+        <h4>Attendance</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EmployeeId)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClockIn, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DatePickerFor("ClockIn", DateTime.Now, new { @class = "form-control datepicker js-clockIn" })
+                @Html.ValidationMessageFor(model => model.ClockIn)
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.ClockInTime, new { @class = "form-control js-clockInTime" })
+                @Html.ValidationMessageFor(model => model.ClockInTime)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClockOut, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DatePickerFor("ClockOut", DateTime.Now, new { @class = "form-control datepicker js-clockOut" })
+                @Html.ValidationMessageFor(model => model.ClockOut)
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.ClockOutTime, new { @class = "form-control js-clockOutTime" })
+                @Html.ValidationMessageFor(model => model.ClockOutTime)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary js-createAttendance" />
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

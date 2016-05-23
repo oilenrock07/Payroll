@@ -12,18 +12,11 @@
         @Html.ActionLink("Create New", "Create")
     </div>
     <div class="col-md-6">
-        <div class="pull-right">
-            <div class="input-group">
-                <input type="text" id="search" placeholder="Search name or code here" class="form-control b1 js-searchEmployee" value="@(ViewBag.SearchCriteria ?? "")" />
-                <span class="input-group-btn">
-                    <button class="btn btn-primary js-search" type="button">Go! </button>
-                </span>
-            </div>
-        </div>
+        @Html.Partial("_SearchEmployee", "/EmployeeController/SearchEmployee")
     </div>
 </div>
 
-<table class="table t1 table-responsive">
+<table class="table t1 table-responsive table-striped">
     <tr>
         <th>
             Id
@@ -105,5 +98,6 @@
 @section scripts
 {
     <script type="text/javascript" src="/Scripts/pagination.js"></script>
+    <script type="text/javascript" src="/Scripts/search.js"></script>
     <script type="text/javascript" src="/Scripts/Employee/employeelist.js"></script>
 }

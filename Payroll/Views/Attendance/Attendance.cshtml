@@ -1,14 +1,10 @@
 ﻿@using Payroll.Extension
 
 @{
-    ViewBag.Title = "Attendance Log";
+    ViewBag.Title = "Attendance";
 }
 
-<h2>Attendance Log</h2>
-<div class="alert alert-warning alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    Only the system's attendance Log will be displayed here. To view the formatted clock-ins and outs, please use the Attendance.
-</div>
+<h2>Attendance</h2>
 
 <form>
     <div class="form-horizontal">
@@ -26,7 +22,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <button type="button" class="btn btn-primary js-submitAttendancelLog">Submit</button>
+                <button type="button" class="btn btn-primary js-submitAttendance">Submit</button>
             </div>
         </div>
     </div>
@@ -36,5 +32,5 @@
 
 @section scripts
 {
-    <script type="text/javascript" src="/Scripts/Attendance/attendancelog.js"></script>
+    <script type="text/javascript" src="/Scripts/Attendance/attendance.js"></script>
 }

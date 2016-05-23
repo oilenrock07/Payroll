@@ -34,7 +34,7 @@ namespace Payroll
                 );
 
             routes.MapRoute(
-                name: "EmplloyeeLeaveRoute",
+                name: "EmployeeLeaveRoute",
                 url: "EmployeeController/{action}/{month}/{year}",
                 defaults: new { controller = "Employee", action = "EmployeeLeaves", month = UrlParameter.Optional, year = UrlParameter.Optional }
                 );

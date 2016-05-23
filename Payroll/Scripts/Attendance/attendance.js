@@ -1,0 +1,33 @@
+﻿$(function() {
+
+    function handleAttendanceClick() {
+        var startDate = $('.js-startDate').val();
+        var endDate = $('.js-endDate').val();
+
+        $.ajax({
+            url: '/Attendance/AttendanceContent',
+            data: { startDate: startDate, endDate: endDate },
+            method: 'POST',
+            success: function(responseData) {
+                $('#content').html(responseData);
+            }
+        });
+    }
+
+    function handleCreateAttendanceClick() {
+        //this should be executed first before submitting the form to the controller
+        //append the time to the date
+
+        var clockIn = $('.js-clockIn').val();
+        var clockOut = $('.js-clockOut').val();
+        var clockInTime = $('.js-clockInTime').val();
+        var clockOutTime = $('.js-clockOutTime').val();
+    }
+
+    function init() {
+        $('.js-submitAttendance').on('click', handleAttendanceClick);
+        $('.js-createAttendance').on('click', handleCreateAttendanceClick);
+    }
+
+    init();
+});

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Payroll.Models.Attendance.AttendanceViewModel>
+
+<div class="Attendance t2">
+    <table class="table table-responsive table-striped">
+        <tr>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Clock In</th>
+            <th>Clock Out</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @item.MiddleName
+                </td>
+                <td>
+                    @item.LastName
+                </td>
+                <td>
+                    @item.ClockIn
+                </td>
+                <td>
+                    @item.ClockOut
+                </td>
+                <td>
+                    @if (item.Editable)
+                    {
+                        @Html.ActionLink("Edit", "EditAttendance", "Attendance", new { id = item.AttendanceId}, null)   
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>

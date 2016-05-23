@@ -61,6 +61,15 @@ namespace Payroll.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clockin and clockout cannot be set as future date.
+        /// </summary>
+        internal static string ATTENDANCE_INVALID_FUTUREDATE {
+            get {
+                return ResourceManager.GetString("ATTENDANCE_INVALID_FUTUREDATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter valid date.
         /// </summary>
         internal static string INVALID_DATE {

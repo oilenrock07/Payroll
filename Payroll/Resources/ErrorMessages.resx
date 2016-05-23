@@ -126,4 +126,7 @@
   <data name="MACHINE_EXISTS" xml:space="preserve">
     <value>IP Address Already exists</value>
   </data>
+  <data name="ATTENDANCE_INVALID_FUTUREDATE" xml:space="preserve">
+    <value>Clockin and clockout cannot be set as future date</value>
+  </data>
 </root>

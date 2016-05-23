@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Omu.ValueInjecter;
 using Payroll.Common.Enums;
@@ -19,7 +20,7 @@ using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
 {
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Admin,Manager,Encoder")]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -55,7 +56,7 @@ namespace Payroll.Controllers
             _employeeLeaveRepository = employeeLeaveRepository;
             _leaveRepository = leaveRepository;
         }
-
+        
         public virtual ActionResult Index()
         {
             var employees = _employeeInfoRepository.Find(x => x.Employee.IsActive).ToList();
@@ -74,6 +75,7 @@ namespace Payroll.Controllers
             var result = new List<EmployeeInfo>();
             var firstNames = _employeeInfoRepository.Find(x => x.Employee.FirstName.Contains(query) && x.Employee.IsActive).ToList();
             var lastNames = _employeeInfoRepository.Find(x => x.Employee.LastName.Contains(query) && x.Employee.IsActive).ToList();
+            var employeeCodes = _employeeInfoRepository.Find(x => x.Employee.EmployeeCode == query && x.Employee.IsActive).ToList();
 
             int id;
             if (int.TryParse(query, out id))
@@ -84,6 +86,7 @@ namespace Payroll.Controllers
                 
             result.AddRange(firstNames);
             result.AddRange(lastNames);
+            result.AddRange(employeeCodes);
 
             ViewBag.SearchCriteria = query;
 
@@ -208,6 +211,7 @@ namespace Payroll.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult Create(EmployeeInfoViewModel viewModel)
         {
             //validate birthdate
@@ -347,12 +351,14 @@ namespace Payroll.Controllers
             return "";
         }
 
+        [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult EmployeeLoans()
         {
             var result = _employeeLoanRepository.GetActiveEmployeeLoans();
             return View(result);
         }
 
+        [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult CreateEmployeeLoan()
         {
             var viewModel = new EmployeeLoanViewModel();
@@ -419,7 +425,7 @@ namespace Payroll.Controllers
         }
 
         #region EmployeeLeave
-
+        [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult EmployeeLeaves(int month, int year)
         {
             var employeeLeaves = _employeeLeaveRepository.GetEmployeeLeavesByDate(month, year).ToList();
@@ -471,6 +477,7 @@ namespace Payroll.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult CreateEmployeeLeave()
         {
 

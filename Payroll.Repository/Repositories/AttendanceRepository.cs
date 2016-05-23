@@ -16,6 +16,11 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().Attendances;
         }
 
+        public IList<Attendance> GetAttendanceByDateRange(DateTime fromDate, DateTime toDate)
+        {
+            return Find(a => (a.ClockIn >= fromDate && a.ClockIn <= toDate)).ToList();
+        }
+
         public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)
         {
             return Find(a => a.EmployeeId == employeeId &&

@@ -31,7 +31,7 @@ namespace Payroll.Controllers
 
         public ActionResult Index()
         {
-            var settings = _settingRepository.GetAll().ToList();
+            var settings = _settingRepository.GetAll().OrderBy(x => x.Category);
             return View(settings);
         }
 

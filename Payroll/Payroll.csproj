@@ -213,6 +213,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Account\EditUserRoleViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceLogViewModel.cs" />
+    <Compile Include="Models\Attendance\AttendanceViewModel.cs" />
+    <Compile Include="Models\Attendance\CreateAttendanceViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeDepartmentViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeInfoViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeLeaveCreateViewModel.cs" />
@@ -222,6 +224,7 @@
     <Compile Include="Models\Employee\EmployeeLoanViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Maintenance\EmployeeMachineViewModel.cs" />
     <Compile Include="Models\Maintenance\LoanViewModel.cs" />
     <Compile Include="Models\Maintenance\PaymentFrequencyViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollViewModel.cs" />
@@ -245,6 +248,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Account\editaccount.js" />
     <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\Attendance\attendance.js" />
     <Content Include="Scripts\Attendance\attendancelog.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -277,6 +281,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\pagination.js" />
+    <Content Include="Scripts\search.js" />
     <Content Include="Scripts\typeahead.bundle.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -344,6 +349,12 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Payroll\Index.cshtml" />
+    <Content Include="Views\Maintenance\EnrolledEmployees.cshtml" />
+    <Content Include="Views\Shared\_SearchEmployee.cshtml" />
+    <Content Include="Views\Attendance\Attendance.cshtml" />
+    <Content Include="Views\Attendance\AttendanceContent.cshtml" />
+    <Content Include="Views\Attendance\CreateAttendance.cshtml" />
+    <Content Include="Views\Attendance\EditAttendance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -384,6 +395,7 @@
     <EmbeddedResource Include="Resources\ErrorMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

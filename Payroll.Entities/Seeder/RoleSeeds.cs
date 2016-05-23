@@ -26,6 +26,13 @@ namespace Payroll.Entities.Seeder
                 },
                 new Role
                 {
+                    Id = "Encoder",
+                    Name = "Encoder",
+                    IsActive = true,
+                    CreateDate = DateTime.Now
+                },
+                new Role
+                {
                     Id = "Employee",
                     Name = "Employee",
                     IsActive = true,

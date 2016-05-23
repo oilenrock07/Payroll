@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Attendance.cs" />
     <Compile Include="AttendanceLog.cs" />
+    <Compile Include="AuditTrail.cs" />
     <Compile Include="Base\BaseEntity.cs" />
     <Compile Include="Contexts\PayrollContext.cs" />
     <Compile Include="DeductionAmount.cs" />

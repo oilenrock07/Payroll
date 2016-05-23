@@ -11,6 +11,7 @@ using Payroll.Entities.Enums;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models.Maintenance;
 using Payroll.Repository.Interface;
+using Payroll.Repository.Models.Employee;
 using Payroll.Resources;
 using Payroll.Service.Interfaces;
 
@@ -28,10 +29,13 @@ namespace Payroll.Controllers
         private readonly ILeaveRepository _leaveRepository;
         private readonly ILoanRepository _loanRepository;
         private readonly IMachineRepository _machineRepository;
+        private readonly IEmployeeMachineService _emplyeeMachineService;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
-            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, IMachineRepository machineRepository, IWebService webService)
+            IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, 
+            IMachineRepository machineRepository, IWebService webService,
+            IEmployeeMachineService emplyeeMachineService)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
@@ -43,6 +47,7 @@ namespace Payroll.Controllers
             _loanRepository = loanRepository;
             _machineRepository = machineRepository;
             _webService = webService;
+            _emplyeeMachineService = emplyeeMachineService;
         }
 
         #region Positions
@@ -442,6 +447,55 @@ namespace Payroll.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("Machine");
+        }
+
+        public virtual ActionResult SearchEmployee(string query, int id)
+        {
+            var employees = _emplyeeMachineService.GetEmployees(id).OrderBy(x => x.Enrolled);
+
+            var result = new List<EmployeeMachineDao>();
+            var firstNames = employees.Where(x => x.FirstName.Contains(query)).ToList();
+            var lastNames = employees.Where(x => x.LastName.Contains(query)).ToList();
+            var codes = employees.Where(x => x.EmployeeCode == query).ToList();
+            
+            int employeeId;
+            if (int.TryParse(query, out employeeId))
+            {
+                var employee = employees.Where(x => x.EmployeeId == employeeId).ToList();
+                result.AddRange(employee);
+            }
+
+
+            result.AddRange(firstNames);
+            result.AddRange(lastNames);
+            result.AddRange(codes);
+
+            ViewBag.SearchCriteria = query;
+
+            var resultDistinct = result.Distinct();
+            var pagination = _webService.GetPaginationModel(Request, resultDistinct.Count());
+            var viewModel = new EmployeeMachineViewModel
+            {
+                Employees = _webService.TakePaginationModel(resultDistinct, pagination),
+                Pagination = pagination,
+                MachineNumber = id
+            };
+
+            return View("EnrolledEmployees", viewModel);
+        }
+
+        public virtual ActionResult EnrolledEmployees(int id, string ipAddress)
+        {
+            var employees = _emplyeeMachineService.GetEmployees(id).OrderBy(x => x.Enrolled);
+            var pagination = _webService.GetPaginationModel(Request, employees.Count());
+            var viewModel = new EmployeeMachineViewModel
+            {
+                Employees = _webService.TakePaginationModel(employees, pagination),
+                Pagination = pagination,
+                MachineNumber = id,
+            };
+
+            return View(viewModel);
         }
 
         public virtual ActionResult EditMachine(int id)

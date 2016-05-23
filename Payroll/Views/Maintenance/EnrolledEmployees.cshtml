@@ -1,0 +1,49 @@
+﻿@model Payroll.Models.Maintenance.EmployeeMachineViewModel
+
+@{
+    ViewBag.Title = "Machine number #" + Model.MachineNumber;
+    var searchParam = "&id=" + Model.MachineNumber;
+}
+
+<h2>Employees to machine number #@Model.MachineNumber</h2>
+
+<div class="row b1">
+    <div class="col-md-offset-6 col-md-6">
+        @Html.Partial("_SearchEmployee", "/Maintenance/SearchEmployee")
+    </div>
+</div>
+
+<table class="table table-responsive table-striped">
+    <tr>
+        <th>Employee Code</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Is Enrolled</th>
+
+    </tr>
+
+    @foreach (var item in Model.Employees)
+    {
+        <tr>
+            <td>@item.EmployeeCode</td>
+            <td>@item.FirstName</td>
+            <td>@item.MiddleName</td>
+            <td>@item.LastName</td>
+            <td>@(item.Enrolled ? "Yes" : "No")</td>
+        </tr>
+    }
+</table>
+
+<div>
+    @Html.ActionLink("Back to List", "Machine")
+</div>
+
+
+<input type="hidden" value="@searchParam" class="js-searchEmployeeParams" />
+@Html.Partial("Pagination", Model.Pagination)
+
+@section scripts {
+    <script type="text/javascript" src="/Scripts/search.js"></script>
+    <script type="text/javascript" src="/Scripts/pagination.js"></script>
+}
