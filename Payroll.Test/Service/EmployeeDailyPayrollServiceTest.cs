@@ -206,16 +206,16 @@ namespace Payroll.Test.Service
             Assert.AreEqual((decimal)1012.50, results[0].TotalPay);
             Assert.AreEqual(DateTime.Parse("05/03/2016"), results[0].Date);
 
-            Assert.AreEqual(2, results[1].EmployeeId);
-            Assert.AreEqual(4, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)800, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[1].Date);
+            Assert.AreEqual(1, results[1].EmployeeId);
+            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1000, results[1].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[1].Date);
 
-            Assert.AreEqual(1, results[2].EmployeeId);
-            Assert.AreEqual(1, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1000, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[2].Date);
-
+            Assert.AreEqual(2, results[2].EmployeeId);
+            Assert.AreEqual(4, results[2].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)800, results[2].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[2].Date);
+ 
             Assert.AreEqual(2, results[3].EmployeeId);
             Assert.AreEqual(2, results[3].TotalEmployeeHoursId);
             Assert.AreEqual((decimal)1500, results[3].TotalPay);
@@ -352,15 +352,15 @@ namespace Payroll.Test.Service
             Assert.AreEqual((decimal)1265.625, results[0].TotalPay);
             Assert.AreEqual(DateTime.Parse("05/03/2016"), results[0].Date);
 
-            Assert.AreEqual(2, results[1].EmployeeId);
-            Assert.AreEqual(4, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1000, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[1].Date);
+            Assert.AreEqual(1, results[1].EmployeeId);
+            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1250, results[1].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[1].Date);
 
-            Assert.AreEqual(1, results[2].EmployeeId);
-            Assert.AreEqual(1, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1250, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[2].Date);
+            Assert.AreEqual(2, results[2].EmployeeId);
+            Assert.AreEqual(4, results[2].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1000, results[2].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[2].Date);
 
             Assert.AreEqual(2, results[3].EmployeeId);
             Assert.AreEqual(2, results[3].TotalEmployeeHoursId);
@@ -498,15 +498,15 @@ namespace Payroll.Test.Service
             Assert.AreEqual((decimal)6.48, results[0].TotalPay);
             Assert.AreEqual(DateTime.Parse("05/03/2016"), results[0].Date);
 
-            Assert.AreEqual(2, results[1].EmployeeId);
-            Assert.AreEqual(4, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)3.2, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[1].Date);
+            Assert.AreEqual(1, results[1].EmployeeId);
+            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)6.4, results[1].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[1].Date);
 
-            Assert.AreEqual(1, results[2].EmployeeId);
-            Assert.AreEqual(1, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)6.4, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[2].Date);
+            Assert.AreEqual(2, results[2].EmployeeId);
+            Assert.AreEqual(4, results[2].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)3.2, results[2].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[2].Date);
 
             Assert.AreEqual(2, results[3].EmployeeId);
             Assert.AreEqual(2, results[3].TotalEmployeeHoursId);
@@ -664,20 +664,20 @@ namespace Payroll.Test.Service
             Assert.AreEqual((decimal)1316.25, results[0].TotalPay);
             Assert.AreEqual(DateTime.Parse("05/08/2016"), results[0].Date);
 
-            Assert.AreEqual(2, results[1].EmployeeId);
-            Assert.AreEqual(6, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1240, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/08/2016"), results[1].Date);
+            Assert.AreEqual(1, results[1].EmployeeId);
+            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1300, results[1].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/07/2016"), results[1].Date);
 
             Assert.AreEqual(1, results[2].EmployeeId);
-            Assert.AreEqual(1, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1300, results[2].TotalPay);
+            Assert.AreEqual(3, results[2].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)794.375, results[2].TotalPay);
             Assert.AreEqual(DateTime.Parse("05/07/2016"), results[2].Date);
 
-            Assert.AreEqual(1, results[3].EmployeeId);
-            Assert.AreEqual(3, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)794.375, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/07/2016"), results[3].Date);
+            Assert.AreEqual(2, results[3].EmployeeId);
+            Assert.AreEqual(6, results[3].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1240, results[3].TotalPay);
+            Assert.AreEqual(DateTime.Parse("05/08/2016"), results[3].Date);
 
             Assert.AreEqual(2, results[4].EmployeeId);
             Assert.AreEqual(2, results[4].TotalEmployeeHoursId);
@@ -833,37 +833,139 @@ namespace Payroll.Test.Service
             var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
 
             Assert.IsNotNull(results);
-            Assert.AreEqual(6, results.Count);
+            Assert.AreEqual(7, results.Count);
 
-            Assert.AreEqual(2, results[0].EmployeeId);
-            Assert.AreEqual(4, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1280, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[0].Date);
+            Assert.AreEqual(1, results[0].EmployeeId);
+            Assert.AreEqual(1, results[0].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)2000, results[0].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[0].Date);
+
+            Assert.AreEqual(1, results[1].EmployeeId);
+            Assert.AreEqual(2, results[1].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1265.625, results[1].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[1].Date);
+
+            Assert.AreEqual(1, results[2].EmployeeId);
+            Assert.AreEqual(3, results[2].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)314.5, results[2].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[2].Date);
+
+            Assert.AreEqual(2, results[3].EmployeeId);
+            Assert.AreEqual(4, results[3].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1280, results[3].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[3].Date);
+
+            Assert.AreEqual(2, results[4].EmployeeId);
+            Assert.AreEqual(5, results[4].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1202.5, results[4].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[4].Date);
+
+            Assert.AreEqual(2, results[5].EmployeeId);
+            Assert.AreEqual(6, results[5].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)30.2, results[5].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[5].Date);
+
+            Assert.AreEqual(2, results[6].EmployeeId);
+            Assert.AreEqual(null, results[6].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1600, results[6].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[6].Date);
+
+
+        }
+
+        [TestMethod]
+        public void GenerateEmployeeDailySalaryByDateRangeHolidayNoWork()
+        {
+            //Arrange 
+            Initialize();
+            DeleteData();
+
+            var employee = new Employee
+            {
+                EmployeeCode = "11001",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1,
+                IsActive = true
+            };
+
+            var employee2 = new Employee
+            {
+                EmployeeCode = "11002",
+                FirstName = "Cornelio",
+                LastName = "Cawicaan",
+                MiddleName = "Bue",
+                BirthDate = DateTime.Parse("10/30/1989"),
+                Gender = 2,
+                IsActive = true
+            };
+
+            var employeeInfo = new EmployeeInfo
+            {
+                Employee = employee,
+                Salary = 5000,
+                SalaryFrequency = FrequencyType.Weekly
+            };
+
+            var employeeInfo2 = new EmployeeInfo
+            {
+                Employee = employee2,
+                Salary = 8000,
+                SalaryFrequency = FrequencyType.Weekly
+            };
+
+            _employeeInfoRepository.Add(employeeInfo);
+            _employeeInfoRepository.Add(employeeInfo2);
+
+            var workSchedule = new WorkSchedule
+            {
+                TimeStart = new TimeSpan(0, 7, 0, 0),
+                TimeEnd = new TimeSpan(0, 16, 0, 0),
+                WeekStart = 1,
+                WeekEnd = 5
+            };
+
+            var employeeWorkSchedule = new EmployeeWorkSchedule
+            {
+                WorkSchedule = workSchedule,
+                EmployeeId = 1
+            };
+
+            var employeeWorkSchedule2 = new EmployeeWorkSchedule
+            {
+                WorkSchedule = workSchedule,
+                EmployeeId = 2
+            };
+
+            _employeeWorkScheduleRepository.Add(employeeWorkSchedule);
+            _employeeWorkScheduleRepository.Add(employeeWorkSchedule2);
+
+            _unitOfWork.Commit();
+
+            //Test
+            var dateFrom = DateTime.Parse("01/01/2015");
+            var dateTo = DateTime.Parse("01/02/2016");
+
+            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+
+            //Results Verification
+            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+
+            Assert.IsNotNull(results);
+            Assert.AreEqual(2, results.Count);
+
+            Assert.AreEqual(1, results[0].EmployeeId);
+            Assert.AreEqual(null, results[0].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1000, results[0].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[0].Date);
 
             Assert.AreEqual(2, results[1].EmployeeId);
-            Assert.AreEqual(5, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1202.5, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[1].Date);
+            Assert.AreEqual(null, results[1].TotalEmployeeHoursId);
+            Assert.AreEqual((decimal)1600, results[1].TotalPay);
+            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[1].Date);
 
-            Assert.AreEqual(2, results[2].EmployeeId);
-            Assert.AreEqual(6, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)30.2, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[2].Date);
-
-            Assert.AreEqual(1, results[3].EmployeeId);
-            Assert.AreEqual(1, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)2000, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[3].Date);
-
-            Assert.AreEqual(1, results[4].EmployeeId);
-            Assert.AreEqual(2, results[4].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1265.625, results[4].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[4].Date);
-
-            Assert.AreEqual(1, results[5].EmployeeId);
-            Assert.AreEqual(3, results[5].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)314.5, results[5].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[5].Date);
         }
     }
 }

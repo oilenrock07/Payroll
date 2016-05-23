@@ -21,72 +21,87 @@ namespace Payroll.Service.Implementations
         private IEmployeeDailyPayrollService _employeeDailyPayrollService;
         private IEmployeePayrollDeductionService _employeePayrollDeductionService;
         private ISettingService _settingService;
+        private IEmployeeInfoService _employeeInfoService;
 
         private readonly String PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
         private readonly String PAYROLL_WEEK_START = "PAYROLL_WEEK_START";
         private readonly String PAYROLL_WEEK_END = "PAYROLL_WEEK_END";
+        private readonly String ALLOWANCE_WEEK_SCHEDULE = "ALLOWANCE_WEEK_SCHEDULE";
+        private readonly String ALLOWANCE_DAY_SCHEDULE = "ALLOWANCE_DAY_SCHEDULE";
+        private readonly String ALLOWANCE_TOTAL_DAYS = "ALLOWANCE_TOTAL_DAYS";
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeeDailyPayrollService employeeDailyPayrollService, 
-            IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService)
+            IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
+            IEmployeeInfoService employeeInfoService)
         {
             _unitOfWork = unitOfWork;
             _employeeDailyPayrollService = employeeDailyPayrollService;
             _employeePayrollRepository = employeeePayrollRepository;
             _settingService = settingService;
+            _employeePayrollDeductionService = employeePayrollDeductionService;
+            _employeeInfoService = employeeInfoService;
         }
 
-        public IList<EmployeePayroll> GeneratePayrollNetPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
+        public IList<EmployeePayroll> GeneratePayrollGrossPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
         {
             var employeeDailyPayroll = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
             var employeePayrollList = new List<EmployeePayroll>();
 
-            //Hold last payroll processed
-            EmployeePayroll tempEmployeePayroll = null;
-
-            DateTime today = new DateTime();
-            EmployeeDailyPayroll last = employeeDailyPayroll.Last();
-
-            foreach (EmployeeDailyPayroll dailyPayroll in employeeDailyPayroll)
+            if (employeeDailyPayroll != null && employeeDailyPayroll.Count() > 0)
             {
-                //If should create new entry
-                if (tempEmployeePayroll != null && 
-                    (tempEmployeePayroll.EmployeeId != tempEmployeePayroll.EmployeeId))
-                {
-                    //Save last entry if for different employee
-                    _employeePayrollRepository.Add(tempEmployeePayroll);
-                    employeePayrollList.Add(tempEmployeePayroll);
+                //Hold last payroll processed
+                EmployeePayroll tempEmployeePayroll = null;
+                DateTime today = new DateTime();
 
-                    EmployeePayroll employeePayroll = new EmployeePayroll
+                EmployeeDailyPayroll last = employeeDailyPayroll.Last();
+
+                foreach (EmployeeDailyPayroll dailyPayroll in employeeDailyPayroll)
+                {
+                    //If should create new entry
+                    if (tempEmployeePayroll == null ||
+                        (tempEmployeePayroll.EmployeeId != dailyPayroll.EmployeeId))
                     {
-                        EmployeeId = dailyPayroll.EmployeeId,
-                        CutOffStartDate = dateFrom,
-                        CutOffEndDate = dateTo,
-                        PayrollGeneratedDate = today,
-                        PayrollDate = payrollDate,
-                        TotalNet = dailyPayroll.TotalPay,
-                        TaxableIncome = dailyPayroll.TotalPay
-                    };
+                        if (tempEmployeePayroll != null)
+                        {
+                            //Save last entry if for different employee
+                            _employeePayrollRepository.Add(tempEmployeePayroll);
+                            employeePayrollList.Add(tempEmployeePayroll);
+                        }
 
-                    tempEmployeePayroll = employeePayroll;
+                        EmployeePayroll employeePayroll = new EmployeePayroll
+                        {
+                            EmployeeId = dailyPayroll.EmployeeId,
+                            CutOffStartDate = dateFrom,
+                            CutOffEndDate = dateTo,
+                            PayrollGeneratedDate = today,
+                            PayrollDate = payrollDate,
+                            TotalGross = dailyPayroll.TotalPay,
+                            TotalNet = dailyPayroll.TotalPay,
+                            TaxableIncome = dailyPayroll.TotalPay
+                        };
 
-                }
-                else
-                {
-                    //Update last entry
-                    tempEmployeePayroll.TotalNet += dailyPayroll.TotalPay;
+                        tempEmployeePayroll = employeePayroll;
+
+                    }
+                    else
+                    {
+                        //Update last entry
+                        tempEmployeePayroll.TotalGross += dailyPayroll.TotalPay;
+                        tempEmployeePayroll.TotalNet += dailyPayroll.TotalPay;
+                        tempEmployeePayroll.TaxableIncome += dailyPayroll.TotalPay;
+                    }
+
+                    //If last iteration save
+                    if (dailyPayroll.Equals(last))
+                    {
+                        _employeePayrollRepository.Add(tempEmployeePayroll);
+                        employeePayrollList.Add(tempEmployeePayroll);
+                    }
                 }
 
-                //If last iteration save
-                if (dailyPayroll.Equals(last))
-                {
-                    _employeePayrollRepository.Add(tempEmployeePayroll);
-                    employeePayrollList.Add(tempEmployeePayroll);
-                }
+                //Commit
+                _unitOfWork.Commit();
             }
-
-            //Commit
-            _unitOfWork.Commit();
-
             return employeePayrollList;
         }
 
@@ -100,48 +115,116 @@ namespace Payroll.Service.Implementations
             return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId, payrollDate);
         }
 
-        public void GeneratePayroll()
+        public DateTime GetNextPayrollStartDate(FrequencyType frequency, DateTime? date)
         {
-            var frequency = (FrequencyType)Convert.
-                ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
+            DateTime? payrollStartDate = _employeePayrollRepository.GetNextPayrollStartDate();
+            if (payrollStartDate == null)
+            {
+                var d = DateTime.Now;
+                if (date != null)
+                {
+                    d = date.Value;
+                }
+                //TODO more frequency support
+                switch (frequency)
+                {
+                    case FrequencyType.Weekly:
+                        //Note that the job should always schedule the day after the payroll end date
+                        var startOfWeeklyPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
+                            _settingService.GetByKey(PAYROLL_WEEK_START));
+                        
+                        if (d.DayOfWeek == startOfWeeklyPayroll)
+                        {
+                            d = d.AddDays(-7);
+                        }
 
-            DateTime today = new DateTime();
+                        payrollStartDate = d.StartOfWeek(startOfWeeklyPayroll);
 
-            DateTime payrollStartDate = today;
-            DateTime payrollEndDate = today;
+                        break;
+                }
+            }
+            return payrollStartDate.Value;
+        }
+
+        public DateTime GetNextPayrollEndDate(FrequencyType frequency, DateTime payrollStartDate)
+        {
+            DateTime payrollEndDate = payrollStartDate;
 
             //TODO more frequency support
             switch (frequency)
             {
                 case FrequencyType.Weekly:
                     //Note that the job should always schedule the day after the payroll end date
-                    var startOfWeeklyPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
-                        _settingService.GetByKey(PAYROLL_WEEK_START));
-                    var endOfWeekPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), 
+                    var endOfWeekPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
                         _settingService.GetByKey(PAYROLL_WEEK_END));
-                    
-                    payrollStartDate = today.StartOfWeek(startOfWeeklyPayroll);
-                    payrollEndDate = today.StartOfWeek(endOfWeekPayroll);
+
+                    payrollEndDate = payrollStartDate.AddDays(7).StartOfWeek(endOfWeekPayroll);
+
                     break;
             }
+        
+            return payrollEndDate;
+        }
 
-            GeneratePayroll(today, payrollStartDate, payrollEndDate);
+        public void GeneratePayroll(DateTime? date)
+        {
+            var frequency = (FrequencyType)Convert
+                .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
+
+            DateTime payrollStartDate = GetNextPayrollStartDate(frequency, date);
+            DateTime payrollEndDate = GetNextPayrollEndDate(frequency, payrollStartDate);
+            
+            GeneratePayroll(DateTime.Now, payrollStartDate, payrollEndDate);
         }
 
         public void GeneratePayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
         {
             //Generate employee payroll and net pay
-            var employeePayrollList = GeneratePayrollNetPayByDateRange(payrollDate, payrollStartDate, payrollEndDate);
+            var employeePayrollList = GeneratePayrollGrossPayByDateRange(payrollDate, payrollStartDate, payrollEndDate);
 
             //Generate deductions such as SSS, HDMF, Philhealth and TAX
             _employeePayrollDeductionService.GenerateDeductionsByPayroll(payrollDate,
                 payrollStartDate, payrollEndDate, employeePayrollList);
+
+            //Generate Allowance
+
         }
 
         public IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd)
         {
             dateEnd = dateEnd.AddDays(1);
             return _employeePayrollRepository.GetByDateRange(dateStart, dateEnd);
+        }
+
+        public void GenerateAllowance(DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            //Get allowance schedule
+            //If 1st, 2nd, 3rd or 4th of the week
+            int weekSchedule = Convert.ToInt32(_settingService.GetByKey(ALLOWANCE_WEEK_SCHEDULE));
+            //If monday, tuesday ... so on
+            DayOfWeek daySchedule = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
+                            _settingService.GetByKey(ALLOWANCE_DAY_SCHEDULE));
+            
+            //Get schedule
+            var allowanceDateByStartDate = DatetimeExtension
+                .GetNthWeekofMonth(payrollStartDate, weekSchedule, daySchedule);
+
+            var allowanceDateByEndDate = DatetimeExtension
+               .GetNthWeekofMonth(payrollEndDate, weekSchedule, daySchedule);
+
+            if ((allowanceDateByStartDate >= payrollStartDate && allowanceDateByStartDate < payrollStartDate.AddDays(1)) ||
+                    (allowanceDateByEndDate >= payrollStartDate && allowanceDateByEndDate < payrollStartDate.AddDays(1)))
+            {
+                //Generate allowance
+                var totalDays = Convert.ToInt32(_settingService.GetByKey(ALLOWANCE_TOTAL_DAYS));
+                // Get all active employees
+                var employees = _employeeInfoService.GetAllWithAllowance();
+
+                foreach (EmployeeInfo employee in employees)
+                {
+                    //Compute here
+                }
+            }
         }
     }
 }

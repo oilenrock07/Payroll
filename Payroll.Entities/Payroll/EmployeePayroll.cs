@@ -14,6 +14,7 @@ namespace Payroll.Entities.Payroll
             TotalAdjustment = 0;
             TotalGross = 0;
             TaxableIncome = 0;
+            TotalAllowance = 0;
             IsTaxed = false;
         }
 
@@ -31,6 +32,8 @@ namespace Payroll.Entities.Payroll
         public decimal TaxableIncome { get; set; } 
 
         public decimal TotalAdjustment { get; set; }
+
+        public decimal TotalAllowance { get; set; }
 
         public DateTime PayrollDate { get; set; }
 

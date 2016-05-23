@@ -29,5 +29,19 @@ namespace Payroll.Repository.Repositories
             return Find(p => p.IsActive && !p.IsTaxed && p.EmployeeId == employeeId 
                 && p.PayrollDate < payrollDate).OrderByDescending( p => p.PayrollDate).ToList();
         }
+
+        public DateTime? GetNextPayrollStartDate()
+        {
+            var employeePayroll = Find(p => p.IsActive).OrderByDescending( p=> p.CutOffEndDate).FirstOrDefault();
+
+            if (employeePayroll != null)
+            {
+                var date = employeePayroll.CutOffEndDate;
+
+                return date.AddDays(1);
+            }
+
+            return null;
+        }
     }
 }

@@ -14,5 +14,7 @@ namespace Payroll.Service.Interfaces
         IList<EmployeeInfo> GetActiveByPaymentFrequency(int PaymentFrequencyId);
 
         IList<EmployeeInfo> GetAllActive();
+
+        IList<EmployeeInfo> GetAllWithAllowance();
     }
 }

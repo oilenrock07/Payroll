@@ -12,5 +12,7 @@ namespace Payroll.Repository.Interface
 
         IList<EmployeeInfo> GetAllActive();
 
+        IList<EmployeeInfo> GetAllWithAllowance();
+
     }
 }

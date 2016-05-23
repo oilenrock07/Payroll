@@ -32,5 +32,10 @@ namespace Payroll.Service.Implementations
         public IList<EmployeeInfo> GetAllActive() {
             return _employeeInfoRepository.GetAllActive();
         }
+
+        public IList<EmployeeInfo> GetAllWithAllowance()
+        {
+            return _employeeInfoRepository.GetAllWithAllowance();
+        }
     }
 }

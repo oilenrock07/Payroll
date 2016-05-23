@@ -50,7 +50,7 @@
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\DeductionAmountService.cs" />
     <Compile Include="Implementations\DeductionService.cs" />
-    <Compile Include="Implementations\EmployeeDailyPayrollSevice.cs" />
+    <Compile Include="Implementations\EmployeeDailyPayrollService.cs" />
     <Compile Include="Implementations\EmployeeDeductionService.cs" />
     <Compile Include="Implementations\EmployeeHoursService.cs" />
     <Compile Include="Implementations\EmployeeInfoService.cs" />

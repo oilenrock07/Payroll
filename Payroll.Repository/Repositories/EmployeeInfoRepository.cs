@@ -4,6 +4,7 @@ using Payroll.Infrastructure.Interfaces;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Interface;
 using System.Collections.Generic;
+using System;
 
 namespace Payroll.Repository.Repositories
 {
@@ -27,6 +28,11 @@ namespace Payroll.Repository.Repositories
 
         public IList<EmployeeInfo> GetAllActive() {
             return Find(e => e.Employee.IsActive).ToList();
+        }
+
+        public IList<EmployeeInfo> GetAllWithAllowance()
+        {
+            return Find(e => e.IsActive && e.Allowance > 0).ToList();
         }
     }
 }
