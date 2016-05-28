@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Payroll.Entities.Base;
+using Payroll.Entities.Enums;
 
 namespace Payroll.Entities.Payroll
 {
@@ -14,6 +15,8 @@ namespace Payroll.Entities.Payroll
         public int EmployeeId { get; set; }
         
         public int ? TotalEmployeeHoursId { get; set; }
+        
+        public RateType RateType { get; set; }
 
         public DateTime Date { get; set; }
 

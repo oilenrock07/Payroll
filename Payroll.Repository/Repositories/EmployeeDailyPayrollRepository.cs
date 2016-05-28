@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Payroll.Entities.Enums;
 
 namespace Payroll.Repository.Repositories
 {
@@ -28,6 +29,12 @@ namespace Payroll.Repository.Repositories
         {
             return Find(p => p.IsActive && p.Date >= dateFrom && p.Date < dateTo)
                 .OrderBy(p => p.EmployeeId).ThenByDescending(p => p.Date).ToList();
+        }
+
+        public IList<EmployeeDailyPayroll> GetByTypeAndDateRange(RateType rateType, DateTime dateFrom, DateTime dateTo)
+        {
+            return Find(p => p.IsActive && p.RateType == rateType
+                && p.Date >= dateFrom && p.Date < dateTo).OrderByDescending(p => p.Date).ToList();
         }
     }
 }

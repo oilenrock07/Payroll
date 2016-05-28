@@ -25,12 +25,14 @@ namespace Payroll.Test.Service
         private ISettingService _settingService;
         private IEmployeePayrollService _employeePayrollService;
         private IEmployeeInfoService _employeeInfoService;
+        private ITotalEmployeeHoursService _totalEmployeeHoursService;
 
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
         private IEmployeeDailyPayrollRepository _employeeDailyPayrollRepository;
         private ISettingRepository _settingRepository;
         private IEmployeeInfoRepository _employeeInfoRepository;
+        private ITotalEmployeeHoursRepository _totalEmployeeHoursRepository;
 
         public void Initialize()
         {
@@ -43,13 +45,17 @@ namespace Payroll.Test.Service
             _settingRepository = new SettingRepository(databaseFactory);
             _employeePayrollDeductionRepository = new EmployeePayrollDeductionRepository(databaseFactory);
             _employeeInfoRepository = new EmployeeInfoRepository(databaseFactory);
-                
+            _totalEmployeeHoursRepository = new TotalEmployeeHoursRepository(databaseFactory);
+
             _settingService = new SettingService(_settingRepository);
             _employeeDailyPayrollService = new EmployeeDailyPayrollService(_unitOfWork, 
                 null, null, null, null, _employeeDailyPayrollRepository, null, null);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, null, null, null,null, null, null);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
-            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService);
+            _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
+
+            _employeePayrollService = new EmployeePayrollService(_unitOfWork,
+                _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService);
         }
 
         private void DeleteInfo()

@@ -1,4 +1,5 @@
-﻿using Payroll.Entities.Payroll;
+﻿using Payroll.Entities.Enums;
+using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace Payroll.Repository.Interface
         IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo);
 
         EmployeeDailyPayroll GetByDate(int EmployeeId, DateTime date);
+
+        IList<EmployeeDailyPayroll> GetByTypeAndDateRange(RateType rateType, DateTime dateFrom, DateTime dateTo);
     }
 }

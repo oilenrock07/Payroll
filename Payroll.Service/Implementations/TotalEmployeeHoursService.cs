@@ -145,5 +145,11 @@ namespace Payroll.Service.Implementations
             dateTo = dateTo.AddDays(1);
             return _totalEmployeeHoursRepository.GetByDateRange(dateFrom, dateTo);
         }
+
+        public IList<TotalEmployeeHours> GetByTypeAndDateRange(RateType rateType, DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            payrollEndDate = payrollEndDate.AddDays(1);
+            return GetByTypeAndDateRange(rateType, payrollStartDate, payrollEndDate);
+        }
     }
 }
