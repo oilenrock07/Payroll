@@ -197,10 +197,12 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Attributes\AuthorizeAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\MaintenanceController.cs" />
     <Compile Include="Controllers\PayrollController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Export.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Account\EditUserRoleViewModel.cs" />
@@ -251,6 +254,7 @@
     <Content Include="Scripts\Attendance\attendance.js" />
     <Content Include="Scripts\Attendance\attendancelog.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
@@ -260,10 +264,12 @@
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Payroll.Web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap3-typeahead.min.js" />
     <Content Include="Scripts\Employee\employeedetails.js" />
     <Content Include="Scripts\Employee\employeelist.js" />
     <Content Include="Scripts\Employee\employeeleave.js" />
     <Content Include="Scripts\Employee\employeeloan.js" />
+    <Content Include="Scripts\Employee\employeetypeahead.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -355,6 +361,8 @@
     <Content Include="Views\Attendance\AttendanceContent.cshtml" />
     <Content Include="Views\Attendance\CreateAttendance.cshtml" />
     <Content Include="Views\Attendance\EditAttendance.cshtml" />
+    <Content Include="Views\Shared\_EmployeeTypeAhead.cshtml" />
+    <Content Include="Views\Employee\EditEmployeeLoan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

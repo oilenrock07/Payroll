@@ -94,3 +94,5 @@ input[type="checkbox"].input-validation-error {
 .home-info-icon {
     text-align: center;
 }
+
+.typeahead { z-index: 1051; }

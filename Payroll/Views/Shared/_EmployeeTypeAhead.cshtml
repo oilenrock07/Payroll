@@ -1,0 +1,6 @@
+﻿@model int
+<input type="text" autocomplete="off" class="form-control typeahead js-typeAhead" data-provide="typeahead" placeholder="Enter employee here"/>
+<div class="label-info label">You can type first name, last name and employee code here</div>
+<div>
+    <input type="hidden" name="EmployeeId" id="EmployeeId" class="js-employeeIdTypeAhead" data-val="true" data-val-required="Please select employee" value="@(Model == 0 ? null: Model.ToString())" />    
+</div>

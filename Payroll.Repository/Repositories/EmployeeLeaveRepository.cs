@@ -20,7 +20,7 @@ namespace Payroll.Repository.Repositories
             var startDate = new DateTime(year, month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            return Find(x => x.IsActive && x.Date >= startDate && x.Date <= endDate);
+            return Find(x => x.IsActive && x.Employee.IsActive && x.Date >= startDate && x.Date <= endDate);
         }
     }
 }

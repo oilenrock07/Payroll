@@ -6,6 +6,7 @@
 
     function init() {
         $('.datepicker').datepicker({ format: 'mm/dd/yyyy' });
+        $('.timepicker').datetimepicker({ format: 'LT' });
         $('.datepicker').on('changeDate', handleChangeDate);
     }
 

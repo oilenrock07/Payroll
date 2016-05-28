@@ -1,14 +1,12 @@
 ﻿using Payroll.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Payroll.Repository.Models.Employee;
 
 namespace Payroll.Service.Interfaces
 {
     public interface IEmployeeService
     {
         Employee GetById(int id);
+        IEnumerable<EmployeeNames> SearchEmployee(string criteria);
     }
 }

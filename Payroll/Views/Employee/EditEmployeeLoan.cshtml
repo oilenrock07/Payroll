@@ -2,10 +2,10 @@
 @model Payroll.Models.Employee.EmployeeLoanViewModel
 
 @{
-    ViewBag.Title = "Create Loan";
+    ViewBag.Title = "Edit Loan";
 }
 
-<h2>Create Loan</h2>
+<h2>Edit Loan</h2>
 
 @using (Html.BeginForm()) 
 {
@@ -19,8 +19,9 @@
         <div class="form-group">
             @Html.Label("Employee", new { @for = "EmployeeId", @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId)
-                @Html.ValidationMessageFor(model => model.EmployeeId)
+                @Html.HiddenFor(model => model.EmployeeLoanId)
+                @Html.HiddenFor(model => model.EmployeeId)
+                <label class="control-label">@Model.EmployeeName</label>
             </div>
         </div>
        
@@ -119,7 +120,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-6">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -133,8 +134,4 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" src="/Scripts/Employee/employeeloan.js"></script>
-    <script type="text/javascript">
-        $.validator.setDefaults({ ignore: [] });
-    </script>
-    <script type="text/javascript" src="/Scripts/Employee/employeetypeahead.js"></script>
 }

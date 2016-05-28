@@ -23,9 +23,9 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Employee", new { @for = "EmployeeId", @class = "control-label col-md-2" })
             <div class="col-md-4">
-                @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, new { @class = "form-control" })
+                @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId)
                 @Html.ValidationMessageFor(model => model.EmployeeId)
             </div>
         </div>
@@ -37,7 +37,14 @@
                 @Html.ValidationMessageFor(model => model.ClockIn)
             </div>
             <div class="col-md-2">
-                @Html.TextBoxFor(model => model.ClockInTime, new { @class = "form-control js-clockInTime" })
+                
+                <div class="input-group date timepicker">
+                    @Html.TextBoxFor(model => model.ClockInTime, new { @class = "form-control js-clockInTime" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+                
                 @Html.ValidationMessageFor(model => model.ClockInTime)
             </div>
         </div>
@@ -49,8 +56,16 @@
                 @Html.ValidationMessageFor(model => model.ClockOut)
             </div>
             <div class="col-md-2">
-                @Html.TextBoxFor(model => model.ClockOutTime, new { @class = "form-control js-clockOutTime" })
+                
+                <div class="input-group date timepicker">
+                    @Html.TextBoxFor(model => model.ClockOutTime, new { @class = "form-control js-clockOutTime" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+                
                 @Html.ValidationMessageFor(model => model.ClockOutTime)
+
             </div>
         </div>
 
@@ -65,4 +80,8 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $.validator.setDefaults({ ignore: [] });
+    </script>
+    <script type="text/javascript" src="/Scripts/Employee/employeetypeahead.js"></script>
 }

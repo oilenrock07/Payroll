@@ -15,9 +15,9 @@
         <hr />
         @Html.ValidationSummary(true)
         <div class="form-group">
-            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Employee", new { @for = "EmployeeId", @class = "control-label col-md-2" })
             <div class="col-md-4">
-                @Html.DropDownListFor(model => model.EmployeeId, Model.Employees, new {@class = "form-control"})
+                @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId)
                 @Html.ValidationMessageFor(model => model.EmployeeId)
             </div>
         </div>
@@ -81,5 +81,9 @@
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $.validator.setDefaults({ ignore: [] });
+    </script>
+    <script type="text/javascript" src="/Scripts/Employee/employeetypeahead.js"></script>
     <script type="text/javascript" src="/Scripts/Employee/employeeleave.js"></script>
 }

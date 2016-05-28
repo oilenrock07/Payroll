@@ -6,7 +6,6 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -27,8 +26,12 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Employees <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("Employee List", "Index", "Employee")</li>
-                                <li>@Html.ActionLink("Employee Loans", "EmployeeLoans", "Employee")</li>
-                                <li>@Html.ActionLink("Employee Leaves", "EmployeeLeaves", "Employee", new { month = DateTime.Now.Month, year = DateTime.Now.Year }, null)</li>
+                                
+                                @if (!User.IsInRole("Encoder"))
+                                {
+                                    <li>@Html.ActionLink("Employee Loans", "EmployeeLoans", "Employee")</li>
+                                    <li>@Html.ActionLink("Employee Leaves", "EmployeeLeaves", "Employee", new { month = DateTime.Now.Month, year = DateTime.Now.Year }, null)</li>
+                                }
                             </ul>
                         </li>
 
@@ -91,8 +94,9 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/plugins")
+    @Scripts.Render("~/bundles/bootstrap")
+   
     <script type="text/javascript" src="/Scripts/app.js"></script>
     @RenderSection("scripts", required: false)
 </body>
