@@ -49,7 +49,7 @@ namespace Payroll.Entities.Seeder
                 //Adjustments
                 new Setting { SettingKey = "ALLOWANCE_TOTAL_DAYS", Value = "26", Description = "Allowance total number of working days monthly", Category = "PAYROLL_ADJUSTMENTS"},
                 new Setting { SettingKey = "ALLOWANCE_WEEK_SCHEDULE", Value = "1", Description = "Allowance week schedule", Category = "PAYROLL_ADJUSTMENTS"},
-                new Setting { SettingKey = "ALLOWANCE_WEEK_DAY", Value = "6", Description = "Allowance week schedule", Category = "PAYROLL_ADJUSTMENTS"},
+                new Setting { SettingKey = "ALLOWANCE_DAY_SCHEDULE", Value = "6", Description = "Allowance week schedule", Category = "PAYROLL_ADJUSTMENTS"},
 
                 //settings for deduction
                 new Setting { SettingKey = "HDMF_MAX_MONTHLY_COMPENSATION", Value = "5000", Description = "HDMF Maximum Monthly Compensation Contributions", Category = "PAYROLL_DEDUCTIONS"},

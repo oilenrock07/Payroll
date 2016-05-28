@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Payroll.Entities;
 using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
@@ -60,8 +61,13 @@ namespace Payroll.Test.Service
 
         private void DeleteInfo()
         {
+            _employeePayrollDeductionRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
             _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_daily_payroll");
+            _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours_total");
             _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE payroll");
+            _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_info");
+            _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee");
+            _employeePayrollDeductionRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 1");
         }
 
         [TestMethod]
@@ -233,6 +239,246 @@ namespace Payroll.Test.Service
             var payrollDate = DateTime.Parse("05/21/2016");
 
             var payrollList = _employeePayrollService.GeneratePayrollGrossPayByDateRange(payrollDate, dateStart, dateEnd);
+
+            Assert.IsNotNull(payrollList);
+            Assert.AreEqual(2, payrollList.Count());
+
+            Assert.AreEqual(1, payrollList[0].EmployeeId);
+            Assert.AreEqual(dateStart, payrollList[0].CutOffStartDate);
+            Assert.AreEqual(dateEnd, payrollList[0].CutOffEndDate);
+            Assert.AreEqual(false, payrollList[0].IsTaxed);
+            Assert.AreEqual(0, payrollList[0].TotalAdjustment);
+            Assert.AreEqual(0, payrollList[0].TotalDeduction);
+            Assert.AreEqual(525.67M, payrollList[0].TotalGross);
+            Assert.AreEqual(525.67M, payrollList[0].TotalNet);
+            Assert.AreEqual(525.67M, payrollList[0].TaxableIncome);
+
+            Assert.AreEqual(2, payrollList[1].EmployeeId);
+            Assert.AreEqual(dateStart, payrollList[1].CutOffStartDate);
+            Assert.AreEqual(dateEnd, payrollList[1].CutOffEndDate);
+            Assert.AreEqual(false, payrollList[1].IsTaxed);
+            Assert.AreEqual(0, payrollList[1].TotalAdjustment);
+            Assert.AreEqual(0, payrollList[1].TotalDeduction);
+            Assert.AreEqual(890.12M, payrollList[1].TotalGross);
+            Assert.AreEqual(890.12M, payrollList[1].TotalNet);
+            Assert.AreEqual(890.12M, payrollList[1].TaxableIncome);
+
+        }
+
+
+        [TestMethod]
+        public void ComputeAllowance()
+        {
+            Initialize();
+            DeleteInfo();
+
+            //Test Data
+            var employee = new Employee
+            {
+                EmployeeCode = "11001",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1,
+                IsActive = true
+            };
+
+            var employee2 = new Employee
+            {
+                EmployeeCode = "11002",
+                FirstName = "Cornelio Jr.",
+                LastName = "Cawicaan",
+                MiddleName = "Bue",
+                BirthDate = DateTime.Parse("10/30/1989"),
+                Gender = 2,
+                IsActive = true
+            };
+
+            var employeeInfo = new EmployeeInfo
+            {
+                Employee = employee,
+                Salary = 120,
+                SalaryFrequency = FrequencyType.Hourly,
+                Allowance = 350
+            };
+
+            var employeeInfo2 = new EmployeeInfo
+            {
+                Employee = employee2,
+                Salary = 150,
+                SalaryFrequency = FrequencyType.Hourly,
+                Allowance = 400
+            };
+
+            _employeeInfoRepository.Add(employeeInfo);
+            _employeeInfoRepository.Add(employeeInfo2);
+
+            var totalEmployeeHours = new TotalEmployeeHours
+            {
+                EmployeeId = 1,
+                Date = DateTime.Parse("05/06/2016"),
+                Hours = 8,
+                Type = RateType.Regular,
+                TotalEmployeeHoursId = 1
+            };
+
+            var totalEmployeeHours2 = new TotalEmployeeHours
+            {
+                EmployeeId = 1,
+                Date = DateTime.Parse("05/06/2016"),
+                Hours = 3,
+                Type = RateType.OverTime,
+                TotalEmployeeHoursId = 2
+            };
+
+            var totalEmployeeHours3 = new TotalEmployeeHours
+            {
+                EmployeeId = 2,
+                Date = DateTime.Parse("05/06/2016"),
+                Hours = 5,
+                Type = RateType.Regular,
+                TotalEmployeeHoursId = 1
+            };
+
+            var totalEmployeeHours4 = new TotalEmployeeHours
+            {
+                EmployeeId = 2,
+                Date = DateTime.Parse("05/06/2016"),
+                Hours = 2,
+                Type = RateType.OverTime,
+                TotalEmployeeHoursId = 2
+            };
+
+            var totalEmployeeHours5 = new TotalEmployeeHours
+            {
+                EmployeeId = 1,
+                Date = DateTime.Parse("05/07/2016"),
+                Hours = 10,
+                Type = RateType.Regular,
+                TotalEmployeeHoursId = 1
+            };
+
+            var totalEmployeeHours6 = new TotalEmployeeHours
+            {
+                EmployeeId = 1,
+                Date = DateTime.Parse("05/07/2016"),
+                Hours = 3,
+                Type = RateType.OverTime,
+                TotalEmployeeHoursId = 2
+            };
+
+            var totalEmployeeHours7 = new TotalEmployeeHours
+            {
+                EmployeeId = 2,
+                Date = DateTime.Parse("05/07/2016"),
+                Hours = 1,
+                Type = RateType.Regular,
+                TotalEmployeeHoursId = 1
+            };
+
+            var totalEmployeeHours8 = new TotalEmployeeHours
+            {
+                EmployeeId = 2,
+                Date = DateTime.Parse("05/07/2016"),
+                Hours = 2,
+                Type = RateType.NightDifferential,
+                TotalEmployeeHoursId = 2
+            };
+
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours2);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours3);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours4);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours5);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours6);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours7);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours8);
+
+            var dailyPayroll = new EmployeeDailyPayroll
+            {
+                EmployeeId = 1,
+                TotalEmployeeHoursId = 1,
+                TotalPay = 220.55M,
+                Date = DateTime.Parse("05/06/2016")
+            };
+
+            var dailyPayroll2 = new EmployeeDailyPayroll
+            {
+                EmployeeId = 1,
+                TotalEmployeeHoursId = 2,
+                TotalPay = 100,
+                Date = DateTime.Parse("05/06/2016")
+            };
+
+            var dailyPayroll3 = new EmployeeDailyPayroll
+            {
+                EmployeeId = 1,
+                TotalEmployeeHoursId = 3,
+                TotalPay = 15,
+                Date = DateTime.Parse("05/06/2016")
+            };
+
+            var dailyPayroll4 = new EmployeeDailyPayroll
+            {
+                EmployeeId = 2,
+                TotalEmployeeHoursId = 4,
+                TotalPay = 300.10M,
+                Date = DateTime.Parse("05/06/2016")
+            };
+
+            var dailyPayroll5 = new EmployeeDailyPayroll
+            {
+                EmployeeId = 2,
+                TotalEmployeeHoursId = 5,
+                TotalPay = 50,
+                Date = DateTime.Parse("05/07/2016")
+            };
+
+            var dailyPayroll6 = new EmployeeDailyPayroll
+            {
+                EmployeeId = 1,
+                TotalEmployeeHoursId = 6,
+                TotalPay = 150.12M,
+                Date = DateTime.Parse("05/07/2016")
+            };
+
+            var dailyPayroll7 = new EmployeeDailyPayroll
+            {
+                EmployeeId = 1,
+                TotalEmployeeHoursId = 7,
+                TotalPay = 40,
+                Date = DateTime.Parse("05/07/2016")
+            };
+
+            var dailyPayroll8 = new EmployeeDailyPayroll
+            {
+                EmployeeId = 2,
+                TotalEmployeeHoursId = 8,
+                TotalPay = 540.02M,
+                Date = DateTime.Parse("05/07/2016")
+            };
+
+            _employeeDailyPayrollRepository.Add(dailyPayroll);
+            _employeeDailyPayrollRepository.Add(dailyPayroll2);
+            _employeeDailyPayrollRepository.Add(dailyPayroll3);
+            _employeeDailyPayrollRepository.Add(dailyPayroll4);
+            _employeeDailyPayrollRepository.Add(dailyPayroll5);
+            _employeeDailyPayrollRepository.Add(dailyPayroll6);
+            _employeeDailyPayrollRepository.Add(dailyPayroll7);
+            _employeeDailyPayrollRepository.Add(dailyPayroll8);
+
+            _unitOfWork.Commit();
+
+            //Test
+            var dateStart = DateTime.Parse("05/06/2016");
+            var dateEnd = DateTime.Parse("05/07/2016");
+            var payrollDate = DateTime.Parse("05/08/2016");
+
+            _employeePayrollService.GeneratePayroll(payrollDate, dateStart, dateEnd);
+            _unitOfWork.Commit();
+
+            var payrollList = _employeePayrollService.GetByDateRange(payrollDate, payrollDate);
 
             Assert.IsNotNull(payrollList);
             Assert.AreEqual(2, payrollList.Count());

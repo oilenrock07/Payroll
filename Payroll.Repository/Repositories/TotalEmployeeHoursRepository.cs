@@ -30,10 +30,11 @@ namespace Payroll.Repository.Repositories
                 .OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
         }
 
-        public IList<TotalEmployeeHours> GetByTypeAndDateRange(RateType rateType, DateTime payrollStartDate, DateTime payrollEndDate)
+        public IList<TotalEmployeeHours> GetByTypeAndDateRange(int employeeId, RateType rateType, DateTime payrollStartDate, DateTime payrollEndDate)
         {
-            return Find(eh => eh.IsActive && eh.Type == rateType && eh.Date >= payrollStartDate && eh.Date < payrollEndDate)
-                .OrderByDescending(eh => eh.Date).ToList();
+            return Find(eh => eh.IsActive && eh.EmployeeId == employeeId &&
+                eh.Type == rateType && eh.Date >= payrollStartDate && eh.Date < payrollEndDate)
+                    .OrderByDescending(eh => eh.Date).ToList();
         }
     }
 }

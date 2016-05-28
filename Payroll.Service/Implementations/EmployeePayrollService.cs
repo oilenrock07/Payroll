@@ -216,8 +216,8 @@ namespace Payroll.Service.Implementations
             var allowanceDateByEndDate = DatetimeExtension
                .GetNthWeekofMonth(payrollEndDate, weekSchedule, daySchedule);
 
-            if ((allowanceDateByStartDate >= payrollStartDate && allowanceDateByStartDate < payrollStartDate.AddDays(1)) ||
-                    (allowanceDateByEndDate >= payrollStartDate && allowanceDateByEndDate < payrollStartDate.AddDays(1)))
+            if ((allowanceDateByStartDate >= payrollStartDate && allowanceDateByStartDate < payrollEndDate.AddDays(1)) ||
+                    (allowanceDateByEndDate >= payrollStartDate && allowanceDateByEndDate < payrollEndDate.AddDays(1)))
             {
 
                 // Get all active employees
@@ -230,9 +230,11 @@ namespace Payroll.Service.Implementations
                     double totalHours = 0;
                     //Get regular and OT hours per day
                     List<TotalEmployeeHours> employeeTotalHours =
-                       new List<TotalEmployeeHours>(_totalEmployeeHourService.GetByTypeAndDateRange(RateType.Regular, payrollStartDate, payrollEndDate));
+                       new List<TotalEmployeeHours>(_totalEmployeeHourService
+                           .GetByTypeAndDateRange(employee.EmployeeId, RateType.Regular, payrollStartDate, payrollEndDate));
 
-                    employeeTotalHours.AddRange(_totalEmployeeHourService.GetByTypeAndDateRange(RateType.OverTime, payrollStartDate, payrollEndDate));
+                    employeeTotalHours.AddRange(_totalEmployeeHourService
+                           .GetByTypeAndDateRange(employee.EmployeeId, RateType.OverTime, payrollStartDate, payrollEndDate));
 
                     DateTime? tempDate = null;
                     double dayHours = 0;
@@ -266,8 +268,7 @@ namespace Payroll.Service.Implementations
                     Decimal totalAllowancePerHour = employee.Allowance.Value /
                             ((decimal)totalDays * (decimal)totalWorkHoursPerDay);
 
-                    Decimal totalAllowance = (decimal)(totalAllowanceHours - totalHours)
-                            * totalAllowancePerHour;
+                    Decimal totalAllowance = (decimal)totalHours * totalAllowancePerHour;
 
                     //Update employee payroll
                     EmployeePayroll employeePayroll = payrollList.OfType<EmployeePayroll>()
