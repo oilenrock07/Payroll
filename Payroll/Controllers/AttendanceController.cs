@@ -12,6 +12,7 @@ using Payroll.Repository.Interface;
 using Payroll.Repository.Models;
 using System.Linq;
 using Payroll.Resources;
+using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
 {
@@ -22,14 +23,17 @@ namespace Payroll.Controllers
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmployeePayrollRepository _employeePayrollRepository;
 
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
-            IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork)
+            IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
+            IEmployeePayrollRepository employeePayrollRepository)
         {
             _attendanceLogRepository = attendanceLogRepository;
             _attendanceRepository = attendanceRepository;
             _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
+            _employeePayrollRepository = employeePayrollRepository;
         }
 
         public virtual ActionResult CreateAttendance()
@@ -138,7 +142,8 @@ namespace Payroll.Controllers
         protected virtual IEnumerable<AttendanceViewModel> GetAttendance(string startDate, string endDate)
         {
             //do not display the edit link if attendance date < last payroll date
-            var lastPayrollDate = new DateTime(2016, 05, 22);
+            var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
+            var lastPayrollDate = nextPayrollDate != null ? nextPayrollDate.Value.AddDays(-1) : DateTime.MinValue;
 
             var result = _attendanceRepository.GetAttendanceByDateRange(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
             var viewModel = result.MapCollection<Attendance, AttendanceViewModel>((s, d) =>

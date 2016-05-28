@@ -422,6 +422,79 @@ namespace Payroll.Controllers
             return RedirectToAction("EmployeeLoans");
         }
 
+        public virtual ActionResult EditEmployeeLoan(int id)
+        {
+            var employeeLoan = _employeeLoanRepository.GetById(id);
+
+            var viewModel = employeeLoan.MapItem<EmployeeLoanViewModel>();
+            viewModel.EmployeeName = employeeLoan.Employee.FullName;
+
+            viewModel.Loans = _loanRepository.Find(x => x.IsActive).Select(x => new SelectListItem
+            {
+                Value = x.LoanId.ToString(),
+                Text = x.LoanName
+            }).ToList();
+
+            var dayOfWeeks = new List<SelectListItem>();
+            foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                dayOfWeeks.Add(new SelectListItem
+                {
+                    Text = dayOfWeek.ToString(),
+                    Value = ((int)dayOfWeek).ToString()
+                });
+            }
+            viewModel.WeeklyPaymentDayOfWeekList = dayOfWeeks;
+
+
+            var loanPaymentFrequencies = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = FrequencyType.Weekly.ToString(),
+                    Value =((int)FrequencyType.Weekly).ToString() 
+                },
+                new SelectListItem
+                {
+                    Text = FrequencyType.SemiMonthly.ToString(),
+                    Value =((int)FrequencyType.SemiMonthly).ToString() 
+                },
+                new SelectListItem
+                {
+                    Text = FrequencyType.Monthly.ToString(),
+                    Value =((int)FrequencyType.Monthly).ToString() 
+                }
+            };
+
+            viewModel.PaymentFrequencies = loanPaymentFrequencies;
+            
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public virtual ActionResult EditEmployeeLoan(EmployeeLoanViewModel viewModel)
+        {
+            var model = _employeeLoanRepository.GetById(viewModel.EmployeeLoanId);
+            _employeeLoanRepository.Update(model);
+            model.InjectFrom(viewModel);
+            model.IsActive = true;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("EmployeeLoans");
+        }
+
+        //employee loan should only be deleted if there are NO outstanding payment
+        public virtual ActionResult DeleteEmployeeLoan(int id)
+        {
+            var employeeLoan = _employeeLoanRepository.GetById(id);
+            _employeeLoanRepository.Update(employeeLoan);
+            employeeLoan.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("EmployeeLoans");
+        }
+
+
         #region EmployeeLeave
         [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult EmployeeLeaves(int month, int year)

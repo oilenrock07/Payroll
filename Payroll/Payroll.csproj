@@ -211,6 +211,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Export.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Account\EditUserRoleViewModel.cs" />
@@ -361,10 +362,10 @@
     <Content Include="Views\Attendance\CreateAttendance.cshtml" />
     <Content Include="Views\Attendance\EditAttendance.cshtml" />
     <Content Include="Views\Shared\_EmployeeTypeAhead.cshtml" />
+    <Content Include="Views\Employee\EditEmployeeLoan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Lookup\" />
     <Folder Include="Views\SiteContent\" />
   </ItemGroup>
   <ItemGroup>

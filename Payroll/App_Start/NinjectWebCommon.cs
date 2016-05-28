@@ -96,6 +96,7 @@ namespace Payroll.App_Start
             kernel.Bind<IUserRoleRepository>().To<UserRoleRepository>().InRequestScope();
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IEmployeeMachineRepository>().To<EmployeeMachineRepository>().InRequestScope();
+            kernel.Bind<IEmployeePayrollRepository>().To<EmployeePayrollRepository>().InRequestScope();
              
             //Service
             kernel.Bind<IUserRoleService>().To<UserRoleService>().InRequestScope();

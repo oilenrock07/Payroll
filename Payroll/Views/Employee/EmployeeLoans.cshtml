@@ -61,11 +61,16 @@
             @Html.Raw(item.EndDate.ToShortDateString())
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Edit", "EditEmployeeLoan", new { id = item.EmployeeLoanId }) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Delete", "DeleteEmployeeLoan", new { id = item.EmployeeLoanId }, new { @class = "js-maintenanceDelete" })
         </td>
     </tr>
 }
 
 </table>
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

@@ -8,9 +8,11 @@ namespace Payroll.Models.Employee
 {
     public class EmployeeLoanViewModel
     {
+        public int EmployeeLoanId { get; set; }
+
         [DisplayName("Employee")]
         public int EmployeeId { get; set; }
-        public IEnumerable<SelectListItem> Employees { get; set; }
+        public string EmployeeName { get; set; }
 
         [DisplayName("Loan")]
         public int LoanId { get; set; }
