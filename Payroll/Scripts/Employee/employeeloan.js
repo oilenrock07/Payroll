@@ -16,21 +16,9 @@
         }
     };
 
-    var employeeList = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '/Employee/'
-        }
-    })
 
     function init() {
         $('.js-loanFrequency').on('change', handleFrequencyChange);
-        $('#EmployeeId').typeahead(null, {
-            name: 'test',
-            display: 'value',
-            source: employeeList
-        });
     };
 
     init();

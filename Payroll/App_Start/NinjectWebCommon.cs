@@ -100,6 +100,7 @@ namespace Payroll.App_Start
             //Service
             kernel.Bind<IUserRoleService>().To<UserRoleService>().InRequestScope();
             kernel.Bind<IWebService>().To<WebService>().InRequestScope();
+            kernel.Bind<IEmployeeService>().To<EmployeeService>().InRequestScope();
             kernel.Bind<IEmployeeMachineService>().To<EmployeeMachineService>().InRequestScope();
             //Caching
             //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();

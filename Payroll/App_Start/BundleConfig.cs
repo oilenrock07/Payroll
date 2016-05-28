@@ -15,7 +15,7 @@ namespace Payroll
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/plugins").Include(
-            "~/Scripts/typeahead.bundle.js",
+            "~/Scripts/bootstrap3-typeahead.min.js",
             "~/Scripts/moment.min.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -25,6 +25,7 @@ namespace Payroll
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-datetimepicker.js",
                       "~/Scripts/bootstrap-datepicker.min.js",
                       "~/Scripts/respond.js"));
 

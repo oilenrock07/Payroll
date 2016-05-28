@@ -14,7 +14,6 @@ namespace Payroll.Models.Employee
         [DisplayName("Employee")]
         [Required]
         public int EmployeeId { get; set; }
-        public IEnumerable<SelectListItem> Employees { get; set; }
 
         [DisplayName("Leave")]
         [Required]

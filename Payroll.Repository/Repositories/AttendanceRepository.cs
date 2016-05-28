@@ -18,6 +18,7 @@ namespace Payroll.Repository.Repositories
 
         public IList<Attendance> GetAttendanceByDateRange(DateTime fromDate, DateTime toDate)
         {
+            toDate = toDate.AddDays(1).AddSeconds(-1);
             return Find(a => (a.ClockIn >= fromDate && a.ClockIn <= toDate)).ToList();
         }
 

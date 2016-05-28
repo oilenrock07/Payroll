@@ -20,7 +20,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Name</label>
             <div class="col-md-10">
-                <label class="control-label col-md-2">@Model.FullName</label>
+                <label class="control-label">@Model.FullName</label>
                 @Html.HiddenFor(model => model.FullName)
             </div>
         </div>
@@ -32,7 +32,13 @@
                 @Html.ValidationMessageFor(model => model.ClockIn)
             </div>
             <div class="col-md-2">
-                @Html.TextBoxFor(model => model.ClockInTime, new { @class = "form-control js-clockInTime" })
+                <div class="input-group date timepicker">
+                    @Html.TextBoxFor(model => model.ClockInTime, new { @class = "form-control js-clockInTime" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+
                 @Html.ValidationMessageFor(model => model.ClockInTime)
             </div>
         </div>
@@ -44,7 +50,13 @@
                 @Html.ValidationMessageFor(model => model.ClockOut)
             </div>
             <div class="col-md-2">
-                @Html.TextBoxFor(model => model.ClockOutTime, new { @class = "form-control js-clockOutTime" })
+                <div class="input-group date timepicker">
+                    @Html.TextBoxFor(model => model.ClockOutTime, new { @class = "form-control js-clockOutTime" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+
                 @Html.ValidationMessageFor(model => model.ClockOutTime)
             </div>
         </div>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Omu.ValueInjecter;
+using Payroll.Attributes;
 using Payroll.Common.Enums;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
@@ -20,7 +21,7 @@ using Payroll.Service.Interfaces;
 
 namespace Payroll.Controllers
 {
-    [Authorize(Roles = "Admin,Manager,Encoder")]
+    [DefaultAuthorize(Roles = "Admin,Manager")]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -56,7 +57,8 @@ namespace Payroll.Controllers
             _employeeLeaveRepository = employeeLeaveRepository;
             _leaveRepository = leaveRepository;
         }
-        
+
+        [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult Index()
         {
             var employees = _employeeInfoRepository.Find(x => x.Employee.IsActive).ToList();
@@ -70,6 +72,7 @@ namespace Payroll.Controllers
             return View(viewModel);
         }
 
+        [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult SearchEmployee(string query)
         {
             var result = new List<EmployeeInfo>();
@@ -101,6 +104,7 @@ namespace Payroll.Controllers
             return View("Index", viewModel);
         }
 
+        [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult Edit(int id)
         {
             var viewModel = GetEmployeeViewModel(_employeeInfoRepository.GetByEmployeeId(id));
@@ -112,6 +116,7 @@ namespace Payroll.Controllers
             return View("Details", viewModel);
         }
 
+        [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult Create()
         {
             var viewModel = GetEmployeeViewModel(new EmployeeInfo{ Employee = new Employee()});
@@ -211,7 +216,7 @@ namespace Payroll.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Manager,Encoder")]
+        [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult Create(EmployeeInfoViewModel viewModel)
         {
             //validate birthdate
@@ -256,6 +261,7 @@ namespace Payroll.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult Edit(EmployeeInfoViewModel viewModel)
         {
             //validate birthdate
@@ -312,6 +318,7 @@ namespace Payroll.Controllers
         }
 
         [HttpGet]
+        [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult Delete(int id)
         {
             var employee = _employeeRepository.GetById(id);
@@ -351,24 +358,15 @@ namespace Payroll.Controllers
             return "";
         }
 
-        [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult EmployeeLoans()
         {
             var result = _employeeLoanRepository.GetActiveEmployeeLoans();
             return View(result);
         }
 
-        [Authorize(Roles = "Admin,Manager,Encoder")]
         public virtual ActionResult CreateEmployeeLoan()
         {
             var viewModel = new EmployeeLoanViewModel();
-            viewModel.Employees = _employeeRepository.GetEmployeeNames()
-                                  .Select(x => new SelectListItem
-                                    {
-                                        Value = x.EmployeeId.ToString(),
-                                        Text = x.FullName
-                                    });
-
             viewModel.Loans = _loanRepository.Find(x => x.IsActive).Select(x => new SelectListItem
             {
                 Value = x.LoanId.ToString(),
@@ -481,13 +479,6 @@ namespace Payroll.Controllers
         public virtual ActionResult CreateEmployeeLeave()
         {
 
-            var employees = _employeeRepository.GetEmployeeNames()
-                                  .Select(x => new SelectListItem
-                                    {
-                                        Value = x.EmployeeId.ToString(),
-                                        Text = x.FullName
-                                    });
-
             var leaves = _leaveRepository.Find(x => x.IsActive)
                                   .Select(x => new SelectListItem
                                     {
@@ -516,7 +507,6 @@ namespace Payroll.Controllers
             var viewModel = new EmployeeLeaveCreateViewModel
             {
                 Date = DateTime.Now.AddDays(1),
-                Employees = employees,
                 Leaves = leaves,
                 LeaveHours = hours
             };
@@ -557,6 +547,7 @@ namespace Payroll.Controllers
             {
                 Date = employeeLeave.Date,
                 Leaves = leaves,
+                MarkAsApproved = employeeLeave.LeaveStatus == LeaveStatus.Approved,
                 LeaveHours = hours,
                 Hours = employeeLeave.Hours,
                 SpecifiedHours = employeeLeave.Hours,
