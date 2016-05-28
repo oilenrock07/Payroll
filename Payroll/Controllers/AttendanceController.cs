@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Payroll.Common.Extension;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
+using Payroll.Helper;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models.Attendance;
 using Payroll.Repository.Interface;
@@ -128,6 +129,14 @@ namespace Payroll.Controllers
         [HttpPost]
         public virtual PartialViewResult AttendanceContent(string startDate, string endDate)
         {
+            var viewModel = GetAttendance(startDate, endDate);
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
+            return PartialView(viewModel);
+        }
+
+        protected virtual IEnumerable<AttendanceViewModel> GetAttendance(string startDate, string endDate)
+        {
             //do not display the edit link if attendance date < last payroll date
             var lastPayrollDate = new DateTime(2016, 05, 22);
 
@@ -141,7 +150,14 @@ namespace Payroll.Controllers
                 d.Editable = s.ClockIn > lastPayrollDate;
             });
 
-            return PartialView(viewModel);
+            return viewModel;
+        }
+
+        public void ExportToExcel(string startDate, string endDate)
+        {
+            var viewModel = GetAttendance(startDate, endDate);
+            var fileName = String.Format("Attendance_Report_{0}-{1}", Convert.ToDateTime(startDate).Serialize(), Convert.ToDateTime(endDate).Serialize());
+            Export.ToExcel(Response, viewModel, fileName);
         }
 
         public virtual ActionResult AttendanceLog()

@@ -37,4 +37,6 @@
             </tr>
         }
     </table>
+    
+    @Html.ActionLink("Export to Excel", "ExportToExcel", new { startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }, new {@class = "btn btn-primary"})
 </div>
