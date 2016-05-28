@@ -106,6 +106,10 @@
     <Compile Include="Migrations\201605221303505_add-payroll-total-allowance.Designer.cs">
       <DependentUpon>201605221303505_add-payroll-total-allowance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605281302156_daily-payroll-update.cs" />
+    <Compile Include="Migrations\201605281302156_daily-payroll-update.Designer.cs">
+      <DependentUpon>201605281302156_daily-payroll-update.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -171,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605221303505_add-payroll-total-allowance.resx">
       <DependentUpon>201605221303505_add-payroll-total-allowance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605281302156_daily-payroll-update.resx">
+      <DependentUpon>201605281302156_daily-payroll-update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

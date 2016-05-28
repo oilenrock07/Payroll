@@ -32,8 +32,7 @@ namespace Payroll.Service.Implementations
         private readonly String RATE_NIGHTDIF = "RATE_NIGHTDIF";
         private readonly String RATE_HOLIDAY_SPECIAL = "RATE_HOLIDAY_SPECIAL";
         private readonly String RATE_HOLIDAY_REGULAR = "RATE_HOLIDAY_REGULAR";
-
-        private readonly int WORK_HOURS = 8;
+        private readonly String PAYROLL_REGULAR_HOURS = "PAYROLL_REGULAR_HOURS";
 
         public EmployeeDailyPayrollService(IUnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService, 
@@ -121,7 +120,8 @@ namespace Payroll.Service.Implementations
                     EmployeeId = totalHours.EmployeeId,
                     Date = totalHours.Date,
                     TotalPay = totalPayment,
-                    TotalEmployeeHoursId = totalHours.TotalEmployeeHoursId
+                    TotalEmployeeHoursId = totalHours.TotalEmployeeHoursId,
+                    RateType = totalHours.Type
                 };
 
                 //Save
@@ -173,6 +173,8 @@ namespace Payroll.Service.Implementations
                         //Check if already have daily entry
                         EmployeeDailyPayroll dailyPayroll = _employeeDailyPayrollRepository.GetByDate(employee.EmployeeId, day);
 
+                        int workHours = Convert.ToInt32(_settingService.GetByKey(PAYROLL_REGULAR_HOURS));
+
                         //If null create a holiday pay
                         if (dailyPayroll == null)
                         {
@@ -182,7 +184,8 @@ namespace Payroll.Service.Implementations
                             {
                                 EmployeeId = employee.EmployeeId,
                                 Date = day,
-                                TotalPay = hourlyRate * WORK_HOURS
+                                TotalPay = hourlyRate * workHours,
+                                RateType = RateType.Regular
                             };
 
                             _employeeDailyPayrollRepository.Add(newDailyPayroll);
@@ -190,6 +193,12 @@ namespace Payroll.Service.Implementations
                     }
                 }             
             }
+        }
+
+        public IList<EmployeeDailyPayroll> GetByTypeAndDateRange(RateType rateType, DateTime dateFrom, DateTime dateTo)
+        {
+            dateTo = dateTo.AddDays(1);
+            return _employeeDailyPayrollRepository.GetByTypeAndDateRange(rateType, dateFrom, dateTo);
         }
     }
 }

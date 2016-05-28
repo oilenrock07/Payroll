@@ -19,5 +19,7 @@ namespace Payroll.Repository.Interface
 
         //Get last payroll end date
         DateTime? GetNextPayrollStartDate();
+
+        EmployeePayroll GetEmployeePayrollByDate(int employeeId, DateTime payrollStart, DateTime payrollEnd);
     }
 }
