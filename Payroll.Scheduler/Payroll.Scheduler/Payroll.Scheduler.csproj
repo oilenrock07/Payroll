@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,14 +58,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Schedules\AttendanceSchedule.cs" />
+    <Compile Include="Interfaces\ISchedule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedules\HolidaySchedule.cs" />
+    <Compile Include="ScheduleTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Payroll.Common\Payroll.Common.csproj">
+      <Project>{ba703de8-5f8e-4eed-a82e-ea38f6e959c7}</Project>
+      <Name>Payroll.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Payroll.Entities\Payroll.Entities.csproj">
       <Project>{b5b3e6b2-7613-4341-a351-729aef9bedf9}</Project>
       <Name>Payroll.Entities</Name>
@@ -81,6 +90,9 @@
       <Project>{96027240-d9de-44d2-8d61-1afb9963f88c}</Project>
       <Name>Payroll.Service</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

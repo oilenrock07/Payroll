@@ -23,6 +23,7 @@ namespace Payroll.Service.Implementations
 
         public IList<AttendanceLog> GetAttendanceLogsToBeProcessed(DateTime fromDate, DateTime toDate)
         {
+            toDate = toDate.AddDays(1);
             return _attendanceLogRepository.GetAttendanceLogs(fromDate, toDate, false);
         }
 

@@ -2,12 +2,11 @@
 using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Implementations;
-using Payroll.Service.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
+using Payroll.Scheduler.Interfaces;
+using Payroll.Schedules.Scheduler;
+using Payroll.Scheduler.Schedules;
 
 namespace Payroll.Scheduler
 {
@@ -15,20 +14,25 @@ namespace Payroll.Scheduler
     {
         static void Main(string[] args)
         {
+            var scheduleType = ConfigurationManager.AppSettings["ScheduleType"].ToString();
+
             Console.WriteLine("Initializing");
-            var payrollContext = new PayrollContext();
-            var databaseFactory = new DatabaseFactory(payrollContext);
-            var unitOfWork = new UnitOfWork(databaseFactory);
+           
+            ISchedule scheduler;
+            switch(scheduleType)
+            {
+                case ScheduleTypes.ATTENDANCE:
+                    scheduler = new AttendanceSchedule();
+                    break;
+                case ScheduleTypes.HOLIDAY:
+                    scheduler = new HolidaySchedule();
+                    break;
+                default:
+                    scheduler = null;
+                    break;
+            }
 
-            var empoyeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
-            var employeeWorkSchedule = new EmployeeWorkScheduleService(empoyeeWorkScheduleRepository);
-
-            var settingRepository = new SettingRepository(databaseFactory);
-            var holidayRepository = new HolidayRepository(databaseFactory);
-            var holidayService = new HolidayService(holidayRepository, settingRepository, unitOfWork);
-
-            Console.WriteLine("Checking holidays");
-            holidayService.CreateNewHolidays();
+            scheduler.Execute();
         }
     }
 }
