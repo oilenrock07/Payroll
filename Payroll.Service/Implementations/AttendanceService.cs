@@ -79,13 +79,18 @@ namespace Payroll.Service.Implementations
             }
         }
 
-        public int CreateWorkSchedulesByDateRange(DateTime fromDate, DateTime toDate)
+        public void CreateWorkSchedules()
+        {
+            IList<AttendanceLog> logs =
+                   new List<AttendanceLog>(_attendanceLogService.GetAttendanceLogsToBeProcessed());
+
+            CreateWorkSchedules(logs);
+        }
+
+        public int CreateWorkSchedules(IList<AttendanceLog> logs)
         {
             try
             {
-                IList<AttendanceLog> logs =
-                   new List<AttendanceLog>(_attendanceLogService.GetAttendanceLogsToBeProcessed(fromDate, toDate));
-
                 Attendance previousAttendance = null;
                 foreach (var attendanceLog in logs) {
                     _attendanceLogService.Update(attendanceLog);
@@ -183,5 +188,6 @@ namespace Payroll.Service.Implementations
             DateTime toDate = date.AddDays(1);
             return _attendanceRepository.GetAttendanceByDateRange(employeeId, date, toDate);
         }
+
     }
 }

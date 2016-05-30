@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Scheduler", "Payroll.Scheduler\Payroll.Scheduler.csproj", "{F61048CF-D2F0-43E6-8409-44AB421C4C76}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Entities", "..\Payroll.Entities\Payroll.Entities.csproj", "{B5B3E6B2-7613-4341-A351-729AEF9BEDF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Infrastructure", "..\Payroll.Infrastructure\Payroll.Infrastructure.csproj", "{B7AB72BA-4672-422D-9EC6-0364BBA3159A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payroll.Common", "..\Payroll.Common\Payroll.Common.csproj", "{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{B7AB72BA-4672-422D-9EC6-0364BBA3159A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7AB72BA-4672-422D-9EC6-0364BBA3159A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7AB72BA-4672-422D-9EC6-0364BBA3159A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA703DE8-5F8E-4EED-A82E-EA38F6E959C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,5 +10,6 @@ namespace Payroll.Repository.Interface
     {
         IList<AttendanceLog> GetAttendanceLogs(DateTime fromDate, DateTime toDate, bool isRecorded);
         IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate);
+        IList<AttendanceLog> GetAttendanceLogs(bool isRecorded);
     }
 }

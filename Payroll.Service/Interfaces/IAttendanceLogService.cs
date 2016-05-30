@@ -11,5 +11,7 @@ namespace Payroll.Service.Interfaces
     public interface IAttendanceLogService : IBaseEntityService<AttendanceLog>
     {
         IList<AttendanceLog> GetAttendanceLogsToBeProcessed(DateTime fromDate, DateTime toDate);
+
+        IList<AttendanceLog> GetAttendanceLogsToBeProcessed();
     }
 }

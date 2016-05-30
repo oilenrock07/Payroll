@@ -43,13 +43,9 @@ namespace Payroll.Schedules.Scheduler
 
         public void Execute()
         {
-            //Generate Attendance for current date
-            //Ideally per hour
-            var dateStart = DateTime.Now.AddDays(-1).TruncateTime();
-            var dateEnd = DateTime.Now.TruncateTime();
-
+            //Generate Attendance 
             Console.WriteLine("Generating Attendance...");
-            _attendanceService.CreateWorkSchedulesByDateRange(dateStart, dateEnd);
+            _attendanceService.CreateWorkSchedules();
         }
     }
 }

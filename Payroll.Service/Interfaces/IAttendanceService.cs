@@ -8,11 +8,13 @@ namespace Payroll.Service.Interfaces
 {
     public interface IAttendanceService
     {
+        void CreateWorkSchedules();
+
         int CreateWorkSchedule(int employeeId, AttendanceType attCode, DateTime datetime);
 
         int CreateWorkSchedule(int employeeId, DateTime clockIn, DateTime clockOut);
 
-        int CreateWorkSchedulesByDateRange(DateTime fromDate, DateTime toDate);
+        int CreateWorkSchedules(IList<AttendanceLog> logs);
 
         IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 

@@ -21,6 +21,11 @@ namespace Payroll.Service.Implementations
             _attendanceLogRepository = attendanceLogRepository;
         }
 
+        public IList<AttendanceLog> GetAttendanceLogsToBeProcessed()
+        {
+            return _attendanceLogRepository.GetAttendanceLogs(false);
+        }
+
         public IList<AttendanceLog> GetAttendanceLogsToBeProcessed(DateTime fromDate, DateTime toDate)
         {
             toDate = toDate.AddDays(1);

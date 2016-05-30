@@ -200,7 +200,7 @@ namespace Payroll.Test.Service
             var dateFrom = DateTime.Parse("2016-02-02 00:00:00");
             var dateTo = DateTime.Parse("2016-02-03 00:00:00");
 
-            attendanceService.CreateWorkSchedulesByDateRange(dateFrom, dateTo);
+            attendanceService.CreateWorkSchedules();
            // unitOfWork.Commit();
 
             var attendanceListEmployee1 = attendanceService.GetAttendanceByDateRange(employee1.EmployeeId, dateFrom, dateTo);
