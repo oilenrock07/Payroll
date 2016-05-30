@@ -10,6 +10,9 @@ namespace Payroll.Repository.Interface
         Attendance GetLastAttendance(int employeeId);
 
         IList<Attendance> GetAttendanceByDateRange(DateTime fromDate, DateTime toDate);
+
         IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
+
+        IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate, bool isHoursCounted);
     }
 }

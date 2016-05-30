@@ -67,28 +67,36 @@ namespace Payroll.Service.Implementations
                     //Get all employee attendance within date range
                         // Will not include attendance without clockout
                     IList<Attendance> attendanceList = _attendanceService
-                        .GetAttendanceByDate(employee.EmployeeId, day);
+                        .GetAttendanceForProcessing(employee.EmployeeId, day);
 
-                    //Compute hours
-                    foreach (var a in attendanceList)
-                    {
-                        attendance = a;
-
-                        //Initiate Variables
-                        initiateComputationVariables();
-
-                        //Computations
-                        computeAdvanceOT();
-                        computeRegular();
-                        computeOT();
-                        computeNightDifferential();    
-                    }
+                    ComputeEmployeeHours(attendanceList);
                 }
             }
 
             _unitOfWork.Commit();
 
             return 0;
+        }
+
+        public void ComputeEmployeeHours(IList<Attendance> attendanceList)
+        {
+            //Compute hours
+            foreach (var a in attendanceList)
+            {
+                attendance = a;
+
+                //Initiate Variables
+                initiateComputationVariables();
+
+                //Computations
+                computeAdvanceOT();
+                computeRegular();
+                computeOT();
+                computeNightDifferential();
+
+                _attendanceService.Update(a);
+                a.IsHoursCounted = true;
+            }
         }
 
         private void initiateComputationVariables()

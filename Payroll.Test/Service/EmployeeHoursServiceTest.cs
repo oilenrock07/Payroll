@@ -4,6 +4,7 @@ using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
+using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Implementations;
 using System;
@@ -17,9 +18,10 @@ namespace Payroll.Test.Service
     [TestClass]
     public class EmployeeHoursServiceTest
     {
-        EmployeeHoursService employeeHoursService;
-        Employee employee;
-        int paymentFrequencyId;
+        private EmployeeHoursService employeeHoursService;
+        private Employee employee;
+        private int paymentFrequencyId;
+        private IAttendanceRepository attendanceRepository;
 
         public void InitiateServiceAndTestData(List<Attendance> dataAttendance)
         {
@@ -29,7 +31,7 @@ namespace Payroll.Test.Service
 
             var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
             var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
-            var attendanceRepository = new AttendanceRepository(databaseFactory);
+            attendanceRepository = new AttendanceRepository(databaseFactory);
             var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
             var settingRepository = new SettingRepository(databaseFactory);
             var employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
@@ -190,6 +192,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
             Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
             Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
 
@@ -277,6 +285,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry3.EmployeeId, employeeHours[2].EmployeeId);
             Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
             Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -363,6 +377,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry3.EmployeeId, employeeHours[2].EmployeeId);
             Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
             Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -449,6 +469,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry3.EmployeeId, employeeHours[2].EmployeeId);
             Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
             Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -535,6 +561,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry3.EmployeeId, employeeHours[2].EmployeeId);
             Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
             Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -613,7 +645,10 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry3.EmployeeId, employeeHours[2].EmployeeId);
             Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
             Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
-    }
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+        }
 
         /*
           Advance OT covered by Night Differential
@@ -676,6 +711,9 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
             Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
             Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
         /*
@@ -779,6 +817,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry4.EmployeeId, employeeHours[3].EmployeeId);
             Assert.AreEqual(employeeHourEntry4.Hours, employeeHours[3].Hours);
             Assert.AreEqual(employeeHourEntry4.Date, employeeHours[3].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -906,6 +950,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry5.EmployeeId, employeeHours[4].EmployeeId);
             Assert.AreEqual(employeeHourEntry5.Hours, employeeHours[4].Hours);
             Assert.AreEqual(employeeHourEntry5.Date, employeeHours[4].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -1033,6 +1083,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry5.EmployeeId, employeeHours[4].EmployeeId);
             Assert.AreEqual(employeeHourEntry5.Hours, employeeHours[4].Hours);
             Assert.AreEqual(employeeHourEntry5.Date, employeeHours[4].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
 
@@ -1191,6 +1247,15 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry7.EmployeeId, employeeHours[6].EmployeeId);
             Assert.AreEqual(employeeHourEntry7.Hours, employeeHours[6].Hours);
             Assert.AreEqual(employeeHourEntry7.Date, employeeHours[6].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
+
+            var attendance3 = attendanceRepository.GetById(3);
+            Assert.AreEqual(attendance3.IsHoursCounted, true);
         }
 
         /*
@@ -1254,6 +1319,9 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
             Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
             Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
         /*
@@ -1317,6 +1385,9 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
             Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
             Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
         /*
@@ -1449,6 +1520,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry6.EmployeeId, employeeHours[5].EmployeeId);
             Assert.AreEqual(employeeHourEntry6.Hours, employeeHours[5].Hours);
             Assert.AreEqual(employeeHourEntry6.Date, employeeHours[5].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -1611,6 +1688,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry8.EmployeeId, employeeHours[7].EmployeeId);
             Assert.AreEqual(employeeHourEntry8.Hours, employeeHours[7].Hours);
             Assert.AreEqual(employeeHourEntry8.Date, employeeHours[7].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
         }
 
         /*
@@ -1737,6 +1820,15 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry5.EmployeeId, employeeHours[4].EmployeeId);
             Assert.AreEqual(employeeHourEntry5.Hours, employeeHours[4].Hours);
             Assert.AreEqual(employeeHourEntry5.Date, employeeHours[4].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
+
+            var attendance3 = attendanceRepository.GetById(3);
+            Assert.AreEqual(attendance3.IsHoursCounted, true);
         }
 
         /*
@@ -1863,6 +1955,15 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry5.EmployeeId, employeeHours[4].EmployeeId);
             Assert.AreEqual(employeeHourEntry5.Hours, employeeHours[4].Hours);
             Assert.AreEqual(employeeHourEntry5.Date, employeeHours[4].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            var attendance2 = attendanceRepository.GetById(2);
+            Assert.AreEqual(attendance2.IsHoursCounted, true);
+
+            var attendance3 = attendanceRepository.GetById(3);
+            Assert.AreEqual(attendance3.IsHoursCounted, true);
         }
 
         /*
@@ -1942,6 +2043,8 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
             Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
 
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
         /*
@@ -1991,6 +2094,8 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
             Assert.AreEqual(employeeHourEntry1.Date, employeeHours[0].Date);
 
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
         /*
@@ -2040,6 +2145,8 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
             Assert.AreEqual(employeeHourEntry1.Date, employeeHours[0].Date);
 
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
 
@@ -2089,6 +2196,9 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry1.EmployeeId, employeeHours[0].EmployeeId);
             Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
             Assert.AreEqual(employeeHourEntry1.Date, employeeHours[0].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
         /*
@@ -2161,6 +2271,9 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
             Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
             Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
         }
 
         /*
@@ -2209,6 +2322,10 @@ namespace Payroll.Test.Service
             Assert.AreEqual(employeeHourEntry1.EmployeeId, employeeHours[0].EmployeeId);
             Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
             Assert.AreEqual(employeeHourEntry1.Date, employeeHours[0].Date);
+
+            var attendance1 = attendanceRepository.GetById(1);
+            Assert.AreEqual(attendance1.IsHoursCounted, true);
+
         }
     }
 }

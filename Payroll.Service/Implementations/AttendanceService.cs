@@ -188,6 +188,11 @@ namespace Payroll.Service.Implementations
             DateTime toDate = date.AddDays(1);
             return _attendanceRepository.GetAttendanceByDateRange(employeeId, date, toDate);
         }
-
+        
+        public IList<Attendance> GetAttendanceForProcessing(int employeeId, DateTime date)
+        {
+            DateTime toDate = date.AddDays(1);
+            return _attendanceRepository.GetAttendanceByDateRange(employeeId, date, toDate, false);
+        }
     }
 }

@@ -19,19 +19,26 @@ namespace Payroll.Repository.Repositories
         public IList<Attendance> GetAttendanceByDateRange(DateTime fromDate, DateTime toDate)
         {
             toDate = toDate.AddDays(1).AddSeconds(-1);
-            return Find(a => (a.ClockIn >= fromDate && a.ClockIn <= toDate)).ToList();
+            return Find(a => a.IsActive && a.ClockIn >= fromDate && a.ClockIn <= toDate).ToList();
         }
 
         public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)
         {
-            return Find(a => a.EmployeeId == employeeId &&
+            return Find(a => a.IsActive && a.EmployeeId == employeeId &&
+                ((a.ClockIn >= fromDate && a.ClockIn < toDate) ||
+                    (a.ClockOut >= fromDate && a.ClockOut < toDate))).OrderBy(a => a.ClockIn).ToList();
+        }
+
+        public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate, bool isHoursCounted)
+        {
+            return Find(a => a.IsActive && a.EmployeeId == employeeId && a.IsHoursCounted == isHoursCounted &&
                 ((a.ClockIn >= fromDate && a.ClockIn < toDate) ||
                     (a.ClockOut >= fromDate && a.ClockOut < toDate))).OrderBy(a => a.ClockIn).ToList();
         }
 
         public Attendance GetLastAttendance(int employeeId)
         {
-            return Find(a => a.EmployeeId == employeeId)
+            return Find(a => a.IsActive && a.EmployeeId == employeeId)
                    .OrderByDescending(a => a.AttendanceId).Take(1).FirstOrDefault();
         }
     }

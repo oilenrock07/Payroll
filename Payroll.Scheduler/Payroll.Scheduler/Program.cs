@@ -27,6 +27,9 @@ namespace Payroll.Scheduler
                 case ScheduleTypes.HOLIDAY:
                     scheduler = new HolidaySchedule();
                     break;
+                case ScheduleTypes.EMPLOYEE_HOURS:
+                    scheduler = new EmployeeHoursSchedule();
+                    break;
                 default:
                     scheduler = null;
                     break;
