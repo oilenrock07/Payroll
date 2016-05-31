@@ -1,5 +1,7 @@
-﻿using Payroll.Entities.Contexts;
+﻿using Payroll.Common.Extension;
+using Payroll.Entities.Contexts;
 using Payroll.Entities.Enums;
+using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
@@ -16,31 +18,35 @@ namespace Payroll.Scheduler.Schedules
 {
     public class EmployeeHoursSchedule : ISchedule
     {
-        public readonly PayrollContext _payrollContext;
-        public readonly IDatabaseFactory _databaseFactory;
-        public readonly IUnitOfWork _unitOfWork;
+        private readonly PayrollContext _payrollContext;
+        private readonly IDatabaseFactory _databaseFactory;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public readonly IEmployeeRepository _employeeRepository;
-        public readonly IAttendanceRepository _attendanceRepository;
-        public readonly IAttendanceLogRepository _attendanceLogRepository;
-        public readonly ISettingRepository _settingRepository;
-        public readonly IEmployeeWorkScheduleRepository _employeeWorkScheduleRepository;
-        public readonly IEmployeeHoursRepository _employeeHoursRepository;
-        public readonly IEmployeeInfoRepository _employeeInfoRepository;
-        public readonly IEmployeePayrollRepository _employeePayrollRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IAttendanceRepository _attendanceRepository;
+        private readonly IAttendanceLogRepository _attendanceLogRepository;
+        private readonly ISettingRepository _settingRepository;
+        private readonly IEmployeeWorkScheduleRepository _employeeWorkScheduleRepository;
+        private readonly IEmployeeHoursRepository _employeeHoursRepository;
+        private readonly IEmployeeInfoRepository _employeeInfoRepository;
+        private readonly IEmployeePayrollRepository _employeePayrollRepository;
 
-        public readonly IEmployeeInfoService _employeeInfoService;
-        public readonly IAttendanceLogService _attendanceLogService;
-        public readonly IAttendanceService _attendanceService;
-        public readonly ISettingService _settingService;
-        public readonly IEmployeeWorkScheduleService _employeeWorkScheduleService;
-        public readonly IEmployeeHoursService _employeeHoursService;
-        public readonly IEmployeePayrollService _employeePayrollService;
+        private readonly IEmployeeInfoService _employeeInfoService;
+        private readonly IAttendanceLogService _attendanceLogService;
+        private readonly IAttendanceService _attendanceService;
+        private readonly ISettingService _settingService;
+        private readonly IEmployeeWorkScheduleService _employeeWorkScheduleService;
+        private readonly IEmployeeHoursService _employeeHoursService;
+        private readonly IEmployeePayrollService _employeePayrollService;
 
-        private readonly string PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
+        private const string PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
 
        public EmployeeHoursSchedule()
         {
+            _payrollContext = new PayrollContext();
+            _databaseFactory = new DatabaseFactory(_payrollContext);
+            _unitOfWork = new UnitOfWork(_databaseFactory);
+
             _employeeRepository = new EmployeeRepository(_databaseFactory, null);
             _attendanceRepository = new AttendanceRepository(_databaseFactory);
             _attendanceLogRepository = new AttendanceLogRepository(_databaseFactory, _employeeRepository);
@@ -65,14 +71,15 @@ namespace Payroll.Scheduler.Schedules
         public void Execute()
         {
             //Get payroll date range
-            FrequencyType frequency = (FrequencyType)Int32
+            var frequency = (FrequencyType)Int32
                 .Parse(_settingService.GetByKey(PAYROLL_FREQUENCY));
             var payrollStartDate = _employeePayrollService
-                .GetNextPayrollStartDate(frequency, DateTime.Now);
+                .GetNextPayrollStartDate(frequency, DateTime.Now).TruncateTime();
             var payrollEndDate = _employeePayrollService
-                .GetNextPayrollEndDate(frequency, payrollStartDate);
+                .GetNextPayrollEndDate(frequency, payrollStartDate).TruncateTime();
 
             //Compute employee hours
+            Console.WriteLine("Computing daily employee hours for date " + payrollStartDate + " to " + payrollEndDate);
             _employeeHoursService.GenerateEmployeeHours(payrollStartDate, payrollEndDate);
         }
     }

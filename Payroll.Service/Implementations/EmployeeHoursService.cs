@@ -61,16 +61,21 @@ namespace Payroll.Service.Implementations
             {
                 employeeWorkSchedule = _employeeWorkScheduleService.GetByEmployeeId(employee.EmployeeId);
 
-                foreach (DateTime d in DatetimeExtension.EachDay(fromDate, toDate))
+                //Will not compute if work schedule is null
+                if (employeeWorkSchedule != null)
                 {
-                    day = d;
-                    //Get all employee attendance within date range
-                        // Will not include attendance without clockout
-                    IList<Attendance> attendanceList = _attendanceService
-                        .GetAttendanceForProcessing(employee.EmployeeId, day);
+                    foreach (DateTime d in DatetimeExtension.EachDay(fromDate, toDate))
+                    {
+                        day = d;
+                        //Get all employee attendance within date range
+                            // Will not include attendance without clockout
+                        IList<Attendance> attendanceList = _attendanceService
+                            .GetAttendanceForProcessing(employee.EmployeeId, day);
 
-                    ComputeEmployeeHours(attendanceList);
+                        ComputeEmployeeHours(attendanceList);
+                    }
                 }
+                
             }
 
             _unitOfWork.Commit();
