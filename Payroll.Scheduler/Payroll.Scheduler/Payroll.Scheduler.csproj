@@ -63,6 +63,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedules\EmployeeHoursSchedule.cs" />
+    <Compile Include="Schedules\EmployeePayrollSchedule.cs" />
     <Compile Include="Schedules\HolidaySchedule.cs" />
     <Compile Include="ScheduleTypes.cs" />
   </ItemGroup>

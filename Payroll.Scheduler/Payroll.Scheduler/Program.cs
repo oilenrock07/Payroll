@@ -30,6 +30,9 @@ namespace Payroll.Scheduler
                 case ScheduleTypes.EMPLOYEE_HOURS:
                     scheduler = new EmployeeHoursSchedule();
                     break;
+                case ScheduleTypes.PAYROLL:
+                    scheduler = new EmployeePayrollSchedule();
+                    break;
                 default:
                     scheduler = null;
                     break;
