@@ -194,12 +194,11 @@ namespace Payroll.Service.Implementations
                         EmployeeDailyPayroll dailyPayroll = _employeeDailyPayrollRepository.GetByDate(employee.EmployeeId, day);
 
                         int workHours = Convert.ToInt32(_settingService.GetByKey(PAYROLL_REGULAR_HOURS));
+                        var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
 
                         //If null create a holiday pay
                         if (dailyPayroll == null)
                         {
-                            var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
-
                             EmployeeDailyPayroll newDailyPayroll = new EmployeeDailyPayroll
                             {
                                 EmployeeId = employee.EmployeeId,
@@ -209,6 +208,29 @@ namespace Payroll.Service.Implementations
                             };
 
                             _employeeDailyPayrollRepository.Add(newDailyPayroll);
+                        }
+                        else
+                        {
+                            //If existing create new for remaining unpaid hours
+                                //if total hours worked is less than regular working hours
+                            //Get total hours worked
+                            IList<TotalEmployeeHours> employeeHours =
+                                _totalEmployeeHoursService.GetByEmployeeDateAndType(employee.EmployeeId, day, day);
+                            var totalEmployeeHours = employeeHours.Sum(h => h.Hours);
+                            if (workHours < totalEmployeeHours)
+                            {
+                                var remainingUnpaidHours = 
+                                    Convert.ToDecimal(workHours - totalEmployeeHours);
+
+                                EmployeeDailyPayroll newDailyPayroll = new EmployeeDailyPayroll
+                                {
+                                    EmployeeId = employee.EmployeeId,
+                                    Date = day,
+                                    TotalPay = hourlyRate * remainingUnpaidHours,
+                                    RateType = RateType.Regular
+                                };
+                                _employeeDailyPayrollRepository.Add(newDailyPayroll);
+                            }
                         }
                     }
                 }             
