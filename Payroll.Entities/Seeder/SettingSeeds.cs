@@ -15,12 +15,12 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "SCHEDULE_GRACE_PERIOD_MINUTES", Value = "5", Description = "Grace period in minutes", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_MINIMUM_OT_MINUTES", Value = "5", Description = "Minimum OT in minutes", Category = "SCHEDULE" },
 
-                new Setting { SettingKey = "RATE_OT", Value = "0.25", Description = "OT Rate", Category = "RATE" },
+                new Setting { SettingKey = "RATE_OT", Value = "1.25", Description = "OT Rate", Category = "RATE" },
                 new Setting { SettingKey = "RATE_NIGHTDIF", Value = "0.8", Description = "Night Dif", Category = "RATE" },
-                new Setting { SettingKey = "RATE_REST_DAY", Value = "0.3", Description = "Rest Day", Category = "RATE" },
-                new Setting { SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "0.3", Description = "Special Holiday", Category = "RATE" },
-                new Setting { SettingKey = "RATE_HOLIDAY_REGULAR", Value = "1", Description = "Regular Holiday", Category = "RATE" },
-                new Setting { SettingKey = "RATE_OT_HOLIDAY", Value = "0.3", Description = "OT Rate Holiday", Category = "RATE" },
+                new Setting { SettingKey = "RATE_REST_DAY", Value = "1.3", Description = "Rest Day", Category = "RATE" },
+                new Setting { SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "1.3", Description = "Special Holiday", Category = "RATE" },
+                new Setting { SettingKey = "RATE_HOLIDAY_REGULAR", Value = "2", Description = "Regular Holiday", Category = "RATE" },
+                new Setting { SettingKey = "RATE_OT_HOLIDAY", Value = "1.3", Description = "OT Rate Holiday", Category = "RATE" },
 
                 //Company Info
                 new Setting { SettingKey = "COMPANY_NAME", Value = "Lychee Co", Description = "Company Name", Category = "COMPANY_INFO" },

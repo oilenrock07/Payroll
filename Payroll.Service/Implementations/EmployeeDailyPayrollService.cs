@@ -212,12 +212,12 @@ namespace Payroll.Service.Implementations
                         else
                         {
                             //If existing create new for remaining unpaid hours
-                                //if total hours worked is less than regular working hours
+                            //if total hours worked is less than regular working hours
                             //Get total hours worked
                             IList<TotalEmployeeHours> employeeHours =
-                                _totalEmployeeHoursService.GetByEmployeeDateAndType(employee.EmployeeId, day, day);
+                                _totalEmployeeHoursService.GetByTypeAndDateRange(employee.EmployeeId, null, payrollStartDate, payrollEndDate);
                             var totalEmployeeHours = employeeHours.Sum(h => h.Hours);
-                            if (workHours < totalEmployeeHours)
+                            if (totalEmployeeHours < workHours)
                             {
                                 var remainingUnpaidHours = 
                                     Convert.ToDecimal(workHours - totalEmployeeHours);

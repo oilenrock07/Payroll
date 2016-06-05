@@ -36,5 +36,12 @@ namespace Payroll.Repository.Repositories
                 eh.Type == rateType && eh.Date >= payrollStartDate && eh.Date < payrollEndDate)
                     .OrderByDescending(eh => eh.Date).ToList();
         }
+
+        public IList<TotalEmployeeHours> GetByDateRange(int employeeId, DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            return Find(eh => eh.IsActive && eh.EmployeeId == employeeId &&
+                eh.Date >= payrollStartDate && eh.Date < payrollEndDate)
+                    .OrderByDescending(eh => eh.Date).ToList();
+        }
     }
 }
