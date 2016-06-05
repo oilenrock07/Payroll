@@ -13,7 +13,7 @@ namespace Payroll.Entities.Payroll
     [Table("employee_hours")]
     public class EmployeeHours : BaseEntity
     {
-        public EmployeeHours()
+        public EmployeeHours() : base()
         {
             IsIncludedInTotal = false;
         }

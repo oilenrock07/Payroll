@@ -143,6 +143,7 @@
     <Compile Include="Seeder\TaxSeeds.cs" />
     <Compile Include="Seeder\UserRoleSeeds.cs" />
     <Compile Include="Seeder\UserSeeds.cs" />
+    <Compile Include="Seeder\WorkScheduleSeeds.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Tax.cs" />
     <Compile Include="Users\Role.cs" />

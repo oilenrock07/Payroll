@@ -9,7 +9,7 @@ namespace Payroll.Entities
     [Table("employee_info_history")]
     public class EmployeeInfoHistory : BaseEntity
     {
-        public EmployeeInfoHistory()
+        public EmployeeInfoHistory() : base()
         {
             Dependents = 0;
         }

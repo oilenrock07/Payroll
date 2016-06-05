@@ -44,6 +44,7 @@ namespace Payroll.Entities.Migrations
             context.Users.AddOrUpdate(d => d.Id, new UserSeeds().GetDefaultSeeds().ToArray());
             context.Roles.AddOrUpdate(d => d.Id, new RoleSeeds().GetDefaultSeeds().ToArray());
             context.UserRoles.AddOrUpdate(d => d.UserRoleId, new UserRoleSeeds().GetDefaultSeeds().ToArray());
+            context.WorkSchedules.AddOrUpdate(w => w.WorkScheduleId, new WorkScheduleSeeds().GetDefaultSeeds().ToArray());
         }
     }
 }

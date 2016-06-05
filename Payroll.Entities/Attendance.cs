@@ -8,7 +8,7 @@ namespace Payroll.Entities
     [Table("attendance")]
     public class Attendance : BaseEntity
     {
-        public Attendance()
+        public Attendance() : base()
         {
             IsHoursCounted = false;
         }

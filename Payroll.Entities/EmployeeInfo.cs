@@ -9,7 +9,8 @@ namespace Payroll.Entities
     [Table("employee_info")]
     public class EmployeeInfo : BaseEntity
     {
-        public EmployeeInfo(){
+        public EmployeeInfo() : base()
+        {
             Dependents = 0;
         }
 

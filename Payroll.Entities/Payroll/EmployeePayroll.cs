@@ -8,7 +8,7 @@ namespace Payroll.Entities.Payroll
     [Table("payroll")]
     public class EmployeePayroll : BaseEntity
     {
-        public EmployeePayroll(){
+        public EmployeePayroll() : base(){
             TotalNet = 0;
             TotalDeduction = 0;
             TotalAdjustment = 0;

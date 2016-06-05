@@ -7,7 +7,7 @@ namespace Payroll.Entities.Payroll
     [Table("deduction")]
     public class Deduction : BaseEntity
     {
-        public Deduction()
+        public Deduction() : base()
         {
             IsCustomizable = true;
         }
