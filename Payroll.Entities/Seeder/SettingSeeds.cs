@@ -20,6 +20,7 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "RATE_REST_DAY", Value = "0.3", Description = "Rest Day", Category = "RATE" },
                 new Setting { SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "0.3", Description = "Special Holiday", Category = "RATE" },
                 new Setting { SettingKey = "RATE_HOLIDAY_REGULAR", Value = "1", Description = "Regular Holiday", Category = "RATE" },
+                new Setting { SettingKey = "RATE_OT_HOLIDAY", Value = "0.3", Description = "OT Rate Holiday", Category = "RATE" },
 
                 //Company Info
                 new Setting { SettingKey = "COMPANY_NAME", Value = "Lychee Co", Description = "Company Name", Category = "COMPANY_INFO" },
@@ -45,7 +46,8 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "PAYROLL_WEEK_END", Value = "2", Description = "Payroll Week End", Category = "PAYROLL_SCHEDULE"},
                 new Setting { SettingKey = "PAYROLL_REGULAR_HOURS", Value = "8", Description = "Payroll Total Regular Hours", Category = "PAYROLL_SCHEDULE"},
                 new Setting { SettingKey = "PAYROLL_TOTAL_HOURS", Value = "10", Description = "Payroll Total Hours", Category = "PAYROLL_SCHEDULE"},
- 
+                new Setting { SettingKey = "PAYROLL_IS_SPHOLIDAY_WITH_PAY", Value = "0", Description = "Is Specia holiday with pay", Category = "PAYROLL_SCHEDULE"},
+                
                 //Adjustments
                 new Setting { SettingKey = "ALLOWANCE_TOTAL_DAYS", Value = "26", Description = "Allowance total number of working days monthly", Category = "PAYROLL_ADJUSTMENTS"},
                 new Setting { SettingKey = "ALLOWANCE_WEEK_SCHEDULE", Value = "1", Description = "Allowance week schedule", Category = "PAYROLL_ADJUSTMENTS"},

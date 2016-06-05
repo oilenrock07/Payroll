@@ -27,12 +27,14 @@ namespace Payroll.Service.Implementations
 
         private IEmployeeDailyPayrollRepository _employeeDailyPayrollRepository;
 
-        private readonly String RATE_REST_DAY = "RATE_REST_DAY";
-        private readonly String RATE_OT = "RATE_OT";
-        private readonly String RATE_NIGHTDIF = "RATE_NIGHTDIF";
-        private readonly String RATE_HOLIDAY_SPECIAL = "RATE_HOLIDAY_SPECIAL";
-        private readonly String RATE_HOLIDAY_REGULAR = "RATE_HOLIDAY_REGULAR";
-        private readonly String PAYROLL_REGULAR_HOURS = "PAYROLL_REGULAR_HOURS";
+        private const String RATE_REST_DAY = "RATE_REST_DAY";
+        private const String RATE_OT = "RATE_OT";
+        private const String RATE_NIGHTDIF = "RATE_NIGHTDIF";
+        private const String RATE_HOLIDAY_SPECIAL = "RATE_HOLIDAY_SPECIAL";
+        private const String RATE_HOLIDAY_REGULAR = "RATE_HOLIDAY_REGULAR";
+        private const String RATE_OT_HOLIDAY = "RATE_OT_HOLIDAY";
+        private const String PAYROLL_REGULAR_HOURS = "PAYROLL_REGULAR_HOURS";
+        private const String PAYROLL_IS_SPHOLIDAY_WITH_PAY = "PAYROLL_IS_SPHOLIDAY_WITH_PAY";
 
         public EmployeeDailyPayrollService(IUnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService, 
@@ -58,7 +60,8 @@ namespace Payroll.Service.Implementations
             Double OTRate = Double.Parse(_settingService.GetByKey(RATE_OT));
             Double nightDiffRate = Double.Parse(_settingService.GetByKey(RATE_NIGHTDIF));
             Double holidayRegularRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_REGULAR));
-            Double holidateSpecialRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL));
+            Double holidaySpecialRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL));
+            Double OTRateHoliday = Double.Parse(_settingService.GetByKey(RATE_OT_HOLIDAY));
 
             foreach (TotalEmployeeHours totalHours in totalEmployeeHours)
             {
@@ -80,7 +83,7 @@ namespace Payroll.Service.Implementations
                     //Check if rest day
                     if (date.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
                     {
-                        rateMultiplier += restDayRate;
+                        rateMultiplier *= restDayRate;
                     }
 
                     Holiday holiday = _holidayService.GetHoliday(date);
@@ -89,17 +92,25 @@ namespace Payroll.Service.Implementations
                     {
                         if (holiday.IsRegularHoliday)
                         {
-                            rateMultiplier += holidayRegularRate;
+                            rateMultiplier *= holidayRegularRate;
                         }
                         else
                         {
-                            rateMultiplier += holidateSpecialRate;
+                            rateMultiplier *= holidaySpecialRate;
                         }
                     }
                     //if OT
                     if (totalHours.Type == RateType.OverTime)
                     {
-                        rateMultiplier += OTRate;
+                        //If holiday use holiday ot rate
+                        if (holiday != null)
+                        {
+                            rateMultiplier *= OTRateHoliday;
+                        }
+                        else
+                        {
+                            rateMultiplier *= OTRate;
+                        }
                     }
 
                     decimal totalPayment = 0;
@@ -130,15 +141,13 @@ namespace Payroll.Service.Implementations
 
                     //Save
                     _employeeDailyPayrollRepository.Add(employeeDailySalary);
-                    // _unitOfWork.Commit();
                 }
-
-                _unitOfWork.Commit();
-
-                //Generate holiday pays
-                GenerateEmployeeHolidayPay(dateFrom, dateTo);
-                _unitOfWork.Commit();
             }
+            _unitOfWork.Commit();
+
+            //Generate holiday pays
+            GenerateEmployeeHolidayPay(dateFrom, dateTo);
+            _unitOfWork.Commit();
         }
 
         public IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo)
@@ -156,8 +165,9 @@ namespace Payroll.Service.Implementations
             {
                 //Check if holiday
                 var holiday = _holidayService.GetHoliday(day);
+                bool isSpecialHolidayPaid = Convert.ToInt32(_settingService.GetByKey(PAYROLL_IS_SPHOLIDAY_WITH_PAY)) > 0;
 
-                if (holiday != null)
+                if (holiday != null && (holiday.IsRegularHoliday || isSpecialHolidayPaid))
                 {
                     foreach (EmployeeInfo employee in employees)
                     {
@@ -171,6 +181,11 @@ namespace Payroll.Service.Implementations
                                 //Don't proceed
                                 return;
                             }
+                        }
+                        else
+                        {
+                            //No work schedule, no holiday pay
+                            return;
                         }
 
                         //If with schedule on this date, generate holiday pay
