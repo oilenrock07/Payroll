@@ -66,74 +66,79 @@ namespace Payroll.Service.Implementations
 
                 var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employeeInfo);
 
-                WorkSchedule workSchedule = 
-                    _employeeWorkScheduleService.GetByEmployeeId(totalHours.EmployeeId).WorkSchedule;
-
-                DateTime date = totalHours.Date;
-
-                Double rateMultiplier = 1;
-
-                //Check if rest day
-                if (date.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
+                var employeeWorkSchedule =
+                   _employeeWorkScheduleService.GetByEmployeeId(totalHours.EmployeeId);
+                //No work schedule, no computation
+                if (employeeWorkSchedule != null)
                 {
-                    rateMultiplier += restDayRate;
-                }
+                    var workSchedule = employeeWorkSchedule.WorkSchedule;
 
-                Holiday holiday = _holidayService.GetHoliday(date);
-                //Check if holiday 
-                if (holiday != null)
-                {
-                    if (holiday.IsRegularHoliday)
+                    DateTime date = totalHours.Date;
+
+                    Double rateMultiplier = 1;
+
+                    //Check if rest day
+                    if (date.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
                     {
-                        rateMultiplier += holidayRegularRate;
+                        rateMultiplier += restDayRate;
+                    }
+
+                    Holiday holiday = _holidayService.GetHoliday(date);
+                    //Check if holiday 
+                    if (holiday != null)
+                    {
+                        if (holiday.IsRegularHoliday)
+                        {
+                            rateMultiplier += holidayRegularRate;
+                        }
+                        else
+                        {
+                            rateMultiplier += holidateSpecialRate;
+                        }
+                    }
+                    //if OT
+                    if (totalHours.Type == RateType.OverTime)
+                    {
+                        rateMultiplier += OTRate;
+                    }
+
+                    decimal totalPayment = 0;
+
+                    //if NightDif
+                    if (totalHours.Type == RateType.NightDifferential)
+                    {
+                        //rateMultiplier += nightDiffRate;
+                        if (rateMultiplier > 1)
+                        {
+                            totalPayment = (((decimal)(totalHours.Hours * (rateMultiplier - 1))) * hourlyRate);
+                        }
+                        totalPayment += (decimal)(nightDiffRate * totalHours.Hours);
                     }
                     else
                     {
-                        rateMultiplier += holidateSpecialRate;
+                        totalPayment = ((decimal)(totalHours.Hours * rateMultiplier)) * hourlyRate;
                     }
-                }
-                //if OT
-                if (totalHours.Type == RateType.OverTime)
-                {
-                    rateMultiplier += OTRate;
-                }
 
-                decimal totalPayment = 0;
-
-                //if NightDif
-                if (totalHours.Type == RateType.NightDifferential)
-                {
-                    //rateMultiplier += nightDiffRate;
-                    if (rateMultiplier > 1)
+                    var employeeDailySalary = new EmployeeDailyPayroll
                     {
-                        totalPayment = (((decimal)(totalHours.Hours * (rateMultiplier - 1))) * hourlyRate);
-                    }
-                    totalPayment += (decimal)(nightDiffRate * totalHours.Hours);
-                }
-                else
-                {
-                    totalPayment = ((decimal)(totalHours.Hours * rateMultiplier)) * hourlyRate;
+                        EmployeeId = totalHours.EmployeeId,
+                        Date = totalHours.Date,
+                        TotalPay = totalPayment,
+                        TotalEmployeeHoursId = totalHours.TotalEmployeeHoursId,
+                        RateType = totalHours.Type
+                    };
+
+                    //Save
+                    _employeeDailyPayrollRepository.Add(employeeDailySalary);
+                    // _unitOfWork.Commit();
                 }
 
-                var employeeDailySalary = new EmployeeDailyPayroll
-                {
-                    EmployeeId = totalHours.EmployeeId,
-                    Date = totalHours.Date,
-                    TotalPay = totalPayment,
-                    TotalEmployeeHoursId = totalHours.TotalEmployeeHoursId,
-                    RateType = totalHours.Type
-                };
+                _unitOfWork.Commit();
 
-                //Save
-                _employeeDailyPayrollRepository.Add(employeeDailySalary);
-               // _unitOfWork.Commit();
+                //Generate holiday pays
+                GenerateEmployeeHolidayPay(dateFrom, dateTo);
+                _unitOfWork.Commit();
             }
-
-            _unitOfWork.Commit();
-
-            //Generate holiday pays
-            GenerateEmployeeHolidayPay(dateFrom, dateTo);
-            _unitOfWork.Commit();
         }
 
         public IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo)
