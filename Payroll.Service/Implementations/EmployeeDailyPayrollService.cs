@@ -118,12 +118,12 @@ namespace Payroll.Service.Implementations
                     //if NightDif
                     if (totalHours.Type == RateType.NightDifferential)
                     {
-                        //rateMultiplier += nightDiffRate;
-                        if (rateMultiplier > 1)
+                        //rateMultiplier *= nightDiffRate;
+                        /*if (rateMultiplier > 1)
                         {
-                            totalPayment = (((decimal)(totalHours.Hours * (rateMultiplier - 1))) * hourlyRate);
-                        }
-                        totalPayment += (decimal)(nightDiffRate * totalHours.Hours);
+                            totalPayment = ((decimal)(totalHours.Hours * (rateMultiplier - 1)) * hourlyRate);
+                        }*/
+                        totalPayment += (decimal)(nightDiffRate * totalHours.Hours * rateMultiplier );
                     }
                     else
                     {
