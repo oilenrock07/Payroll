@@ -21,6 +21,7 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "1.3", Description = "Special Holiday", Category = "RATE" },
                 new Setting { SettingKey = "RATE_HOLIDAY_REGULAR", Value = "2", Description = "Regular Holiday", Category = "RATE" },
                 new Setting { SettingKey = "RATE_OT_HOLIDAY", Value = "1.3", Description = "OT Rate Holiday", Category = "RATE" },
+                new Setting { SettingKey = "RATE_HOLIDAY_SPECIAL_REST_DAY", Value = "1.5", Description = "OT Rate Special Holiday Rest Day", Category = "RATE" },
 
                 //Company Info
                 new Setting { SettingKey = "COMPANY_NAME", Value = "Lychee Co", Description = "Company Name", Category = "COMPANY_INFO" },

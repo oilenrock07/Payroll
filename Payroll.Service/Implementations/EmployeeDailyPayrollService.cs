@@ -35,6 +35,7 @@ namespace Payroll.Service.Implementations
         private const String RATE_OT_HOLIDAY = "RATE_OT_HOLIDAY";
         private const String PAYROLL_REGULAR_HOURS = "PAYROLL_REGULAR_HOURS";
         private const String PAYROLL_IS_SPHOLIDAY_WITH_PAY = "PAYROLL_IS_SPHOLIDAY_WITH_PAY";
+        private const String RATE_HOLIDAY_SPECIAL_REST_DAY = "RATE_HOLIDAY_SPECIAL_REST_DAY";
 
         public EmployeeDailyPayrollService(IUnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService, 
@@ -62,6 +63,7 @@ namespace Payroll.Service.Implementations
             Double holidayRegularRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_REGULAR));
             Double holidaySpecialRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL));
             Double OTRateHoliday = Double.Parse(_settingService.GetByKey(RATE_OT_HOLIDAY));
+            Double holidaySpecialRestDayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL_REST_DAY));
 
             foreach (TotalEmployeeHours totalHours in totalEmployeeHours)
             {
@@ -74,19 +76,21 @@ namespace Payroll.Service.Implementations
                 //No work schedule, no computation
                 if (employeeWorkSchedule != null)
                 {
-                    var workSchedule = employeeWorkSchedule.WorkSchedule;
-
                     DateTime date = totalHours.Date;
-
                     Double rateMultiplier = 1;
 
-                    //Check if rest day
-                    if (date.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
+                    var workSchedule = employeeWorkSchedule.WorkSchedule;
+                    var isRestDay = date.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd);
+                    Holiday holiday = _holidayService.GetHoliday(date);
+
+                    //Check if rest day and not special holiday
+                    if (isRestDay &&
+                        !(holiday != null && !holiday.IsRegularHoliday))
                     {
                         rateMultiplier *= restDayRate;
                     }
 
-                    Holiday holiday = _holidayService.GetHoliday(date);
+                   
                     //Check if holiday 
                     if (holiday != null)
                     {
@@ -96,7 +100,14 @@ namespace Payroll.Service.Implementations
                         }
                         else
                         {
-                            rateMultiplier *= holidaySpecialRate;
+                            if (isRestDay)
+                            {
+                                rateMultiplier *= holidaySpecialRestDayRate;
+                            }
+                            else
+                            {
+                                rateMultiplier *= holidaySpecialRate;
+                            }
                         }
                     }
                     //if OT
