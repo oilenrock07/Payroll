@@ -230,6 +230,8 @@
     <Compile Include="Models\Maintenance\EmployeeMachineViewModel.cs" />
     <Compile Include="Models\Maintenance\LoanViewModel.cs" />
     <Compile Include="Models\Maintenance\PaymentFrequencyViewModel.cs" />
+    <Compile Include="Models\Payroll\PayrollListViewModel.cs" />
+    <Compile Include="Models\Payroll\PayrollSearchViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ErrorMessages.Designer.cs">
@@ -363,6 +365,7 @@
     <Content Include="Views\Attendance\EditAttendance.cshtml" />
     <Content Include="Views\Shared\_EmployeeTypeAhead.cshtml" />
     <Content Include="Views\Employee\EditEmployeeLoan.cshtml" />
+    <Content Include="Views\Payroll\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

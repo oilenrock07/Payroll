@@ -35,11 +35,12 @@
                             </ul>
                         </li>
 
-                        if (User.IsInRole("Admin"))
+                        if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                         {
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Payroll <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Search Payroll", "Search", "Payroll")</li>
                                     <li>@Html.ActionLink("Generate Payroll", "Index", "Payroll")</li>
                                 </ul>
                             </li>

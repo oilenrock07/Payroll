@@ -97,12 +97,34 @@ namespace Payroll.App_Start
             kernel.Bind<IUserRepository>().To<UserRepository>().InRequestScope();
             kernel.Bind<IEmployeeMachineRepository>().To<EmployeeMachineRepository>().InRequestScope();
             kernel.Bind<IEmployeePayrollRepository>().To<EmployeePayrollRepository>().InRequestScope();
-             
+            kernel.Bind<ITotalEmployeeHoursRepository>().To<TotalEmployeeHoursRepository>().InRequestScope();
+            kernel.Bind<IEmployeeHoursRepository>().To<EmployeeHoursRepository>().InRequestScope();
+            kernel.Bind<IEmployeeWorkScheduleRepository>().To<EmployeeWorkScheduleRepository>().InRequestScope();
+            kernel.Bind<IEmployeeDailyPayrollRepository>().To<EmployeeDailyPayrollRepository>().InRequestScope();
+            kernel.Bind<IEmployeeDeductionRepository>().To<EmployeeDeductionRepository>().InRequestScope();
+            kernel.Bind<IDeductionRepository>().To<DeductionRepository>().InRequestScope();
+            kernel.Bind<IEmployeePayrollDeductionRepository>().To<EmployeePayrollDeductionRepository>().InRequestScope();
+            
             //Service
             kernel.Bind<IUserRoleService>().To<UserRoleService>().InRequestScope();
             kernel.Bind<IWebService>().To<WebService>().InRequestScope();
             kernel.Bind<IEmployeeService>().To<EmployeeService>().InRequestScope();
             kernel.Bind<IEmployeeMachineService>().To<EmployeeMachineService>().InRequestScope();
+            kernel.Bind<IEmployeePayrollService>().To<EmployeePayrollService>().InRequestScope();
+            kernel.Bind<IEmployeeDailyPayrollService>().To<EmployeeDailyPayrollService>().InRequestScope();
+            kernel.Bind<IEmployeePayrollDeductionService>().To<EmployeePayrollDeductionService>().InRequestScope();
+            kernel.Bind<ISettingService>().To<SettingService>().InRequestScope();
+            kernel.Bind<IEmployeeInfoService>().To<EmployeeInfoService>().InRequestScope();
+            kernel.Bind<ITotalEmployeeHoursService>().To<TotalEmployeeHoursService>().InRequestScope();
+            kernel.Bind<IEmployeeHoursService>().To<EmployeeHoursService>().InRequestScope();
+            kernel.Bind<IEmployeeWorkScheduleService>().To<EmployeeWorkScheduleService>().InRequestScope();
+            kernel.Bind<IAttendanceService>().To<AttendanceService>().InRequestScope();
+            kernel.Bind<IAttendanceLogService>().To<AttendanceLogService>().InRequestScope();
+            kernel.Bind<IHolidayService>().To<HolidayService>().InRequestScope();
+            kernel.Bind<IEmployeeSalaryService>().To<EmployeeSalaryService>().InRequestScope();
+            kernel.Bind<IEmployeeDeductionService>().To<EmployeeDeductionService>().InRequestScope();
+            kernel.Bind<IDeductionService>().To<DeductionService>().InRequestScope();
+            
             //Caching
             //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();
         }        

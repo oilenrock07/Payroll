@@ -285,6 +285,36 @@ namespace Payroll.Service.Implementations
                     }
                 }
             }
-        } 
+        }
+
+        public virtual IEnumerable<string> GetPayrollDates(int months)
+        {
+            var dates = new List<string>();
+            var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
+            var lastPayrollDate = nextPayrollDate != null ? nextPayrollDate.Value.AddDays(-1) : DateTime.MinValue;
+
+            var lastPayroll = lastPayrollDate.AddMonths(-months);
+            var frequency = (FrequencyType)Convert.ToInt16(_settingService.GetByKey("PAYROLL_FREQUENCY"));
+
+            while (lastPayrollDate >= lastPayroll)
+            {
+                var tempDate = new DateTime(lastPayrollDate.Year, lastPayrollDate.Month, lastPayrollDate.Day);
+                
+                if (frequency == FrequencyType.Weekly)
+                    tempDate = tempDate.AddDays(-7);
+                else if (frequency == FrequencyType.Monthly)
+                    tempDate = tempDate.AddMonths(-1);
+                else if (frequency == FrequencyType.Daily)
+                    tempDate = tempDate.AddDays(-1);
+                else //fallback to monthly
+                    tempDate = tempDate.AddMonths(-1);
+
+                var date = String.Format("{0} to {1}", tempDate.ToString("MMMM dd yyyy"), lastPayrollDate.ToString("MMMM dd yyyy"));
+                lastPayrollDate = tempDate;
+                dates.Add(date);
+            }
+
+            return dates;
+        }
     }
 }

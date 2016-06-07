@@ -746,5 +746,14 @@ namespace Payroll.Test.Service
             Assert.AreEqual(890.12M, payrollList[1].TaxableIncome);
             Assert.AreEqual(0, decimal.Round(payrollList[1].TotalAllowance, 2));
         }
+
+        [TestMethod]
+        public void GetPayrollDatesTest()
+        {
+            Initialize();
+            //get dates for 6 months
+            var dates = _employeePayrollService.GetPayrollDates(6);
+            Assert.IsTrue(dates.Any());
+        }
     }
 }
