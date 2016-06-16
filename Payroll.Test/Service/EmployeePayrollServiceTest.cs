@@ -80,12 +80,12 @@ namespace Payroll.Test.Service
             DateTime date = DateTime.Parse("04/27/2016");
 
             DateTime payrollStartDate = _employeePayrollService
-                .GetNextPayrollStartDate(frequency, date);
+                .GetNextPayrollStartDate(date);
 
             Assert.AreEqual(DateTime.Parse("04/20/2016"), payrollStartDate);
 
             DateTime payrollEndDate = _employeePayrollService
-                .GetNextPayrollEndDate(frequency, payrollStartDate);
+                .GetNextPayrollEndDate(payrollStartDate);
 
             Assert.AreEqual(DateTime.Parse("04/26/2016"), payrollEndDate);
         }
@@ -100,12 +100,12 @@ namespace Payroll.Test.Service
             DateTime date = DateTime.Parse("05/17/2016");
 
             DateTime payrollStartDate = _employeePayrollService
-                .GetNextPayrollStartDate(frequency, date);
+                .GetNextPayrollStartDate(date);
 
             Assert.AreEqual(DateTime.Parse("05/11/2016"), payrollStartDate);
 
             DateTime payrollEndDate = _employeePayrollService
-              .GetNextPayrollEndDate(frequency, payrollStartDate);
+              .GetNextPayrollEndDate(payrollStartDate);
 
             Assert.AreEqual(DateTime.Parse("05/17/2016"), payrollEndDate);
         }
@@ -142,12 +142,12 @@ namespace Payroll.Test.Service
             var frequency = FrequencyType.Weekly;
 
             DateTime payrollStartDate = _employeePayrollService
-                .GetNextPayrollStartDate(frequency, null);
+                .GetNextPayrollStartDate();
 
             Assert.AreEqual(DateTime.Parse("05/18/2016"), payrollStartDate);
 
             DateTime payrollEndDate = _employeePayrollService
-                .GetNextPayrollEndDate(frequency, payrollStartDate);
+                .GetNextPayrollEndDate(payrollStartDate);
 
             Assert.AreEqual(DateTime.Parse("05/24/2016"), payrollEndDate);
         }

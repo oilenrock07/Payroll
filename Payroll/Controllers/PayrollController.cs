@@ -11,10 +11,15 @@ namespace Payroll.Controllers
     public class PayrollController : Controller
     {
         private readonly IWebService _webService;
+        private readonly IEmployeePayrollService _employeePayrollService;
+        private readonly ISettingService _settingsService;
 
-        public PayrollController(IWebService webService)
+        public PayrollController(IWebService webService, 
+            IEmployeePayrollService employeePayrollService, ISettingService settingService)
         {
             _webService = webService;
+            _employeePayrollService = employeePayrollService;
+            _settingsService = settingService;
         }
 
         // GET: Payroll
@@ -77,7 +82,11 @@ namespace Payroll.Controllers
             }
 
             var pagination = _webService.GetPaginationModel(Request, payrolls.Count);
-            viewModel.Date = DateTime.Now.AddMonths(1).ToShortDateString(); //get from service
+            var payrollStartDate = _employeePayrollService.GetNextPayrollStartDate();
+            var payrollEndDate = _employeePayrollService.GetNextPayrollEndDate(payrollStartDate);
+
+            viewModel.StartDate = payrollStartDate.ToShortDateString();
+            viewModel.EndDate = payrollEndDate.ToShortDateString();
             viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination);
             viewModel.Pagination = pagination;
 

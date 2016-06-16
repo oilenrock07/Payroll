@@ -21,9 +21,11 @@ namespace Payroll.Service.Interfaces
 
         void GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
 
-        DateTime GetNextPayrollStartDate(FrequencyType frequency, DateTime? date);
+        DateTime GetNextPayrollStartDate();
 
-        DateTime GetNextPayrollEndDate(FrequencyType frequency, DateTime payrollStartDate);
+        DateTime GetNextPayrollStartDate(DateTime? date);
+
+        DateTime GetNextPayrollEndDate(DateTime payrollStartDate);
     
         /*
          * This will return payroll with payroll date between date start and date end

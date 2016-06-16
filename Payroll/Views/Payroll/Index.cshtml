@@ -11,7 +11,8 @@
 {
     <div class="row b2">
         <div class="col-md-2">
-            Next payroll Date: <strong>@Model.Date</strong>
+            Next payroll Start Date: <strong>@Model.StartDate</strong>
+            Next payroll End Date: <strong>@Model.EndDate</strong>
         </div>
         <div class="col-md-4">
             @Html.HiddenFor(model => model.Date)

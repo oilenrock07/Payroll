@@ -24,6 +24,8 @@ namespace Payroll.Service.Implementations
         private IEmployeeInfoService _employeeInfoService;
         private ITotalEmployeeHoursService _totalEmployeeHourService;
 
+        private FrequencyType _frequency;
+
         private readonly String PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
         private readonly String PAYROLL_WEEK_START = "PAYROLL_WEEK_START";
         private readonly String PAYROLL_WEEK_END = "PAYROLL_WEEK_END";
@@ -43,6 +45,9 @@ namespace Payroll.Service.Implementations
             _employeePayrollDeductionService = employeePayrollDeductionService;
             _employeeInfoService = employeeInfoService;
             _totalEmployeeHourService = totalEmployeeHourService;
+
+            _frequency = (FrequencyType)Convert
+                .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
         }
 
         public IList<EmployeePayroll> GeneratePayrollGrossPayByDateRange(DateTime payrollDate, DateTime dateFrom, DateTime dateTo)
@@ -118,7 +123,7 @@ namespace Payroll.Service.Implementations
             return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId, payrollDate);
         }
 
-        public DateTime GetNextPayrollStartDate(FrequencyType frequency, DateTime? date)
+        public DateTime GetNextPayrollStartDate(DateTime? date)
         {
             DateTime? payrollStartDate = _employeePayrollRepository.GetNextPayrollStartDate();
             if (payrollStartDate == null)
@@ -129,7 +134,7 @@ namespace Payroll.Service.Implementations
                     d = date.Value;
                 }
                 //TODO more frequency support
-                switch (frequency)
+                switch (_frequency)
                 {
                     case FrequencyType.Weekly:
                         //Note that the job should always schedule the day after the payroll end date
@@ -149,12 +154,12 @@ namespace Payroll.Service.Implementations
             return payrollStartDate.Value;
         }
 
-        public DateTime GetNextPayrollEndDate(FrequencyType frequency, DateTime payrollStartDate)
+        public DateTime GetNextPayrollEndDate(DateTime payrollStartDate)
         {
             DateTime payrollEndDate = payrollStartDate;
 
             //TODO more frequency support
-            switch (frequency)
+            switch (_frequency)
             {
                 case FrequencyType.Weekly:
                     //Note that the job should always schedule the day after the payroll end date
@@ -171,11 +176,10 @@ namespace Payroll.Service.Implementations
 
         public void GeneratePayroll(DateTime? date)
         {
-            var frequency = (FrequencyType)Convert
-                .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
+            
 
-            DateTime payrollStartDate = GetNextPayrollStartDate(frequency, date);
-            DateTime payrollEndDate = GetNextPayrollEndDate(frequency, payrollStartDate);
+            DateTime payrollStartDate = GetNextPayrollStartDate(date);
+            DateTime payrollEndDate = GetNextPayrollEndDate(payrollStartDate);
             
             GeneratePayroll(DateTime.Now, payrollStartDate, payrollEndDate);
         }
@@ -285,6 +289,11 @@ namespace Payroll.Service.Implementations
                     }
                 }
             }
-        } 
+        }
+
+        public DateTime GetNextPayrollStartDate()
+        {
+            return GetNextPayrollStartDate(null);
+        }
     }
 }
