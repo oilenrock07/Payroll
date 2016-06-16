@@ -4,6 +4,9 @@ using System.Web.Mvc;
 using Payroll.Models.Payroll;
 using Payroll.Repository.Models.Payroll;
 using Payroll.Service.Interfaces;
+using System.Linq;
+using Payroll.Entities.Payroll;
+using Payroll.Common.Extension;
 
 namespace Payroll.Controllers
 {
@@ -13,13 +16,12 @@ namespace Payroll.Controllers
         private readonly IWebService _webService;
         private readonly IEmployeePayrollService _employeePayrollService;
         private readonly ISettingService _settingsService;
-
+   
         public PayrollController(IWebService webService, 
-            IEmployeePayrollService employeePayrollService, ISettingService settingService)
+            IEmployeePayrollService employeePayrollService)
         {
             _webService = webService;
             _employeePayrollService = employeePayrollService;
-            _settingsService = settingService;
         }
 
         // GET: Payroll
@@ -91,6 +93,46 @@ namespace Payroll.Controllers
             viewModel.Pagination = pagination;
 
             return View(viewModel);
+        }
+
+        public ActionResult Search(string payrollDate = "", int employeeId = 0)
+        {
+            //get the last 6 months cutoffs
+            var payrollDates = _employeePayrollService.GetPayrollDates(6);
+            var viewModel = new PayrollSearchViewModel
+            {
+                PayrollDates = payrollDates.Select(x => new SelectListItem
+                {
+                    Text = x,
+                    Value = x
+                }),
+                EmployeeId = employeeId
+            };
+
+            if (payrollDate != "")
+            {
+                var dates = payrollDate.Split(new string[] { " to " }, StringSplitOptions.None);
+                var employeePayrolls = _employeePayrollService.GetByDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));
+
+                if (employeeId > 0)
+                    employeePayrolls = employeePayrolls.Where(x => x.EmployeeId == employeeId).ToList();
+
+                var payrolls = MapEmployeePayrollToViewModel(employeePayrolls);
+                var pagination = _webService.GetPaginationModel(Request, payrolls.Count());
+                viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination); 
+                viewModel.PayrollDate = payrollDate;
+                viewModel.Pagination = pagination;
+            }
+
+            return View(viewModel);
+        }
+
+        protected IEnumerable<PayrollListViewModel> MapEmployeePayrollToViewModel(IEnumerable<EmployeePayroll> payrolls)
+        {
+            return payrolls.MapCollection<EmployeePayroll, PayrollListViewModel>((s, d) =>
+            {
+                
+            });
         }
     }
 }

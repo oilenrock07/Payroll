@@ -1,0 +1,77 @@
+﻿@using Payroll.Common.Extension
+@model Payroll.Models.Payroll.PayrollSearchViewModel
+
+@{
+    ViewBag.Title = "Payroll Search";
+}
+
+@using (Html.BeginForm("Search", "Payroll", FormMethod.Get))
+{
+    <div class="form-horizontal">
+        <h4>Payroll Search</h4>
+        <hr />
+
+        <div class="form-group">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.PayrollDate, "Payroll Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.DropDownListFor(model => model.PayrollDate, Model.PayrollDates, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-6 pull-right">
+                @Html.Label("Employee", new {@for = "EmployeeId", @class = "control-label col-md-2"})
+                <div class="col-md-4">
+                    @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId)
+                    @Html.ValidationMessageFor(model => model.EmployeeId)
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (Model.Payrolls != null)
+{
+    <table class="table table-responsive table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Gross Pay</th>
+            <th>Total Deduction</th>
+            <th>Net Pay</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Payrolls)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @item.TotalGross.FormatAmount()
+                </td>
+                <td>
+                    -@item.TotalDeduction.FormatAmount()
+                </td>
+                <td>
+                    @item.TotalNet.FormatAmount()
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </table>
+
+    @Html.Partial("Pagination", Model.Pagination)
+}
+
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Employee/employeetypeahead.js"></script>
+}

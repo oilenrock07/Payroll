@@ -31,5 +31,7 @@ namespace Payroll.Service.Interfaces
          * This will return payroll with payroll date between date start and date end
          */
         IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd);
+
+        IEnumerable<string> GetPayrollDates(int months);
     }
 }

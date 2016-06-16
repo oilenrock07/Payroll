@@ -1,9 +1,9 @@
-﻿using Payroll.Service.Interfaces;
-using System;
+﻿using System;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
+using Payroll.Service.Interfaces;
 
-namespace Payroll.Service
+namespace Payroll.Service.Implementations
 {
     public class EmployeeSalaryService : IEmployeeSalaryService
     {

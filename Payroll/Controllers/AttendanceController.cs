@@ -24,16 +24,18 @@ namespace Payroll.Controllers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeePayrollRepository _employeePayrollRepository;
+        private readonly IEmployeeHoursRepository _employeeHoursRepository;
 
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
             IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
-            IEmployeePayrollRepository employeePayrollRepository)
+            IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository)
         {
             _attendanceLogRepository = attendanceLogRepository;
             _attendanceRepository = attendanceRepository;
             _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
             _employeePayrollRepository = employeePayrollRepository;
+            _employeeHoursRepository = employeeHoursRepository;
         }
 
         public virtual ActionResult CreateAttendance()
@@ -109,6 +111,16 @@ namespace Payroll.Controllers
             attendance.ClockOut = clockOut;
 
             _attendanceRepository.Add(attendance);
+
+            //delete employee hours
+            var employeeHours = _employeeHoursRepository.Find(x => x.OriginAttendanceId == attendance.AttendanceId);
+            if (employeeHours != null)
+            {
+                var employeeHour = employeeHours.FirstOrDefault();
+                _employeeHoursRepository.Update(employeeHour);
+                employeeHour.IsActive = false;
+            }
+
             _unitOfWork.Commit();
 
             ViewData["EditSuccess"] = "Attendance successfully updated";
