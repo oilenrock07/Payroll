@@ -104,6 +104,7 @@ namespace Payroll.App_Start
             kernel.Bind<IEmployeeDeductionRepository>().To<EmployeeDeductionRepository>().InRequestScope();
             kernel.Bind<IDeductionRepository>().To<DeductionRepository>().InRequestScope();
             kernel.Bind<IEmployeePayrollDeductionRepository>().To<EmployeePayrollDeductionRepository>().InRequestScope();
+            kernel.Bind<ITaxRepository>().To<TaxRepository>().InRequestScope();
             
             //Service
             kernel.Bind<IUserRoleService>().To<UserRoleService>().InRequestScope();
@@ -124,6 +125,7 @@ namespace Payroll.App_Start
             kernel.Bind<IEmployeeSalaryService>().To<EmployeeSalaryService>().InRequestScope();
             kernel.Bind<IEmployeeDeductionService>().To<EmployeeDeductionService>().InRequestScope();
             kernel.Bind<IDeductionService>().To<DeductionService>().InRequestScope();
+            kernel.Bind<ITaxService>().To<TaxService>().InRequestScope();
             
             //Caching
             //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();
