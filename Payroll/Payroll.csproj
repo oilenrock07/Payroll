@@ -218,6 +218,7 @@
     <Compile Include="Models\Attendance\AttendanceLogViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceViewModel.cs" />
     <Compile Include="Models\Attendance\CreateAttendanceViewModel.cs" />
+    <Compile Include="Models\Employee\EmployeeDeductionViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeDepartmentViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeInfoViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeLeaveCreateViewModel.cs" />
@@ -267,11 +268,13 @@
     <None Include="Properties\PublishProfiles\Payroll.Web.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap3-typeahead.min.js" />
+    <Content Include="Scripts\Employee\employeededuction.js" />
     <Content Include="Scripts\Employee\employeedetails.js" />
     <Content Include="Scripts\Employee\employeelist.js" />
     <Content Include="Scripts\Employee\employeeleave.js" />
     <Content Include="Scripts\Employee\employeeloan.js" />
     <Content Include="Scripts\Employee\employeetypeahead.js" />
+    <Content Include="Scripts\form.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -366,6 +369,9 @@
     <Content Include="Views\Shared\_EmployeeTypeAhead.cshtml" />
     <Content Include="Views\Employee\EditEmployeeLoan.cshtml" />
     <Content Include="Views\Payroll\Search.cshtml" />
+    <Content Include="Views\Employee\_EmployeeDeductions.cshtml" />
+    <Content Include="Views\Shared\_LayoutModal.cshtml" />
+    <Content Include="Views\Employee\CreateEmployeeDeductions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

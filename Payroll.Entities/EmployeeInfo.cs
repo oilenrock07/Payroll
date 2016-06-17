@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Payroll.Entities.Base;
@@ -40,15 +41,19 @@ namespace Payroll.Entities
         [StringLength(50)]
         public string TIN { get; set; }
 
+        [DisplayName("SSS Number")]
         [StringLength(50)]
         public string SSS { get; set; }
 
+        [DisplayName("GSIS Number")]
         [StringLength(50)]
         public string GSIS { get; set; }
 
+        [DisplayName("PAGIBIG Number")]
         [StringLength(50)]
         public string PAGIBIG { get; set; }
 
+        [DisplayName("PhilHealth Number")]
         [StringLength(50)]
         public string PhilHealth { get; set; }
 

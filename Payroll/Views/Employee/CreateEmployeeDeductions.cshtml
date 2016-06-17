@@ -1,0 +1,40 @@
+﻿@model Payroll.Models.Employee.EmployeeDeductionViewModel
+@{
+    //modal
+    ViewBag.ModalTitle = "Create Employee Deduction";
+    ViewBag.ModalId = "ModalEmployeeDeduction";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+    //form
+    ViewBag.ModalFormId = "frmEmployeeDeduction";
+    ViewBag.ModalFormAction = Url.Content("/Employee/CreateEmployeeDeductions");
+}
+
+<div class="form-horizontal">
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+        @Html.LabelFor(model => model.DeductionId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownListFor(model => model.DeductionId, Model.Deductions, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DeductionId)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Amount)
+        </div>
+    </div>
+    
+    @Html.HiddenFor(model => model.EmployeeId)
+</div>
+
+
+
+@section ModalFooter
+{
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Save changes</button>
+}

@@ -114,6 +114,10 @@
     <Compile Include="Migrations\201605301330202_update-attendance-hours-counted.Designer.cs">
       <DependentUpon>201605301330202_update-attendance-hours-counted.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606170654395_AddFKToEmployeeDeduction.cs" />
+    <Compile Include="Migrations\201606170654395_AddFKToEmployeeDeduction.Designer.cs">
+      <DependentUpon>201606170654395_AddFKToEmployeeDeduction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -186,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605301330202_update-attendance-hours-counted.resx">
       <DependentUpon>201605301330202_update-attendance-hours-counted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606170654395_AddFKToEmployeeDeduction.resx">
+      <DependentUpon>201606170654395_AddFKToEmployeeDeduction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

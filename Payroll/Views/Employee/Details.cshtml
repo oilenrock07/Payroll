@@ -16,6 +16,7 @@
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#personaldetails" aria-controls="personaldetails" role="tab" data-toggle="tab">Personal Details</a></li>
             <li role="presentation"><a href="#employmentdetails" aria-controls="employmentdetails" role="tab" data-toggle="tab">Employment Details</a></li>
+            <li role="presentation"><a href="#employeedeductions" aria-controls="employeedeductions" role="tab" data-toggle="tab">Employee Deductions</a></li>
             <li role="presentation"><a href="#department" aria-controls="department" role="tab" data-toggle="tab">Departments</a></li>
         </ul>
 
@@ -23,6 +24,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="personaldetails">@Html.Partial("_PersonalDetails", Model)</div>
             <div role="tabpanel" class="tab-pane fade" id="employmentdetails">@Html.Partial("_EmploymentDetails", Model)</div>
+            <div role="tabpanel" class="tab-pane fade" id="employeedeductions">@Html.Partial("_EmployeeDeductions", Model.EmployeeDeductions)</div>
             <div role="tabpanel" class="tab-pane fade" id="department">@Html.Partial("_Department", Model.Departments)</div>
         </div>
     </div>
@@ -33,9 +35,9 @@
     </div>
 </form>
 
-
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
     <script type="text/javascript" src="/Scripts/Employee/employeedetails.js"></script>
+    <script type="text/javascript" src="/Scripts/Employee/employeededuction.js"></script>
 }

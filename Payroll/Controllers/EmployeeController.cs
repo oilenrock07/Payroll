@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.Provider;
+using Newtonsoft.Json;
 using Omu.ValueInjecter;
 using Payroll.Attributes;
 using Payroll.Common.Enums;
@@ -36,13 +38,15 @@ namespace Payroll.Controllers
         private readonly IEmployeeLeaveRepository _employeeLeaveRepository;
         private readonly IEmployeeInfoHistoryRepository _employeeInfoHistoryRepository;
         private readonly ILeaveRepository _leaveRepository;
+        private readonly IDeductionRepository _deductionRepository;
+        private readonly IEmployeeDeductionService _employeeDeductionService;
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
             IWebService webService, IDepartmentRepository departmentRepository, ILoanRepository loanRepository, IEmployeeInfoHistoryRepository employeeInfoHistoryRepository, IEmployeeLeaveRepository employeeLeaveRepository,
-            ILeaveRepository leaveRepository) 
+            ILeaveRepository leaveRepository, IDeductionRepository deductionRepository, IEmployeeDeductionService employeeDeductionService) 
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -56,6 +60,8 @@ namespace Payroll.Controllers
             _employeeInfoHistoryRepository = employeeInfoHistoryRepository;
             _employeeLeaveRepository = employeeLeaveRepository;
             _leaveRepository = leaveRepository;
+            _deductionRepository = deductionRepository;
+            _employeeDeductionService = employeeDeductionService;
         }
 
         [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
@@ -207,6 +213,26 @@ namespace Payroll.Controllers
                 }
             }
 
+
+            //Get Employee Deductions
+            var employeeDeduction = _employeeDeductionService.GetEmployeeDeduction(employeeId);
+            var deductions = _deductionRepository.GetAllActive().ToList();
+            var deductionsViewModel = new List<EmployeeDeductionViewModel>();
+            if (deductions.Any())
+            {
+                deductionsViewModel = deductions.MapCollection<Deduction, EmployeeDeductionViewModel>((s, d) =>
+                {
+                    var existingEmployeeDeduction = employeeDeduction.FirstOrDefault(x => x.IsActive && x.DeductionId == s.DeductionId && x.EmployeeId == employeeId);
+                    if (existingEmployeeDeduction != null)
+                    {
+                        d.IsChecked = true;
+                        d.Amount = existingEmployeeDeduction.Amount;
+                    }
+                }).ToList();
+            }
+
+
+            viewModel.EmployeeDeductions = deductionsViewModel;
             viewModel.Positions = positions;
             viewModel.Departments = departments;
             viewModel.PaymentFrequencies = paymentFrequencies;
@@ -245,6 +271,15 @@ namespace Payroll.Controllers
                             : new List<int>();
 
             _employeeRepository.UpdateDepartment(departments, employee.EmployeeId);
+
+            //employee deductions
+            if (!String.IsNullOrEmpty(viewModel.CheckedEmployeeDeductions))
+            {
+                var employeeDeductions = viewModel.CheckedEmployeeDeductions != null
+                        ? JsonConvert.DeserializeObject<List<EmployeeDeduction>>(viewModel.CheckedEmployeeDeductions)
+                        : new List<EmployeeDeduction>();
+                _employeeDeductionService.UpdateEmployeeDeduction(employeeDeductions, viewModel.EmployeeInfo.EmployeeId);
+            }
             _unitOfWork.Commit();
 
             //upload the picture and update the record
@@ -297,9 +332,15 @@ namespace Payroll.Controllers
             employeeInfo.Employee.Gender = viewModel.Gender;
             employeeInfo.Employee.Picture = picture;
 
+            var employeeDeductions = viewModel.CheckedEmployeeDeductions != null
+                                    ? JsonConvert.DeserializeObject<List<EmployeeDeduction>>(viewModel.CheckedEmployeeDeductions)
+                                    : new List<EmployeeDeduction>();
+            _employeeDeductionService.UpdateEmployeeDeduction(employeeDeductions, viewModel.EmployeeInfo.EmployeeId);
+
             var departments = viewModel.CheckedDepartments != null
                             ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)
                             : new List<int>();
+
             _employeeRepository.UpdateDepartment(departments, viewModel.EmployeeInfo.EmployeeId);
             _employeeInfoHistoryRepository.Add(employeeInfo.MapItem<EmployeeInfoHistory>());
             _unitOfWork.Commit();
@@ -696,6 +737,38 @@ namespace Payroll.Controllers
 
             return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year });
         }
+        #endregion
+
+        #region Employee Deductions
+
+        //public virtual ActionResult CreateEmployeeDeductions(int employeeId)
+        //{
+        //    var deductions = _deductionRepository.GetAllActive().Select(x => new SelectListItem
+        //    {
+        //        Text = x.DeductionName,
+        //        Value = x.DeductionId.ToString()
+        //    });
+
+        //    var viewModel = new EmployeeDeductionViewModel
+        //    {
+        //        Deductions = deductions,
+        //        EmployeeId = employeeId
+        //    };
+
+        //    return View(viewModel);
+        //}
+
+        //[HttpPost]
+        //public virtual PartialViewResult CreateEmployeeDeductions(EmployeeDeductionViewModel viewModel)
+        //{
+        //    var employeeDeduction = viewModel.MapItem<EmployeeDeduction>();
+        //    _employeeDeductionService.Add(employeeDeduction);
+        //    _unitOfWork.Commit();
+
+        //    var employeeDeductions = _employeeDeductionService.GetEmployeeDeduction(viewModel.EmployeeId);
+        //    return PartialView("_EmployeeDeductions", employeeDeductions);
+        //}
+
         #endregion
     }
 }

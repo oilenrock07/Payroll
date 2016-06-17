@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Payroll.Models.Employee.EmployeeDeductionViewModel>
+
+<div class="row t2">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-responsive table-striped table-hover js-deductionTable">
+            <tr>
+                <th></th>
+                <th>Deduction Name</th>
+                <th>Amount</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                var checkedAttr = item.IsChecked ? "checked=\"checked\"" : "";
+                var disabledAmount = !item.IsChecked ? "disabled=\"disabled\"" : "";
+                
+                <tr>
+                    <td width="5%"><input type="checkbox" @checkedAttr value="@item.DeductionId" class="js-deduction" /></td>
+                    <td width="70%">@item.DeductionName</td>
+                    <td width="25%"><input type="text" class="form-control" value="@item.Amount" @disabledAmount/></td>
+                </tr>
+            }
+        </table>
+        
+    }
+</div>
+
+<input type="hidden" name="CheckedEmployeeDeductions" id="CheckedEmployeeDeductions" />
