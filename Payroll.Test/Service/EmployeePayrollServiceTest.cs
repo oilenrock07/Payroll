@@ -51,7 +51,7 @@ namespace Payroll.Test.Service
             _settingService = new SettingService(_settingRepository);
             _employeeDailyPayrollService = new EmployeeDailyPayrollService(_unitOfWork, 
                 null, null, null, null, _employeeDailyPayrollRepository, null, null);
-            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, null, null, null,null, null, null);
+            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, null, null,null, null, null);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
             _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
 

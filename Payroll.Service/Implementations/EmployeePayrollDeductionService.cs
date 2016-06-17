@@ -21,7 +21,6 @@ namespace Payroll.Service.Implementations
         private IEmployeeInfoService _employeeInfoService;
         private IEmployeeDeductionService _employeeDeductionService;
         private IDeductionService _deductionService;
-        private IEmployeePayrollService _employeePayrollService;
 
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
         private ITaxService _taxService;
@@ -42,8 +41,8 @@ namespace Payroll.Service.Implementations
         public EmployeePayrollDeductionService(IUnitOfWork unitOfWork, ISettingService settingService,
             IEmployeeSalaryService employeeSalaryService, IEmployeeInfoService employeeInfoService,
             IEmployeeDeductionService employeeDeductionService, IDeductionService deductionService,
-            IEmployeePayrollDeductionRepository employeePayrollDeductionRepository,
-            IEmployeePayrollService employeePayrollService, ITaxService taxService)
+            IEmployeePayrollDeductionRepository employeePayrollDeductionRepository, 
+            ITaxService taxService)
         {
             _unitOfWork = unitOfWork;
             _settingService = settingService;
@@ -52,18 +51,11 @@ namespace Payroll.Service.Implementations
             _employeeDeductionService = employeeDeductionService;
             _deductionService = deductionService;
             _employeePayrollDeductionRepository = employeePayrollDeductionRepository;
-            _employeePayrollService = employeePayrollService;
             _taxService = taxService;
         }
 
-        public int GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, 
-            DateTime payrollEndDate, IList<EmployeePayroll> employeePayrolls)
+        public Decimal GenerateDeductionsByPayroll(EmployeePayroll employeePayroll)
         {
-            //If proceed is false return
-            if (!proceedDeduction(payrollStartDate, payrollEndDate))
-            {
-                return 1;
-            }
 
             double totalHours = 0;
             //Get total number of hours
@@ -79,80 +71,35 @@ namespace Payroll.Service.Implementations
             //Get employees
             //var employeeList = _employeeInfoService.GetAllActive();
 
-            foreach (EmployeePayroll payroll in employeePayrolls)
+            var employee = _employeeInfoService.GetByEmployeeId(employeePayroll.EmployeeId);
+            var deductionList = _deductionService.GetAllCustomizable();
+
+            decimal totalDeductions = 0;
+            //Every deductions check for available deduction for employee
+            foreach (Deduction deduction in deductionList)
             {
-                //Compute basic pay
-                //decimal basicPay = (_employeeSalaryService.GetEmployeeHourlyRate(employee) * (decimal)totalHours);
-                //Compute HDMF Deduction
-                //Compute SSS contribution
+                var employeeDeduction = _employeeDeductionService
+                    .GetByDeductionAndEmployee(deduction.DeductionId, employee.EmployeeId);
 
-                //No computations from employee deductions info
-                //Get all deductions
-                var employee = _employeeInfoService.GetByEmployeeId(payroll.EmployeeId);
-                var deductionList = _deductionService.GetAllCustomizable();
-
-                decimal totalDeductions = 0;
-                //Every deductions check for available deduction for employee
-                foreach (Deduction deduction in deductionList)
+                if (employeeDeduction != null)
                 {
-                    var employeeDeduction = _employeeDeductionService
-                        .GetByDeductionAndEmployee(deduction.DeductionId, employee.EmployeeId);
+                    //Create a deduction entry
+                    EmployeePayrollDeduction employeePayrollDeduction =
+                        new EmployeePayrollDeduction
+                        {
+                            EmployeeId = employee.EmployeeId,
+                            DeductionId = deduction.DeductionId,
+                            Amount = employeeDeduction.Amount,
+                            DeductionDate = new DateTime(),
+                            EmployeePayrollId = employeePayroll.PayrollId
+                        };
 
-                    if (employeeDeduction != null)
-                    {
-                        //Create a deduction entry
-                        EmployeePayrollDeduction employeePayrollDeduction =
-                            new EmployeePayrollDeduction
-                            {
-                                EmployeeId = employee.EmployeeId,
-                                DeductionId = deduction.DeductionId,
-                                Amount = employeeDeduction.Amount,
-                                DeductionDate = new DateTime(),
-                                EmployeePayrollId = payroll.PayrollId
-                            };
-
-                        _employeePayrollDeductionRepository.Add(employeePayrollDeduction);
-                        totalDeductions += employeeDeduction.Amount;
-                    }
+                    _employeePayrollDeductionRepository.Add(employeePayrollDeduction);
+                    totalDeductions += employeeDeduction.Amount;
                 }
-
-                //Update employeePayroll total deductions and taxable income
-                _employeePayrollService.Update(payroll);
-                payroll.TaxableIncome = payroll.TotalGross - totalDeductions;
-
-                //Tax computation
-                //Get old payroll for tax computation
-                var payrollForTaxProcessing = _employeePayrollService
-                    .GetForTaxProcessingByEmployee(employee.EmployeeId, payrollDate);
-
-                decimal totalTaxableIncome = payroll.TaxableIncome;
-                foreach (EmployeePayroll employeePayroll in payrollForTaxProcessing)
-                {
-                    totalTaxableIncome += employeePayroll.TaxableIncome;
-
-                    //Update Payroll
-                    _employeePayrollService.Update(employeePayroll);
-                    employeePayroll.IsTaxed = true;
-                }
-
-                //Compute tax
-                var totalTax = ComputeTax(payroll.PayrollId, employee, totalTaxableIncome);
-                
-                //Update payroll for total deductions and total grosss
-                payroll.TotalDeduction = totalDeductions + totalTax;
-                payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
-                payroll.IsTaxed = true;
             }
 
-            try
-            {
-                _unitOfWork.Commit();
-            }
-            catch (Exception e)
-            {
-                return 0;
-            }
-            return 1;
+            return totalDeductions;
         }
 
         public decimal ComputeTax(int payrollId, EmployeeInfo employeeInfo, decimal totalTaxableIncome)
@@ -184,7 +131,7 @@ namespace Payroll.Service.Implementations
             return taxAmount;
         }
 
-        private bool proceedDeduction(DateTime payrollStartDate, DateTime payrollEndDate)
+        public bool proceedDeduction(DateTime payrollStartDate, DateTime payrollEndDate)
         {
             //Get settings if monthly or semimonthly
             bool isSemiMonthly = _settingService.GetByKey(IS_DEDUCTION_SEMIMONTHLY).Equals("1");

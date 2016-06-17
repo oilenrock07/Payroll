@@ -71,7 +71,7 @@ namespace Payroll.Test.Service
             _taxService = new TaxService(_taxRepository);
 
             _employeePayrollService = new EmployeePayrollService(_unitOfWork, null, _employeePayrollRepository, _settingService, null, null, _totalEmployeeHoursService);
-            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _employeePayrollService, _taxService);
+            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
         }
 
         private void DeleteInfo()
@@ -294,9 +294,10 @@ namespace Payroll.Test.Service
             payrollList.Add(employeePayroll8);
 
             //Test
-            _employeePayrollDeductionService.GenerateDeductionsByPayroll(
-                DateTime.Parse("06/01/2016"), DateTime.Parse("05/25/2016"),
-                DateTime.Parse("05/31/2016"), payrollList);
+            foreach (EmployeePayroll payroll in payrollList)
+            {
+                _employeePayrollDeductionService.GenerateDeductionsByPayroll(payroll);
+            }
 
             //Verify
             var startDate = DateTime.Parse("06/01/2016");

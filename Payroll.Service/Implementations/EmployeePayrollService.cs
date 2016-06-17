@@ -193,9 +193,10 @@ namespace Payroll.Service.Implementations
             ComputeAllowance(payrollStartDate, payrollEndDate, employeePayrollList);
 
             //Generate deductions such as SSS, HDMF, Philhealth and TAX
-            _employeePayrollDeductionService.GenerateDeductionsByPayroll(payrollDate,
+            GenerateDeductions(payrollDate,
                 payrollStartDate, payrollEndDate, employeePayrollList);
         }
+
 
         public IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd)
         {
@@ -323,6 +324,69 @@ namespace Payroll.Service.Implementations
             }
 
             return dates;
+        }
+
+        public void GenerateDeductions(DateTime payrollDate, DateTime payrollStartDate,
+            DateTime payrollEndDate, IList<EmployeePayroll> employeePayrolls)
+        {
+            //If proceed is false return
+            if(_employeePayrollDeductionService
+                .proceedDeduction(payrollStartDate, payrollEndDate))
+            {
+                return;
+            }
+
+            foreach (EmployeePayroll payroll in employeePayrolls)
+            {
+                //Generate deductions such as SSS, HDMF, Philhealth and TAX
+                var totalDeductions = 
+                    _employeePayrollDeductionService.GenerateDeductionsByPayroll(payroll);
+
+                //Update employeePayroll total deductions and taxable income
+                Update(payroll);
+                payroll.TaxableIncome = payroll.TotalGross - totalDeductions;
+                payroll.TotalDeduction += totalDeductions;
+
+                //Compute Tax
+                GenerateTax(payroll);
+            }
+
+            try
+            {
+                _unitOfWork.Commit();
+            }
+            catch (Exception e)
+            {
+                //Print error
+            }
+        }
+
+        public void GenerateTax(EmployeePayroll payroll)
+        {
+            //Tax computation
+            //Get old payroll for tax computation
+            var payrollForTaxProcessing = 
+                GetForTaxProcessingByEmployee(payroll.EmployeeId, payroll.PayrollDate);
+
+            decimal totalTaxableIncome = payroll.TaxableIncome;
+            foreach (EmployeePayroll employeePayroll in payrollForTaxProcessing)
+            {
+                totalTaxableIncome += employeePayroll.TaxableIncome;
+
+                //Update Payroll
+                Update(employeePayroll);
+                employeePayroll.IsTaxed = true;
+            }
+
+            //Compute tax
+            var employeeInfo = _employeeInfoService.GetByEmployeeId(payroll.EmployeeId);
+            var totalTax = _employeePayrollDeductionService
+                .ComputeTax(payroll.PayrollId, employeeInfo, totalTaxableIncome);
+
+            //Update payroll for total deductions and total grosss
+            payroll.TotalDeduction += totalTax;
+            payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
+            payroll.IsTaxed = true;
         }
     }
 }

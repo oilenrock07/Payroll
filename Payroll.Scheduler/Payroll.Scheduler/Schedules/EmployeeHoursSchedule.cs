@@ -71,12 +71,10 @@ namespace Payroll.Scheduler.Schedules
         public void Execute()
         {
             //Get payroll date range
-            var frequency = (FrequencyType)Int32
-                .Parse(_settingService.GetByKey(PAYROLL_FREQUENCY));
             var payrollStartDate = _employeePayrollService
-                .GetNextPayrollStartDate(frequency, DateTime.Now).TruncateTime();
+                .GetNextPayrollStartDate(DateTime.Now).TruncateTime();
             var payrollEndDate = _employeePayrollService
-                .GetNextPayrollEndDate(frequency, payrollStartDate).TruncateTime();
+                .GetNextPayrollEndDate(payrollStartDate).TruncateTime();
 
             //Compute employee hours
             Console.WriteLine("Computing daily employee hours for date " + payrollStartDate + " to " + payrollEndDate);

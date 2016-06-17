@@ -11,10 +11,14 @@ namespace Payroll.Service.Interfaces
 {
     public interface IEmployeePayrollDeductionService
     {
-        int GenerateDeductionsByPayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate, IList<EmployeePayroll> employeePayrolls);
+        Decimal GenerateDeductionsByPayroll(EmployeePayroll employeePayroll);
 
         EmployeePayrollDeduction Add(EmployeePayrollDeduction employeePayrollDeduction);
 
         IList<EmployeePayrollDeduction> GetByPayroll(int payrollId);
+
+        bool proceedDeduction(DateTime payrollStartDate, DateTime payrollEndDate);
+
+        decimal ComputeTax(int payrollId, EmployeeInfo employeeInfo, decimal totalTaxableIncome);
     }
 }
