@@ -330,7 +330,7 @@ namespace Payroll.Service.Implementations
             DateTime payrollEndDate, IList<EmployeePayroll> employeePayrolls)
         {
             //If proceed is false return
-            if(_employeePayrollDeductionService
+            if(!_employeePayrollDeductionService
                 .proceedDeduction(payrollStartDate, payrollEndDate))
             {
                 return;

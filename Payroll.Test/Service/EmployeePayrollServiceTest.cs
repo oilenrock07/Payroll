@@ -27,6 +27,9 @@ namespace Payroll.Test.Service
         private IEmployeePayrollService _employeePayrollService;
         private IEmployeeInfoService _employeeInfoService;
         private ITotalEmployeeHoursService _totalEmployeeHoursService;
+        private IDeductionService _deductionService;
+        private IEmployeeDeductionRepository _employeeDeductionRepository;
+        private ITaxService _taxService;
 
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
@@ -34,6 +37,9 @@ namespace Payroll.Test.Service
         private ISettingRepository _settingRepository;
         private IEmployeeInfoRepository _employeeInfoRepository;
         private ITotalEmployeeHoursRepository _totalEmployeeHoursRepository;
+        private IDeductionRepository _deductionRepository;
+        private IEmployeeDeductionService _employeeDeductionService;
+        private ITaxRepository _taxRepository;
 
         public void Initialize()
         {
@@ -47,12 +53,19 @@ namespace Payroll.Test.Service
             _employeePayrollDeductionRepository = new EmployeePayrollDeductionRepository(databaseFactory);
             _employeeInfoRepository = new EmployeeInfoRepository(databaseFactory);
             _totalEmployeeHoursRepository = new TotalEmployeeHoursRepository(databaseFactory);
+            _deductionRepository = new DeductionRepository(databaseFactory);
+            _employeeDeductionRepository = new EmployeeDeductionRepository(databaseFactory);
+            _taxRepository = new TaxRepository(databaseFactory);
 
             _settingService = new SettingService(_settingRepository);
             _employeeDailyPayrollService = new EmployeeDailyPayrollService(_unitOfWork, 
                 null, null, null, null, _employeeDailyPayrollRepository, null, null);
-            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, null, null,null, null, null);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
+            _deductionService = new DeductionService(_deductionRepository);
+            _employeeDeductionService = new EmployeeDeductionService(_employeeDeductionRepository);
+            _taxService = new TaxService(_taxRepository);
+            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
+
             _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
 
             _employeePayrollService = new EmployeePayrollService(_unitOfWork,

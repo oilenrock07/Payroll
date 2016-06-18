@@ -26,7 +26,6 @@ namespace Payroll.Test.Service
         private IEmployeeInfoService _employeeInfoService;
         private IEmployeeDeductionService _employeeDeductionService;
         private IDeductionService _deductionService;
-        private IEmployeePayrollService _employeePayrollService;
         private ITaxService _taxService;
         private ITotalEmployeeHoursService _totalEmployeeHoursService;
 
@@ -70,7 +69,6 @@ namespace Payroll.Test.Service
 
             _taxService = new TaxService(_taxRepository);
 
-            _employeePayrollService = new EmployeePayrollService(_unitOfWork, null, _employeePayrollRepository, _settingService, null, null, _totalEmployeeHoursService);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
         }
 
