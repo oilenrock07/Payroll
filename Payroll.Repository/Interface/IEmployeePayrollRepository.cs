@@ -17,6 +17,11 @@ namespace Payroll.Repository.Interface
         */
         IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd);
 
+        /*
+         * Get all payrolls with same start date and end date
+         */
+        IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate);
+
         //Get last payroll end date
         DateTime? GetNextPayrollStartDate();
 

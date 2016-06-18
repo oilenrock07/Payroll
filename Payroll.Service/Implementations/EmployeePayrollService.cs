@@ -176,8 +176,6 @@ namespace Payroll.Service.Implementations
 
         public void GeneratePayroll(DateTime? date)
         {
-            
-
             DateTime payrollStartDate = GetNextPayrollStartDate(date);
             DateTime payrollEndDate = GetNextPayrollEndDate(payrollStartDate);
             
@@ -186,6 +184,14 @@ namespace Payroll.Service.Implementations
 
         public void GeneratePayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
         {
+            //If there's existing payroll within date range, make it inactive
+            var existingPayrolls = _employeePayrollRepository
+                .GetByPayrollDateRange(payrollStartDate, payrollEndDate);
+            foreach (EmployeePayroll payroll in existingPayrolls)
+            {
+                _employeePayrollRepository.Delete(payroll);
+            }
+
             //Generate employee payroll and net pay
             var employeePayrollList = GeneratePayrollGrossPayByDateRange(payrollDate, payrollStartDate, payrollEndDate);
 
@@ -387,6 +393,11 @@ namespace Payroll.Service.Implementations
             payroll.TotalDeduction += totalTax;
             payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
             payroll.IsTaxed = true;
+        }
+
+        public IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            return _employeePayrollRepository.GetByPayrollDateRange(payrollStartDate, payrollEndDate);
         }
     }
 }

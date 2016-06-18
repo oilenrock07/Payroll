@@ -32,6 +32,11 @@ namespace Payroll.Service.Interfaces
          */
         IList<EmployeePayroll> GetByDateRange(DateTime dateStart, DateTime dateEnd);
 
+        /*
+         * Get all payrolls with same start date and end date
+         */
+        IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate);
+
         IEnumerable<string> GetPayrollDates(int months);
     }
 }

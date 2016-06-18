@@ -24,6 +24,12 @@ namespace Payroll.Repository.Repositories
                 .OrderByDescending(p => p.PayrollDate).ToList();
         }
 
+        public IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            return Find(p => p.IsActive && p.CutOffStartDate == payrollStartDate 
+                && p.CutOffEndDate == payrollEndDate).ToList();
+        }
+
         public EmployeePayroll GetEmployeePayrollByDate(int employeeId, DateTime payrollStart, DateTime payrollEnd)
         {
             return Find(p => p.IsActive && p.EmployeeId == employeeId && p.CutOffStartDate == payrollStart

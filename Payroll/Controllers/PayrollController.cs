@@ -25,67 +25,43 @@ namespace Payroll.Controllers
         }
 
         // GET: Payroll
-        public ActionResult Index(string date = "")
+        public ActionResult Index(string StartDate = "", string EndDate = "")
         {
             var viewModel = new PayrollViewModel();
             var payrolls = new List<PayrollDao>();
-            if (!String.IsNullOrEmpty(date))
-            {
-                //populate the viewmodel here from service data
-                //sort it in the service by surname?
-                payrolls = new List<PayrollDao>()
-                {
-                    new PayrollDao
-                    {
-                        FirstName = "Cornelio",
-                        LastName = "Cawicaan",
-                        MiddleName = "Bue",
-                        TotalDeduction = 2000,
-                        TotalGross = 20000,
-                        TotalNet = 18000
-                    },
-                    new PayrollDao
-                    {
-                        FirstName = "Jona",
-                        LastName = "Pereira",
-                        MiddleName = "Aprecio",
-                        TotalDeduction = 1800,
-                        TotalGross = 20000,
-                        TotalNet = 18200
-                    },
-                    new PayrollDao
-                    {
-                        FirstName = "Mar",
-                        LastName = "Roxas",
-                        MiddleName = "XYZ",
-                        TotalDeduction = 1000,
-                        TotalGross = 20000,
-                        TotalNet = 19000
-                    },
-                    new PayrollDao
-                    {
-                        FirstName = "Grace",
-                        LastName = "Poe",
-                        MiddleName = "ABC",
-                        TotalDeduction = 2500,
-                        TotalGross = 20000,
-                        TotalNet = 17500
-                    },
-                    new PayrollDao
-                    {
-                        FirstName = "Rodrigo",
-                        LastName = "Duterte",
-                        MiddleName = "XXX",
-                        TotalDeduction = 0,
-                        TotalGross = 20000,
-                        TotalNet = 20000
-                    },
-                };
-            }
 
             var pagination = _webService.GetPaginationModel(Request, payrolls.Count);
             var payrollStartDate = _employeePayrollService.GetNextPayrollStartDate();
             var payrollEndDate = _employeePayrollService.GetNextPayrollEndDate(payrollStartDate);
+            
+            if (!String.IsNullOrEmpty(StartDate) && !String.IsNullOrEmpty(EndDate))
+            {
+                payrollStartDate = DateTime.Parse(StartDate);
+                payrollEndDate = DateTime.Parse(EndDate);
+
+                //Generate Payroll
+                _employeePayrollService.GeneratePayroll(DateTime.Now, payrollStartDate, payrollEndDate);
+
+                //populate the viewmodel here from service data
+                //sort it in the service by surname
+                var employeePayrollList = _employeePayrollService
+                    .GetByDateRange(payrollStartDate, payrollEndDate).OrderBy(p => p.Employee.LastName);
+
+                foreach (EmployeePayroll payroll in employeePayrollList)
+                {
+                    var payrollDto = new PayrollDao
+                    {
+                        FirstName = payroll.Employee.FirstName,
+                        LastName = payroll.Employee.LastName,
+                        MiddleName = payroll.Employee.MiddleName,
+                        TotalDeduction = payroll.TotalDeduction,
+                        TotalGross = payroll.TotalGross,
+                        TotalNet = payroll.TotalNet
+                    };
+
+                    payrolls.Add(payrollDto);
+                }
+            }
 
             viewModel.StartDate = payrollStartDate.ToShortDateString();
             viewModel.EndDate = payrollEndDate.ToShortDateString();
