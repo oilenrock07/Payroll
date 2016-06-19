@@ -89,7 +89,6 @@ namespace Payroll.Test.Service
             Initialize();
             DeleteInfo();
 
-            var frequency = FrequencyType.Weekly;
             DateTime date = DateTime.Parse("04/27/2016");
 
             DateTime payrollStartDate = _employeePayrollService
@@ -101,6 +100,11 @@ namespace Payroll.Test.Service
                 .GetNextPayrollEndDate(payrollStartDate);
 
             Assert.AreEqual(DateTime.Parse("04/26/2016"), payrollEndDate);
+
+            DateTime payrollReleaseDate = _employeePayrollService
+                .GetNextPayrollReleaseDate(payrollEndDate);
+
+            Assert.AreEqual(DateTime.Parse("04/27/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
@@ -109,7 +113,6 @@ namespace Payroll.Test.Service
             Initialize();
             DeleteInfo();
 
-            var frequency = FrequencyType.Weekly;
             DateTime date = DateTime.Parse("05/17/2016");
 
             DateTime payrollStartDate = _employeePayrollService
@@ -121,6 +124,11 @@ namespace Payroll.Test.Service
               .GetNextPayrollEndDate(payrollStartDate);
 
             Assert.AreEqual(DateTime.Parse("05/17/2016"), payrollEndDate);
+
+            DateTime payrollReleaseDate = _employeePayrollService
+              .GetNextPayrollReleaseDate(payrollEndDate);
+
+            Assert.AreEqual(DateTime.Parse("05/18/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
@@ -129,13 +137,25 @@ namespace Payroll.Test.Service
             Initialize();
             DeleteInfo();
 
+            //Test Data
+            var employee = new Employee
+            {
+                EmployeeCode = "11001",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1,
+                IsActive = true
+            };
+
             var employeePayroll = new EmployeePayroll()
             {
                 CutOffEndDate = DateTime.Parse("05/17/2016"),
                 CutOffStartDate = DateTime.Parse("05/11/2016"),
                 PayrollDate = DateTime.Parse("05/18/2016"),
                 PayrollGeneratedDate = DateTime.Parse("05/18/2016"),
-                EmployeeId = 1
+                Employee = employee
             };
 
             var employeePayroll2 = new EmployeePayroll()
@@ -144,15 +164,13 @@ namespace Payroll.Test.Service
                 CutOffStartDate = DateTime.Parse("05/04/2016"),
                 PayrollDate = DateTime.Parse("05/11/2016"),
                 PayrollGeneratedDate = DateTime.Parse("05/11/2016"),
-                EmployeeId = 1
+                Employee = employee
             };
 
             _employeePayrollRepository.Add(employeePayroll);
             _employeePayrollRepository.Add(employeePayroll2);
 
             _unitOfWork.Commit();
-
-            var frequency = FrequencyType.Weekly;
 
             DateTime payrollStartDate = _employeePayrollService
                 .GetNextPayrollStartDate();
@@ -163,6 +181,11 @@ namespace Payroll.Test.Service
                 .GetNextPayrollEndDate(payrollStartDate);
 
             Assert.AreEqual(DateTime.Parse("05/24/2016"), payrollEndDate);
+
+            DateTime payrollReleaseDate = _employeePayrollService
+                .GetNextPayrollReleaseDate(payrollEndDate);
+
+            Assert.AreEqual(DateTime.Parse("05/25/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
@@ -171,6 +194,47 @@ namespace Payroll.Test.Service
             DeleteInfo();
 
             //Test Data
+            var employee = new Employee
+            {
+                EmployeeCode = "11001",
+                FirstName = "Jona",
+                LastName = "Pereira",
+                MiddleName = "Aprecio",
+                BirthDate = DateTime.Parse("02/02/1991"),
+                Gender = 1,
+                IsActive = true
+            };
+
+            var employee2 = new Employee
+            {
+                EmployeeCode = "11002",
+                FirstName = "Cornelio Jr.",
+                LastName = "Cawicaan",
+                MiddleName = "Bue",
+                BirthDate = DateTime.Parse("10/30/1989"),
+                Gender = 2,
+                IsActive = true
+            };
+
+            var employeeInfo = new EmployeeInfo
+            {
+                Employee = employee,
+                Salary = 120,
+                SalaryFrequency = FrequencyType.Hourly,
+                Allowance = 350
+            };
+
+            var employeeInfo2 = new EmployeeInfo
+            {
+                Employee = employee2,
+                Salary = 150,
+                SalaryFrequency = FrequencyType.Hourly,
+                Allowance = 400
+            };
+
+            _employeeInfoRepository.Add(employeeInfo);
+            _employeeInfoRepository.Add(employeeInfo2);
+
             var dailyPayroll = new EmployeeDailyPayroll
             {
                 EmployeeId = 1,
@@ -484,11 +548,11 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateStart = DateTime.Parse("05/06/2016");
-            var dateEnd = DateTime.Parse("05/07/2016");
-            var payrollDate = DateTime.Parse("05/08/2016");
+            var dateStart = DateTime.Parse("05/04/2016");
+            var dateEnd = DateTime.Parse("05/10/2016");
+            var payrollDate = DateTime.Parse("05/11/2016");
 
-            _employeePayrollService.GeneratePayroll(payrollDate, dateStart, dateEnd);
+            _employeePayrollService.GeneratePayroll(dateStart, dateEnd);
             _unitOfWork.Commit();
 
             var payrollList = _employeePayrollService.GetByDateRange(payrollDate, payrollDate);
@@ -725,11 +789,11 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateStart = DateTime.Parse("05/12/2016");
-            var dateEnd = DateTime.Parse("05/13/2016");
-            var payrollDate = DateTime.Parse("05/14/2016");
+            var dateStart = DateTime.Parse("05/11/2016");
+            var dateEnd = DateTime.Parse("05/17/2016");
+            var payrollDate = DateTime.Parse("05/18/2016");
 
-            _employeePayrollService.GeneratePayroll(payrollDate, dateStart, dateEnd);
+            _employeePayrollService.GeneratePayroll(dateStart, dateEnd);
             _unitOfWork.Commit();
 
             var payrollList = _employeePayrollService.GetByDateRange(payrollDate, payrollDate);
