@@ -35,6 +35,8 @@
     </div>
 </form>
 
+@{Html.RenderAction("WorkSchedules", new {workScheduleId = Model.WorkScheduleId});}
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 

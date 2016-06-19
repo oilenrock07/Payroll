@@ -50,6 +50,17 @@ namespace Payroll.Service.Implementations
                 }
             }
 
+            //delete removed employee deduction
+            var removedItems = activeDeductions.Where(x => !employeeDeductions.Select(y => y.DeductionId).Contains(x.DeductionId)).ToList();
+            if (removedItems.Any())
+            {
+                foreach (var item in removedItems)
+                {
+                    _employeeDeductionRepository.Update(item);
+                    item.IsActive = false;
+                }
+            }
+
         }
     }
 }

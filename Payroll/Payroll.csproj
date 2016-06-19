@@ -372,6 +372,7 @@
     <Content Include="Views\Employee\_EmployeeDeductions.cshtml" />
     <Content Include="Views\Shared\_LayoutModal.cshtml" />
     <Content Include="Views\Employee\CreateEmployeeDeductions.cshtml" />
+    <Content Include="Views\Employee\WorkSchedules.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -128,6 +128,27 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    @Html.LabelFor(model => model.WorkScheduleId, "Work Schedule", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @if (Model.WorkSchedule != null)
+                        {
+                            <div class="js-workScheduleName">@Model.WorkSchedule.WorkScheduleName</div>
+                            <div class="js-workScheduleDay">@(((DayOfWeek) Model.WorkSchedule.WeekStart).ToString()) - @(((DayOfWeek) Model.WorkSchedule.WeekEnd).ToString())</div>
+                            <div class="js-workScheduleTime">@Model.WorkSchedule.TimeStart - @Model.WorkSchedule.TimeEnd</div>
+                        }
+                        else
+                        {
+                            <div class="js-workScheduleName"></div>
+                            <div class="js-workScheduleDay"></div>
+                            <div class="js-workScheduleTime"></div>
+                        }
+
+                        <div><a href="javascript:void(0)" data-target="#ModalWorkSchedules" data-toggle="modal" class="js-workScheduleLink">@(Model.WorkScheduleId > 0 ? "Change Work Schedule" : "Set Work Schedule")</a></div>
+                        @Html.HiddenFor(model => model.WorkScheduleId)
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

@@ -99,6 +99,7 @@
     <Compile Include="Interface\ITotalEmployeeHoursRepository.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
     <Compile Include="Interface\IUserRoleRepository.cs" />
+    <Compile Include="Interface\IWorkScheduleRepository.cs" />
     <Compile Include="Models\AttendanceLogDao.cs" />
     <Compile Include="Models\EmployeeLoanDao.cs" />
     <Compile Include="Models\Employee\EmployeeMachineDao.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Repositories\TotalEmployeeHoursRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Repositories\UserRoleRepository.cs" />
+    <Compile Include="Repositories\WorkScheduleRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
