@@ -19,14 +19,16 @@ namespace Payroll.Service.Interfaces
 
         void GeneratePayroll(DateTime? date);
 
-        void GeneratePayroll(DateTime payrollDate, DateTime dateFrom, DateTime dateTo);
+        void GeneratePayroll(DateTime dateFrom, DateTime dateTo);
 
         DateTime GetNextPayrollStartDate();
 
         DateTime GetNextPayrollStartDate(DateTime? date);
 
         DateTime GetNextPayrollEndDate(DateTime payrollStartDate);
-    
+
+        DateTime GetNextPayrollReleaseDate(DateTime payrollEndDate);
+
         /*
          * This will return payroll with payroll date between date start and date end
          */

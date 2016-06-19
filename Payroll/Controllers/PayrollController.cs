@@ -40,7 +40,7 @@ namespace Payroll.Controllers
                 payrollEndDate = DateTime.Parse(EndDate);
 
                 //Generate Payroll
-                _employeePayrollService.GeneratePayroll(DateTime.Now, payrollStartDate, payrollEndDate);
+                _employeePayrollService.GeneratePayroll(payrollStartDate, payrollEndDate);
 
                 //populate the viewmodel here from service data
                 //sort it in the service by surname

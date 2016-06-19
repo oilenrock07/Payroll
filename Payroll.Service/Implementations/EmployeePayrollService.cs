@@ -29,6 +29,7 @@ namespace Payroll.Service.Implementations
         private readonly String PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
         private readonly String PAYROLL_WEEK_START = "PAYROLL_WEEK_START";
         private readonly String PAYROLL_WEEK_END = "PAYROLL_WEEK_END";
+        private readonly String PAYROLL_WEEK_RELEASE = "PAYROLL_WEEK_RELEASE";
         private readonly String ALLOWANCE_WEEK_SCHEDULE = "ALLOWANCE_WEEK_SCHEDULE";
         private readonly String ALLOWANCE_DAY_SCHEDULE = "ALLOWANCE_DAY_SCHEDULE";
         private readonly String ALLOWANCE_TOTAL_DAYS = "ALLOWANCE_TOTAL_DAYS";
@@ -59,7 +60,7 @@ namespace Payroll.Service.Implementations
             {
                 //Hold last payroll processed
                 EmployeePayroll tempEmployeePayroll = null;
-                DateTime today = new DateTime();
+                DateTime today = DateTime.Now;
 
                 EmployeeDailyPayroll last = employeeDailyPayroll.Last();
 
@@ -174,16 +175,37 @@ namespace Payroll.Service.Implementations
             return payrollEndDate;
         }
 
+        public DateTime GetNextPayrollReleaseDate(DateTime payrollEndDate)
+        {
+            DateTime payrollReleaseDate = payrollEndDate;
+
+            //TODO more frequency support
+            switch (_frequency)
+            {
+                case FrequencyType.Weekly:
+                    //Note that the job should always schedule the day after the payroll end date
+                    var endOfWeekPayroll = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
+                        _settingService.GetByKey(PAYROLL_WEEK_RELEASE));
+
+                    payrollReleaseDate = payrollEndDate.AddDays(1).StartOfWeek(endOfWeekPayroll);
+
+                    break;
+            }
+
+            return payrollReleaseDate;
+        }
+
         public void GeneratePayroll(DateTime? date)
         {
             DateTime payrollStartDate = GetNextPayrollStartDate(date);
             DateTime payrollEndDate = GetNextPayrollEndDate(payrollStartDate);
             
-            GeneratePayroll(DateTime.Now, payrollStartDate, payrollEndDate);
+            GeneratePayroll(payrollStartDate, payrollEndDate);
         }
 
-        public void GeneratePayroll(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
+        public void GeneratePayroll(DateTime payrollStartDate, DateTime payrollEndDate)
         {
+            var payrollDate = GetNextPayrollReleaseDate(payrollEndDate);
             //If there's existing payroll within date range, make it inactive
             var existingPayrolls = _employeePayrollRepository
                 .GetByPayrollDateRange(payrollStartDate, payrollEndDate);
