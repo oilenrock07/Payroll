@@ -231,6 +231,7 @@
     <Compile Include="Models\Maintenance\EmployeeMachineViewModel.cs" />
     <Compile Include="Models\Maintenance\LoanViewModel.cs" />
     <Compile Include="Models\Maintenance\PaymentFrequencyViewModel.cs" />
+    <Compile Include="Models\Maintenance\WorkScheduleViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollListViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollSearchViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollViewModel.cs" />
@@ -373,6 +374,9 @@
     <Content Include="Views\Shared\_LayoutModal.cshtml" />
     <Content Include="Views\Employee\CreateEmployeeDeductions.cshtml" />
     <Content Include="Views\Employee\WorkSchedules.cshtml" />
+    <Content Include="Views\Maintenance\WorkSchedule.cshtml" />
+    <Content Include="Views\Maintenance\CreateWorkSchedule.cshtml" />
+    <Content Include="Views\Maintenance\EditWorkSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
