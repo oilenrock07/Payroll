@@ -134,6 +134,7 @@ namespace AttendanceManager
                 : _employeeMachineService.GetEmployees(_machineNumber);
 
             _employeeCodes.Clear();
+            employees = employees.Where(x => x.EmployeeCode != null).ToList();
             foreach (var employee in employees)
             {
                 _employeeCodes.Add(employee.EmployeeCode,employee.EmployeeId);
@@ -370,7 +371,7 @@ namespace AttendanceManager
             }
             
             
-            lbRTShow.ResetText();
+            lbRTShow.Items.Clear();
         }
     }
 }
