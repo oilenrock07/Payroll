@@ -53,7 +53,7 @@ namespace Payroll.Infrastructure.Implementations
 
         public virtual T Add(T entity)
         {
-            entity.CreateDate = new DateTime();
+            entity.CreateDate = DateTime.Now;
            
             DbSet.Add(entity);
 
@@ -66,7 +66,7 @@ namespace Payroll.Infrastructure.Implementations
         public virtual void Update(T entity)
         {
             DbSet.Attach(entity);
-            entity.UpdateDate = new DateTime();
+            entity.UpdateDate = DateTime.Now;
             if (!_sharedContext)
                 _context.SaveChanges();
         }

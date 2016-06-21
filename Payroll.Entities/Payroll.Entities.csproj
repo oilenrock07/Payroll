@@ -122,6 +122,10 @@
     <Compile Include="Migrations\201606210203219_payrollupdate.Designer.cs">
       <DependentUpon>201606210203219_payrollupdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606210257498_SchedulerLogs.cs" />
+    <Compile Include="Migrations\201606210257498_SchedulerLogs.Designer.cs">
+      <DependentUpon>201606210257498_SchedulerLogs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -138,6 +142,7 @@
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="SchedulerLog.cs" />
     <Compile Include="Seeder\DeductionAmountSeeds.cs" />
     <Compile Include="Seeder\DeductionSeeds.cs" />
     <Compile Include="Seeder\DepartmentSeeds.cs" />
@@ -200,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606210203219_payrollupdate.resx">
       <DependentUpon>201606210203219_payrollupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606210257498_SchedulerLogs.resx">
+      <DependentUpon>201606210257498_SchedulerLogs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
