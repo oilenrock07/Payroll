@@ -97,7 +97,7 @@ namespace Payroll.Common.Extension
         {
             DateTime firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
 
-            return date.Next(dayOfWeek).AddDays((nthWeek - 1) * 7);
+            return firstDayOfMonth.Next(dayOfWeek).AddDays((nthWeek - 1) * 7);
         }
     }
 }
