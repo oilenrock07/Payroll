@@ -118,9 +118,9 @@
     <Compile Include="Migrations\201606170654395_AddFKToEmployeeDeduction.Designer.cs">
       <DependentUpon>201606170654395_AddFKToEmployeeDeduction.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606190136044_payroll-table-update.cs" />
-    <Compile Include="Migrations\201606190136044_payroll-table-update.Designer.cs">
-      <DependentUpon>201606190136044_payroll-table-update.cs</DependentUpon>
+    <Compile Include="Migrations\201606210203219_payrollupdate.cs" />
+    <Compile Include="Migrations\201606210203219_payrollupdate.Designer.cs">
+      <DependentUpon>201606210203219_payrollupdate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -198,8 +198,8 @@
     <EmbeddedResource Include="Migrations\201606170654395_AddFKToEmployeeDeduction.resx">
       <DependentUpon>201606170654395_AddFKToEmployeeDeduction.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606190136044_payroll-table-update.resx">
-      <DependentUpon>201606190136044_payroll-table-update.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606210203219_payrollupdate.resx">
+      <DependentUpon>201606210203219_payrollupdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

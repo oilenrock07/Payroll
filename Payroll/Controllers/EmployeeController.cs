@@ -276,6 +276,15 @@ namespace Payroll.Controllers
                 return View("Details", viewModel);
             }
 
+            //validate employee code
+            var existingEmployeeCode = _employeeRepository.Find(x => x.EmployeeCode == viewModel.EmployeeInfo.Employee.EmployeeCode && x.IsActive);
+            if (existingEmployeeCode != null)
+            {
+                GetDropDowns(viewModel, viewModel.EmployeeInfo.EmployeeId);
+                ModelState.AddModelError("", ErrorMessages.USED_EMPLOYEECODE);
+                return View("Details", viewModel);
+            }
+
             var employee = viewModel.EmployeeInfo.Employee.MapItem<Employee>();
             employee.Gender = viewModel.Gender;
             var employeeInfo = viewModel.EmployeeInfo;
@@ -306,7 +315,11 @@ namespace Payroll.Controllers
             }
 
             //work schedule
-            _employeeWorkScheduleService.Add(viewModel.WorkScheduleId, employee.EmployeeId);
+            if (viewModel.WorkScheduleId > 0)
+            {
+                _employeeWorkScheduleService.Add(viewModel.WorkScheduleId, employee.EmployeeId);
+            }
+            
             _unitOfWork.Commit();
 
             //upload the picture and update the record

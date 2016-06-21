@@ -95,5 +95,14 @@ namespace Payroll.Resources {
                 return ResourceManager.GetString("REQUIRED_BIRTHDATE", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee code is already been used by other employee.
+        /// </summary>
+        internal static string USED_EMPLOYEECODE {
+            get {
+                return ResourceManager.GetString("USED_EMPLOYEECODE", resourceCulture);
+            }
+        }
     }
 }
