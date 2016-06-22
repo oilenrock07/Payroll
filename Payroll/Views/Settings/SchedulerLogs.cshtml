@@ -1,0 +1,68 @@
+﻿@using Payroll.Entities.Enums
+@using Payroll.Extension
+@model Payroll.Models.Settings.SchedulerLogViewModel
+
+@{
+    ViewBag.Title = "Scheduler Logs";
+}
+
+<h2>Scheduler Logs</h2>
+
+@using (Html.BeginForm("SchedulerLogs", "Settings", FormMethod.Get))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="StartDate">Start Date: </label>
+            <div class="col-md-4">
+                @Html.DatePickerFor("StartDate", Model.StartDate, new { @class = "form-control datepicker js-startDate" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="EndDate">End Date: </label>
+            <div class="col-md-4">
+                @Html.DatePickerFor("EndDate", Model.EndDate, new { @class = "form-control datepicker js-endDate" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (Model.SchedulerLogs != null && Model.SchedulerLogs.Any())
+{
+    <table class="table table-responsive table-striped table-hover">
+        <tr>
+            <th>Scheduler Type</th>
+            <th>Log Type</th>
+            <th>Date</th>
+            <th>Exception</th>
+        </tr>
+
+        @foreach (var item in Model.SchedulerLogs)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScheduleType)
+                </td>
+                <td>
+                    @item.LogType.ToString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exception)
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@if (ViewBag.NoResult != null)
+{
+    <div>No results found</div>
+}

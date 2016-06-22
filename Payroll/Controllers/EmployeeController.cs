@@ -232,7 +232,7 @@ namespace Payroll.Controllers
 
             //Get Employee Deductions
             var employeeDeduction = _employeeDeductionService.GetEmployeeDeduction(employeeId);
-            var deductions = _deductionRepository.GetAllActive().ToList();
+            var deductions = _deductionRepository.GetAllActive().Where(x=> x.IsCustomizable).ToList();
             var deductionsViewModel = new List<EmployeeDeductionViewModel>();
             if (deductions.Any())
             {

@@ -130,6 +130,7 @@
     <Compile Include="Service\EmployeePayrollServiceTest.cs" />
     <Compile Include="Service\EmployeeServiceTest.cs" />
     <Compile Include="Service\HolidayServiceTest.cs" />
+    <Compile Include="Service\SchedulerLogsService.cs" />
     <Compile Include="Service\TaxServiceTest.cs" />
     <Compile Include="Service\TotalEmployeeHoursServiceTest.cs" />
     <Compile Include="Service\UserRoleServiceTest.cs" />
