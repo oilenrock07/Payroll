@@ -20,13 +20,12 @@ namespace Payroll.Service.Implementations
 
         public virtual IEnumerable<EmployeeMachineDao> GetEmployees(int machineId)
         {
-            var employees = _employeeRepository.GetAll();
+            var employees = _employeeRepository.GetAllActive();
             var employeeMachines = _employeeMachineRepository.Find(x => x.Machine.IsActive && x.MachineId == machineId && x.IsActive);
 
             var query = from employee in employees
                         join empMachine in employeeMachines on employee.EmployeeId equals empMachine.EmployeeId into result
                         from subEmpMachine in result.DefaultIfEmpty()
-                        where employee.IsActive
                         select new EmployeeMachineDao
                         {
                             EmployeeCode = employee.EmployeeCode,
@@ -43,13 +42,13 @@ namespace Payroll.Service.Implementations
 
         public virtual IEnumerable<EmployeeMachineDao> GetEmployeesNotRegistered(int machineId)
         {
-            var employees = _employeeRepository.GetAll();
+            var employees = _employeeRepository.GetAllActive();
             var employeeMachines = _employeeMachineRepository.Find(x => x.Machine.IsActive && x.MachineId == machineId);
 
             var query = from employee in employees
                         join empMachine in employeeMachines on employee.EmployeeId equals empMachine.EmployeeId into result
                         from subEmpMachine in result.DefaultIfEmpty()
-                        where employee.IsActive && subEmpMachine == null
+                        where subEmpMachine == null
                         select new EmployeeMachineDao
                         {
                             EmployeeCode = employee.EmployeeCode,

@@ -18,6 +18,7 @@ namespace Payroll.Models.Employee
         public string ImagePath { get; set; }
         public int PositionId { get; set; }
         public int PaymentFrequency { get; set; }
+        public int WorkScheduleId { get; set; }
         public int Gender { get; set; }
         public int EmploymentStatus { get; set; }
         public string CheckedDepartments { get; set; }
@@ -25,6 +26,7 @@ namespace Payroll.Models.Employee
         public bool IsPrivate { get; set; }
 
 
+        public WorkSchedule WorkSchedule { get; set; }
         public EmployeeInfo EmployeeInfo { get; set; }
         public IEnumerable<SelectListItem> Positions { get; set; }
         public IEnumerable<SelectListItem> PaymentFrequencies { get; set; }
@@ -32,7 +34,7 @@ namespace Payroll.Models.Employee
         public IEnumerable<SelectListItem> EmploymentStatuses { get; set; }
         public IEnumerable<EmployeeDepartmentViewModel> Departments { get; set; }
         public IEnumerable<EmployeeDeductionViewModel> EmployeeDeductions { get; set; }
-
+        
 
         [Required(ErrorMessageResourceType = typeof (ErrorMessages), ErrorMessageResourceName = "REQUIRED_BIRTHDATE")]
         public string DisplayBirthDate

@@ -18,6 +18,7 @@ using Payroll.Models;
 using Payroll.Models.Employee;
 using Payroll.Repository.Interface;
 using Payroll.Common.Extension;
+using Payroll.Repository.Repositories;
 using Payroll.Resources;
 using Payroll.Service.Interfaces;
 
@@ -40,13 +41,16 @@ namespace Payroll.Controllers
         private readonly ILeaveRepository _leaveRepository;
         private readonly IDeductionRepository _deductionRepository;
         private readonly IEmployeeDeductionService _employeeDeductionService;
+        private readonly IWorkScheduleRepository _workScheduleRepository;
+        private readonly IEmployeeWorkScheduleService _employeeWorkScheduleService;
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
             IWebService webService, IDepartmentRepository departmentRepository, ILoanRepository loanRepository, IEmployeeInfoHistoryRepository employeeInfoHistoryRepository, IEmployeeLeaveRepository employeeLeaveRepository,
-            ILeaveRepository leaveRepository, IDeductionRepository deductionRepository, IEmployeeDeductionService employeeDeductionService) 
+            ILeaveRepository leaveRepository, IDeductionRepository deductionRepository, IEmployeeDeductionService employeeDeductionService,
+            IEmployeeWorkScheduleService employeeWorkScheduleService, IWorkScheduleRepository workScheduleRepository) 
         {
             _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
@@ -62,6 +66,8 @@ namespace Payroll.Controllers
             _leaveRepository = leaveRepository;
             _deductionRepository = deductionRepository;
             _employeeDeductionService = employeeDeductionService;
+            _employeeWorkScheduleService = employeeWorkScheduleService;
+            _workScheduleRepository = workScheduleRepository;
         }
 
         [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
@@ -213,10 +219,20 @@ namespace Payroll.Controllers
                 }
             }
 
+            //get employee work schedule
+            if (employeeId > 0)
+            {
+                var employeeWorkSchedule = _employeeWorkScheduleService.GetByEmployeeId(employeeId);
+                if (employeeWorkSchedule != null)
+                {
+                    viewModel.WorkSchedule = employeeWorkSchedule.WorkSchedule;
+                    viewModel.WorkScheduleId = employeeWorkSchedule.WorkSchedule.WorkScheduleId;
+                }
+            }
 
             //Get Employee Deductions
             var employeeDeduction = _employeeDeductionService.GetEmployeeDeduction(employeeId);
-            var deductions = _deductionRepository.GetAllActive().ToList();
+            var deductions = _deductionRepository.GetAllActive().Where(x=> x.IsCustomizable).ToList();
             var deductionsViewModel = new List<EmployeeDeductionViewModel>();
             if (deductions.Any())
             {
@@ -240,6 +256,13 @@ namespace Payroll.Controllers
             viewModel.EmploymentStatuses = employmentStatus;
         }
 
+        public virtual ActionResult WorkSchedules(int workScheduleId)
+        {
+            var workSchedules = _workScheduleRepository.GetAllActive();
+            ViewBag.WorkScheduleId = workScheduleId;
+            return View(workSchedules);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [OverrideAuthorizeAttribute(Roles = "Admin,Manager,Encoder")]
@@ -250,6 +273,15 @@ namespace Payroll.Controllers
             {
                 GetDropDowns(viewModel, viewModel.EmployeeInfo.EmployeeId);
                 ModelState.AddModelError("", ErrorMessages.INVALID_DATE);
+                return View("Details", viewModel);
+            }
+
+            //validate employee code
+            var existingEmployeeCode = _employeeRepository.Find(x => x.EmployeeCode == viewModel.EmployeeInfo.Employee.EmployeeCode && x.IsActive);
+            if (existingEmployeeCode != null)
+            {
+                GetDropDowns(viewModel, viewModel.EmployeeInfo.EmployeeId);
+                ModelState.AddModelError("", ErrorMessages.USED_EMPLOYEECODE);
                 return View("Details", viewModel);
             }
 
@@ -266,6 +298,7 @@ namespace Payroll.Controllers
 
             _unitOfWork.Commit();
 
+            //departments
             var departments = viewModel.CheckedDepartments != null
                             ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)
                             : new List<int>();
@@ -280,6 +313,13 @@ namespace Payroll.Controllers
                         : new List<EmployeeDeduction>();
                 _employeeDeductionService.UpdateEmployeeDeduction(employeeDeductions, viewModel.EmployeeInfo.EmployeeId);
             }
+
+            //work schedule
+            if (viewModel.WorkScheduleId > 0)
+            {
+                _employeeWorkScheduleService.Add(viewModel.WorkScheduleId, employee.EmployeeId);
+            }
+            
             _unitOfWork.Commit();
 
             //upload the picture and update the record
@@ -340,6 +380,9 @@ namespace Payroll.Controllers
             var departments = viewModel.CheckedDepartments != null
                             ? viewModel.CheckedDepartments.Split(',').Select(Int32.Parse)
                             : new List<int>();
+
+            //work schedules
+            _employeeWorkScheduleService.Update(viewModel.WorkScheduleId, viewModel.EmployeeInfo.EmployeeId);
 
             _employeeRepository.UpdateDepartment(departments, viewModel.EmployeeInfo.EmployeeId);
             _employeeInfoHistoryRepository.Add(employeeInfo.MapItem<EmployeeInfoHistory>());

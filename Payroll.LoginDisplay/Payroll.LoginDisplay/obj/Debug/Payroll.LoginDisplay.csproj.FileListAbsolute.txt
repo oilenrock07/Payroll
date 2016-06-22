@@ -88,3 +88,4 @@ C:\Cawi\DEV\Payroll\Payroll\Payroll.LoginDisplay\Payroll.LoginDisplay\bin\Ninjec
 C:\Cawi\DEV\Payroll\Payroll\Payroll.LoginDisplay\Payroll.LoginDisplay\bin\Omu.ValueInjecter.pdb
 C:\Cawi\DEV\Payroll\Payroll\Payroll.LoginDisplay\Payroll.LoginDisplay\bin\Omu.ValueInjecter.xml
 C:\Cawi\DEV\Payroll\Payroll\Payroll.LoginDisplay\Payroll.LoginDisplay\bin\MySql.Data.Entity.EF6.dll
+C:\Cawi\DEV\Payroll\Payroll\Payroll.LoginDisplay\Payroll.LoginDisplay\bin\MySql.Data.dll

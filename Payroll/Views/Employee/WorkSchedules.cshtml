@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Payroll.Entities.WorkSchedule>
+@{
+    ViewBag.Title = "WorkSchedules";
+    ViewBag.ModalId = "ModalWorkSchedules";
+    ViewBag.ModalTitle = "Work Schedules";
+    Layout = "/Views/Shared/_LayoutModal.cshtml";
+}
+
+<table class="table table-responsive table-striped">
+    <tr>
+        <th></th>
+        <th>Work Schedule Name</th>
+        <th>Days Of Work</th>
+        <th>Time</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        var checkedDisplay = item.WorkScheduleId == Convert.ToInt32(ViewBag.WorkScheduleId) ? "checked=\"checked\"" : "";
+
+        <tr>
+            <td><input type="radio" @checkedDisplay class="js-workScheduleOption" value="@item.WorkScheduleId" name="workschedule_options"/></td>
+            <td>@item.WorkScheduleName</td>
+            <td>@(((DayOfWeek) item.WeekStart).ToString()) - @(((DayOfWeek) item.WeekEnd).ToString())</td>
+            <td>@item.TimeStart - @item.TimeEnd</td>
+        </tr>
+    }
+</table>
+
+@section ModalFooter
+{
+    <input type="button" class="btn btn-default" data-dismiss="modal" value="Close"/>
+}
+

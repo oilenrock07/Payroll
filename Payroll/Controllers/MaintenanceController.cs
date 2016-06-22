@@ -8,6 +8,7 @@ using Payroll.Common.Enums;
 using Payroll.Common.Extension;
 using Payroll.Entities;
 using Payroll.Entities.Enums;
+using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Models.Maintenance;
 using Payroll.Repository.Interface;
@@ -30,12 +31,14 @@ namespace Payroll.Controllers
         private readonly ILoanRepository _loanRepository;
         private readonly IMachineRepository _machineRepository;
         private readonly IEmployeeMachineService _emplyeeMachineService;
+        private readonly IWorkScheduleRepository _workScheduleRepository;
+        private readonly IDeductionRepository _deductionRepository;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
             IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, 
-            IMachineRepository machineRepository, IWebService webService,
-            IEmployeeMachineService emplyeeMachineService)
+            IMachineRepository machineRepository, IWebService webService, IDeductionRepository deductionRepository,
+            IEmployeeMachineService emplyeeMachineService, IWorkScheduleRepository workScheduleRepository)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
@@ -48,6 +51,8 @@ namespace Payroll.Controllers
             _machineRepository = machineRepository;
             _webService = webService;
             _emplyeeMachineService = emplyeeMachineService;
+            _workScheduleRepository = workScheduleRepository;
+            _deductionRepository = deductionRepository;
         }
 
         #region Positions
@@ -133,20 +138,12 @@ namespace Payroll.Controllers
                 });
             }
 
-            var dayOfWeeks = new List<SelectListItem>();
-            foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
-            {
-                dayOfWeeks.Add(new SelectListItem
-                {
-                    Text = dayOfWeek.ToString(),
-                    Value = ((int)dayOfWeek).ToString()
-                });
-            }
+
 
             var viewModel = new PaymentFrequencyViewModel
             {
                 Frequencies = frequencies,
-                DayOfWeeks = dayOfWeeks,
+                DayOfWeeks = GetDayOfWeeks(),
                 PaymentFrequency = new PaymentFrequency { FrequencyId = 1, MonthlyStartDay = 15, MonthlyEndDay = 30, WeeklyStartDayOfWeek = 3}
             };
 
@@ -537,5 +534,142 @@ namespace Payroll.Controllers
         }
 
         #endregion
+
+        #region Work Schedule
+        public virtual ActionResult WorkSchedule()
+        {
+            var workSchedules = _workScheduleRepository.GetAllActive();
+            return View(workSchedules);
+        }
+
+        public virtual ActionResult CreateWorkSchedule()
+        {
+            var viewModel = new WorkScheduleViewModel
+            {
+                WeekList = GetDayOfWeeks()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateWorkSchedule(WorkScheduleViewModel viewModel)
+        {
+            var workSchedule = viewModel.MapItem<WorkSchedule>();
+            workSchedule.TimeEnd = viewModel.TimeEnd.TimeOfDay;
+            workSchedule.TimeStart = viewModel.TimeStart.TimeOfDay;
+
+            _workScheduleRepository.Add(workSchedule);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("WorkSchedule");
+        }
+
+        public virtual ActionResult EditWorkSchedule(int id)
+        {
+            var workSchedule = _workScheduleRepository.GetById(id);
+            var viewModel = workSchedule.MapItem<WorkScheduleViewModel>();
+            viewModel.WeekList = GetDayOfWeeks();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditWorkSchedule(WorkScheduleViewModel viewModel)
+        {
+            var workSchedule = _workScheduleRepository.GetById(viewModel.WorkScheduleId);
+            _workScheduleRepository.Update(workSchedule);
+
+            workSchedule.InjectFrom(viewModel);
+            workSchedule.TimeEnd = viewModel.TimeEnd.TimeOfDay;
+            workSchedule.TimeStart = viewModel.TimeStart.TimeOfDay;
+            workSchedule.IsActive = true;
+
+
+            _unitOfWork.Commit();
+            return RedirectToAction("WorkSchedule");
+        }
+
+        public virtual ActionResult DeleteWorkSchedule(int id)
+        {
+            var workSchedule = _workScheduleRepository.GetById(id);
+            _workScheduleRepository.Update(workSchedule);
+            workSchedule.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("WorkSchedule");
+        }
+        #endregion
+
+
+        #region Deductions
+        public virtual ActionResult Deductions()
+        {
+            var deductions = _deductionRepository.GetAllActive().Where(x => x.IsCustomizable).ToList();
+            return View(deductions);
+        }
+
+        public virtual ActionResult CreateDeductions()
+        {
+            return View(new Deduction());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateDeductions(Deduction model)
+        {
+            model.IsCustomizable = true;
+            _deductionRepository.Add(model);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Deductions");
+        }
+
+        public virtual ActionResult EditDeductions(int id)
+        {
+            var workSchedule = _deductionRepository.GetById(id);
+            return View(workSchedule);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditDeductions(Deduction model)
+        {
+            var deduction = _deductionRepository.GetById(model.DeductionId);
+            _deductionRepository.Update(deduction);
+            deduction.DeductionName = model.DeductionName;
+            deduction.Remarks = model.Remarks;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Deductions");
+        }
+
+        public virtual ActionResult DeleteDeductions(int id)
+        {
+            var deduction = _deductionRepository.GetById(id);
+            _deductionRepository.Update(deduction);
+            deduction.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Deductions");
+        }
+        #endregion
+
+        private IEnumerable<SelectListItem> GetDayOfWeeks()
+        {
+            var dayOfWeeks = new List<SelectListItem>();
+            foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                dayOfWeeks.Add(new SelectListItem
+                {
+                    Text = dayOfWeek.ToString(),
+                    Value = ((int)dayOfWeek).ToString()
+                });
+            }
+
+            return dayOfWeeks;
+        }
     }
 }

@@ -231,9 +231,11 @@
     <Compile Include="Models\Maintenance\EmployeeMachineViewModel.cs" />
     <Compile Include="Models\Maintenance\LoanViewModel.cs" />
     <Compile Include="Models\Maintenance\PaymentFrequencyViewModel.cs" />
+    <Compile Include="Models\Maintenance\WorkScheduleViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollListViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollSearchViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollViewModel.cs" />
+    <Compile Include="Models\Settings\SchedulerLogViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ErrorMessages.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -372,6 +374,14 @@
     <Content Include="Views\Employee\_EmployeeDeductions.cshtml" />
     <Content Include="Views\Shared\_LayoutModal.cshtml" />
     <Content Include="Views\Employee\CreateEmployeeDeductions.cshtml" />
+    <Content Include="Views\Employee\WorkSchedules.cshtml" />
+    <Content Include="Views\Maintenance\WorkSchedule.cshtml" />
+    <Content Include="Views\Maintenance\CreateWorkSchedule.cshtml" />
+    <Content Include="Views\Maintenance\EditWorkSchedule.cshtml" />
+    <Content Include="Views\Settings\SchedulerLogs.cshtml" />
+    <Content Include="Views\Maintenance\Deductions.cshtml" />
+    <Content Include="Views\Maintenance\CreateDeductions.cshtml" />
+    <Content Include="Views\Maintenance\EditDeductions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

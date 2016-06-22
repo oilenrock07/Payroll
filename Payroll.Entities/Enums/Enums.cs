@@ -59,4 +59,10 @@ namespace Payroll.Entities.Enums
         Update = 3,
         Delete = 4,
     }
+
+    public enum SchedulerLogType
+    {
+        Success = 1,
+        Exception = 2
+    }
 }

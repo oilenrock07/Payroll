@@ -18,12 +18,8 @@ using Payroll.Common.Extension;
 
 namespace Payroll.Scheduler.Schedules
 {
-    public class EmployeePayrollSchedule : ISchedule
+    public class EmployeePayrollSchedule : BaseSchedule, ISchedule
     {
-        public readonly PayrollContext _payrollContext;
-        public readonly IDatabaseFactory _databaseFactory;
-        public readonly IUnitOfWork _unitOfWork;
-
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
         private readonly ITotalEmployeeHoursRepository _totalEmployeeHoursRepository;
         private readonly IEmployeeDepartmentRepository _employeeDepartmentRepository;
@@ -63,10 +59,6 @@ namespace Payroll.Scheduler.Schedules
 
         public EmployeePayrollSchedule()
         {
-            _payrollContext = new PayrollContext();
-            _databaseFactory = new DatabaseFactory(_payrollContext);
-            _unitOfWork = new UnitOfWork(_databaseFactory);
-
             _employeeDepartmentRepository = new EmployeeDepartmentRepository(_databaseFactory);
             _employeeRepository = new EmployeeRepository(_databaseFactory, _employeeDepartmentRepository);
             _attendanceRepository = new AttendanceRepository(_databaseFactory);
@@ -99,30 +91,41 @@ namespace Payroll.Scheduler.Schedules
                 _settingService, _employeeDailyPayrollRepository, _employeeInfoService, _employeeSalaryService);
             _deductionService = new DeductionService(_deductionRepository);
             _taxService = new TaxService(_taxRepository);
-            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _employeePayrollService, _taxService);
+            _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
             _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService );
            
         }
 
         public void Execute()
         {
-            //Get payroll date range
-            var payrollStartDate = _employeePayrollService
-                .GetNextPayrollStartDate(DateTime.Now).TruncateTime();
-            var payrollEndDate = _employeePayrollService
-                .GetNextPayrollEndDate(payrollStartDate).TruncateTime();
+            try
+            {
+                //Get payroll date range
+                var payrollStartDate = _employeePayrollService
+                    .GetNextPayrollStartDate(DateTime.Now).TruncateTime();
+                var payrollEndDate = _employeePayrollService
+                    .GetNextPayrollEndDate(payrollStartDate).TruncateTime();
 
-            //Compute total employee hours
-            Console.WriteLine("Computing total employee hours for date " + payrollStartDate + " to " + payrollEndDate);
-            _totalEmployeeHoursService.GenerateTotalByDateRange(payrollStartDate, payrollEndDate);
+                //Compute total employee hours
+                Console.WriteLine("Computing total employee hours for date " + payrollStartDate + " to " +
+                                  payrollEndDate);
+                _totalEmployeeHoursService.GenerateTotalByDateRange(payrollStartDate, payrollEndDate);
 
-            //Compute daily payroll
-            Console.WriteLine("Computing daily payroll for date " + payrollStartDate + " to " + payrollEndDate);
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(payrollStartDate, payrollEndDate);
+                //Compute daily payroll
+                Console.WriteLine("Computing daily payroll for date " + payrollStartDate + " to " + payrollEndDate);
+                _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(payrollStartDate, payrollEndDate);
 
-            //Compute total payroll
-            Console.WriteLine("Computing total payroll for date " + payrollStartDate + " to " + payrollEndDate);
-            _employeePayrollService.GeneratePayroll(DateTime.Now, payrollStartDate, payrollEndDate);
+                //Compute total payroll
+                Console.WriteLine("Computing total payroll for date " + payrollStartDate + " to " + payrollEndDate);
+                _employeePayrollService.GeneratePayroll(payrollStartDate, payrollEndDate);
+
+                LogSchedule(SchedulerLogType.Success);
+            }
+            catch (Exception ex)
+            {
+                LogSchedule(SchedulerLogType.Exception, ex.Message);
+            }
+
         }
     }
 }

@@ -67,27 +67,35 @@ namespace AttendanceManager
         private void axCZKEM1_OnAttTransactionEx(string sEnrollNumber, int iIsInValid, int iAttState, int iVerifyMethod, int iYear, int iMonth, int iDay, int iHour, int iMinute, int iSecond, int iWorkCode)
         {
             //if valid, insert to database and display the picture to screen
-            if (iIsInValid == 0)
+            try
             {
-                //insert to database
-                var employeeId = _employeeCodes[sEnrollNumber];
-                var attendaceLog = new AttendanceLog
+                if (iIsInValid == 0)
                 {
-                    EmployeeId = employeeId,
-                    ClockInOut = DateTime.Now,
-                    Type = (AttendanceType)Convert.ToInt16(iAttState),
-                    IpAddress = _ipAddress,
-                    MachineId = _machineNumber
-                };
+                    //insert to database
+                    var employeeId = _employeeCodes[sEnrollNumber];
+                    var attendaceLog = new AttendanceLog
+                    {
+                        EmployeeId = employeeId,
+                        ClockInOut = DateTime.Now,
+                        Type = (AttendanceType)Convert.ToInt16(iAttState),
+                        IpAddress = _ipAddress,
+                        MachineId = _machineNumber
+                    };
 
-                _attendanceLogRepository.Add(attendaceLog);
-                _unitOfWork.Commit();
+                    _attendanceLogRepository.Add(attendaceLog);
+                    _unitOfWork.Commit();
 
-                //display the picture to screen
-                var url = Program.GetSettingValue("DISPLAY_LOGIN_URL", "http://payroll.logindisplay/api/payrollapi/");
-                var client = WebRequest.Create(String.Format("{0}/{1}/{2}/{3}/{4}", url, sEnrollNumber,_ipAddress, iAttState, DateTime.Now.Serialize()));
-                client.GetResponse();
+                    //display the picture to screen
+                    var url = Program.GetSettingValue("DISPLAY_LOGIN_URL", "http://payroll.logindisplay/api/payrollapi/");
+                    var client = WebRequest.Create(String.Format("{0}/{1}/{2}/{3}/{4}", url, sEnrollNumber, _ipAddress, iAttState, DateTime.Now.Serialize()));
+                    client.GetResponse();
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
 
 
 
@@ -126,6 +134,7 @@ namespace AttendanceManager
                 : _employeeMachineService.GetEmployees(_machineNumber);
 
             _employeeCodes.Clear();
+            employees = employees.Where(x => x.EmployeeCode != null).ToList();
             foreach (var employee in employees)
             {
                 _employeeCodes.Add(employee.EmployeeCode,employee.EmployeeId);
@@ -362,7 +371,7 @@ namespace AttendanceManager
             }
             
             
-            lbRTShow.ResetText();
+            lbRTShow.Items.Clear();
         }
     }
 }

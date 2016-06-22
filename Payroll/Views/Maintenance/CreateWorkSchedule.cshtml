@@ -1,0 +1,76 @@
+﻿@model Payroll.Models.Maintenance.WorkScheduleViewModel
+
+@{
+    ViewBag.Title = "CreateWorkSchedule";
+}
+
+<h2>Create Work Schedule</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Work Schedule</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WorkScheduleName, "Work Schedule Name",htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.WorkScheduleName, new {@class ="form-control"})
+                @Html.ValidationMessageFor(model => model.WorkScheduleName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TimeStart, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-4 input-group date timepicker">
+                @Html.TextBoxFor(model => model.TimeStart, new { @class = "form-control" })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+
+            @Html.ValidationMessageFor(model => model.TimeStart)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TimeEnd, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4 input-group date timepicker">
+                @Html.TextBoxFor(model => model.TimeEnd, new { @class = "form-control" })
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+
+            @Html.ValidationMessageFor(model => model.TimeEnd)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WeekStart, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.WeekStart, Model.WeekList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.WeekStart)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WeekEnd, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.WeekEnd, Model.WeekList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.WeekEnd)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "WorkSchedule")
+</div>

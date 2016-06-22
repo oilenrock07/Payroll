@@ -1,4 +1,5 @@
-﻿namespace Payroll.Scheduler.Interfaces
+﻿
+namespace Payroll.Scheduler.Interfaces
 {
     public interface ISchedule
     {

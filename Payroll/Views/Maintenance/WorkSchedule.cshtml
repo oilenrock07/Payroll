@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Payroll.Entities.WorkSchedule>
+
+@{
+    ViewBag.Title = "WorkSchedule";
+}
+
+<h2>Work Schedule</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateWorkSchedule")
+</p>
+
+<table class="table table-responsive table-striped">
+    <tr>
+        <th>
+            Work Schedule Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WeekStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WeekEnd)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkScheduleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeEnd)
+        </td>
+        <td>
+            @(((DayOfWeek)item.WeekStart).ToString())
+        </td>
+        <td>
+            @(((DayOfWeek)item.WeekEnd).ToString())
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditWorkSchedule", new { id = item.WorkScheduleId }) |
+            @Html.ActionLink("Delete", "DeleteWorkSchedule", new { id = item.WorkScheduleId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}

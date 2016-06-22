@@ -1,14 +1,11 @@
 ﻿using Payroll.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Payroll.Service.Interfaces
 {
     public interface IEmployeeWorkScheduleService
     {
         EmployeeWorkSchedule GetByEmployeeId(int employeeId);
+        EmployeeWorkSchedule Add(int workScheduleId, int employeeId);
+        void Update(int workScheduleId, int employeeId);
     }
 }

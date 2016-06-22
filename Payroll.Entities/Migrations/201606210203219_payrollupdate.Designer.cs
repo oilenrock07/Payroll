@@ -7,13 +7,13 @@ namespace Payroll.Entities.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class payrolltableupdate : IMigrationMetadata
+    public sealed partial class payrollupdate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(payrolltableupdate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(payrollupdate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201606190136044_payroll-table-update"; }
+            get { return "201606210203219_payrollupdate"; }
         }
         
         string IMigrationMetadata.Source

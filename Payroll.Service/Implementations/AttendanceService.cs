@@ -174,7 +174,7 @@ namespace Payroll.Service.Implementations
             }
             catch (Exception ex)
             {
-                return -1;
+                throw ex;
             }
         }
 

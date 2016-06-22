@@ -129,4 +129,7 @@
   <data name="ATTENDANCE_INVALID_FUTUREDATE" xml:space="preserve">
     <value>Clockin and clockout cannot be set as future date</value>
   </data>
+  <data name="USED_EMPLOYEECODE" xml:space="preserve">
+    <value>Employee code is already been used by other employee</value>
+  </data>
 </root>
