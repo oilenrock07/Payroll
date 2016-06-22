@@ -16,6 +16,7 @@ namespace Payroll.Entities.Payroll
         public int DeductionId { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string DeductionName { get; set; }
 
         [StringLength(2500)]

@@ -379,6 +379,9 @@
     <Content Include="Views\Maintenance\CreateWorkSchedule.cshtml" />
     <Content Include="Views\Maintenance\EditWorkSchedule.cshtml" />
     <Content Include="Views\Settings\SchedulerLogs.cshtml" />
+    <Content Include="Views\Maintenance\Deductions.cshtml" />
+    <Content Include="Views\Maintenance\CreateDeductions.cshtml" />
+    <Content Include="Views\Maintenance\EditDeductions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

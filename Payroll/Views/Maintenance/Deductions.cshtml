@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Payroll.Entities.Payroll.Deduction>
+
+@{
+    ViewBag.Title = "Deductions";
+}
+
+<h2>Deductions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateDeductions")
+</p>
+
+<table class="table table-responsive table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DeductionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeductionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remarks)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditDeductions", new { id = item.DeductionId }) |
+            @Html.ActionLink("Delete", "DeleteDeductions", new { id = item.DeductionId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}
