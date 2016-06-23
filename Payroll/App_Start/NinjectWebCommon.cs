@@ -107,6 +107,7 @@ namespace Payroll.App_Start
             kernel.Bind<ITaxRepository>().To<TaxRepository>().InRequestScope();
             kernel.Bind<IWorkScheduleRepository>().To<WorkScheduleRepository>().InRequestScope();
             kernel.Bind<ISchedulerLogRepository>().To<SchedulerLogRepository>().InRequestScope();
+            kernel.Bind<IAdjustmentRepository>().To<AdjustmentRepository>().InRequestScope();
             
             //Service
             kernel.Bind<IUserRoleService>().To<UserRoleService>().InRequestScope();

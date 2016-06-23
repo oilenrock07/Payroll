@@ -382,6 +382,9 @@
     <Content Include="Views\Maintenance\Deductions.cshtml" />
     <Content Include="Views\Maintenance\CreateDeductions.cshtml" />
     <Content Include="Views\Maintenance\EditDeductions.cshtml" />
+    <Content Include="Views\Maintenance\Adjustment.cshtml" />
+    <Content Include="Views\Maintenance\CreateAdjustment.cshtml" />
+    <Content Include="Views\Maintenance\EditAdjustment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

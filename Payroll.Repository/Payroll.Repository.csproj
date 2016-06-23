@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IAdjustmentRepository.cs" />
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
     <Compile Include="Interface\IDeductionAmountRepository.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Models\Employee\EmployeeNames.cs" />
     <Compile Include="Models\Payroll\PayrollDao.cs" />
     <Compile Include="Models\User\UserRoleDao.cs" />
+    <Compile Include="Repositories\AdjustmentRepository.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
     <Compile Include="Repositories\DeductionAmountRepository.cs" />

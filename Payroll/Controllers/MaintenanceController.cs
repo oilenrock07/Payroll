@@ -33,12 +33,13 @@ namespace Payroll.Controllers
         private readonly IEmployeeMachineService _emplyeeMachineService;
         private readonly IWorkScheduleRepository _workScheduleRepository;
         private readonly IDeductionRepository _deductionRepository;
+        private readonly IAdjustmentRepository _adjustmentRepository;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
             IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, 
             IMachineRepository machineRepository, IWebService webService, IDeductionRepository deductionRepository,
-            IEmployeeMachineService emplyeeMachineService, IWorkScheduleRepository workScheduleRepository)
+            IEmployeeMachineService emplyeeMachineService, IWorkScheduleRepository workScheduleRepository, IAdjustmentRepository adjustmentRepository)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
@@ -53,6 +54,7 @@ namespace Payroll.Controllers
             _emplyeeMachineService = emplyeeMachineService;
             _workScheduleRepository = workScheduleRepository;
             _deductionRepository = deductionRepository;
+            _adjustmentRepository = adjustmentRepository;
         }
 
         #region Positions
@@ -603,7 +605,6 @@ namespace Payroll.Controllers
         }
         #endregion
 
-
         #region Deductions
         public virtual ActionResult Deductions()
         {
@@ -654,6 +655,58 @@ namespace Payroll.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("Deductions");
+        }
+        #endregion
+
+        #region Adjustments
+        public virtual ActionResult Adjustment()
+        {
+            var adjustments = _adjustmentRepository.GetAllActive().ToList();
+            return View(adjustments);
+        }
+
+        public virtual ActionResult CreateAdjustment()
+        {
+            return View(new Adjustment());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateAdjustment(Adjustment model)
+        {
+            _adjustmentRepository.Add(model);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Adjustment");
+        }
+
+        public virtual ActionResult EditAdjustment(int id)
+        {
+            var adjustment = _adjustmentRepository.GetById(id);
+            return View(adjustment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditAdjustment(Adjustment model)
+        {
+            var adjustment = _adjustmentRepository.GetById(model.AdjustmentId);
+            _adjustmentRepository.Update(adjustment);
+            adjustment.AdjustmentName = model.AdjustmentName;
+            adjustment.Description = model.Description;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Adjustment");
+        }
+
+        public virtual ActionResult DeleteAdjustment(int id)
+        {
+            var adjustment = _adjustmentRepository.GetById(id);
+            _adjustmentRepository.Update(adjustment);
+            adjustment.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Adjustment");
         }
         #endregion
 

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Payroll.Entities.Adjustment>
+
+@{
+    ViewBag.Title = "Adjustment";
+}
+
+<h2>Adjustment</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateAdjustment")
+</p>
+
+<table class="table table-responsive table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AdjustmentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdjustmentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditAdjustment", new { id = item.AdjustmentId }) |
+            @Html.ActionLink("Delete", "DeleteAdjustment", new { id = item.AdjustmentId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}
