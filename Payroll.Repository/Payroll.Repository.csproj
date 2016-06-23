@@ -74,6 +74,7 @@
     <Compile Include="Interface\IDeductionAmountRepository.cs" />
     <Compile Include="Interface\IDeductionRepository.cs" />
     <Compile Include="Interface\IDepartmentRepository.cs" />
+    <Compile Include="Interface\IEmployeeAdjustmentRepository.cs" />
     <Compile Include="Interface\IEmployeeDailyPayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeDeductionRepository.cs" />
     <Compile Include="Interface\IEmployeeDepartmentRepository.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Repositories\DeductionAmountRepository.cs" />
     <Compile Include="Repositories\DeductionRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />
+    <Compile Include="Repositories\EmployeeAdjustmentRepository.cs" />
     <Compile Include="Repositories\EmployeeDailyPayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeDeductionRepository.cs" />
     <Compile Include="Repositories\EmployeeDepartmentRepository.cs" />

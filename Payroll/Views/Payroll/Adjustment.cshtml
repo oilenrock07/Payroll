@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Payroll.Entities.Payroll.EmployeeAdjustment>
+
+@{
+    ViewBag.Title = "Adjustment";
+}
+
+<h2>Adjustment</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateAdjustment")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Adjustment
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Adjustment.AdjustmentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remarks)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditAdjustment", new { id=item.EmployeeAdjustmentId }) |
+            @Html.ActionLink("Delete", "DeleteAdjustment", new { id = item.EmployeeAdjustmentId }, new { @class = "js-maintenanceDelete" })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}
