@@ -72,7 +72,7 @@ namespace Payroll.Scheduler.Schedules
             }
             catch (Exception ex)
             {
-                LogSchedule(SchedulerLogType.Exception, ex.Message);
+                LogSchedule(SchedulerLogType.Exception, ex.InnerException.Message);
             }
 
         }
