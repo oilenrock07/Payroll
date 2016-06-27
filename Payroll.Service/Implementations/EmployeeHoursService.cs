@@ -101,6 +101,8 @@ namespace Payroll.Service.Implementations
 
                 _attendanceService.Update(a);
                 a.IsHoursCounted = true;
+
+                _unitOfWork.Commit();
             }
         }
 
