@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -21,5 +22,7 @@ namespace Payroll.Infrastructure.Interfaces
         void Delete(T entity);
 
         void ExecuteSqlCommand(string command, params object[] parameters);
+
+        void DeleteAll(IList<T> entityList);
     }
 }

@@ -54,6 +54,9 @@ namespace Payroll.Service.Implementations
         /*Note that this method is applicable to employees with hourly rate*/
         public void GenerateEmployeeDailySalaryByDateRange(DateTime dateFrom, DateTime dateTo)
         {
+            //Delete existing by date range
+            DeleteByDateRange(dateFrom, dateTo);
+
             IList<TotalEmployeeHours> totalEmployeeHours = 
                 _totalEmployeeHoursService.GetByDateRange(dateFrom, dateTo);
 
@@ -252,6 +255,15 @@ namespace Payroll.Service.Implementations
         {
             dateTo = dateTo.AddDays(1);
             return _employeeDailyPayrollRepository.GetByTypeAndDateRange(rateType, dateFrom, dateTo);
+        }
+
+        private void DeleteByDateRange(DateTime dateFrom, DateTime dateTo)
+        {
+            //Delete existing daily employee payroll within date range
+            var existingDailyPayroll = this.GetByDateRange(dateFrom, dateTo);
+            _employeeDailyPayrollRepository.DeleteAll(existingDailyPayroll);
+
+            _unitOfWork.Commit();
         }
     }
 }
