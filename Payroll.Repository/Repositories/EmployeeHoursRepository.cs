@@ -16,16 +16,26 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().EmployeeHours;
         }
 
+        public IList<EmployeeHours> GetByDateRange(DateTime fromDate, DateTime toDate)
+        {
+            return Find(eh => eh.IsActive && eh.Date >= fromDate && eh.Date < toDate).ToList();
+        }
+
         public IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime dateFrom, DateTime dateTo)
         {
-            return Find(eh => eh.EmployeeId == employeeId &&
-                eh.Date >= dateFrom && eh.Date <= dateTo)
+            return Find(eh => eh.IsActive && eh.EmployeeId == employeeId &&
+                eh.Date >= dateFrom && eh.Date < dateTo)
                    .OrderBy(eh => eh.Date).ThenBy(eh => eh.EmployeeHoursId).ToList();
         }
 
-        public IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate)
+        public IList<EmployeeHours> GetForProcessingByDateRange(bool isManual, DateTime fromDate, DateTime toDate)
         {
-            return Find(eh => !eh.IsIncludedInTotal && eh.Date >= fromDate 
+            if (isManual)
+            {
+                return Find(eh => eh.IsActive && eh.Date >= fromDate
+                && eh.Date < toDate).OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
+            }
+            return Find(eh => eh.IsActive && !eh.IsIncludedInTotal && eh.Date >= fromDate 
                 && eh.Date < toDate).OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
         }
     }

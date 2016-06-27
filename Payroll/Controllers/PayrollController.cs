@@ -15,13 +15,21 @@ namespace Payroll.Controllers
     {
         private readonly IWebService _webService;
         private readonly IEmployeePayrollService _employeePayrollService;
-        private readonly ISettingService _settingsService;
+        private readonly ITotalEmployeeHoursService _totalEmployeeHoursService;
+        private readonly IEmployeeHoursService _employeeHoursService;
+        private readonly IAttendanceService _attendanceService;
+        private readonly IEmployeeDailyPayrollService _employeeDailyPayrollService;
    
-        public PayrollController(IWebService webService, 
-            IEmployeePayrollService employeePayrollService)
+        public PayrollController(IWebService webService, IEmployeePayrollService employeePayrollService, 
+            ITotalEmployeeHoursService totalEmployeeHoursService, IEmployeeHoursService employeeHoursService,
+            IAttendanceService attendanceService, IEmployeeDailyPayrollService employeeDailyPayrollService)
         {
             _webService = webService;
             _employeePayrollService = employeePayrollService;
+            _totalEmployeeHoursService = totalEmployeeHoursService;
+            _employeeHoursService = employeeHoursService;
+            _attendanceService = attendanceService;
+            _employeeDailyPayrollService = employeeDailyPayrollService;
         }
 
         // GET: Payroll
@@ -39,8 +47,7 @@ namespace Payroll.Controllers
                 payrollStartDate = DateTime.Parse(StartDate);
                 payrollEndDate = DateTime.Parse(EndDate);
 
-                //Generate Payroll
-                _employeePayrollService.GeneratePayroll(payrollStartDate, payrollEndDate);
+                GeneratePayroll(payrollStartDate, payrollEndDate);
 
                 //populate the viewmodel here from service data
                 //sort it in the service by surname
@@ -109,6 +116,32 @@ namespace Payroll.Controllers
             {
                 
             });
+        }
+
+        private void GeneratePayroll(DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            //Generate Attendance
+            Console.WriteLine("Generating Attendance...");
+            _attendanceService.CreateWorkSchedules();
+
+            //Compute employee hours
+            Console.WriteLine("Computing daily employee hours for date " + payrollStartDate + " to " +
+                              payrollEndDate);
+            _employeeHoursService.GenerateEmployeeHours(payrollStartDate, payrollEndDate);
+
+            //Compute total employee hours
+            Console.WriteLine("Computing total employee hours for date " + payrollStartDate + " to " +
+                              payrollEndDate);
+            _totalEmployeeHoursService.GenerateTotalByDateRange(payrollStartDate, payrollEndDate);
+
+            //Compute daily payroll
+            Console.WriteLine("Computing daily payroll for date " + payrollStartDate + " to " + payrollEndDate);
+            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(payrollStartDate, payrollEndDate);
+
+            //Generate Payroll
+            Console.WriteLine("Computing payroll for date " + payrollStartDate + " to " + payrollEndDate);
+            _employeePayrollService.GeneratePayroll(payrollStartDate, payrollEndDate);
+
         }
     }
 }

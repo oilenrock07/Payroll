@@ -398,19 +398,25 @@ namespace Payroll.Service.Implementations
 
         public IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime fromDate, DateTime toDate)
         {
+            toDate = toDate.AddDays(1);
             return _employeeHoursRepository.GetByEmployeeAndDateRange(employeeId, fromDate, toDate);
         }
 
-        public IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate)
+        public IList<EmployeeHours> GetForProcessingByDateRange(bool isManual, DateTime fromDate, DateTime toDate)
         {
             toDate = toDate.AddDays(1);
-
-            return _employeeHoursRepository.GetForProcessingByDateRange(fromDate, toDate);
+            return _employeeHoursRepository.GetForProcessingByDateRange(isManual, fromDate, toDate);
         }
 
         public void Update(EmployeeHours employeeHours)
         {
             _employeeHoursRepository.Update(employeeHours);
+        }
+
+        public IList<EmployeeHours> GetByDateRange(DateTime fromDate, DateTime toDate)
+        {
+            toDate = toDate.AddDays(1);
+            return _employeeHoursRepository.GetByDateRange(fromDate, toDate);
         }
     }
 }

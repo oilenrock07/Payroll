@@ -11,17 +11,12 @@ namespace Payroll.Schedules.Scheduler
 {
     public class AttendanceSchedule : BaseSchedule, ISchedule
     {
-
-
         public readonly IAttendanceRepository _attendanceRepository;
         public readonly IEmployeeDepartmentRepository _employeeDepartmentRepository;
         public readonly IEmployeeRepository _employeeRepository;
         public readonly IAttendanceLogRepository _attendanceLogRepository;
-
         public readonly IAttendanceLogService _attendanceLogService;
         public readonly IAttendanceService _attendanceService;
-
-        
 
         public AttendanceSchedule()
         {

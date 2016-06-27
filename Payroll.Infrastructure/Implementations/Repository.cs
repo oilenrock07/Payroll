@@ -4,6 +4,7 @@ using Payroll.Entities.Base;
 using Payroll.Entities.Contexts;
 using Payroll.Infrastructure.Interfaces;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace Payroll.Infrastructure.Implementations
 {
@@ -77,6 +78,19 @@ namespace Payroll.Infrastructure.Implementations
             DbSet.Attach(entity);
 
             entity.IsActive = false;
+
+            if (!_sharedContext)
+                _context.SaveChanges();
+        }
+
+        public virtual void DeleteAll(IList<T> entityList)
+        {
+            //DbSet.Remove(entity);
+            foreach (T entity in entityList)
+            {
+                DbSet.Attach(entity);
+                entity.IsActive = false;
+            }
 
             if (!_sharedContext)
                 _context.SaveChanges();

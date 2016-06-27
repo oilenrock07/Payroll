@@ -203,17 +203,22 @@ namespace Payroll.Service.Implementations
             GeneratePayroll(payrollStartDate, payrollEndDate);
         }
 
+        private void DeleteByDateRange(DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            //If there's existing payroll within date range, make it inactive
+            var existingPayrolls = this.GetByPayrollDateRange(payrollStartDate, payrollEndDate);
+            _employeePayrollRepository.DeleteAll(existingPayrolls);
+
+            _unitOfWork.Commit();
+        }
+
         public void GeneratePayroll(DateTime payrollStartDate, DateTime payrollEndDate)
         {
-            var payrollDate = GetNextPayrollReleaseDate(payrollEndDate);
-            //If there's existing payroll within date range, make it inactive
-            var existingPayrolls = _employeePayrollRepository
-                .GetByPayrollDateRange(payrollStartDate, payrollEndDate);
-            foreach (EmployeePayroll payroll in existingPayrolls)
-            {
-                _employeePayrollRepository.Delete(payroll);
-            }
+            //Delete existing payrolls
+            DeleteByDateRange(payrollStartDate, payrollEndDate);
 
+            var payrollDate = GetNextPayrollReleaseDate(payrollEndDate);
+           
             //Generate employee payroll and net pay
             var employeePayrollList = GeneratePayrollGrossPayByDateRange(payrollDate, payrollStartDate, payrollEndDate);
 

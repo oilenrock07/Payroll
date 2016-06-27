@@ -34,7 +34,11 @@ namespace Payroll.Service.Implementations
 
         public void GenerateTotalByDateRange(DateTime dateFrom, DateTime dateTo)
         {
-            var employeeHoursList = _employeeHoursService.GetForProcessingByDateRange(dateFrom, dateTo);
+            //Delete existing data within date range
+            DeleteByDateRange(dateFrom, dateTo);
+
+            var employeeHoursList = _employeeHoursService
+                .GetForProcessingByDateRange(true, dateFrom, dateTo);
 
             if (employeeHoursList != null && employeeHoursList.Count > 1)
             {
@@ -155,5 +159,15 @@ namespace Payroll.Service.Implementations
             }
             return _totalEmployeeHoursRepository.GetByTypeAndDateRange(employeeId, rateType.Value, payrollStartDate, payrollEndDate);
         }
+
+        //Delete existing total employee hours within date range
+        private void DeleteByDateRange(DateTime dateFrom, DateTime dateTo)
+        {
+            var existingTotalEmployeeHoursList = this.GetByDateRange(dateFrom, dateTo);
+            _totalEmployeeHoursRepository.DeleteAll(existingTotalEmployeeHoursList);
+
+            _unitOfWork.Commit();
+        }
+
     }
 }

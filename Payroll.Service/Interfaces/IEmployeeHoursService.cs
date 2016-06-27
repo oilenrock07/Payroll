@@ -13,8 +13,10 @@ namespace Payroll.Service.Interfaces
 
         IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 
-        IList<EmployeeHours> GetForProcessingByDateRange(DateTime fromDate, DateTime toDate);
+        IList<EmployeeHours> GetForProcessingByDateRange(bool isManual, DateTime fromDate, DateTime toDate);
 
-        void Update(EmployeeHours employeeHourss);
+        IList<EmployeeHours> GetByDateRange(DateTime fromDate, DateTime toDate);
+
+        void Update(EmployeeHours employeeHours);
     }
 }
