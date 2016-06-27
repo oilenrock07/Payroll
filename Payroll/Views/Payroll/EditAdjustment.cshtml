@@ -1,0 +1,76 @@
+﻿@using Payroll.Extension
+@model Payroll.Models.Payroll.EmployeeAdjustmentViewModel
+
+@{
+    ViewBag.Title = "Edit Adjustment";
+}
+
+<h2>Edit Adjustment</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Adjustment</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.EmployeeAdjustmentId)
+
+        <div class="form-group">
+            @Html.Label("Employee", new { @for = "EmployeeId", @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId, new ViewDataDictionary{{"Name", Model.Employee.FullName}})
+                @Html.ValidationMessageFor(model => model.EmployeeId)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.AdjustmentId, "Adjustments", new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.AdjustmentId, Model.Adjustments, new {@class = "form-control"})
+                @Html.ValidationMessageFor(model => model.AdjustmentId)
+            </div>
+        </div>
+        
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DatePickerFor("Date", Model.Date, new { @class = "form-control datepicker js-clockIn" })
+                @Html.ValidationMessageFor(model => model.Date)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Amount)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control", rows = 5 })
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $.validator.setDefaults({ ignore: [] });
+    </script>
+    <script type="text/javascript" src="/Scripts/Employee/employeetypeahead.js"></script>
+}

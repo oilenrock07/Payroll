@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adjustment.cs" />
     <Compile Include="Attendance.cs" />
     <Compile Include="AttendanceLog.cs" />
     <Compile Include="AuditTrail.cs" />
@@ -125,6 +126,10 @@
     <Compile Include="Migrations\201606210257498_SchedulerLogs.cs" />
     <Compile Include="Migrations\201606210257498_SchedulerLogs.Designer.cs">
       <DependentUpon>201606210257498_SchedulerLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606230240154_adjustment_changes.cs" />
+    <Compile Include="Migrations\201606230240154_adjustment_changes.Designer.cs">
+      <DependentUpon>201606230240154_adjustment_changes.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -208,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606210257498_SchedulerLogs.resx">
       <DependentUpon>201606210257498_SchedulerLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606230240154_adjustment_changes.resx">
+      <DependentUpon>201606230240154_adjustment_changes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

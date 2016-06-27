@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Omu.ValueInjecter;
+using Payroll.Infrastructure.Interfaces;
 using Payroll.Models.Payroll;
+using Payroll.Repository.Interface;
 using Payroll.Repository.Models.Payroll;
 using Payroll.Service.Interfaces;
 using System.Linq;
@@ -19,17 +22,26 @@ namespace Payroll.Controllers
         private readonly IEmployeeHoursService _employeeHoursService;
         private readonly IAttendanceService _attendanceService;
         private readonly IEmployeeDailyPayrollService _employeeDailyPayrollService;
-   
-        public PayrollController(IWebService webService, IEmployeePayrollService employeePayrollService, 
+        private readonly ISettingService _settingsService;
+        private readonly IAdjustmentRepository _adjustmentRepository;
+        private readonly IEmployeeAdjustmentRepository _employeeAdjustmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public PayrollController(IWebService webService, IUnitOfWork unitOfWork, 
+            IEmployeePayrollService employeePayrollService, 
             ITotalEmployeeHoursService totalEmployeeHoursService, IEmployeeHoursService employeeHoursService,
-            IAttendanceService attendanceService, IEmployeeDailyPayrollService employeeDailyPayrollService)
-        {
+            IAttendanceService attendanceService, IEmployeeDailyPayrollService employeeDailyPayrollService,
+            IAdjustmentRepository adjustmentRepository, IEmployeeAdjustmentRepository employeeAdjustmentRepository)
+        { 
             _webService = webService;
+            _unitOfWork = unitOfWork;
             _employeePayrollService = employeePayrollService;
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _employeeHoursService = employeeHoursService;
             _attendanceService = attendanceService;
             _employeeDailyPayrollService = employeeDailyPayrollService;
+            _adjustmentRepository = adjustmentRepository;
+            _employeeAdjustmentRepository = employeeAdjustmentRepository;
         }
 
         // GET: Payroll
@@ -141,7 +153,78 @@ namespace Payroll.Controllers
             //Generate Payroll
             Console.WriteLine("Computing payroll for date " + payrollStartDate + " to " + payrollEndDate);
             _employeePayrollService.GeneratePayroll(payrollStartDate, payrollEndDate);
+        }
 
+        public ActionResult Adjustment()
+        {
+            var adjustments = _employeeAdjustmentRepository.GetAllActive().ToList();
+            return View(adjustments);
+        }
+
+        public ActionResult CreateAdjustment()
+        {
+            var viewModel = new EmployeeAdjustmentViewModel
+            {
+                Adjustments = Adjustments()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult CreateAdjustment(EmployeeAdjustmentViewModel viewModel)
+        {
+            var employeeAdjustment = viewModel.MapItem<EmployeeAdjustment>();
+            _employeeAdjustmentRepository.Add(employeeAdjustment);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Adjustment");
+        }
+
+
+        public ActionResult EditAdjustment(int id)
+        {
+            var adjustments = _employeeAdjustmentRepository.GetById(id);
+
+            var viewModel = adjustments.MapItem<EmployeeAdjustmentViewModel>();
+            viewModel.Adjustments = Adjustments();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditAdjustment(EmployeeAdjustmentViewModel viewModel)
+        {
+            var adjustment = _employeeAdjustmentRepository.GetById(viewModel.EmployeeAdjustmentId);
+            _employeeAdjustmentRepository.Update(adjustment);
+
+            adjustment.InjectFrom(viewModel);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Adjustment");
+        }
+
+        public ActionResult DeleteAdjustment(int id)
+        {
+            var adjustment = _employeeAdjustmentRepository.GetById(id);
+            _employeeAdjustmentRepository.Update(adjustment);
+            adjustment.IsActive = false;
+
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Adjustment");
+        }
+
+        protected IEnumerable<SelectListItem> Adjustments()
+        {
+            var adjustments = _adjustmentRepository.GetAllActive().ToList();
+            return adjustments.Any()
+                ? adjustments.Select(x => new SelectListItem
+                {
+                    Text = x.AdjustmentName,
+                    Value = x.AdjustmentId.ToString()
+                })
+                : new List<SelectListItem>();
         }
     }
 }

@@ -68,11 +68,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IAdjustmentRepository.cs" />
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
     <Compile Include="Interface\IDeductionAmountRepository.cs" />
     <Compile Include="Interface\IDeductionRepository.cs" />
     <Compile Include="Interface\IDepartmentRepository.cs" />
+    <Compile Include="Interface\IEmployeeAdjustmentRepository.cs" />
     <Compile Include="Interface\IEmployeeDailyPayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeDeductionRepository.cs" />
     <Compile Include="Interface\IEmployeeDepartmentRepository.cs" />
@@ -107,11 +109,13 @@
     <Compile Include="Models\Employee\EmployeeNames.cs" />
     <Compile Include="Models\Payroll\PayrollDao.cs" />
     <Compile Include="Models\User\UserRoleDao.cs" />
+    <Compile Include="Repositories\AdjustmentRepository.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
     <Compile Include="Repositories\DeductionAmountRepository.cs" />
     <Compile Include="Repositories\DeductionRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />
+    <Compile Include="Repositories\EmployeeAdjustmentRepository.cs" />
     <Compile Include="Repositories\EmployeeDailyPayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeDeductionRepository.cs" />
     <Compile Include="Repositories\EmployeeDepartmentRepository.cs" />
