@@ -45,22 +45,20 @@ namespace Payroll.Controllers
         }
 
         // GET: Payroll
-        public ActionResult Index(string payrollDate = "")
+        public ActionResult Index(string date = "")
         {
             var viewModel = new PayrollViewModel();
             var payrolls = new List<PayrollDao>();
-
-            var pagination = _webService.GetPaginationModel(Request, payrolls.Count);
             var payrollDates = _employeePayrollService.GetPayrollDates(3).Select(x => new SelectListItem
             {
                 Text = x,
                 Value = x
             });
-
             viewModel.PayrollDates = payrollDates;
-            if (!String.IsNullOrEmpty(payrollDate))
+
+            if (!String.IsNullOrEmpty(date))
             {
-                var dates = payrollDate.Split(new string[] { " to " }, StringSplitOptions.None);
+                var dates = date.Split(new string[] { " to " }, StringSplitOptions.None);
                 var payrollStartDate = Convert.ToDateTime(dates[0]);
                 var payrollEndDate = Convert.ToDateTime(dates[1]);
 
@@ -85,13 +83,17 @@ namespace Payroll.Controllers
 
                     payrolls.Add(payrollDto);
                 }
+
+                viewModel.Date = date;
             }
 
+            var pagination = _webService.GetPaginationModel(Request, payrolls.Count);
             viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination);
             viewModel.Pagination = pagination;
 
             return View(viewModel);
         }
+
 
         public ActionResult Search(string payrollDate = "", int employeeId = 0)
         {

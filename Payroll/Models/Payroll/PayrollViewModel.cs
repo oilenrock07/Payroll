@@ -7,8 +7,10 @@ namespace Payroll.Models.Payroll
 {
     public class PayrollViewModel
     {
-        public string PayrollDate { get; set; }
+        public string Date { get; set; }
+
         public IEnumerable<SelectListItem> PayrollDates { get; set; }
+
         public IPaginationModel Pagination { get; set; }
         public IEnumerable<PayrollDao> Payrolls { get; set; }
     }

@@ -6,17 +6,17 @@
 }
 
 <h2>Payroll</h2>
-
 @using (Html.BeginForm("Index", "Payroll", FormMethod.Get))
 {
     <div class="row b2">
-        @Html.LabelFor(model => model.PayrollDate, "Payroll Date", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Date, "Payroll Date", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-4">
-            @Html.DropDownListFor(model => model.PayrollDate, Model.PayrollDates, new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.Date, Model.PayrollDates, new { @class = "form-control" })
         </div>
         <button type="submit" class="btn btn-primary">Generate Payroll</button>
     </div>
 }
+
 
 
 @if (Model.Payrolls.Any())
@@ -54,8 +54,6 @@
 
     @Html.Partial("Pagination", Model.Pagination)
 }
-
-
 @section scripts
 {
     <script type="text/javascript" src="/Scripts/pagination.js"></script>
