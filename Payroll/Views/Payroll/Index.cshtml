@@ -10,18 +10,12 @@
 @using (Html.BeginForm("Index", "Payroll", FormMethod.Get))
 {
     <div class="row b2">
-        <div class="col-md-3">
-            Next payroll Start Date: <strong>@Model.StartDate</strong>
-        </div>
-        <div class="col-md-3">
-            End Date: <strong>@Model.EndDate</strong>
-        </div>
+        @Html.LabelFor(model => model.PayrollDate, "Payroll Date", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-4">
-            @Html.HiddenFor(model => model.StartDate)
-            @Html.HiddenFor(model => model.EndDate)
-            <button type="submit" class="btn btn-primary">Generate Payroll</button>
-         </div>
-     </div>
+            @Html.DropDownListFor(model => model.PayrollDate, Model.PayrollDates, new { @class = "form-control" })
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Payroll</button>
+    </div>
 }
 
 
@@ -57,7 +51,7 @@
             </tr>
         }
     </table>
-    
+
     @Html.Partial("Pagination", Model.Pagination)
 }
 

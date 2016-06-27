@@ -329,8 +329,24 @@ namespace Payroll.Service.Implementations
         {
             var dates = new List<string>();
             var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
-            var lastPayrollDate = nextPayrollDate != null ? nextPayrollDate.Value.AddDays(-1) : DateTime.MinValue;
 
+            if (nextPayrollDate == null)
+            {
+                var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
+                nextPayrollDate = DateTime.Now.StartOfWeek((DayOfWeek) weekStart);
+            }
+                
+            //if (nextPayrollDate == null)
+            //{
+            //    var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
+
+            //    return new List<string>()
+            //    {
+            //        String.Format("{0} to {1}", DateTime.Now.ToString("MMMM dd yyyy"), DateTime.Now.StartOfWeek((DayOfWeek) weekStart).ToString("MMMM dd yyyy"))
+            //    };
+            //}
+
+            var lastPayrollDate = nextPayrollDate.Value.AddDays(-1);
             var lastPayroll = lastPayrollDate.AddMonths(-months);
            
             while (lastPayrollDate >= lastPayroll)

@@ -34,19 +34,24 @@ namespace Payroll.Controllers
         }
 
         // GET: Payroll
-        public ActionResult Index(string StartDate = "", string EndDate = "")
+        public ActionResult Index(string payrollDate = "")
         {
             var viewModel = new PayrollViewModel();
             var payrolls = new List<PayrollDao>();
 
             var pagination = _webService.GetPaginationModel(Request, payrolls.Count);
-            var payrollStartDate = _employeePayrollService.GetNextPayrollStartDate();
-            var payrollEndDate = _employeePayrollService.GetNextPayrollEndDate(payrollStartDate);
-            
-            if (!String.IsNullOrEmpty(StartDate) && !String.IsNullOrEmpty(EndDate))
+            var payrollDates = _employeePayrollService.GetPayrollDates(3).Select(x => new SelectListItem
             {
-                payrollStartDate = DateTime.Parse(StartDate);
-                payrollEndDate = DateTime.Parse(EndDate);
+                Text = x,
+                Value = x
+            });
+
+            viewModel.PayrollDates = payrollDates;
+            if (!String.IsNullOrEmpty(payrollDate))
+            {
+                var dates = payrollDate.Split(new string[] { " to " }, StringSplitOptions.None);
+                var payrollStartDate = Convert.ToDateTime(dates[0]);
+                var payrollEndDate = Convert.ToDateTime(dates[1]);
 
                 //Generate Payroll
                 _employeePayrollService.GeneratePayroll(payrollStartDate, payrollEndDate);
@@ -72,8 +77,6 @@ namespace Payroll.Controllers
                 }
             }
 
-            viewModel.StartDate = payrollStartDate.ToShortDateString();
-            viewModel.EndDate = payrollEndDate.ToShortDateString();
             viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination);
             viewModel.Pagination = pagination;
 
@@ -82,8 +85,8 @@ namespace Payroll.Controllers
 
         public ActionResult Search(string payrollDate = "", int employeeId = 0)
         {
-            //get the last 6 months cutoffs
-            var payrollDates = _employeePayrollService.GetPayrollDates(6);
+            //get the last 3 months cutoffs
+            var payrollDates = _employeePayrollService.GetPayrollDates(3);
             var viewModel = new PayrollSearchViewModel
             {
                 PayrollDates = payrollDates.Select(x => new SelectListItem

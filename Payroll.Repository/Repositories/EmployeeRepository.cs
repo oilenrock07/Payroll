@@ -22,7 +22,7 @@ namespace Payroll.Repository.Repositories
 
        public Employee GetByCode(string code)
         {
-            return Find(e => e.EmployeeCode == code).FirstOrDefault();
+            return Find(e => e.EmployeeCode == code && e.IsActive).FirstOrDefault();
         }
 
         public IEnumerable<EmployeeDepartment> GetDepartments(int employeeId)
