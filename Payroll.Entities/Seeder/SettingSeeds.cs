@@ -43,9 +43,9 @@ namespace Payroll.Entities.Seeder
                 /* Settings for PAYROLL */
                 //Settings of payroll
                 new Setting { SettingKey = "PAYROLL_FREQUENCY", Value = "3", Description = "Payroll Frequency", Category = "PAYROLL_SCHEDULE"},
-                new Setting { SettingKey = "PAYROLL_WEEK_START", Value = "3", Description = "Payroll Week Start", Category = "PAYROLL_SCHEDULE"},
-                new Setting { SettingKey = "PAYROLL_WEEK_END", Value = "2", Description = "Payroll Week End", Category = "PAYROLL_SCHEDULE"},
-                new Setting { SettingKey = "PAYROLL_WEEK_RELEASE", Value = "3", Description = "Payroll Week Release", Category = "PAYROLL_SCHEDULE"},
+                new Setting { SettingKey = "PAYROLL_WEEK_START", Value = "4", Description = "Payroll Week Start", Category = "PAYROLL_SCHEDULE"},
+                new Setting { SettingKey = "PAYROLL_WEEK_END", Value = "3", Description = "Payroll Week End", Category = "PAYROLL_SCHEDULE"},
+                new Setting { SettingKey = "PAYROLL_WEEK_RELEASE", Value = "4", Description = "Payroll Week Release", Category = "PAYROLL_SCHEDULE"},
                 new Setting { SettingKey = "PAYROLL_REGULAR_HOURS", Value = "8", Description = "Payroll Total Regular Hours", Category = "PAYROLL_SCHEDULE"},
                 new Setting { SettingKey = "PAYROLL_TOTAL_HOURS", Value = "10", Description = "Payroll Total Hours", Category = "PAYROLL_SCHEDULE"},
                 new Setting { SettingKey = "PAYROLL_IS_SPHOLIDAY_WITH_PAY", Value = "0", Description = "Is Specia holiday with pay", Category = "PAYROLL_SCHEDULE"},

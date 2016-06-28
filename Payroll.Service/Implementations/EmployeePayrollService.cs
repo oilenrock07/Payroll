@@ -23,6 +23,7 @@ namespace Payroll.Service.Implementations
         private ISettingService _settingService;
         private IEmployeeInfoService _employeeInfoService;
         private ITotalEmployeeHoursService _totalEmployeeHourService;
+        private IEmployeeService _employeeService;
 
         private FrequencyType _frequency;
 
@@ -37,7 +38,7 @@ namespace Payroll.Service.Implementations
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeeDailyPayrollService employeeDailyPayrollService, 
             IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
-            IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService)
+            IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService, IEmployeeService employeeService)
         {
             _unitOfWork = unitOfWork;
             _employeeDailyPayrollService = employeeDailyPayrollService;
@@ -46,6 +47,7 @@ namespace Payroll.Service.Implementations
             _employeePayrollDeductionService = employeePayrollDeductionService;
             _employeeInfoService = employeeInfoService;
             _totalEmployeeHourService = totalEmployeeHourService;
+            _employeeService = employeeService;
 
             _frequency = (FrequencyType)Convert
                 .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
@@ -77,9 +79,11 @@ namespace Payroll.Service.Implementations
                             employeePayrollList.Add(tempEmployeePayroll);
                         }
 
+                        Employee employee = _employeeService.GetById(dailyPayroll.EmployeeId);
+
                         EmployeePayroll employeePayroll = new EmployeePayroll
                         {
-                            EmployeeId = dailyPayroll.EmployeeId,
+                            Employee = employee,
                             CutOffStartDate = dateFrom,
                             CutOffEndDate = dateTo,
                             PayrollGeneratedDate = today,

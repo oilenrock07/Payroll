@@ -7,6 +7,9 @@ namespace Payroll.Repository.Interface
     public interface ISettingRepository : IRepository<Setting>
     {
         new IEnumerable<Setting> GetAll();
+
         string GetSettingValue(string key, string defaultValue = "");
+
+        Setting GetSettingByKey(string key);
     }
 }

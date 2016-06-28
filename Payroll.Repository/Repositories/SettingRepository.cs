@@ -27,5 +27,10 @@ namespace Payroll.Repository.Repositories
             var setting = Find(x => x.SettingKey == key).FirstOrDefault();
             return setting != null ? setting.Value : defaultValue;
         }
+
+        public Setting GetSettingByKey(string key)
+        {
+            return Find(x => x.IsActive && x.SettingKey == key).FirstOrDefault();
+        }
     }
 }

@@ -30,6 +30,7 @@ namespace Payroll.Test.Service
         private IDeductionService _deductionService;
         private IEmployeeDeductionRepository _employeeDeductionRepository;
         private ITaxService _taxService;
+        private IEmployeeService _employeeService;
 
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
@@ -40,6 +41,7 @@ namespace Payroll.Test.Service
         private IDeductionRepository _deductionRepository;
         private IEmployeeDeductionService _employeeDeductionService;
         private ITaxRepository _taxRepository;
+        private IEmployeeRepository _employeeRepository;
 
         public void Initialize()
         {
@@ -56,6 +58,7 @@ namespace Payroll.Test.Service
             _deductionRepository = new DeductionRepository(databaseFactory);
             _employeeDeductionRepository = new EmployeeDeductionRepository(databaseFactory);
             _taxRepository = new TaxRepository(databaseFactory);
+            _employeeRepository = new EmployeeRepository(databaseFactory, null);
 
             _settingService = new SettingService(_settingRepository);
             _employeeDailyPayrollService = new EmployeeDailyPayrollService(_unitOfWork, 
@@ -65,11 +68,31 @@ namespace Payroll.Test.Service
             _employeeDeductionService = new EmployeeDeductionService(_employeeDeductionRepository);
             _taxService = new TaxService(_taxRepository);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
-
+            _employeeService = new EmployeeService(_employeeRepository);
             _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
 
             _employeePayrollService = new EmployeePayrollService(_unitOfWork,
-                _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService);
+                _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService, _employeeService);
+
+
+            //Update settings
+            var settingsPayrollStartDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_START");
+
+            _settingRepository.Update(settingsPayrollStartDate);
+            settingsPayrollStartDate.SettingKey = "3";
+
+            var settingsPayrollEndDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_END");
+
+            _settingRepository.Update(settingsPayrollEndDate);
+            settingsPayrollEndDate.SettingKey = "2";
+
+            var settingsPayrollReleaseDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_RELEASE");
+
+            _settingRepository.Update(settingsPayrollReleaseDate);
+            settingsPayrollReleaseDate.SettingKey = "3";
+
+            _unitOfWork.Commit();
+
         }
 
         private void DeleteInfo()
@@ -94,17 +117,17 @@ namespace Payroll.Test.Service
             DateTime payrollStartDate = _employeePayrollService
                 .GetNextPayrollStartDate(date);
 
-            Assert.AreEqual(DateTime.Parse("04/20/2016"), payrollStartDate);
+            Assert.AreEqual(DateTime.Parse("04/21/2016"), payrollStartDate);
 
             DateTime payrollEndDate = _employeePayrollService
                 .GetNextPayrollEndDate(payrollStartDate);
 
-            Assert.AreEqual(DateTime.Parse("04/26/2016"), payrollEndDate);
+            Assert.AreEqual(DateTime.Parse("04/27/2016"), payrollEndDate);
 
             DateTime payrollReleaseDate = _employeePayrollService
                 .GetNextPayrollReleaseDate(payrollEndDate);
 
-            Assert.AreEqual(DateTime.Parse("04/27/2016"), payrollReleaseDate);
+            Assert.AreEqual(DateTime.Parse("04/28/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
@@ -118,17 +141,17 @@ namespace Payroll.Test.Service
             DateTime payrollStartDate = _employeePayrollService
                 .GetNextPayrollStartDate(date);
 
-            Assert.AreEqual(DateTime.Parse("05/11/2016"), payrollStartDate);
+            Assert.AreEqual(DateTime.Parse("05/12/2016"), payrollStartDate);
 
             DateTime payrollEndDate = _employeePayrollService
               .GetNextPayrollEndDate(payrollStartDate);
 
-            Assert.AreEqual(DateTime.Parse("05/17/2016"), payrollEndDate);
+            Assert.AreEqual(DateTime.Parse("05/18/2016"), payrollEndDate);
 
             DateTime payrollReleaseDate = _employeePayrollService
               .GetNextPayrollReleaseDate(payrollEndDate);
 
-            Assert.AreEqual(DateTime.Parse("05/18/2016"), payrollReleaseDate);
+            Assert.AreEqual(DateTime.Parse("05/19/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
@@ -180,12 +203,12 @@ namespace Payroll.Test.Service
             DateTime payrollEndDate = _employeePayrollService
                 .GetNextPayrollEndDate(payrollStartDate);
 
-            Assert.AreEqual(DateTime.Parse("05/24/2016"), payrollEndDate);
+            Assert.AreEqual(DateTime.Parse("05/25/2016"), payrollEndDate);
 
             DateTime payrollReleaseDate = _employeePayrollService
                 .GetNextPayrollReleaseDate(payrollEndDate);
 
-            Assert.AreEqual(DateTime.Parse("05/25/2016"), payrollReleaseDate);
+            Assert.AreEqual(DateTime.Parse("05/26/2016"), payrollReleaseDate);
         }
 
         [TestMethod]

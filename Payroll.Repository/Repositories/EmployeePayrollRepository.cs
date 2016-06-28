@@ -27,7 +27,7 @@ namespace Payroll.Repository.Repositories
         public IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate)
         {
             return Find(p => p.IsActive && p.CutOffStartDate == payrollStartDate 
-                && p.CutOffEndDate == payrollEndDate).ToList();
+                && p.CutOffEndDate == payrollEndDate).OrderBy(p => p.Employee.LastName).ThenBy(p => p.Employee.FirstName).ToList();
         }
 
         public EmployeePayroll GetEmployeePayrollByDate(int employeeId, DateTime payrollStart, DateTime payrollEnd)

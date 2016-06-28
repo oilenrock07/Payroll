@@ -66,8 +66,8 @@ namespace Payroll.Controllers
 
                 //populate the viewmodel here from service data
                 //sort it in the service by surname
-                var employeePayrollList = _employeePayrollService
-                    .GetByDateRange(payrollStartDate, payrollEndDate).OrderBy(p => p.Employee.LastName);
+                var employeePayrollList = _employeePayrollService.GetByPayrollDateRange
+                    (payrollStartDate, payrollEndDate);
 
                 foreach (EmployeePayroll payroll in employeePayrollList)
                 {
