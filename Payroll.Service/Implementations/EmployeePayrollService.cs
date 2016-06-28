@@ -340,11 +340,11 @@ namespace Payroll.Service.Implementations
                 var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
                 nextPayrollDate = DateTime.Now.StartOfWeek((DayOfWeek) weekStart);
             }
-            else
-            {
-                //for some reason it adds 1 day in GetNextPayrollStartDate
-                nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
-            }
+            //else
+            //{
+            //    //for some reason it adds 1 day in GetNextPayrollStartDate
+            //    nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
+            //}
                 
             //if (nextPayrollDate == null)
             //{
@@ -372,7 +372,7 @@ namespace Payroll.Service.Implementations
                 else //fallback to monthly
                     tempDate = tempDate.AddMonths(-1);
 
-                var date = String.Format("{0} to {1}", tempDate.ToString("MMMM dd yyyy"), lastPayrollDate.ToString("MMMM dd yyyy"));
+                var date = String.Format("{0} to {1}", tempDate.ToString("MMMM dd yyyy"), lastPayrollDate.AddDays(-1).ToString("MMMM dd yyyy"));
                 lastPayrollDate = tempDate;
                 dates.Add(date);
             }
