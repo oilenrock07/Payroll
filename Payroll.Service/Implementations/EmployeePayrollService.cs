@@ -70,7 +70,7 @@ namespace Payroll.Service.Implementations
                 {
                     //If should create new entry
                     if (tempEmployeePayroll == null ||
-                        (tempEmployeePayroll.EmployeeId != dailyPayroll.EmployeeId))
+                        (tempEmployeePayroll.Employee.EmployeeId != dailyPayroll.EmployeeId))
                     {
                         if (tempEmployeePayroll != null)
                         {
