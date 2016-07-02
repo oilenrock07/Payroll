@@ -72,7 +72,7 @@ namespace Payroll.Service.Implementations
                         IList<Attendance> attendanceList = _attendanceService
                             .GetAttendanceForProcessing(employee.EmployeeId, day);
 
-                        ComputeEmployeeHours(attendanceList);
+                        ComputeEmployeeHours(attendanceList, day);
                     }
                 }
                 
@@ -83,7 +83,7 @@ namespace Payroll.Service.Implementations
             return 0;
         }
 
-        public void ComputeEmployeeHours(IList<Attendance> attendanceList)
+        private void ComputeEmployeeHours(IList<Attendance> attendanceList, DateTime day)
         {
             //Compute hours
             foreach (var a in attendanceList)
@@ -100,10 +100,13 @@ namespace Payroll.Service.Implementations
                 computeNightDifferential();
 
                 _attendanceService.Update(a);
-                a.IsHoursCounted = true;
-
-                _unitOfWork.Commit();
+                if (a.ClockOut.Value.Date.Equals(day.Date))
+                {
+                    a.IsHoursCounted = true;
+                }
             }
+
+            _unitOfWork.Commit();
         }
 
         private void initiateComputationVariables()

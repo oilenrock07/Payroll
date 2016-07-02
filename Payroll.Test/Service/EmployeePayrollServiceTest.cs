@@ -79,17 +79,17 @@ namespace Payroll.Test.Service
             var settingsPayrollStartDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_START");
 
             _settingRepository.Update(settingsPayrollStartDate);
-            settingsPayrollStartDate.SettingKey = "3";
+            settingsPayrollStartDate.Value = "3";
 
             var settingsPayrollEndDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_END");
 
             _settingRepository.Update(settingsPayrollEndDate);
-            settingsPayrollEndDate.SettingKey = "2";
+            settingsPayrollEndDate.Value = "2";
 
             var settingsPayrollReleaseDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_RELEASE");
 
             _settingRepository.Update(settingsPayrollReleaseDate);
-            settingsPayrollReleaseDate.SettingKey = "3";
+            settingsPayrollReleaseDate.Value = "3";
 
             _unitOfWork.Commit();
 
@@ -117,17 +117,17 @@ namespace Payroll.Test.Service
             DateTime payrollStartDate = _employeePayrollService
                 .GetNextPayrollStartDate(date);
 
-            Assert.AreEqual(DateTime.Parse("04/21/2016"), payrollStartDate);
+            Assert.AreEqual(DateTime.Parse("04/20/2016"), payrollStartDate);
 
             DateTime payrollEndDate = _employeePayrollService
                 .GetNextPayrollEndDate(payrollStartDate);
 
-            Assert.AreEqual(DateTime.Parse("04/27/2016"), payrollEndDate);
+            Assert.AreEqual(DateTime.Parse("04/26/2016"), payrollEndDate);
 
             DateTime payrollReleaseDate = _employeePayrollService
                 .GetNextPayrollReleaseDate(payrollEndDate);
 
-            Assert.AreEqual(DateTime.Parse("04/28/2016"), payrollReleaseDate);
+            Assert.AreEqual(DateTime.Parse("04/27/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
@@ -141,17 +141,17 @@ namespace Payroll.Test.Service
             DateTime payrollStartDate = _employeePayrollService
                 .GetNextPayrollStartDate(date);
 
-            Assert.AreEqual(DateTime.Parse("05/12/2016"), payrollStartDate);
+            Assert.AreEqual(DateTime.Parse("05/11/2016"), payrollStartDate);
 
             DateTime payrollEndDate = _employeePayrollService
               .GetNextPayrollEndDate(payrollStartDate);
 
-            Assert.AreEqual(DateTime.Parse("05/18/2016"), payrollEndDate);
+            Assert.AreEqual(DateTime.Parse("05/17/2016"), payrollEndDate);
 
             DateTime payrollReleaseDate = _employeePayrollService
               .GetNextPayrollReleaseDate(payrollEndDate);
 
-            Assert.AreEqual(DateTime.Parse("05/19/2016"), payrollReleaseDate);
+            Assert.AreEqual(DateTime.Parse("05/18/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
@@ -203,12 +203,12 @@ namespace Payroll.Test.Service
             DateTime payrollEndDate = _employeePayrollService
                 .GetNextPayrollEndDate(payrollStartDate);
 
-            Assert.AreEqual(DateTime.Parse("05/25/2016"), payrollEndDate);
+            Assert.AreEqual(DateTime.Parse("05/24/2016"), payrollEndDate);
 
             DateTime payrollReleaseDate = _employeePayrollService
                 .GetNextPayrollReleaseDate(payrollEndDate);
 
-            Assert.AreEqual(DateTime.Parse("05/26/2016"), payrollReleaseDate);
+            Assert.AreEqual(DateTime.Parse("05/25/2016"), payrollReleaseDate);
         }
 
         [TestMethod]
