@@ -20,6 +20,7 @@ namespace Payroll.Scheduler.Schedules
 {
     public class EmployeePayrollSchedule : BaseSchedule, ISchedule
     {
+
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
         private readonly ITotalEmployeeHoursRepository _totalEmployeeHoursRepository;
         private readonly IEmployeeDepartmentRepository _employeeDepartmentRepository;
@@ -38,7 +39,9 @@ namespace Payroll.Scheduler.Schedules
         private readonly IEmployeeDeductionRepository _employeeDeductionRepository;
         private readonly IDeductionRepository _deductionRepository;
         private readonly ITaxRepository _taxRepository;
+        private readonly IEmployeePayrollItemRepository _employeePayrollItemRepository;
 
+        private readonly IEmployeeService _employeeService;
         private readonly IEmployeeInfoService _employeeInfoService;
         private readonly IAttendanceLogService _attendanceLogService;
         private readonly IAttendanceService _attendanceService;
@@ -54,6 +57,7 @@ namespace Payroll.Scheduler.Schedules
         private readonly IEmployeeDeductionService _employeeDeductionService;
         private readonly IDeductionService _deductionService;
         private readonly ITaxService _taxService;
+        private readonly IEmployeePayrollItemService _employeePayrollItemService;
 
         private const string PAYROLL_FREQUENCY = "PAYROLL_FREQUENCY";
 
@@ -76,7 +80,9 @@ namespace Payroll.Scheduler.Schedules
             _holidayRepository = new HolidayRepository(_databaseFactory);
             _employeeDeductionRepository = new EmployeeDeductionRepository(_databaseFactory);
             _deductionRepository = new DeductionRepository(_databaseFactory);
+            _employeePayrollItemRepository = new EmployeePayrollItemRepository(_databaseFactory);
 
+            _employeeService = new EmployeeService(_employeeRepository);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
             _attendanceLogService = new AttendanceLogService(_attendanceLogRepository);
             _attendanceService = new AttendanceService(_unitOfWork, _attendanceRepository, _attendanceLogService);
@@ -92,8 +98,10 @@ namespace Payroll.Scheduler.Schedules
             _deductionService = new DeductionService(_deductionRepository);
             _taxService = new TaxService(_taxRepository);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
-            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService );
-           
+            _employeePayrollItemService = new EmployeePayrollItemService(_employeePayrollItemRepository);
+
+            _employeePayrollService = new EmployeePayrollService(_unitOfWork, null, _employeePayrollRepository, _settingService, null, _employeeInfoService, null, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService);
+
         }
 
         public void Execute()

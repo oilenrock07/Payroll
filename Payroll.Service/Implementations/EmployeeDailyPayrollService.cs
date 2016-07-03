@@ -92,7 +92,6 @@ namespace Payroll.Service.Implementations
                     {
                         rateMultiplier *= restDayRate;
                     }
-
                    
                     //Check if holiday 
                     if (holiday != null)
@@ -218,7 +217,7 @@ namespace Payroll.Service.Implementations
                                 EmployeeId = employee.EmployeeId,
                                 Date = day,
                                 TotalPay = hourlyRate * workHours,
-                                RateType = RateType.Regular
+                                RateType = RateType.Holiday
                             };
 
                             _employeeDailyPayrollRepository.Add(newDailyPayroll);
@@ -241,7 +240,7 @@ namespace Payroll.Service.Implementations
                                     EmployeeId = employee.EmployeeId,
                                     Date = day,
                                     TotalPay = hourlyRate * remainingUnpaidHours,
-                                    RateType = RateType.Regular
+                                    RateType = RateType.Holiday
                                 };
                                 _employeeDailyPayrollRepository.Add(newDailyPayroll);
                             }
