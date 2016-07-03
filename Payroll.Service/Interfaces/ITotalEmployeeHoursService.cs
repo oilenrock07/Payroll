@@ -17,5 +17,7 @@ namespace Payroll.Service.Interfaces
         IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo);
 
         IList<TotalEmployeeHours> GetByTypeAndDateRange(int employeeId, RateType? rateType, DateTime payrollStartDate, DateTime payrollEndDate);
+
+        TotalEmployeeHours GetById(int id); 
     }
 }

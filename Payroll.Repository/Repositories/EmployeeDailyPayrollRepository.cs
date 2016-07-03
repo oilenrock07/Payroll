@@ -28,7 +28,7 @@ namespace Payroll.Repository.Repositories
         public IList<EmployeeDailyPayroll> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             return Find(p => p.IsActive && p.Date >= dateFrom && p.Date < dateTo)
-                .OrderBy(p => p.EmployeeId).ThenByDescending(p => p.Date).ToList();
+                .OrderBy(p => p.EmployeeId).ThenBy(p => p.RateType).ThenByDescending(p => p.Date).ToList();
         }
 
         public IList<EmployeeDailyPayroll> GetByTypeAndDateRange(RateType rateType, DateTime dateFrom, DateTime dateTo)

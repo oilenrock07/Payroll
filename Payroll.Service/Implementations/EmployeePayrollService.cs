@@ -24,6 +24,8 @@ namespace Payroll.Service.Implementations
         private IEmployeeInfoService _employeeInfoService;
         private ITotalEmployeeHoursService _totalEmployeeHourService;
         private IEmployeeService _employeeService;
+        private ITotalEmployeeHoursService _totalEmployeeHoursService;
+        private IEmployeePayrollItemService _employeePayrollItemService;
 
         private FrequencyType _frequency;
 
@@ -38,7 +40,8 @@ namespace Payroll.Service.Implementations
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeeDailyPayrollService employeeDailyPayrollService, 
             IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
-            IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService, IEmployeeService employeeService)
+            IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService, IEmployeeService employeeService, ITotalEmployeeHoursService totalEmployeeHoursService,
+            IEmployeePayrollItemService employeePayrollItemService)
         {
             _unitOfWork = unitOfWork;
             _employeeDailyPayrollService = employeeDailyPayrollService;
@@ -48,6 +51,8 @@ namespace Payroll.Service.Implementations
             _employeeInfoService = employeeInfoService;
             _totalEmployeeHourService = totalEmployeeHourService;
             _employeeService = employeeService;
+            _totalEmployeeHoursService = totalEmployeeHoursService;
+            _employeePayrollItemService = employeePayrollItemService;
 
             _frequency = (FrequencyType)Convert
                 .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
@@ -66,11 +71,15 @@ namespace Payroll.Service.Implementations
 
                 EmployeeDailyPayroll last = employeeDailyPayroll.Last();
 
+                //Employee Payroll Item
+                EmployeePayrollItem tempEmployeePayrollItem = null;
+                bool createNewPayrollItem = false;
+
                 foreach (EmployeeDailyPayroll dailyPayroll in employeeDailyPayroll)
                 {
                     //If should create new entry
                     if (tempEmployeePayroll == null ||
-                        (tempEmployeePayroll.Employee.EmployeeId != dailyPayroll.EmployeeId))
+                            (tempEmployeePayroll.Employee.EmployeeId != dailyPayroll.EmployeeId))
                     {
                         if (tempEmployeePayroll != null)
                         {
@@ -78,7 +87,6 @@ namespace Payroll.Service.Implementations
                             _employeePayrollRepository.Add(tempEmployeePayroll);
                             employeePayrollList.Add(tempEmployeePayroll);
                         }
-
                         Employee employee = _employeeService.GetById(dailyPayroll.EmployeeId);
 
                         EmployeePayroll employeePayroll = new EmployeePayroll
@@ -94,6 +102,7 @@ namespace Payroll.Service.Implementations
                         };
 
                         tempEmployeePayroll = employeePayroll;
+                        createNewPayrollItem = true;
 
                     }
                     else
@@ -102,12 +111,52 @@ namespace Payroll.Service.Implementations
                         tempEmployeePayroll.TotalGross += dailyPayroll.TotalPay;
                         tempEmployeePayroll.TotalNet += dailyPayroll.TotalPay;
                         tempEmployeePayroll.TaxableIncome += dailyPayroll.TotalPay;
+
+                        if (tempEmployeePayrollItem.RateType != dailyPayroll.RateType)
+                        {
+                            createNewPayrollItem = true;
+                        }
+                        else
+                        {
+                            createNewPayrollItem = false;
+                        }
                     }
+
+                    //Payroll Item
+                    var totalEmployeeHours = _totalEmployeeHoursService.GetById(dailyPayroll.TotalEmployeeHoursId.Value);
+                    //If should create new item
+                    if (createNewPayrollItem)
+                    {
+                        //Save last item
+                        if (tempEmployeePayrollItem != null)
+                        {
+                            _employeePayrollItemService.Add(tempEmployeePayrollItem);
+                            tempEmployeePayrollItem = null;
+                        }
+
+                        tempEmployeePayrollItem = new EmployeePayrollItem
+                        {
+                            EmployeePayroll = tempEmployeePayroll,
+                            RateType = dailyPayroll.RateType,
+                            TotalAmount = dailyPayroll.TotalPay,
+                            TotalHours = totalEmployeeHours.Hours
+                        };
+                        
+                    }
+                    else
+                    {
+                        //Update last entry
+                        tempEmployeePayrollItem.TotalHours += totalEmployeeHours.Hours;
+                        tempEmployeePayrollItem.TotalAmount += dailyPayroll.TotalPay;
+
+                    }
+                  
 
                     //If last iteration save
                     if (dailyPayroll.Equals(last))
                     {
                         _employeePayrollRepository.Add(tempEmployeePayroll);
+                        _employeePayrollItemService.Add(tempEmployeePayrollItem);
                         employeePayrollList.Add(tempEmployeePayroll);
                     }
                 }

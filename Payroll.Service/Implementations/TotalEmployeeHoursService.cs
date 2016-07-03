@@ -169,5 +169,9 @@ namespace Payroll.Service.Implementations
             _unitOfWork.Commit();
         }
 
+        public TotalEmployeeHours GetById(int id)
+        {
+            return _totalEmployeeHoursRepository.GetById(id);
+        }
     }
 }

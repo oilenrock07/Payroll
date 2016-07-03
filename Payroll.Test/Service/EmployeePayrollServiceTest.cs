@@ -31,6 +31,7 @@ namespace Payroll.Test.Service
         private IEmployeeDeductionRepository _employeeDeductionRepository;
         private ITaxService _taxService;
         private IEmployeeService _employeeService;
+        private IEmployeePayrollItemService _employeePayrollItemService;
 
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
@@ -42,6 +43,7 @@ namespace Payroll.Test.Service
         private IEmployeeDeductionService _employeeDeductionService;
         private ITaxRepository _taxRepository;
         private IEmployeeRepository _employeeRepository;
+        private IEmployeePayrollItemRepository _employeePayrollItemRepository;
 
         public void Initialize()
         {
@@ -59,6 +61,7 @@ namespace Payroll.Test.Service
             _employeeDeductionRepository = new EmployeeDeductionRepository(databaseFactory);
             _taxRepository = new TaxRepository(databaseFactory);
             _employeeRepository = new EmployeeRepository(databaseFactory, null);
+            _employeePayrollItemRepository = new EmployeePayrollItemRepository(databaseFactory);
 
             _settingService = new SettingService(_settingRepository);
             _employeeDailyPayrollService = new EmployeeDailyPayrollService(_unitOfWork, 
@@ -70,9 +73,10 @@ namespace Payroll.Test.Service
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
             _employeeService = new EmployeeService(_employeeRepository);
             _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
+            _employeePayrollItemService = new EmployeePayrollItemService(_employeePayrollItemRepository);
 
             _employeePayrollService = new EmployeePayrollService(_unitOfWork,
-                _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService, _employeeService);
+                _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService);
 
 
             //Update settings
@@ -257,6 +261,63 @@ namespace Payroll.Test.Service
 
             _employeeInfoRepository.Add(employeeInfo);
             _employeeInfoRepository.Add(employeeInfo2);
+
+            var totalEmployeeHours1 = new TotalEmployeeHours
+            {
+                Hours = 1,
+                EmployeeId = 1
+            };
+
+            var totalEmployeeHours2 = new TotalEmployeeHours
+            {
+                Hours = 2,
+                EmployeeId = 1
+            };
+
+            var totalEmployeeHours3 = new TotalEmployeeHours
+            {
+                Hours = 3,
+                EmployeeId = 1
+            };
+
+            var totalEmployeeHours4 = new TotalEmployeeHours
+            {
+                Hours = 4,
+                EmployeeId = 2
+            };
+
+            var totalEmployeeHours5 = new TotalEmployeeHours
+            {
+                Hours = 5,
+                EmployeeId = 2
+            };
+
+            var totalEmployeeHours6 = new TotalEmployeeHours
+            {
+                Hours = 6,
+                EmployeeId = 1
+            };
+
+            var totalEmployeeHours7 = new TotalEmployeeHours
+            {
+                Hours = 7,
+                EmployeeId = 1
+            };
+
+            var totalEmployeeHours8 = new TotalEmployeeHours
+            {
+                Hours = 8,
+                EmployeeId = 8
+            };
+
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours1);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours2);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours3);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours4);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours5);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours6);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours7);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours8);
 
             var dailyPayroll = new EmployeeDailyPayroll
             {
@@ -568,7 +629,7 @@ namespace Payroll.Test.Service
             _employeeDailyPayrollRepository.Add(dailyPayroll7);
             _employeeDailyPayrollRepository.Add(dailyPayroll8);
 
-            _unitOfWork.Commit();
+           _unitOfWork.Commit();
 
             //Test
             var dateStart = DateTime.Parse("05/04/2016");

@@ -135,6 +135,18 @@
     <Compile Include="Migrations\201606281149268_additionalChangesIDK.Designer.cs">
       <DependentUpon>201606281149268_additionalChangesIDK.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607021051568_additional-fields-payroll.cs" />
+    <Compile Include="Migrations\201607021051568_additional-fields-payroll.Designer.cs">
+      <DependentUpon>201607021051568_additional-fields-payroll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607030424244_payroll-items.cs" />
+    <Compile Include="Migrations\201607030424244_payroll-items.Designer.cs">
+      <DependentUpon>201607030424244_payroll-items.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607030647596_employee-daily-payroll.cs" />
+    <Compile Include="Migrations\201607030647596_employee-daily-payroll.Designer.cs">
+      <DependentUpon>201607030647596_employee-daily-payroll.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -147,6 +159,7 @@
     <Compile Include="Payroll\EmployeeLoan.cs" />
     <Compile Include="Payroll\EmployeePayroll.cs" />
     <Compile Include="Payroll\EmployeePayrollDeduction.cs" />
+    <Compile Include="Payroll\EmployeePayrollItem.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -223,6 +236,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606281149268_additionalChangesIDK.resx">
       <DependentUpon>201606281149268_additionalChangesIDK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607021051568_additional-fields-payroll.resx">
+      <DependentUpon>201607021051568_additional-fields-payroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607030424244_payroll-items.resx">
+      <DependentUpon>201607030424244_payroll-items.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607030647596_employee-daily-payroll.resx">
+      <DependentUpon>201607030647596_employee-daily-payroll.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

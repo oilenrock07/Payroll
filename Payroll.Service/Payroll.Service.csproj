@@ -56,6 +56,7 @@
     <Compile Include="Implementations\EmployeeInfoService.cs" />
     <Compile Include="Implementations\EmployeeMachineService.cs" />
     <Compile Include="Implementations\EmployeePayrollDeductionService.cs" />
+    <Compile Include="Implementations\EmployeePayrollItemService.cs" />
     <Compile Include="Implementations\EmployeePayrollService.cs" />
     <Compile Include="Implementations\EmployeeSalaryService.cs" />
     <Compile Include="Implementations\EmployeeService.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Interfaces\IEmployeeInfoService.cs" />
     <Compile Include="Interfaces\IEmployeeMachineService.cs" />
     <Compile Include="Interfaces\IEmployeePayrollDeductionService.cs" />
+    <Compile Include="Interfaces\IEmployeePayrollItemService.cs" />
     <Compile Include="Interfaces\IEmployeePayrollService.cs" />
     <Compile Include="Interfaces\IEmployeeSalaryService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
