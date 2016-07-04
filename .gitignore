@@ -40,3 +40,6 @@ Payroll.Scheduler/Payroll.Scheduler/obj/Debug/
 Payroll.Common/bin/Debug/Omu.ValueInjecter.pdb
 Payroll.Common/bin/Debug/Omu.ValueInjecter.xml
 Payroll.Common/bin/Debug/
+.vs/
+Payroll.Scheduler/Payroll.Scheduler.v12.suo
+Payroll.sln.DotSettings.user

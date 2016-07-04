@@ -122,6 +122,7 @@
     <Compile Include="Repository\EmployeeRepositoryTest.cs" />
     <Compile Include="Repository\PayrollComputation.cs" />
     <Compile Include="Repository\UserRepositoryTest.cs" />
+    <Compile Include="Service\EmployeeAdjustmentServiceTest.cs" />
     <Compile Include="Service\EmployeeMachineServiceTest.cs" />
     <Compile Include="Service\AttendanceServiceTest.cs" />
     <Compile Include="Service\EmployeeDailyPayrollServiceTest.cs" />

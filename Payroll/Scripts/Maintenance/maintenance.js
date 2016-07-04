@@ -8,7 +8,7 @@
     };
 
     function init() {
-        $('.js-maintenanceDelete').on('click', handleMaintenanceDelete);
+        $('body').on('click', '.js-maintenanceDelete', handleMaintenanceDelete);
     };
 
     init();

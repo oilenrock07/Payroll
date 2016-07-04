@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Payroll.Entities.Payroll.EmployeeAdjustment>
+﻿@model Payroll.Models.Payroll.EmployeeAdjustmentViewModel
 
 @{
     ViewBag.Title = "Adjustment";
@@ -6,62 +6,27 @@
 
 <h2>Adjustment</h2>
 
+
+<div class="row b2">
+    <label class="control-label col-md-2" for="Date">Payroll Dates</label>
+    <div class="col-md-4">
+        @Html.DropDownListFor(model => model.Date, Model.Adjustments, new {@class = "form-control js-payrollDates"})
+    </div>
+</div>
+
+
 <p>
     @Html.ActionLink("Create New", "CreateAdjustment")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Adjustment
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employee.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Amount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remarks)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Adjustment.AdjustmentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditAdjustment", new { id=item.EmployeeAdjustmentId }) |
-            @Html.ActionLink("Delete", "DeleteAdjustment", new { id = item.EmployeeAdjustmentId }, new { @class = "js-maintenanceDelete" })
-        </td>
-    </tr>
-}
+<div id="adjustment-container">
+    @Html.Partial("_Adjustments", Model)
+</div>
 
-</table>
+@Html.Partial("_ViewAdjustmentModal")
 
 @section scripts
 {
+    <script type="text/javascript" src="/Scripts/Payroll/adjustment.js"></script>
     <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
 }

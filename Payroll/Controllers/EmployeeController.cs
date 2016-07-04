@@ -278,7 +278,7 @@ namespace Payroll.Controllers
 
             //validate employee code
             var existingEmployeeCode = _employeeRepository.Find(x => x.EmployeeCode == viewModel.EmployeeInfo.Employee.EmployeeCode && x.IsActive);
-            if (existingEmployeeCode != null)
+            if (existingEmployeeCode != null && existingEmployeeCode.Any())
             {
                 GetDropDowns(viewModel, viewModel.EmployeeInfo.EmployeeId);
                 ModelState.AddModelError("", ErrorMessages.USED_EMPLOYEECODE);

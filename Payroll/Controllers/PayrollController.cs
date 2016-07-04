@@ -25,13 +25,16 @@ namespace Payroll.Controllers
         private readonly ISettingService _settingsService;
         private readonly IAdjustmentRepository _adjustmentRepository;
         private readonly IEmployeeAdjustmentRepository _employeeAdjustmentRepository;
+        private readonly IEmployeeAdjustmentService _employeeAdjustmentService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmployeeRepository _employeeRepository;
 
         public PayrollController(IWebService webService, IUnitOfWork unitOfWork, 
             IEmployeePayrollService employeePayrollService, 
             ITotalEmployeeHoursService totalEmployeeHoursService, IEmployeeHoursService employeeHoursService,
             IAttendanceService attendanceService, IEmployeeDailyPayrollService employeeDailyPayrollService,
-            IAdjustmentRepository adjustmentRepository, IEmployeeAdjustmentRepository employeeAdjustmentRepository)
+            IAdjustmentRepository adjustmentRepository, IEmployeeAdjustmentRepository employeeAdjustmentRepository,
+            IEmployeeAdjustmentService employeeAdjustmentService, IEmployeeRepository employeeRepository)
         { 
             _webService = webService;
             _unitOfWork = unitOfWork;
@@ -42,6 +45,8 @@ namespace Payroll.Controllers
             _employeeDailyPayrollService = employeeDailyPayrollService;
             _adjustmentRepository = adjustmentRepository;
             _employeeAdjustmentRepository = employeeAdjustmentRepository;
+            _employeeAdjustmentService = employeeAdjustmentService;
+            _employeeRepository = employeeRepository;
         }
 
         // GET: Payroll
@@ -162,22 +167,65 @@ namespace Payroll.Controllers
 
         public ActionResult Adjustment()
         {
-            var adjustments = _employeeAdjustmentRepository.GetAllActive().ToList();
-            return View(adjustments);
-        }
-
-        public ActionResult CreateAdjustment()
-        {
+            var payrollDates = _employeePayrollService.GetPayrollDates(3).ToList();
             var viewModel = new EmployeeAdjustmentViewModel
             {
-                Adjustments = Adjustments()
+                Adjustments = payrollDates
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x,
+                        Value = x
+                    }),
+                EmployeeAdjustments = GetEmployeeAdjustments(payrollDates.First())
+        };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public PartialViewResult GetAdjustments(string date)
+        {
+
+            var viewModel = new EmployeeAdjustmentViewModel {EmployeeAdjustments = GetEmployeeAdjustments(date)};
+            return PartialView("_Adjustments", viewModel);
+        }
+
+
+        protected IEnumerable<EmployeeAdjustmentDao> GetEmployeeAdjustments(string date)
+        {
+            var dates = date.Split(new string[] { " to " }, StringSplitOptions.None);
+            var payrollStartDate = Convert.ToDateTime(dates[0]);
+            var payrollEndDate = Convert.ToDateTime(dates[1]);
+
+            var adjustments = _employeeAdjustmentService.GetEmployeeAdjustmentByDate(payrollStartDate, payrollEndDate);
+            return adjustments;
+        }
+
+        [HttpPost]
+        public PartialViewResult ViewEmployeeAdjustmentDetails(int id, string date)
+        {
+            var dates = date.Split(new string[] { " to " }, StringSplitOptions.None);
+            var payrollStartDate = Convert.ToDateTime(dates[0]);
+            var payrollEndDate = Convert.ToDateTime(dates[1]);
+
+            var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(id, payrollStartDate, payrollEndDate);
+            return PartialView("_ViewAdjustmentModalContent", adjustments);
+        }
+
+        public ActionResult CreateAdjustment(int id = 0)
+        {
+            var viewModel = new EmployeeAdjustmentCreateViewModel
+            {
+                Adjustments = Adjustments(),
+                EmployeeId = id,
+                Employee = id > 0 ? _employeeRepository.GetById(id) : null
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult CreateAdjustment(EmployeeAdjustmentViewModel viewModel)
+        public ActionResult CreateAdjustment(EmployeeAdjustmentCreateViewModel viewModel)
         {
             var employeeAdjustment = viewModel.MapItem<EmployeeAdjustment>();
             _employeeAdjustmentRepository.Add(employeeAdjustment);
@@ -191,14 +239,14 @@ namespace Payroll.Controllers
         {
             var adjustments = _employeeAdjustmentRepository.GetById(id);
 
-            var viewModel = adjustments.MapItem<EmployeeAdjustmentViewModel>();
+            var viewModel = adjustments.MapItem<EmployeeAdjustmentCreateViewModel>();
             viewModel.Adjustments = Adjustments();
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult EditAdjustment(EmployeeAdjustmentViewModel viewModel)
+        public ActionResult EditAdjustment(EmployeeAdjustmentCreateViewModel viewModel)
         {
             var adjustment = _employeeAdjustmentRepository.GetById(viewModel.EmployeeAdjustmentId);
             _employeeAdjustmentRepository.Update(adjustment);
@@ -230,6 +278,11 @@ namespace Payroll.Controllers
                     Value = x.AdjustmentId.ToString()
                 })
                 : new List<SelectListItem>();
+        }
+
+        public ActionResult Details(int id)
+        {
+            return View();
         }
     }
 }

@@ -232,7 +232,10 @@
     <Compile Include="Models\Maintenance\LoanViewModel.cs" />
     <Compile Include="Models\Maintenance\PaymentFrequencyViewModel.cs" />
     <Compile Include="Models\Maintenance\WorkScheduleViewModel.cs" />
+    <Compile Include="Models\Payroll\EmployeeAdjustmentCreateViewModel.cs" />
+    <Compile Include="Models\Payroll\EmployeeAdjustmentDetails.cs" />
     <Compile Include="Models\Payroll\EmployeeAdjustmentViewModel.cs" />
+    <Compile Include="Models\Payroll\PayrollDetailsViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollListViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollSearchViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollViewModel.cs" />
@@ -292,6 +295,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Payroll\adjustment.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\pagination.js" />
@@ -389,6 +393,9 @@
     <Content Include="Views\Payroll\Adjustment.cshtml" />
     <Content Include="Views\Payroll\CreateAdjustment.cshtml" />
     <Content Include="Views\Payroll\EditAdjustment.cshtml" />
+    <Content Include="Views\Payroll\_Adjustments.cshtml" />
+    <Content Include="Views\Payroll\_ViewAdjustmentModal.cshtml" />
+    <Content Include="Views\Payroll\_ViewAdjustmentModalContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

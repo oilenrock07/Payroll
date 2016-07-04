@@ -1,0 +1,36 @@
+﻿@model Payroll.Models.Payroll.EmployeeAdjustmentViewModel
+
+<table class="table table-responsive table-striped table-hover">
+    <tr>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>No of Adjustments</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.EmployeeAdjustments.OrderBy(x => x.Employee.LastName))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeAdjustmentCount)
+            </td>
+            <td>
+                @Html.ActionLink("Create Adjustment", "CreateAdjustment", new { id = item.Employee.EmployeeId })
+                @if (item.EmployeeAdjustmentCount > 0)
+                {
+                    <span> | <a href="javascript:void(0)" class="js-viewAdjustment" data-employeeid="@item.Employee.EmployeeId">View Adjustments</a></span>
+                }
+            </td>
+        </tr>
+    }
+</table>
