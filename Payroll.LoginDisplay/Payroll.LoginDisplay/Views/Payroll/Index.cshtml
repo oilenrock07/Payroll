@@ -3,6 +3,8 @@
 }
 
 <div class="container row">
+    <div class="alert alert-danger hidden js-errorMessage"></div>
+
     <div class="js-container" id="registration">
         @Html.Partial("Registration")
     </div>
@@ -15,7 +17,3 @@
         @Html.Partial("Timer")
     </div>
 </div>
-
-<script>
-    alert('2' + 1);
-</script>

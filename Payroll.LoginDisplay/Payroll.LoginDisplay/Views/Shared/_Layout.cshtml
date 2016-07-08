@@ -62,14 +62,34 @@
             };
         }
 
+        function showDisconnectedMessage(connected) {
+            if (!connected) {
+                $('.js-errorMessage').removeClass('hidden');
+                $('.js-errorMessage').html('Disconnected');
+            } else {
+                $('.js-errorMessage').addClass('hidden');
+                $('.js-errorMessage').html('');
+            }
+        }
+
         $(function () {
             var payrollHub = $.connection.payrollHub;
             registerClientEvents(payrollHub);
 
 
             //$.connection.hub.start();
+            $.connection.hub.logging = true;
             $.connection.hub.start().done(function () {
                 $('#Register').click(function () { handleRegisterClick(payrollHub); });
+            });
+
+            $.connection.hub.disconnected(function() {
+                showDisconnectedMessage(false);
+                $.connection.hub.start().done(function () {
+                    showDisconnectedMessage(true);
+                    handleRegisterClick(payrollHub);
+                });
+                
             });
         });
     </script>
