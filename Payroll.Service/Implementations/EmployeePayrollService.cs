@@ -70,7 +70,8 @@ namespace Payroll.Service.Implementations
                 foreach (EmployeePayrollItem item in employeePayrollItems)
                 {
                     //If should create new entry
-                    if (tempEmployeePayroll == null || (tempEmployeePayroll.Employee.EmployeeId != item.EmployeeId))
+                    if (tempEmployeePayroll == null || 
+                        (tempEmployeePayroll.Employee.EmployeeId != item.EmployeeId))
                     {
                         if (tempEmployeePayroll != null)
                         {
@@ -103,7 +104,7 @@ namespace Payroll.Service.Implementations
                     }
 
                     //If last iteration save
-                    if (item.Equals(tempEmployeePayroll))
+                    if (item.Equals(lastPayrollItem))
                     {
                         _employeePayrollRepository.Add(tempEmployeePayroll);
                         employeePayrollList.Add(tempEmployeePayroll);
@@ -113,6 +114,9 @@ namespace Payroll.Service.Implementations
                 //Commit
                 _unitOfWork.Commit();
             }
+
+            MapItemsToPayroll(employeePayrollItems, employeePayrollList);
+
             return employeePayrollList;
             /*foreach (EmployeeDailyPayroll dailyPayroll in employeeDailyPayroll)
             {
@@ -201,6 +205,19 @@ namespace Payroll.Service.Implementations
             })*/
         }
 
+        public void MapItemsToPayroll(IList<EmployeePayrollItem> items, IList<EmployeePayroll> payrolls)
+        {
+            //Add mapping to employee payroll lists
+            foreach (EmployeePayrollItem item in items)
+            {
+                var employeePayroll = payrolls.Where(p => p.EmployeeId == item.EmployeeId).First();
+
+                _employeePayrollItemService.Update(item);
+                item.PayrollId = employeePayroll.EmployeeId;
+            }
+            //Commit
+            _unitOfWork.Commit();
+        }
         public void Update(EmployeePayroll employeePayroll)
         {
             _employeePayrollRepository.Update(employeePayroll);

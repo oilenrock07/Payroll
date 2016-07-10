@@ -100,7 +100,7 @@ namespace Payroll.Test.Service
         private void DeleteInfo()
         {
             _employeePayrollDeductionRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 0");
-            _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_daily_payroll");
+            _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_payroll_item");
             _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours_total");
             _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE payroll");
             _employeePayrollDeductionRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_info");
@@ -260,143 +260,120 @@ namespace Payroll.Test.Service
             _employeeInfoRepository.Add(employeeInfo);
             _employeeInfoRepository.Add(employeeInfo2);
 
-            var totalEmployeeHours1 = new TotalEmployeeHours
-            {
-                Hours = 1,
-                EmployeeId = 1
-            };
+            var payrollDate = DateTime.Parse("05/21/2016");
 
-            var totalEmployeeHours2 = new TotalEmployeeHours
-            {
-                Hours = 2,
-                EmployeeId = 1
-            };
-
-            var totalEmployeeHours3 = new TotalEmployeeHours
-            {
-                Hours = 3,
-                EmployeeId = 1
-            };
-
-            var totalEmployeeHours4 = new TotalEmployeeHours
-            {
-                Hours = 4,
-                EmployeeId = 2
-            };
-
-            var totalEmployeeHours5 = new TotalEmployeeHours
-            {
-                Hours = 5,
-                EmployeeId = 2
-            };
-
-            var totalEmployeeHours6 = new TotalEmployeeHours
-            {
-                Hours = 6,
-                EmployeeId = 1
-            };
-
-            var totalEmployeeHours7 = new TotalEmployeeHours
-            {
-                Hours = 7,
-                EmployeeId = 1
-            };
-
-            var totalEmployeeHours8 = new TotalEmployeeHours
-            {
-                Hours = 8,
-                EmployeeId = 8
-            };
-
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours1);
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours2);
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours3);
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours4);
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours5);
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours6);
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours7);
-            _totalEmployeeHoursRepository.Add(totalEmployeeHours8);
-
-            var dailyPayroll = new EmployeeDailyPayroll
+            var employeePayrollItem = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 1,
-                TotalPay = 220.55M,
-                Date = DateTime.Parse("05/19/2016")
+                TotalAmount = 220.55M,
+                TotalHours = 8,
+                PayrollDate = payrollDate,
+                RateType  = RateType.Regular,
+                Multiplier = 1,
+                RatePerHour = 100
             };
 
-            var dailyPayroll2 = new EmployeeDailyPayroll
+            var employeePayrollItem2 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 2,
-                TotalPay = 100,
-                Date = DateTime.Parse("05/19/2016")
+                TotalHours = 10,
+                TotalAmount = 100,
+                PayrollDate = payrollDate,
+                RateType = RateType.OverTime,
+                Multiplier = 1,
+                RatePerHour = 200
             };
 
-            var dailyPayroll3 = new EmployeeDailyPayroll
+            var employeePayrollItem3 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 3,
-                TotalPay = 15,
-                Date = DateTime.Parse("05/19/2016")
+                TotalHours = 10,
+                TotalAmount = 15,
+                PayrollDate = payrollDate,
+                RateType = RateType.OverTime,
+                Multiplier = 1,
+                RatePerHour = 12.23M
             };
 
-            var dailyPayroll4 = new EmployeeDailyPayroll
+            var employeePayrollItem4 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 4,
-                TotalPay = 300.10M,
-                Date = DateTime.Parse("05/19/2016")
+                TotalHours = 15.2,
+                TotalAmount = 300.10M,
+                PayrollDate = payrollDate,
+                RateType = RateType.NightDifferential,
+                Multiplier = 1,
+                RatePerHour = 122.2M
             };
 
-            var dailyPayroll5 = new EmployeeDailyPayroll
+            var employeePayrollItem5 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 5,
-                TotalPay = 50,
-                Date = DateTime.Parse("05/19/2016")
+                TotalHours = 1.25,
+                TotalAmount = 50,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHoliday,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll6 = new EmployeeDailyPayroll
+            var employeePayrollItem6 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 6,
-                TotalPay = 150.12M,
-                Date = DateTime.Parse("05/20/2016")
+                TotalAmount = 150.12M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayNotWorked,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll7 = new EmployeeDailyPayroll
+            var employeePayrollItem7 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 7,
-                TotalPay = 40,
-                Date = DateTime.Parse("05/20/2016")
+                TotalAmount = 40,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayOT,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll8 = new EmployeeDailyPayroll
+            var employeePayrollItem8 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 8,
-                TotalPay = 540.02M,
-                Date = DateTime.Parse("05/20/2016")
+                TotalAmount = 540.02M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            _employeeDailyPayrollRepository.Add(dailyPayroll);
-            _employeeDailyPayrollRepository.Add(dailyPayroll2);
-            _employeeDailyPayrollRepository.Add(dailyPayroll3);
-            _employeeDailyPayrollRepository.Add(dailyPayroll4);
-            _employeeDailyPayrollRepository.Add(dailyPayroll5);
-            _employeeDailyPayrollRepository.Add(dailyPayroll6);
-            _employeeDailyPayrollRepository.Add(dailyPayroll7);
-            _employeeDailyPayrollRepository.Add(dailyPayroll8);
+            //Not included
+            var employeePayrollItem9 = new EmployeePayrollItem
+            {
+                EmployeeId = 2,
+                TotalAmount = 540.02M,
+                PayrollDate = DateTime.Parse("06/20/2016"),
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
+            };
+
+            _employeePayrollItemRepository.Add(employeePayrollItem);
+            _employeePayrollItemRepository.Add(employeePayrollItem2);
+            _employeePayrollItemRepository.Add(employeePayrollItem3);
+            _employeePayrollItemRepository.Add(employeePayrollItem4);
+            _employeePayrollItemRepository.Add(employeePayrollItem5);
+            _employeePayrollItemRepository.Add(employeePayrollItem6);
+            _employeePayrollItemRepository.Add(employeePayrollItem7);
+            _employeePayrollItemRepository.Add(employeePayrollItem8);
+            _employeePayrollItemRepository.Add(employeePayrollItem9);
 
             _unitOfWork.Commit();
 
             //Test
             var dateStart = DateTime.Parse("05/19/2016");
             var dateEnd = DateTime.Parse("05/20/2016");
-            var payrollDate = DateTime.Parse("05/21/2016");
-
+            
             var payrollList = _employeePayrollService.GeneratePayrollGrossPayByDateRange(payrollDate, dateStart, dateEnd);
 
             Assert.IsNotNull(payrollList);
@@ -554,86 +531,103 @@ namespace Payroll.Test.Service
             _totalEmployeeHoursRepository.Add(totalEmployeeHours7);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours8);
 
-            var dailyPayroll = new EmployeeDailyPayroll
+            var payrollDate = DateTime.Parse("05/11/2016");
+
+            var employeePayrollItem = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 1,
-                TotalPay = 220.55M,
-                Date = DateTime.Parse("05/06/2016")
+                TotalAmount = 220.55M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll2 = new EmployeeDailyPayroll
+            var employeePayrollItem2 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 2,
-                TotalPay = 100,
-                Date = DateTime.Parse("05/06/2016")
+                TotalAmount = 100,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll3 = new EmployeeDailyPayroll
+            var employeePayrollItem3 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 3,
-                TotalPay = 15,
-                Date = DateTime.Parse("05/06/2016")
+                TotalAmount = 15,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll4 = new EmployeeDailyPayroll
+            var employeePayrollItem4 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 4,
-                TotalPay = 300.10M,
-                Date = DateTime.Parse("05/06/2016")
+                TotalAmount = 300.10M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll5 = new EmployeeDailyPayroll
+            var employeePayrollItem5 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 5,
-                TotalPay = 50,
-                Date = DateTime.Parse("05/07/2016")
+                TotalAmount = 50,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll6 = new EmployeeDailyPayroll
+            var employeePayrollItem6 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 6,
-                TotalPay = 150.12M,
-                Date = DateTime.Parse("05/07/2016")
+                TotalAmount = 150.12M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll7 = new EmployeeDailyPayroll
+            var employeePayrollItem7 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 7,
-                TotalPay = 40,
-                Date = DateTime.Parse("05/07/2016")
+                TotalAmount = 40,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll8 = new EmployeeDailyPayroll
+            var employeePayrollItem8 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 8,
-                TotalPay = 540.02M,
-                Date = DateTime.Parse("05/07/2016")
+                TotalAmount = 540.02M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            _employeeDailyPayrollRepository.Add(dailyPayroll);
-            _employeeDailyPayrollRepository.Add(dailyPayroll2);
-            _employeeDailyPayrollRepository.Add(dailyPayroll3);
-            _employeeDailyPayrollRepository.Add(dailyPayroll4);
-            _employeeDailyPayrollRepository.Add(dailyPayroll5);
-            _employeeDailyPayrollRepository.Add(dailyPayroll6);
-            _employeeDailyPayrollRepository.Add(dailyPayroll7);
-            _employeeDailyPayrollRepository.Add(dailyPayroll8);
+            _employeePayrollItemRepository.Add(employeePayrollItem);
+            _employeePayrollItemRepository.Add(employeePayrollItem2);
+            _employeePayrollItemRepository.Add(employeePayrollItem3);
+            _employeePayrollItemRepository.Add(employeePayrollItem4);
+            _employeePayrollItemRepository.Add(employeePayrollItem5);
+            _employeePayrollItemRepository.Add(employeePayrollItem6);
+            _employeePayrollItemRepository.Add(employeePayrollItem7);
+            _employeePayrollItemRepository.Add(employeePayrollItem8);
 
-           _unitOfWork.Commit();
+            _unitOfWork.Commit();
 
             //Test
             var dateStart = DateTime.Parse("05/04/2016");
             var dateEnd = DateTime.Parse("05/10/2016");
-            var payrollDate = DateTime.Parse("05/11/2016");
-
+            
             _employeePayrollService.GeneratePayroll(dateStart, dateEnd);
             _unitOfWork.Commit();
 
@@ -795,85 +789,102 @@ namespace Payroll.Test.Service
             _totalEmployeeHoursRepository.Add(totalEmployeeHours7);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours8);
 
-            var dailyPayroll = new EmployeeDailyPayroll
+            var payrollDate = DateTime.Parse("05/18/2016");
+
+            var employeePayrollItem = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 1,
-                TotalPay = 220.55M,
-                Date = DateTime.Parse("05/12/2016")
+                TotalAmount = 220.55M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll2 = new EmployeeDailyPayroll
+            var employeePayrollItem2 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 2,
-                TotalPay = 100,
-                Date = DateTime.Parse("05/12/2016")
+                TotalAmount = 100,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll3 = new EmployeeDailyPayroll
+            var employeePayrollItem3 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 3,
-                TotalPay = 15,
-                Date = DateTime.Parse("05/12/2016")
+                TotalAmount = 15,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll4 = new EmployeeDailyPayroll
+            var employeePayrollItem4 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 4,
-                TotalPay = 300.10M,
-                Date = DateTime.Parse("05/12/2016")
+                TotalAmount = 300.10M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll5 = new EmployeeDailyPayroll
+            var employeePayrollItem5 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 5,
-                TotalPay = 50,
-                Date = DateTime.Parse("05/13/2016")
+                TotalAmount = 50,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll6 = new EmployeeDailyPayroll
+            var employeePayrollItem6 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 6,
-                TotalPay = 150.12M,
-                Date = DateTime.Parse("05/13/2016")
+                TotalAmount = 150.12M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll7 = new EmployeeDailyPayroll
+            var employeePayrollItem7 = new EmployeePayrollItem
             {
                 EmployeeId = 1,
-                TotalEmployeeHoursId = 7,
-                TotalPay = 40,
-                Date = DateTime.Parse("05/13/2016")
+                TotalAmount = 40,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            var dailyPayroll8 = new EmployeeDailyPayroll
+            var employeePayrollItem8 = new EmployeePayrollItem
             {
                 EmployeeId = 2,
-                TotalEmployeeHoursId = 8,
-                TotalPay = 540.02M,
-                Date = DateTime.Parse("05/13/2016")
+                TotalAmount = 540.02M,
+                PayrollDate = payrollDate,
+                RateType = RateType.RegularHolidayRestDay,
+                Multiplier = 1,
+                RatePerHour = 0.25M
             };
 
-            _employeeDailyPayrollRepository.Add(dailyPayroll);
-            _employeeDailyPayrollRepository.Add(dailyPayroll2);
-            _employeeDailyPayrollRepository.Add(dailyPayroll3);
-            _employeeDailyPayrollRepository.Add(dailyPayroll4);
-            _employeeDailyPayrollRepository.Add(dailyPayroll5);
-            _employeeDailyPayrollRepository.Add(dailyPayroll6);
-            _employeeDailyPayrollRepository.Add(dailyPayroll7);
-            _employeeDailyPayrollRepository.Add(dailyPayroll8);
+            _employeePayrollItemRepository.Add(employeePayrollItem);
+            _employeePayrollItemRepository.Add(employeePayrollItem2);
+            _employeePayrollItemRepository.Add(employeePayrollItem3);
+            _employeePayrollItemRepository.Add(employeePayrollItem4);
+            _employeePayrollItemRepository.Add(employeePayrollItem5);
+            _employeePayrollItemRepository.Add(employeePayrollItem6);
+            _employeePayrollItemRepository.Add(employeePayrollItem7);
+            _employeePayrollItemRepository.Add(employeePayrollItem8);
 
             _unitOfWork.Commit();
 
             //Test
             var dateStart = DateTime.Parse("05/11/2016");
             var dateEnd = DateTime.Parse("05/17/2016");
-            var payrollDate = DateTime.Parse("05/18/2016");
 
             _employeePayrollService.GeneratePayroll(dateStart, dateEnd);
             _unitOfWork.Commit();
