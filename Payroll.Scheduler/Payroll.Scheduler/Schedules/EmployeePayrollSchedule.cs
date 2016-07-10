@@ -98,9 +98,9 @@ namespace Payroll.Scheduler.Schedules
             _deductionService = new DeductionService(_deductionRepository);
             _taxService = new TaxService(_taxRepository);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
-            _employeePayrollItemService = new EmployeePayrollItemService(_employeePayrollItemRepository);
+            _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService);
 
-            _employeePayrollService = new EmployeePayrollService(_unitOfWork, null, _employeePayrollRepository, _settingService, null, _employeeInfoService, null, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService);
+            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeePayrollRepository, _settingService, null, _employeeInfoService, null, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService);
 
         }
 
@@ -120,8 +120,12 @@ namespace Payroll.Scheduler.Schedules
                 _totalEmployeeHoursService.GenerateTotalByDateRange(payrollStartDate, payrollEndDate);
 
                 //Compute daily payroll
-                Console.WriteLine("Computing daily payroll for date " + payrollStartDate + " to " + payrollEndDate);
-                _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(payrollStartDate, payrollEndDate);
+                //Console.WriteLine("Computing daily payroll for date " + payrollStartDate + " to " + payrollEndDate);
+                //_employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(payrollStartDate, payrollEndDate);
+                //Generate payroll items
+                Console.WriteLine("Computing payroll items for date " + payrollStartDate + " to " + payrollEndDate);
+                var payrollDate = _employeePayrollService.GetNextPayrollReleaseDate(payrollEndDate);
+                _employeePayrollItemService.GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStartDate, payrollEndDate);
 
                 //Compute total payroll
                 Console.WriteLine("Computing total payroll for date " + payrollStartDate + " to " + payrollEndDate);
