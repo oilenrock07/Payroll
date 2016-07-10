@@ -1,4 +1,5 @@
-﻿using Payroll.Entities.Payroll;
+﻿using Payroll.Entities.Enums;
+using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
@@ -16,6 +17,18 @@ namespace Payroll.Repository.Repositories
             : base(databaseFactory)
         {
             DbSet = databaseFactory.GetContext().EmployeePayrollItems;
+        }
+
+        public EmployeePayrollItem Find(int employeeId, DateTime date, RateType rateType)
+        {
+            return Find(ep => ep.IsActive && ep.PayrollId == null 
+                && ep.EmployeeId == employeeId && ep.PayrollDate == date 
+                && ep.RateType == rateType).FirstOrDefault();
+        }
+
+        public IList<EmployeePayrollItem> GetByDateRange(DateTime dateFrom, DateTime dateTo)
+        {
+            return Find(ep => ep.IsActive && ep.PayrollDate >= dateFrom && ep.PayrollDate < dateTo).ToList();
         }
     }
 }

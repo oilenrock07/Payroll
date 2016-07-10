@@ -173,5 +173,10 @@ namespace Payroll.Service.Implementations
         {
             return _totalEmployeeHoursRepository.GetById(id);
         }
+
+        public double CountTotalHours(int employeeId, DateTime date)
+        {
+            return _totalEmployeeHoursRepository.CountTotalHours(employeeId, date);
+        }
     }
 }

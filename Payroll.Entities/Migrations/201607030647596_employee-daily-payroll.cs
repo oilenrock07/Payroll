@@ -7,14 +7,14 @@ namespace Payroll.Entities.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("employee_daily_payroll", "TotalEmployeeHoursId", "employee_hours_total");
-            DropIndex("employee_daily_payroll", new[] { "TotalEmployeeHoursId" });
+            //DropForeignKey("employee_daily_payroll", "TotalEmployeeHoursId", "employee_hours_total");
+            //DropIndex("employee_daily_payroll", new[] { "TotalEmployeeHoursId" });
         }
         
         public override void Down()
         {
-            CreateIndex("employee_daily_payroll", "TotalEmployeeHoursId");
-            AddForeignKey("employee_daily_payroll", "TotalEmployeeHoursId", "employee_hours_total", "TotalEmployeeHoursId");
+            //CreateIndex("employee_daily_payroll", "TotalEmployeeHoursId");
+            //AddForeignKey("employee_daily_payroll", "TotalEmployeeHoursId", "employee_hours_total", "TotalEmployeeHoursId");
         }
     }
 }

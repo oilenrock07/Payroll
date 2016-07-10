@@ -16,15 +16,21 @@ namespace Payroll.Entities.Payroll
         [Key]
         public int EmployeePayrollItemId { get; set; }
 
+        public int? PayrollId { get; set; }
+
+        public DateTime PayrollDate { get; set; }
+
         public RateType RateType { get; set; }
 
-        [ForeignKey("EmployeePayroll")]
-        public int PayrollId { get; set; }
-        public virtual EmployeePayroll EmployeePayroll { get; set; }
+        public int EmployeeId { get; set; }
 
         public double TotalHours { get; set; }
 
+        public double Multiplier { get; set; }
+
         public decimal TotalAmount { get; set; }
-        
+
+        public decimal RatePerHour { get; set; }
+
     }
 }

@@ -134,13 +134,13 @@ namespace Payroll.Service.Implementations
                             tempEmployeePayrollItem = null;
                         }
 
-                        tempEmployeePayrollItem = new EmployeePayrollItem
+                        /*tempEmployeePayrollItem = new EmployeePayrollItem
                         {
                             EmployeePayroll = tempEmployeePayroll,
                             RateType = dailyPayroll.RateType,
                             TotalAmount = dailyPayroll.TotalPay,
                             TotalHours = totalEmployeeHours.Hours
-                        };
+                        };*/
                         
                     }
                     else

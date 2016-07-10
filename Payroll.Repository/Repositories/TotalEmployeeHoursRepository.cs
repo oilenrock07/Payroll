@@ -43,5 +43,11 @@ namespace Payroll.Repository.Repositories
                 eh.Date >= payrollStartDate && eh.Date < payrollEndDate)
                     .OrderByDescending(eh => eh.Date).ToList();
         }
+
+        public double CountTotalHours(int employeeId, DateTime date)
+        {
+            return Find(eh => eh.IsActive && eh.Date == date && 
+                (eh.Type == RateType.Regular || eh.Type == RateType.OverTime)).Sum(eh => eh.Hours);
+        }
     }
 }

@@ -20,9 +20,17 @@ namespace Payroll.Entities.Enums
         Regular = 1,
         OverTime = 2,
         NightDifferential = 3,
-        RestDay = 4,
-        Holiday = 5
-        //HolidaySpecial = 6
+        RestDay = 4, 
+        RegularHolidayNotWorked = 5,
+        SpecialHolidayNotWorked = 6,
+        RegularHoliday = 7,
+        SpecialHoliday = 8,
+        RegularHolidayOT = 9,
+        SpecialHolidayOT = 10,
+        RegularHolidayRestDay = 11,
+        SpecialHolidayRestDay = 12,
+        RegularHolidayRestDayOT = 13,
+        SpecialHolidayRestDayOT = 14
     }
 
     public enum FrequencyType

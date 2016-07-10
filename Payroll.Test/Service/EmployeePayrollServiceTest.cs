@@ -73,11 +73,10 @@ namespace Payroll.Test.Service
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, null, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
             _employeeService = new EmployeeService(_employeeRepository);
             _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
-            _employeePayrollItemService = new EmployeePayrollItemService(_employeePayrollItemRepository);
+            _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, null, null, null, null,null, null);
 
             _employeePayrollService = new EmployeePayrollService(_unitOfWork,
                 _employeeDailyPayrollService, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService);
-
 
             //Update settings
             var settingsPayrollStartDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_START");

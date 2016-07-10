@@ -76,11 +76,12 @@ namespace Payroll.Service.Implementations
 
                 var employeeWorkSchedule =
                    _employeeWorkScheduleService.GetByEmployeeId(totalHours.EmployeeId);
+
                 //No work schedule, no computation
                 if (employeeWorkSchedule != null)
                 {
                     DateTime date = totalHours.Date;
-                    Double rateMultiplier = 1;
+                    Double rateMultiplier = 0;
 
                     var workSchedule = employeeWorkSchedule.WorkSchedule;
                     var isRestDay = date.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd);
@@ -217,7 +218,7 @@ namespace Payroll.Service.Implementations
                                 EmployeeId = employee.EmployeeId,
                                 Date = day,
                                 TotalPay = hourlyRate * workHours,
-                                RateType = RateType.Holiday
+                                //RateType = RateType.
                             };
 
                             _employeeDailyPayrollRepository.Add(newDailyPayroll);
@@ -240,7 +241,7 @@ namespace Payroll.Service.Implementations
                                     EmployeeId = employee.EmployeeId,
                                     Date = day,
                                     TotalPay = hourlyRate * remainingUnpaidHours,
-                                    RateType = RateType.Holiday
+                                    //RateType = RateType.Holiday
                                 };
                                 _employeeDailyPayrollRepository.Add(newDailyPayroll);
                             }

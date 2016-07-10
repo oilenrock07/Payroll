@@ -147,6 +147,10 @@
     <Compile Include="Migrations\201607030647596_employee-daily-payroll.Designer.cs">
       <DependentUpon>201607030647596_employee-daily-payroll.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607100425517_payroll-items-changes.cs" />
+    <Compile Include="Migrations\201607100425517_payroll-items-changes.Designer.cs">
+      <DependentUpon>201607100425517_payroll-items-changes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -245,6 +249,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607030647596_employee-daily-payroll.resx">
       <DependentUpon>201607030647596_employee-daily-payroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607100425517_payroll-items-changes.resx">
+      <DependentUpon>201607100425517_payroll-items-changes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
