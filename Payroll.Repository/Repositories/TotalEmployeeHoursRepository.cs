@@ -46,8 +46,8 @@ namespace Payroll.Repository.Repositories
 
         public double CountTotalHours(int employeeId, DateTime date)
         {
-            return Find(eh => eh.IsActive && eh.Date == date && 
-                (eh.Type == RateType.Regular || eh.Type == RateType.OverTime)).Sum(eh => eh.Hours);
+            return Find(eh => eh.IsActive && eh.Date == date && eh.EmployeeId == employeeId &&
+                (eh.Type == RateType.Regular || eh.Type == RateType.OverTime)).ToList().Sum(eh => eh.Hours);
         }
     }
 }

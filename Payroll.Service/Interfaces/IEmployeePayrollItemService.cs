@@ -14,5 +14,8 @@ namespace Payroll.Service.Interfaces
         EmployeePayrollItem Find(int employeeId, DateTime date, RateType rateType);
 
         IList<EmployeePayrollItem> GetByDateRange(DateTime dateFrom, DateTime dateTo);
+
+        void GenerateEmployeePayrollItemByDateRange(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate);
+
     }
 }

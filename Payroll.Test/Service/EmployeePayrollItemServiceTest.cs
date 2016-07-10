@@ -3,9 +3,9 @@ using Payroll.Entities;
 using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
+using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
-using Payroll.Service;
 using Payroll.Service.Implementations;
 using Payroll.Service.Interfaces;
 using System;
@@ -17,9 +17,9 @@ using System.Threading.Tasks;
 namespace Payroll.Test.Service
 {
     [TestClass]
-    public class EmployeeDailyPayrollServiceTest
+    public class EmployeePayrollItemServiceTest
     {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private ITotalEmployeeHoursService _totalEmployeeHoursService;
         private IEmployeeWorkScheduleService _employeeWorkScheduleService;
         private IHolidayService _holidayService;
@@ -27,7 +27,7 @@ namespace Payroll.Test.Service
         private IEmployeeInfoService _employeeInfoService;
         private IEmployeeSalaryService _employeeSalaryService;
 
-        private IEmployeeDailyPayrollRepository _employeeDailyPayrollRepository;
+        private IEmployeePayrollItemRepository _employeePayrollItemRepository;
         private ITotalEmployeeHoursRepository _totalEmployeeHoursRepository;
         private IEmployeeWorkScheduleRepository _employeeWorkScheduleRepository;
         private IHolidayRepository _holidayRepository;
@@ -35,7 +35,17 @@ namespace Payroll.Test.Service
         private IEmployeeHoursRepository _employeeHoursRepository;
         private ISettingRepository _settingRepository;
 
-        private IEmployeeDailyPayrollService _employeeDailyPayrollService;
+        private IEmployeePayrollItemService _employeePayrollItemService;
+
+        private const String RATE_REST_DAY = "RATE_REST_DAY";
+        private const String RATE_OT = "RATE_OT";
+        private const String RATE_NIGHTDIF = "RATE_NIGHTDIF";
+        private const String RATE_HOLIDAY_SPECIAL = "RATE_HOLIDAY_SPECIAL";
+        private const String RATE_HOLIDAY_REGULAR = "RATE_HOLIDAY_REGULAR";
+        private const String RATE_OT_HOLIDAY = "RATE_OT_HOLIDAY";
+        private const String PAYROLL_REGULAR_HOURS = "PAYROLL_REGULAR_HOURS";
+        private const String PAYROLL_IS_SPHOLIDAY_WITH_PAY = "PAYROLL_IS_SPHOLIDAY_WITH_PAY";
+        private const String RATE_HOLIDAY_SPECIAL_REST_DAY = "RATE_HOLIDAY_SPECIAL_REST_DAY";
 
         public void Initialize()
         {
@@ -44,7 +54,7 @@ namespace Payroll.Test.Service
             _unitOfWork = new UnitOfWork(databaseFactory);
 
             _employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
-            _employeeDailyPayrollRepository = new EmployeeDailyPayrollRepository(databaseFactory);
+            _employeePayrollItemRepository = new EmployeePayrollItemRepository(databaseFactory);
             _totalEmployeeHoursRepository = new TotalEmployeeHoursRepository(databaseFactory);
             _employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(databaseFactory);
             _holidayRepository = new HolidayRepository(databaseFactory);
@@ -53,15 +63,15 @@ namespace Payroll.Test.Service
             _settingRepository = new SettingRepository(databaseFactory);
 
             _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
-            
+
             _employeeWorkScheduleService = new EmployeeWorkScheduleService(_employeeWorkScheduleRepository);
             _holidayService = new HolidayService(_holidayRepository, _settingRepository, _unitOfWork);
             _settingService = new SettingService(_settingRepository);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
             _employeeSalaryService = new EmployeeSalaryService();
 
-            _employeeDailyPayrollService = new EmployeeDailyPayrollService(_unitOfWork, _totalEmployeeHoursService, 
-            _employeeWorkScheduleService, _holidayService, _settingService, _employeeDailyPayrollRepository, _employeeInfoService, _employeeSalaryService);
+            _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, 
+                    _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService);
         }
 
         public void DeleteData()
@@ -71,15 +81,14 @@ namespace Payroll.Test.Service
             _employeeInfoRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_workschedule");
             _employeeInfoRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_hours_total");
             _employeeInfoRepository.ExecuteSqlCommand("TRUNCATE TABLE work_schedule");
-            _employeeInfoRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_daily_payroll");
+            _employeeInfoRepository.ExecuteSqlCommand("TRUNCATE TABLE employee_payroll_item");
             _employeeInfoRepository.ExecuteSqlCommand("TRUNCATE TABLE employee");
             _employeeInfoRepository.ExecuteSqlCommand("SET FOREIGN_KEY_CHECKS = 1");
         }
 
-        //[TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeRegular()
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeRegular()
         {
-            //Arrange 
             Initialize();
             DeleteData();
 
@@ -190,42 +199,38 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("05/02/2016");
-            var dateTo = DateTime.Parse("05/03/2016");
+            var payrollStart = DateTime.Parse("05/02/2016");
+            var payrollEnd = DateTime.Parse("05/03/2016");
+            var payrollDate = DateTime.Parse("05/04/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEnd);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
 
             Assert.IsNotNull(results);
-            Assert.AreEqual(4, results.Count);
+            Assert.AreEqual(2, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(3, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1012.50, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[0].Date);
+            Assert.AreEqual(1, results[0].Multiplier);
+            Assert.AreEqual(125, results[0].RatePerHour);
+            Assert.AreEqual(RateType.Regular, results[0].RateType);
+            Assert.AreEqual(16.1, results[0].TotalHours);
+            Assert.AreEqual((decimal)2012.50, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
 
-            Assert.AreEqual(1, results[1].EmployeeId);
-            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1000, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[1].Date);
-
-            Assert.AreEqual(2, results[2].EmployeeId);
-            Assert.AreEqual(4, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)800, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[2].Date);
- 
-            Assert.AreEqual(2, results[3].EmployeeId);
-            Assert.AreEqual(2, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1500, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[3].Date);
+            Assert.AreEqual(2, results[1].EmployeeId);
+            Assert.AreEqual(1, results[1].Multiplier);
+            Assert.AreEqual(200, results[1].RatePerHour);
+            Assert.AreEqual(RateType.Regular, results[1].RateType);
+            Assert.AreEqual(11.5, results[1].TotalHours);
+            Assert.AreEqual((decimal)2300, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
         }
 
-        //[TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeOT()
-        {
-            //Arrange 
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeOT()
+        { //Arrange 
             Initialize();
             DeleteData();
 
@@ -336,42 +341,39 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("05/02/2016");
-            var dateTo = DateTime.Parse("05/03/2016");
+            var payrollStart = DateTime.Parse("05/02/2016");
+            var payrollEndDate = DateTime.Parse("05/03/2016");
+            var payrollDate = DateTime.Parse("05/04/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEndDate);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
+            Double OTRate = Double.Parse(_settingService.GetByKey(RATE_OT));
 
             Assert.IsNotNull(results);
-            Assert.AreEqual(4, results.Count);
+            Assert.AreEqual(2, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(3, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1265.625, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[0].Date);
+            Assert.AreEqual(OTRate, results[0].Multiplier);
+            Assert.AreEqual(125, results[0].RatePerHour);
+            Assert.AreEqual(RateType.OverTime, results[0].RateType);
+            Assert.AreEqual(16.1, results[0].TotalHours);
+            Assert.AreEqual((decimal)2515.625, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
 
-            Assert.AreEqual(1, results[1].EmployeeId);
-            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1250, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[1].Date);
-
-            Assert.AreEqual(2, results[2].EmployeeId);
-            Assert.AreEqual(4, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1000, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[2].Date);
-
-            Assert.AreEqual(2, results[3].EmployeeId);
-            Assert.AreEqual(2, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1875, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[3].Date);
+            Assert.AreEqual(2, results[1].EmployeeId);
+            Assert.AreEqual(OTRate, results[1].Multiplier);
+            Assert.AreEqual(200, results[1].RatePerHour);
+            Assert.AreEqual(RateType.OverTime, results[1].RateType);
+            Assert.AreEqual(11.5, results[1].TotalHours);
+            Assert.AreEqual((decimal)2875, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
         }
 
-        //[TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeNightDiff()
-        {
-            //Arrange 
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeNightDiff()
+        { //Arrange 
             Initialize();
             DeleteData();
 
@@ -437,7 +439,6 @@ namespace Payroll.Test.Service
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule);
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule2);
 
-            //Total EmployeeHours
             var totalEmployeeHours1 = new TotalEmployeeHours
             {
                 Date = DateTime.Parse("05/02/2016"),
@@ -482,42 +483,39 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("05/02/2016");
-            var dateTo = DateTime.Parse("05/03/2016");
+            var payrollStart = DateTime.Parse("05/02/2016");
+            var payrollEndDate = DateTime.Parse("05/03/2016");
+            var payrollDate = DateTime.Parse("05/04/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEndDate);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
+            Decimal nightDifRate = Decimal.Parse(_settingService.GetByKey(RATE_NIGHTDIF));
 
             Assert.IsNotNull(results);
-            Assert.AreEqual(4, results.Count);
+            Assert.AreEqual(2, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(3, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)6.48, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[0].Date);
+            Assert.AreEqual(1, results[0].Multiplier);
+            Assert.AreEqual(nightDifRate, results[0].RatePerHour);
+            Assert.AreEqual(RateType.NightDifferential, results[0].RateType);
+            Assert.AreEqual(16.1, results[0].TotalHours);
+            Assert.AreEqual((decimal)12.88, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
 
-            Assert.AreEqual(1, results[1].EmployeeId);
-            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)6.4, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[1].Date);
-
-            Assert.AreEqual(2, results[2].EmployeeId);
-            Assert.AreEqual(4, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)3.2, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/03/2016"), results[2].Date);
-
-            Assert.AreEqual(2, results[3].EmployeeId);
-            Assert.AreEqual(2, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)6, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/02/2016"), results[3].Date);
+            Assert.AreEqual(2, results[1].EmployeeId);
+            Assert.AreEqual(1, results[1].Multiplier);
+            Assert.AreEqual(nightDifRate, results[1].RatePerHour);
+            Assert.AreEqual(RateType.NightDifferential, results[1].RateType);
+            Assert.AreEqual(11.5, results[1].TotalHours);
+            Assert.AreEqual((decimal)9.2, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
         }
 
-       // [TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeRestDay()
-        {
-            //Arrange 
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeRestDay()
+        { //Arrange 
             Initialize();
             DeleteData();
 
@@ -644,56 +642,68 @@ namespace Payroll.Test.Service
             _totalEmployeeHoursRepository.Add(totalEmployeeHours4);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours5);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours6);
-
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("05/06/2016");
-            var dateTo = DateTime.Parse("05/08/2016");
+            var payrollStart = DateTime.Parse("05/06/2016");
+            var payrollEndDate = DateTime.Parse("05/08/2016");
+            var payrollDate = DateTime.Parse("05/09/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEndDate);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
+            Decimal nightDifRate = Decimal.Parse(_settingService.GetByKey(RATE_NIGHTDIF));
+            Double OTRate = Double.Parse(_settingService.GetByKey(RATE_OT));
+            Double restDayRate = Double.Parse(_settingService.GetByKey(RATE_REST_DAY));
 
             Assert.IsNotNull(results);
-            Assert.AreEqual(6, results.Count);
+            Assert.AreEqual(5, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(5, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1316.25, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/08/2016"), results[0].Date);
+            Assert.AreEqual(restDayRate, results[0].Multiplier);
+            Assert.AreEqual(125, results[0].RatePerHour);
+            Assert.AreEqual(RateType.RestDay, results[0].RateType);
+            Assert.AreEqual(16.1, results[0].TotalHours);
+            Assert.AreEqual((decimal)2616.25, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
 
             Assert.AreEqual(1, results[1].EmployeeId);
-            Assert.AreEqual(1, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1300, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/07/2016"), results[1].Date);
+            Assert.AreEqual(restDayRate * OTRate, results[1].Multiplier);
+            Assert.AreEqual(125, results[1].RatePerHour);
+            Assert.AreEqual(RateType.RestDayOT, results[1].RateType);
+            Assert.AreEqual(4.1, results[1].TotalHours);
+            Assert.AreEqual((decimal)832.8125, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
 
-            Assert.AreEqual(1, results[2].EmployeeId);
-            Assert.AreEqual(3, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)832.8125, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/07/2016"), results[2].Date);
+            Assert.AreEqual(2, results[2].EmployeeId);
+            Assert.AreEqual(restDayRate, results[2].Multiplier);
+            Assert.AreEqual(200, results[2].RatePerHour);
+            Assert.AreEqual(RateType.RestDay, results[2].RateType);
+            Assert.AreEqual(7.5, results[2].TotalHours);
+            Assert.AreEqual((decimal)1950, results[2].TotalAmount);
+            Assert.AreEqual(payrollDate, results[2].PayrollDate);
 
             Assert.AreEqual(2, results[3].EmployeeId);
-            Assert.AreEqual(2, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1950, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/07/2016"), results[3].Date);
+            Assert.AreEqual(1, results[3].Multiplier);
+            Assert.AreEqual(nightDifRate, results[3].RatePerHour);
+            Assert.AreEqual(RateType.NightDifferential, results[3].RateType);
+            Assert.AreEqual(4, results[3].TotalHours);
+            Assert.AreEqual((decimal)3.20, results[3].TotalAmount);
+            Assert.AreEqual(payrollDate, results[3].PayrollDate);
 
             Assert.AreEqual(2, results[4].EmployeeId);
-            Assert.AreEqual(6, results[4].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1300, results[4].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/08/2016"), results[4].Date);
-
-            Assert.AreEqual(2, results[5].EmployeeId);
-            Assert.AreEqual(4, results[5].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)4.16, results[5].TotalPay);
-            Assert.AreEqual(DateTime.Parse("05/07/2016"), results[5].Date);
+            Assert.AreEqual(restDayRate * OTRate, results[4].Multiplier);
+            Assert.AreEqual(200, results[4].RatePerHour);
+            Assert.AreEqual(RateType.RestDayOT, results[4].RateType);
+            Assert.AreEqual(4, results[4].TotalHours);
+            Assert.AreEqual((decimal)1300, results[4].TotalAmount);
+            Assert.AreEqual(payrollDate, results[4].PayrollDate);
         }
 
-        //[TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeHoliday()
-        {
-            //Arrange 
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeHoliday()
+        { //Arrange 
             Initialize();
             DeleteData();
 
@@ -820,62 +830,89 @@ namespace Payroll.Test.Service
             _totalEmployeeHoursRepository.Add(totalEmployeeHours4);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours5);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours6);
-
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("01/01/2016");
-            var dateTo = DateTime.Parse("01/02/2016");
+            var payrollStart = DateTime.Parse("01/01/2016");
+            var payrollEndDate = DateTime.Parse("01/02/2016");
+            var payrollDate = DateTime.Parse("01/03/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEndDate);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
+            Decimal nightDifRate = Decimal.Parse(_settingService.GetByKey(RATE_NIGHTDIF));
+            Double OTRate = Double.Parse(_settingService.GetByKey(RATE_OT));
+            Double OTRateHoliday = Double.Parse(_settingService.GetByKey(RATE_OT_HOLIDAY));
+            Double restDayRate = Double.Parse(_settingService.GetByKey(RATE_REST_DAY));
+            Double regularHolidayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_REGULAR));
+            Double specialHolidayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL));
+            Double specialHolidayRestDayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL_REST_DAY));
 
             Assert.IsNotNull(results);
             Assert.AreEqual(7, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(1, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)2000, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[0].Date);
-
+            Assert.AreEqual(regularHolidayRate, results[0].Multiplier);
+            Assert.AreEqual(125, results[0].RatePerHour);
+            Assert.AreEqual(RateType.RegularHoliday, results[0].RateType);
+            Assert.AreEqual(8, results[0].TotalHours);
+            Assert.AreEqual((decimal)2000, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
+    
             Assert.AreEqual(1, results[1].EmployeeId);
-            Assert.AreEqual(2, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1462.5, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[1].Date);
+            Assert.AreEqual(regularHolidayRate * OTRateHoliday, results[1].Multiplier);
+            Assert.AreEqual(125, results[1].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayOT, results[1].RateType);
+            Assert.AreEqual(4.5, results[1].TotalHours);
+            Assert.AreEqual((decimal)1462.50, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
 
             Assert.AreEqual(1, results[2].EmployeeId);
-            Assert.AreEqual(3, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)4, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[2].Date);
+            Assert.AreEqual(1, results[2].Multiplier);
+            Assert.AreEqual(nightDifRate, results[2].RatePerHour);
+            Assert.AreEqual(RateType.NightDifferential, results[2].RateType);
+            Assert.AreEqual(2.5, results[2].TotalHours);
+            Assert.AreEqual((decimal)2, results[2].TotalAmount);
+            Assert.AreEqual(payrollDate, results[2].PayrollDate);
 
             Assert.AreEqual(2, results[3].EmployeeId);
-            Assert.AreEqual(4, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1200, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[3].Date);
-
-            Assert.AreEqual(2, results[6].EmployeeId);
-            Assert.AreEqual(null, results[6].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1600, results[6].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[6].Date);
+            Assert.AreEqual(specialHolidayRestDayRate, results[3].Multiplier);
+            Assert.AreEqual(200, results[3].RatePerHour);
+            Assert.AreEqual(RateType.SpecialHolidayRestDay, results[3].RateType);
+            Assert.AreEqual(4, results[3].TotalHours);
+            Assert.AreEqual((decimal)1200, results[3].TotalAmount);
+            Assert.AreEqual(payrollDate, results[3].PayrollDate);
 
             Assert.AreEqual(2, results[4].EmployeeId);
-            Assert.AreEqual(5, results[4].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1267.5, results[4].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[4].Date);
+            Assert.AreEqual(specialHolidayRestDayRate * OTRateHoliday, results[4].Multiplier);
+            Assert.AreEqual(200, results[4].RatePerHour);
+            Assert.AreEqual(RateType.SpecialHolidayRestDayOT, results[4].RateType);
+            Assert.AreEqual(3.25, results[4].TotalHours);
+            Assert.AreEqual((decimal)1267.50, results[4].TotalAmount);
+            Assert.AreEqual(payrollDate, results[4].PayrollDate);
 
             Assert.AreEqual(2, results[5].EmployeeId);
-            Assert.AreEqual(6, results[5].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)0.3, results[5].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[5].Date);
+            Assert.AreEqual(1, results[5].Multiplier);
+            Assert.AreEqual(nightDifRate, results[5].RatePerHour);
+            Assert.AreEqual(RateType.NightDifferential, results[5].RateType);
+            Assert.AreEqual(0.25, results[5].TotalHours);
+            Assert.AreEqual((decimal)0.2, results[5].TotalAmount);
+            Assert.AreEqual(payrollDate, results[5].PayrollDate);
+
+            Assert.AreEqual(2, results[6].EmployeeId);
+            Assert.AreEqual(1, results[6].Multiplier);
+            Assert.AreEqual(200, results[6].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayNotWorked, results[6].RateType);
+            Assert.AreEqual(8, results[6].TotalHours);
+            Assert.AreEqual((decimal)1600, results[6].TotalAmount);
+            Assert.AreEqual(payrollDate, results[6].PayrollDate);
 
         }
 
-        //[TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeHolidayNoWork()
-        {
-            //Arrange 
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeHolidayNoWork()
+        { //Arrange 
             Initialize();
             DeleteData();
 
@@ -944,33 +981,38 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("01/01/2015");
-            var dateTo = DateTime.Parse("01/02/2016");
+            var payrollStart = DateTime.Parse("01/01/2016");
+            var payrollEndDate = DateTime.Parse("01/02/2016");
+            var payrollDate = DateTime.Parse("01/03/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEndDate);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
 
             Assert.IsNotNull(results);
             Assert.AreEqual(2, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(null, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1000, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[0].Date);
+            Assert.AreEqual(1, results[0].Multiplier);
+            Assert.AreEqual(125, results[0].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayNotWorked, results[0].RateType);
+            Assert.AreEqual(8, results[0].TotalHours);
+            Assert.AreEqual((decimal)1000, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
 
             Assert.AreEqual(2, results[1].EmployeeId);
-            Assert.AreEqual(null, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1600, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[1].Date);
-
+            Assert.AreEqual(1, results[1].Multiplier);
+            Assert.AreEqual(200, results[1].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayNotWorked, results[1].RateType);
+            Assert.AreEqual(8, results[1].TotalHours);
+            Assert.AreEqual((decimal)1600, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
         }
 
-        //[TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeHolidayNoWork2()
-        {
-            //Arrange 
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeHolidayNoWorkNoPay()
+        { //Arrange 
             Initialize();
             DeleteData();
 
@@ -1039,31 +1081,37 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("01/01/2015");
-            var dateTo = DateTime.Parse("01/02/2016");
+            var payrollStart = DateTime.Parse("01/01/2016");
+            var payrollEndDate = DateTime.Parse("01/02/2016");
+            var payrollDate = DateTime.Parse("01/03/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEndDate);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
 
             Assert.IsNotNull(results);
             Assert.AreEqual(2, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(null, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1000, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[0].Date);
+            Assert.AreEqual(1, results[0].Multiplier);
+            Assert.AreEqual(125, results[0].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayNotWorked, results[0].RateType);
+            Assert.AreEqual(8, results[0].TotalHours);
+            Assert.AreEqual((decimal)1000, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
 
             Assert.AreEqual(2, results[1].EmployeeId);
-            Assert.AreEqual(null, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1600, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[1].Date);
-
+            Assert.AreEqual(1, results[1].Multiplier);
+            Assert.AreEqual(200, results[1].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayNotWorked, results[1].RateType);
+            Assert.AreEqual(8, results[1].TotalHours);
+            Assert.AreEqual((decimal)1600, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
         }
 
-        //[TestMethod]
-        public void GenerateEmployeeDailySalaryByDateRangeHolidayPartialWork()
+        [TestMethod]
+        public void GenerateEmployeePayrollItemByDateRangeHolidayPartialWork()
         {
             //Arrange 
             Initialize();
@@ -1156,36 +1204,53 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateFrom = DateTime.Parse("01/01/2016");
-            var dateTo = DateTime.Parse("01/02/2016");
+            var payrollStart = DateTime.Parse("01/01/2016");
+            var payrollEndDate = DateTime.Parse("01/02/2016");
+            var payrollDate = DateTime.Parse("01/03/2016");
 
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(dateFrom, dateTo);
+            _employeePayrollItemService
+                .GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStart, payrollEndDate);
 
-            //Results Verification
-            var results = _employeeDailyPayrollService.GetByDateRange(dateFrom, dateTo);
+            var results = _employeePayrollItemService.GetByDateRange(payrollDate, payrollDate);
+            Double regularHolidayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_REGULAR));
+            Double specialHolidayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL));
+            Double specialHolidayRestDayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL_REST_DAY));
 
             Assert.IsNotNull(results);
             Assert.AreEqual(4, results.Count);
 
             Assert.AreEqual(1, results[0].EmployeeId);
-            Assert.AreEqual(1, results[0].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1000, results[0].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[0].Date);
+            Assert.AreEqual(regularHolidayRate, results[0].Multiplier);
+            Assert.AreEqual(125, results[0].RatePerHour);
+            Assert.AreEqual(RateType.RegularHoliday, results[0].RateType);
+            Assert.AreEqual(4, results[0].TotalHours);
+            Assert.AreEqual((decimal)1000, results[0].TotalAmount);
+            Assert.AreEqual(payrollDate, results[0].PayrollDate);
 
             Assert.AreEqual(1, results[1].EmployeeId);
-            Assert.AreEqual(null, results[1].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)500, results[1].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[1].Date);
-
-            Assert.AreEqual(2, results[3].EmployeeId);
-            Assert.AreEqual(null, results[3].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)1600, results[3].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/01/2016"), results[3].Date);
+            Assert.AreEqual(1, results[1].Multiplier);
+            Assert.AreEqual(125, results[1].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayNotWorked, results[1].RateType);
+            Assert.AreEqual(4, results[1].TotalHours);
+            Assert.AreEqual((decimal)500, results[1].TotalAmount);
+            Assert.AreEqual(payrollDate, results[1].PayrollDate);
 
             Assert.AreEqual(2, results[2].EmployeeId);
-            Assert.AreEqual(2, results[2].TotalEmployeeHoursId);
-            Assert.AreEqual((decimal)600, results[2].TotalPay);
-            Assert.AreEqual(DateTime.Parse("01/02/2016"), results[2].Date);
+            Assert.AreEqual(specialHolidayRestDayRate, results[2].Multiplier);
+            Assert.AreEqual(200, results[2].RatePerHour);
+            Assert.AreEqual(RateType.SpecialHolidayRestDay, results[2].RateType);
+            Assert.AreEqual(2, results[2].TotalHours);
+            Assert.AreEqual((decimal)600, results[2].TotalAmount);
+            Assert.AreEqual(payrollDate, results[2].PayrollDate);
+
+            Assert.AreEqual(2, results[3].EmployeeId);
+            Assert.AreEqual(1, results[3].Multiplier);
+            Assert.AreEqual(200, results[3].RatePerHour);
+            Assert.AreEqual(RateType.RegularHolidayNotWorked, results[3].RateType);
+            Assert.AreEqual(8, results[3].TotalHours);
+            Assert.AreEqual((decimal)1600, results[3].TotalAmount);
+            Assert.AreEqual(payrollDate, results[3].PayrollDate);
+
         }
     }
 }
