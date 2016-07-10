@@ -28,7 +28,7 @@ namespace Payroll.Repository.Repositories
 
         public IList<EmployeePayrollItem> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
-            return Find(ep => ep.IsActive && ep.PayrollId == null && ep.PayrollDate >= dateFrom && ep.PayrollDate < dateTo)
+            return Find(ep => ep.IsActive && ep.PayrollDate >= dateFrom && ep.PayrollDate < dateTo)
                 .OrderByDescending(ep => ep.PayrollDate).ThenBy(ep => ep.EmployeeId).ToList();
         }
     }
