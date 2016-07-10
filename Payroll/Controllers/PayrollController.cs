@@ -21,7 +21,8 @@ namespace Payroll.Controllers
         private readonly ITotalEmployeeHoursService _totalEmployeeHoursService;
         private readonly IEmployeeHoursService _employeeHoursService;
         private readonly IAttendanceService _attendanceService;
-        private readonly IEmployeeDailyPayrollService _employeeDailyPayrollService;
+        private readonly IEmployeePayrollItemService _employeePayrollItemservice;
+        //private readonly IEmployeeDailyPayrollService _employeeDailyPayrollService;
         private readonly ISettingService _settingsService;
         private readonly IAdjustmentRepository _adjustmentRepository;
         private readonly IEmployeeAdjustmentRepository _employeeAdjustmentRepository;
@@ -29,10 +30,11 @@ namespace Payroll.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepository _employeeRepository;
 
+
         public PayrollController(IWebService webService, IUnitOfWork unitOfWork, 
             IEmployeePayrollService employeePayrollService, 
             ITotalEmployeeHoursService totalEmployeeHoursService, IEmployeeHoursService employeeHoursService,
-            IAttendanceService attendanceService, IEmployeeDailyPayrollService employeeDailyPayrollService,
+            IAttendanceService attendanceService, IEmployeePayrollItemService employeePayrollItemService,
             IAdjustmentRepository adjustmentRepository, IEmployeeAdjustmentRepository employeeAdjustmentRepository,
             IEmployeeAdjustmentService employeeAdjustmentService, IEmployeeRepository employeeRepository)
         { 
@@ -42,7 +44,8 @@ namespace Payroll.Controllers
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _employeeHoursService = employeeHoursService;
             _attendanceService = attendanceService;
-            _employeeDailyPayrollService = employeeDailyPayrollService;
+            //_employeeDailyPayrollService = employeeDailyPayrollService;
+            _employeePayrollItemservice = employeePayrollItemService;
             _adjustmentRepository = adjustmentRepository;
             _employeeAdjustmentRepository = employeeAdjustmentRepository;
             _employeeAdjustmentService = employeeAdjustmentService;
@@ -157,8 +160,13 @@ namespace Payroll.Controllers
             _totalEmployeeHoursService.GenerateTotalByDateRange(payrollStartDate, payrollEndDate);
 
             //Compute daily payroll
-            Console.WriteLine("Computing daily payroll for date " + payrollStartDate + " to " + payrollEndDate);
-            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(payrollStartDate, payrollEndDate);
+            /*Console.WriteLine("Computing daily payroll for date " + payrollStartDate + " to " + payrollEndDate);
+            _employeeDailyPayrollService.GenerateEmployeeDailySalaryByDateRange(payrollStartDate, payrollEndDate);*/
+            
+            //Generate payroll items
+            Console.WriteLine("Computing payroll items for date " + payrollStartDate + " to " + payrollEndDate);
+            var payrollDate = _employeePayrollService.GetNextPayrollReleaseDate(payrollEndDate);
+            _employeePayrollItemservice.GenerateEmployeePayrollItemByDateRange(payrollDate, payrollStartDate, payrollEndDate);
 
             //Generate Payroll
             Console.WriteLine("Computing payroll for date " + payrollStartDate + " to " + payrollEndDate);
