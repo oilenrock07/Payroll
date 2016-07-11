@@ -25,12 +25,12 @@ namespace Payroll.Entities.Enums
         RegularHolidayNotWorked = 6,
         SpecialHolidayNotWorked = 7,
         RegularHoliday = 8,
-        SpecialHoliday = 9,
-        RegularHolidayOT = 10,
+        RegularHolidayOT = 9,
+        SpecialHoliday = 10,
         SpecialHolidayOT = 11,
         RegularHolidayRestDay = 12,
-        SpecialHolidayRestDay = 13,
-        RegularHolidayRestDayOT = 14,
+        RegularHolidayRestDayOT = 13,
+        SpecialHolidayRestDay = 14,
         SpecialHolidayRestDayOT = 15
     }
 
