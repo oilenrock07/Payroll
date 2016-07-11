@@ -40,6 +40,11 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <!-- To validate not visible fields -->
+    <script type="text/javascript">
+        $.validator.setDefaults({ ignore: [] });
+    </script>
+
     <script type="text/javascript" src="/Scripts/Employee/employeedetails.js"></script>
     <script type="text/javascript" src="/Scripts/Employee/employeededuction.js"></script>
 }

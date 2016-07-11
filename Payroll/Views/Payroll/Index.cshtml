@@ -6,6 +6,7 @@
 }
 
 <h2>Payroll</h2>
+<div class="js-message alert alert-info hidden">Generating Payroll. Please wait</div>
 @using (Html.BeginForm("Index", "Payroll", FormMethod.Get))
 {
     <div class="row b2">
@@ -16,8 +17,6 @@
         <button type="submit" class="btn btn-primary">Generate Payroll</button>
     </div>
 }
-
-
 
 @if (Model.Payrolls.Any())
 {
@@ -46,7 +45,7 @@
                     @item.TotalNet.FormatAmount()
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Details", "Details", new {  id=item.PayrollId })
                 </td>
             </tr>
         }
@@ -54,7 +53,9 @@
 
     @Html.Partial("Pagination", Model.Pagination)
 }
+
 @section scripts
 {
+    <script type="text/javascript" src="~/Scripts/Payroll/payroll.js"></script>
     <script type="text/javascript" src="/Scripts/pagination.js"></script>
 }

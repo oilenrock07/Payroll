@@ -29,6 +29,8 @@
     }
 
     function init() {
+        if ($('#WorkScheduleId').val() == '0')
+            $('#WorkScheduleId').val('');
 
         $('form').on('submit', handleFormSubmit);
         $('.js-workScheduleOption').on('click', handleWorkScheduleOptionClick);

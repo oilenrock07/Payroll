@@ -196,7 +196,7 @@ namespace Payroll.Controllers
             }
 
             positions.Insert(0, new SelectListItem { Text = "Select Position", Value = "0" });
-            paymentFrequencies.Insert(0, new SelectListItem { Text = "Select Payment Frequency", Value = "0" });
+            paymentFrequencies.Insert(0, new SelectListItem { Text = "Select Salary Frequency", Value = "0" });
 
 
             //For employee department association
