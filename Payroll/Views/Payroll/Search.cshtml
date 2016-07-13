@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "Payroll Search";
+    var employeeData = Model.EmployeeId > 0 ? new ViewDataDictionary { { "Name", Model.EmployeeName } } : null;
 }
 
 <div class="row">
@@ -20,7 +21,7 @@
 
                 @Html.Label("Employee", new { @for = "EmployeeId", @class = "control-label col-md-2" })
                 <div class="col-md-4">
-                    @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId)
+                    @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId, employeeData)
                     @Html.ValidationMessageFor(model => model.EmployeeId)
                 </div>
                 <div class="t1 pull-right">
@@ -58,7 +59,7 @@
                         @item.TotalNet.FormatAmount()
                     </td>
                     <td>
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                        @Html.ActionLink("Details", "Details", new { id = item.PayrollId })
                     </td>
                 </tr>
             }

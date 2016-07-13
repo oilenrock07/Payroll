@@ -1,0 +1,43 @@
+﻿@using System.ComponentModel;
+@using Payroll.Common.Helpers;
+@using Payroll.Common.Extension
+@model Payroll.Models.Payroll.PayrollDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Employee Payroll Details</h2>
+
+<div>
+    <h4>@Model.Payroll.Employee.FullName</h4>
+    <h4>@Model.Payroll.PayrollDate.ToShortDateString()</h4>
+    <hr />
+
+    <table class="table table-responsive table-striped">
+        <tr>
+            <th>Rate</th>
+            <th>Total Hours</th>
+            <th>Rate Per Hour</th>
+            <th>Total Amount</th>
+        </tr>
+
+        @foreach (var item in Model.PayrollItems)
+        {
+            <tr>
+                <td>@(item.RateType.GetAttributeOfType<DescriptionAttribute>().Description)</td>
+                <td>@item.TotalHours</td>
+                <td>@item.RatePerHour.FormatAmount()</td>
+                <td>@item.TotalAmount.FormatAmount()</td>
+            </tr>
+        }
+
+        <tr style="border-top:2px solid">
+            <td colspan="3">Total:</td>
+            <td>@Model.TotalPayrollItems.FormatAmount()</td>
+        </tr>
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

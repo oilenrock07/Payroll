@@ -4,6 +4,7 @@ namespace Payroll.Repository.Models.Payroll
 {
     public class PayrollDao
     {
+        public int PayrollId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }

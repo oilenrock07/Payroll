@@ -22,21 +22,20 @@ namespace Payroll.Controllers
         private readonly IEmployeeHoursService _employeeHoursService;
         private readonly IAttendanceService _attendanceService;
         private readonly IEmployeePayrollItemService _employeePayrollItemservice;
-        //private readonly IEmployeeDailyPayrollService _employeeDailyPayrollService;
         private readonly ISettingService _settingsService;
         private readonly IAdjustmentRepository _adjustmentRepository;
         private readonly IEmployeeAdjustmentRepository _employeeAdjustmentRepository;
         private readonly IEmployeeAdjustmentService _employeeAdjustmentService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepository _employeeRepository;
-
+        private readonly IEmployeePayrollDeductionService _employeePayrollDeductionService;
 
         public PayrollController(IWebService webService, IUnitOfWork unitOfWork, 
             IEmployeePayrollService employeePayrollService, 
             ITotalEmployeeHoursService totalEmployeeHoursService, IEmployeeHoursService employeeHoursService,
             IAttendanceService attendanceService, IEmployeePayrollItemService employeePayrollItemService,
             IAdjustmentRepository adjustmentRepository, IEmployeeAdjustmentRepository employeeAdjustmentRepository,
-            IEmployeeAdjustmentService employeeAdjustmentService, IEmployeeRepository employeeRepository)
+            IEmployeeAdjustmentService employeeAdjustmentService, IEmployeeRepository employeeRepository, IEmployeePayrollDeductionService employeePayrollDeductionService)
         { 
             _webService = webService;
             _unitOfWork = unitOfWork;
@@ -44,12 +43,12 @@ namespace Payroll.Controllers
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _employeeHoursService = employeeHoursService;
             _attendanceService = attendanceService;
-            //_employeeDailyPayrollService = employeeDailyPayrollService;
             _employeePayrollItemservice = employeePayrollItemService;
             _adjustmentRepository = adjustmentRepository;
             _employeeAdjustmentRepository = employeeAdjustmentRepository;
             _employeeAdjustmentService = employeeAdjustmentService;
             _employeeRepository = employeeRepository;
+            _employeePayrollDeductionService = employeePayrollDeductionService;
         }
 
         // GET: Payroll
@@ -117,22 +116,25 @@ namespace Payroll.Controllers
                 }),
                 EmployeeId = employeeId
             };
-
+            
             if (payrollDate != "")
             {
                 var dates = payrollDate.Split(new string[] { " to " }, StringSplitOptions.None);
                 var employeePayrolls = _employeePayrollService.GetByDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));
 
                 if (employeeId > 0)
+                {
                     employeePayrolls = employeePayrolls.Where(x => x.EmployeeId == employeeId).ToList();
-
+                    viewModel.EmployeeName = employeePayrolls.Any() ? employeePayrolls.First().Employee.FullName : "";
+                }
+                    
                 var payrolls = MapEmployeePayrollToViewModel(employeePayrolls);
                 var pagination = _webService.GetPaginationModel(Request, payrolls.Count());
                 viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination); 
                 viewModel.PayrollDate = payrollDate;
                 viewModel.Pagination = pagination;
             }
-
+ 
             return View(viewModel);
         }
 
@@ -140,7 +142,9 @@ namespace Payroll.Controllers
         {
             return payrolls.MapCollection<EmployeePayroll, PayrollListViewModel>((s, d) =>
             {
-                
+                d.FirstName = s.Employee.FirstName;
+                d.LastName = s.Employee.LastName;
+                d.MiddleName = s.Employee.MiddleName;
             });
         }
 
@@ -291,7 +295,12 @@ namespace Payroll.Controllers
 
         public ActionResult Details(int id)
         {
-            return View();
+            var viewModel = new PayrollDetailsViewModel();
+            viewModel.Payroll = _employeePayrollService.GetById(id);
+            viewModel.Deductions = _employeePayrollDeductionService.GetByPayroll(id);
+            viewModel.PayrollItems = _employeePayrollItemservice.GetByPayrollId(id);
+
+            return View(viewModel);
         }
     }
 }

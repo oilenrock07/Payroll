@@ -378,5 +378,10 @@ namespace Payroll.Service.Implementations
             dateTo = dateTo.AddDays(1);
             return _employeePayrollItemRepository.GetByDateRange(dateFrom, dateTo);
         }
+
+        public IEnumerable<EmployeePayrollItem> GetByPayrollId(int payrollId)
+        {
+            return _employeePayrollItemRepository.Find(x => x.PayrollId == payrollId && x.IsActive);
+        }
     }
 }

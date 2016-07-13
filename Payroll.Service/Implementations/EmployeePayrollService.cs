@@ -460,7 +460,7 @@ namespace Payroll.Service.Implementations
             //    };
             //}
 
-            var lastPayrollDate = nextPayrollDate.Value; //nextPayrollDate.Value.AddDays(-1);
+            var lastPayrollDate = nextPayrollDate.Value.AddDays(1); //nextPayrollDate.Value.AddDays(-1);
             var lastPayroll = lastPayrollDate.AddMonths(-months);
            
             while (lastPayrollDate >= lastPayroll)
@@ -550,6 +550,11 @@ namespace Payroll.Service.Implementations
         public IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate)
         {
             return _employeePayrollRepository.GetByPayrollDateRange(payrollStartDate, payrollEndDate);
+        }
+
+        public virtual EmployeePayroll GetById(int id)
+        {
+            return _employeePayrollRepository.GetById(id);
         }
     }
 }

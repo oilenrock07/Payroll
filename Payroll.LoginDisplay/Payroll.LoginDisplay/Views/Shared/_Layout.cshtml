@@ -49,10 +49,12 @@
         //client events
         function registerClientEvents(payrollHub) {
             payrollHub.client.onConnected = function () {
+                logMessage('Connected');
                 displayPanel('timer');
             };
 
             payrollHub.client.broadcastMessage = function (id, attCode, datetime) {
+                logMessage('broadcasting:' + id + ' ' + attCode + ' ' + datetime);
                 $.ajax({
                     url: '/Payroll/DisplayTimeInOut/' + id + '/' + attCode + '/' + datetime,
                     method: 'GET',
@@ -72,6 +74,12 @@
             }
         }
 
+        function logMessage(message) {
+            var datetime = getDateTime();
+            var strDateTime = datetime.date + ' ' + datetime.time;
+            console.log('******' + message + ': ' + strDateTime + '******');
+        }
+
         $(function () {
             var payrollHub = $.connection.payrollHub;
             registerClientEvents(payrollHub);
@@ -83,7 +91,8 @@
                 $('#Register').click(function () { handleRegisterClick(payrollHub); });
             });
 
-            $.connection.hub.disconnected(function() {
+            $.connection.hub.disconnected(function () {
+                logMessage('Disconnected');
                 showDisconnectedMessage(false);
                 $.connection.hub.start().done(function () {
                     showDisconnectedMessage(true);
@@ -92,17 +101,14 @@
                 
             });
         });
-    </script>
 
 
-    <script type="text/javascript">
         function formatTime(i) {
             if (i < 10) { i = "0" + i; };  // add zero in front of numbers < 10
             return i;
         }
 
-        function startTimer() {
-
+        function getDateTime() {
             var today = new Date();
             var locale = "en-us";
 
@@ -119,8 +125,18 @@
             m = formatTime(m);
             s = formatTime(s);
 
-            $('.time').html(h + ':' + m + ':' + s + strTime);
-            $('.date').html(month + ' ' + day + ' ' + year);
+            return {
+                date: month + ' ' + day + ' ' + year,
+                time: h + ':' + m + ':' + s + strTime
+            }
+        }
+
+        function startTimer() {
+
+            var datetime = getDateTime();
+
+            $('.time').html(datetime.time);
+            $('.date').html(datetime.date);
 
             setTimeout(startTimer, 1000);
         }

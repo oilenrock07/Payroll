@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel;
+
 namespace Payroll.Entities.Enums
 {
     public enum AttendanceType
@@ -17,20 +19,49 @@ namespace Payroll.Entities.Enums
 
     public enum RateType
     {
+        [Description("Regular")]
         Regular = 1,
+
+        [Description("Over Time")]
         OverTime = 2,
+
+        [Description("Night Differential")]
         NightDifferential = 3,
-        RestDay = 4, 
+
+        [Description("Rest Day")]
+        RestDay = 4,
+
+        [Description("Rest Day OT")]
         RestDayOT = 5,
+
+        [Description("Regular Holiday Not Worked")]
         RegularHolidayNotWorked = 6,
+
+        [Description("Special Holiday Not Worked")]
         SpecialHolidayNotWorked = 7,
+
+        [Description("Regular Holiday")]
         RegularHoliday = 8,
+
+        [Description("Regular Holiday OT")]
         RegularHolidayOT = 9,
+
+        [Description("Special Holiday")]
         SpecialHoliday = 10,
+
+        [Description("Special Holiday OT")]
         SpecialHolidayOT = 11,
+
+        [Description("Regular Holiday Rest Day")]
         RegularHolidayRestDay = 12,
+
+        [Description("Regular Holiday Rest Day OT")]
         RegularHolidayRestDayOT = 13,
+
+        [Description("Special Holiday Rest Day")]
         SpecialHolidayRestDay = 14,
+
+        [Description("Special HolidayRest Day OT")]
         SpecialHolidayRestDayOT = 15
     }
 
