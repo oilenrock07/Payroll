@@ -25,6 +25,7 @@ namespace Payroll.Service.Implementations
         private IEmployeeService _employeeService;
         private ITotalEmployeeHoursService _totalEmployeeHoursService;
         private IEmployeePayrollItemService _employeePayrollItemService;
+        private IEmployeeAdjustmentService _employeeAdjustmentService;
 
         private FrequencyType _frequency;
 
@@ -39,7 +40,7 @@ namespace Payroll.Service.Implementations
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
             IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService, IEmployeeService employeeService, ITotalEmployeeHoursService totalEmployeeHoursService,
-            IEmployeePayrollItemService employeePayrollItemService)
+            IEmployeePayrollItemService employeePayrollItemService, IEmployeeAdjustmentService employeeAdjustmentService)
         {
             _unitOfWork = unitOfWork;
             _employeePayrollRepository = employeeePayrollRepository;
@@ -50,6 +51,7 @@ namespace Payroll.Service.Implementations
             _employeeService = employeeService;
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _employeePayrollItemService = employeePayrollItemService;
+            _employeeAdjustmentService = employeeAdjustmentService;
 
             _frequency = (FrequencyType)Convert
                 .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
@@ -505,6 +507,8 @@ namespace Payroll.Service.Implementations
                 payroll.TaxableIncome = payroll.TotalGross - totalDeductions;
                 payroll.TotalDeduction += totalDeductions;
 
+                //Compute Adjustments
+                GenerateAdjustments(payroll);
                 //Compute Tax
                 GenerateTax(payroll);
             }
@@ -517,6 +521,37 @@ namespace Payroll.Service.Implementations
             {
                 //Print error
             }
+        }
+
+        public void GenerateAdjustments(EmployeePayroll payroll)
+        {
+            //Adjustments computation
+            //Get all employee adjustments
+            var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(payroll.EmployeeId, payroll.CutOffStartDate, payroll.CutOffEndDate);
+
+            decimal positiveAdjustments = 0;
+            decimal negativeAdjustments = 0;
+            foreach (EmployeeAdjustment adjustment in adjustments)
+            {
+                if (adjustment.Amount >= 0)
+                {
+                    positiveAdjustments += adjustment.Amount;
+                }
+                else
+                {
+                    negativeAdjustments += adjustment.Amount;
+                }
+
+                _employeeAdjustmentService.Update(adjustment);
+                adjustment.PayrollId = payroll.PayrollId;
+            }
+
+            //Update payroll for total deductions and total grosss
+            payroll.TotalDeduction += Math.Abs(negativeAdjustments);
+            payroll.TotalAdjustment = positiveAdjustments - negativeAdjustments;
+            payroll.TaxableIncome += payroll.TotalAdjustment;
+            payroll.TotalGross += positiveAdjustments;
+            payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
         }
 
         public void GenerateTax(EmployeePayroll payroll)

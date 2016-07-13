@@ -24,13 +24,13 @@ namespace Payroll.Repository.Repositories
         {
             return Find(a => a.IsActive && a.IsRecorded == isRecorded
                 && a.ClockInOut >= fromDate && a.ClockInOut < toDate)
-                    .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ToList();
+                    .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ThenBy(a => a.Type).ToList();
         }
 
         public IList<AttendanceLog> GetAttendanceLogs(bool isRecorded)
         {
             return Find(a => a.IsActive && a.IsRecorded == isRecorded)
-                    .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ToList();
+                    .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ThenBy(a => a.Type).ToList();
         }
 
         public IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate)
