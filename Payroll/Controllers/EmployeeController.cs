@@ -151,6 +151,7 @@ namespace Payroll.Controllers
                 viewModel.ImagePath = employeeInfo.Employee.Picture != null ? Url.Content(employeeInfo.Employee.Picture) : "/Images/noimage.jpg";
                 viewModel.PositionId = Convert.ToInt32(employeeInfo.PositionId);
                 viewModel.Gender = employeeInfo.Employee.Gender;
+                viewModel.PaymentFrequency = (int)employeeInfo.SalaryFrequency;
                 viewModel.EmploymentStatus = employeeInfo.EmploymentStatus;
             }
 

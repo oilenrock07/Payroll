@@ -10,6 +10,8 @@ using Payroll.Service.Interfaces;
 using System.Linq;
 using Payroll.Entities.Payroll;
 using Payroll.Common.Extension;
+using Payroll.Helper;
+using System.Data;
 
 namespace Payroll.Controllers
 {
@@ -66,9 +68,11 @@ namespace Payroll.Controllers
             if (!String.IsNullOrEmpty(date))
             {
                 var dates = date.Split(new string[] { " to " }, StringSplitOptions.None);
-                var payrollStartDate = Convert.ToDateTime(dates[0]);
-                var payrollEndDate = Convert.ToDateTime(dates[1]);
+                var payrollStartDate = dates[0].ToDateTime();
+                var payrollEndDate = dates[1].ToDateTime();
 
+                ViewBag.StartDate = payrollStartDate;
+                ViewBag.EndDate = payrollEndDate;
                 GeneratePayroll(payrollStartDate, payrollEndDate);
 
                 //populate the viewmodel here from service data
@@ -120,7 +124,10 @@ namespace Payroll.Controllers
             if (payrollDate != "")
             {
                 var dates = payrollDate.Split(new string[] { " to " }, StringSplitOptions.None);
-                var employeePayrolls = _employeePayrollService.GetByDateRange(Convert.ToDateTime(dates[0]), Convert.ToDateTime(dates[1]));
+                var startDate = Convert.ToDateTime(dates[0]);
+                var endDate = Convert.ToDateTime(dates[1]);
+
+                var employeePayrolls = _employeePayrollService.GetByDateRange(startDate, endDate);
 
                 if (employeeId > 0)
                 {
@@ -133,6 +140,9 @@ namespace Payroll.Controllers
                 viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination); 
                 viewModel.PayrollDate = payrollDate;
                 viewModel.Pagination = pagination;
+
+                ViewBag.StartDate = startDate;
+                ViewBag.EndDate = endDate;
             }
  
             return View(viewModel);
@@ -301,6 +311,13 @@ namespace Payroll.Controllers
             viewModel.PayrollItems = _employeePayrollItemservice.GetByPayrollId(id);
 
             return View(viewModel);
+        }
+
+        public void ExportToExcel(string startDate, string endDate)
+        {
+            var data = _employeePayrollItemservice.GetPayrollDetailsForExport(startDate.ToDateTime(), endDate.ToDateTime());
+            var fileName = String.Format("Transpose{0}-{1}", Convert.ToDateTime(startDate).Serialize(), Convert.ToDateTime(endDate).Serialize());
+            Export.ToExcel(Response, data, fileName);
         }
     }
 }

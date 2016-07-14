@@ -99,5 +99,10 @@ namespace Payroll.Common.Extension
 
             return firstDayOfMonth.Next(dayOfWeek).AddDays((nthWeek - 1) * 7);
         }
+
+        public static DateTime ToDateTime(this string date)
+        {
+            return Convert.ToDateTime(date);
+        }
     }
 }

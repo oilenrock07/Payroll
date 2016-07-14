@@ -6,7 +6,9 @@
 }
 
 <h2>Payroll</h2>
-<div class="js-message alert alert-info hidden">Generating Payroll. Please wait</div>
+<div class="js-message alert alert-info hidden">
+    <img src="~/Images/ajax-loader.gif" /> &nbsp;Generating Payroll. Please wait
+</div>
 @using (Html.BeginForm("Index", "Payroll", FormMethod.Get))
 {
     <div class="row b2">
@@ -14,7 +16,7 @@
         <div class="col-md-4">
             @Html.DropDownListFor(model => model.Date, Model.PayrollDates, new { @class = "form-control" })
         </div>
-        <button type="submit" class="btn btn-primary">Generate Payroll</button>
+        <button type="submit" class="btn btn-primary js-generate">Generate Payroll</button>
     </div>
 }
 
@@ -52,6 +54,7 @@
     </table>
 
     @Html.Partial("Pagination", Model.Pagination)
+    @Html.ActionLink("Export to Excel", "ExportToExcel", new { startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }, new { @class = "btn btn-primary" })
 }
 
 @section scripts

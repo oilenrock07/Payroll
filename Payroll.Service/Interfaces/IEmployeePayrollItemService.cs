@@ -3,6 +3,7 @@ using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Payroll.Service.Interfaces
 {
@@ -15,5 +16,7 @@ namespace Payroll.Service.Interfaces
         void GenerateEmployeePayrollItemByDateRange(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate);
 
         IEnumerable<EmployeePayrollItem> GetByPayrollId(int payrollId);
+
+        DataTable GetPayrollDetailsForExport(DateTime startDate, DateTime endDate);
     }
 }

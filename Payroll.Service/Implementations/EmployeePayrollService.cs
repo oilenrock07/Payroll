@@ -444,21 +444,11 @@ namespace Payroll.Service.Implementations
                 var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
                 nextPayrollDate = DateTime.Now.StartOfWeek((DayOfWeek) weekStart);
             }
-            //else
-            //{
-            //    //for some reason it adds 1 day in GetNextPayrollStartDate
-            //    nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
-            //}
-                
-            //if (nextPayrollDate == null)
-            //{
-            //    var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
-
-            //    return new List<string>()
-            //    {
-            //        String.Format("{0} to {1}", DateTime.Now.ToString("MMMM dd yyyy"), DateTime.Now.StartOfWeek((DayOfWeek) weekStart).ToString("MMMM dd yyyy"))
-            //    };
-            //}
+            else
+            {
+                //for some reason it adds 1 day in GetNextPayrollStartDate
+                nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
+            }
 
             var lastPayrollDate = nextPayrollDate.Value.AddDays(1); //nextPayrollDate.Value.AddDays(-1);
             var lastPayroll = lastPayrollDate.AddMonths(-months);
