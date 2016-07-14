@@ -45,5 +45,10 @@ namespace Payroll.Service.Implementations
 
             return employeeAdjustments;
         }
+
+        public void Update(EmployeeAdjustment employeeAdjustment)
+        {
+            _employeeAdjustmentRepository.Update(employeeAdjustment);
+        }
     }
 }
