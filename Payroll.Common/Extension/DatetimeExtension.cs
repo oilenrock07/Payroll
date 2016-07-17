@@ -18,11 +18,24 @@ namespace Payroll.Common.Extension
             int year = Convert.ToInt16(date.Substring(0, 4));
             int month = Convert.ToInt16(date.Substring(4, 2));
             int day = Convert.ToInt16(date.Substring(6, 2));
-            int hour = Convert.ToInt16(date.Substring(8, 2));
-            int minute = Convert.ToInt16(date.Substring(10, 2));
-            int second = Convert.ToInt16(date.Substring(12, 2));
 
-            return new DateTime(year, month, day, hour, minute, second);
+            if (date.Length > 8)
+            {
+                int hour = Convert.ToInt16(date.Substring(8, 2));
+                int minute = Convert.ToInt16(date.Substring(10, 2));
+                int second = Convert.ToInt16(date.Substring(12, 2));
+
+                return new DateTime(year, month, day, hour, minute, second);
+            }
+
+            return new DateTime(year, month, day);
+        }
+
+        //yearmonthday
+        public static string SerializeShort(this DateTime date)
+        {
+            string serializedDate = String.Format("{0}{1}{2}", date.Year, date.Month.ToString("00"), date.Day.ToString("00"));
+            return serializedDate;
         }
 
         public static DateTime TruncateTime(this DateTime date)

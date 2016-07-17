@@ -13,6 +13,8 @@ namespace Payroll.Service.Interfaces
 
         IList<EmployeePayrollItem> GetByDateRange(DateTime dateFrom, DateTime dateTo);
 
+        IEnumerable<EmployeePayrollItem> GetByCutoffDates(DateTime dateFrom, DateTime dateTo);
+
         void GenerateEmployeePayrollItemByDateRange(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate);
 
         IEnumerable<EmployeePayrollItem> GetByPayrollId(int payrollId);

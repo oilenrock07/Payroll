@@ -10,7 +10,7 @@ namespace Payroll.Models.Payroll
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 
-        public string PayrollDate { get; set; }
+        public string Date { get; set; }
         public IEnumerable<SelectListItem> PayrollDates { get; set; }
         public IEnumerable<PayrollListViewModel> Payrolls { get; set; }
 

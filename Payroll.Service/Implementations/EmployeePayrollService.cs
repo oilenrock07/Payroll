@@ -6,6 +6,7 @@ using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Service.Interfaces;
+using Payroll.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -436,9 +437,9 @@ namespace Payroll.Service.Implementations
             return GetNextPayrollStartDate(null);
         }
 
-        public virtual IEnumerable<string> GetPayrollDates(int months)
+        public virtual IEnumerable<PayrollDate> GetPayrollDates(int months)
         {
-            var dates = new List<string>();
+            var dates = new List<PayrollDate>();
             var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
 
             if (nextPayrollDate == null)
@@ -449,7 +450,7 @@ namespace Payroll.Service.Implementations
             else
             {
                 //for some reason it adds 1 day in GetNextPayrollStartDate
-                nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
+                //nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
             }
 
             var lastPayrollDate = nextPayrollDate.Value; //nextPayrollDate.Value.AddDays(-1);
@@ -468,7 +469,12 @@ namespace Payroll.Service.Implementations
                 else //fallback to monthly
                     tempDate = tempDate.AddMonths(-1);
 
-                var date = String.Format("{0} to {1}", tempDate.ToString("MMMM dd yyyy"), lastPayrollDate.AddDays(-1).ToString("MMMM dd yyyy"));
+                var date = new PayrollDate
+                {
+                    FormattedDate = String.Format("{0} to {1}", tempDate.ToString("MMMM dd yyyy"), lastPayrollDate.AddDays(-1).ToString("MMMM dd yyyy")),
+                    SerializedDate = String.Format("{0}-{1}", tempDate.SerializeShort(), lastPayrollDate.AddDays(-1).SerializeShort())
+                };
+
                 lastPayrollDate = tempDate;
                 dates.Add(date);
             }

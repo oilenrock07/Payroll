@@ -13,7 +13,7 @@ namespace Payroll
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.MapMvcAttributeRoutes();
             //routes.MapRoute(
             //    name: "AttendanceRoute",
             //    url: "{controller}/{action}/{code}",
@@ -27,11 +27,19 @@ namespace Payroll
             //    defaults: new { controller = "Home", action = "Index" }
             //);
 
+            //routes.MapRoute(
+            //name: "PayrollSearchRoute",
+            //url: "PayrollController/{action}/{date}/{employeeId}",
+            //defaults: new { controller = "Payroll", action = "Search", date = "", employeeId = "" }
+            //);
+
+
             routes.MapRoute(
                 name: "PayrollRoute",
                 url: "PayrollController/{action}/{date}",
                 defaults: new { controller = "Payroll", action = "Index", date = UrlParameter.Optional }
                 );
+
 
             routes.MapRoute(
                 name: "EmployeeLeaveRoute",

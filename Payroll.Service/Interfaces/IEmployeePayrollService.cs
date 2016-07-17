@@ -1,6 +1,7 @@
 ﻿using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
+using Payroll.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Payroll.Service.Interfaces
          */
         IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate);
 
-        IEnumerable<string> GetPayrollDates(int months);
+        IEnumerable<PayrollDate> GetPayrollDates(int months);
 
         EmployeePayroll GetById(int id);
     }

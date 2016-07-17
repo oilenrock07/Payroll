@@ -34,6 +34,7 @@ namespace Payroll.Test.Service
         private IEmployeeInfoRepository _employeeInfoRepository;
         private IEmployeeHoursRepository _employeeHoursRepository;
         private ISettingRepository _settingRepository;
+        private IEmployeePayrollRepository _employeePayrollRepository;
 
         private IEmployeePayrollItemService _employeePayrollItemService;
 
@@ -69,9 +70,10 @@ namespace Payroll.Test.Service
             _settingService = new SettingService(_settingRepository);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
             _employeeSalaryService = new EmployeeSalaryService();
+            _employeePayrollRepository = new EmployeePayrollRepository(databaseFactory);
 
             _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, 
-                    _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService);
+                    _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService, _employeePayrollRepository);
         }
 
         public void DeleteData()

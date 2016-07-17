@@ -60,16 +60,16 @@ namespace Payroll.Controllers
             var payrolls = new List<PayrollDao>();
             var payrollDates = _employeePayrollService.GetPayrollDates(3).Select(x => new SelectListItem
             {
-                Text = x,
-                Value = x
+                Text = x.FormattedDate,
+                Value = x.SerializedDate
             });
             viewModel.PayrollDates = payrollDates;
 
             if (!String.IsNullOrEmpty(date))
             {
-                var dates = date.Split(new string[] { " to " }, StringSplitOptions.None);
-                var payrollStartDate = dates[0].ToDateTime();
-                var payrollEndDate = dates[1].ToDateTime();
+                var dates = date.Split('-');
+                var payrollStartDate = dates[0].DeserializeDate();
+                var payrollEndDate = dates[1].DeserializeDate();
 
                 ViewBag.StartDate = payrollStartDate;
                 ViewBag.EndDate = payrollEndDate;
@@ -106,8 +106,7 @@ namespace Payroll.Controllers
             return View(viewModel);
         }
 
-
-        public ActionResult Search(string payrollDate = "", int employeeId = 0)
+        public ActionResult Search(string date = "", int employeeId = 0)
         {
             //get the last 3 months cutoffs
             var payrollDates = _employeePayrollService.GetPayrollDates(3);
@@ -115,19 +114,19 @@ namespace Payroll.Controllers
             {
                 PayrollDates = payrollDates.Select(x => new SelectListItem
                 {
-                    Text = x,
-                    Value = x
+                    Text = x.FormattedDate,
+                    Value = x.SerializedDate
                 }),
                 EmployeeId = employeeId
             };
             
-            if (payrollDate != "")
+            if (date != "")
             {
-                var dates = payrollDate.Split(new string[] { " to " }, StringSplitOptions.None);
-                var startDate = Convert.ToDateTime(dates[0]);
-                var endDate = Convert.ToDateTime(dates[1]);
+                var dates = date.Split('-');
+                var startDate = dates[0].DeserializeDate();
+                var endDate = dates[1].DeserializeDate();
 
-                var employeePayrolls = _employeePayrollService.GetByDateRange(startDate, endDate);
+                var employeePayrolls = _employeePayrollService.GetByPayrollDateRange(startDate, endDate);
 
                 if (employeeId > 0)
                 {
@@ -138,7 +137,7 @@ namespace Payroll.Controllers
                 var payrolls = MapEmployeePayrollToViewModel(employeePayrolls);
                 var pagination = _webService.GetPaginationModel(Request, payrolls.Count());
                 viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination); 
-                viewModel.PayrollDate = payrollDate;
+                viewModel.Date = date;
                 viewModel.Pagination = pagination;
 
                 ViewBag.StartDate = startDate;
@@ -196,10 +195,10 @@ namespace Payroll.Controllers
                 Adjustments = payrollDates
                     .Select(x => new SelectListItem
                     {
-                        Text = x,
-                        Value = x
+                        Text = x.FormattedDate,
+                        Value = x.SerializedDate
                     }),
-                EmployeeAdjustments = GetEmployeeAdjustments(payrollDates.First())
+                EmployeeAdjustments = GetEmployeeAdjustments(payrollDates.First().SerializedDate)
         };
 
             return View(viewModel);
@@ -216,9 +215,9 @@ namespace Payroll.Controllers
 
         protected IEnumerable<EmployeeAdjustmentDao> GetEmployeeAdjustments(string date)
         {
-            var dates = date.Split(new string[] { " to " }, StringSplitOptions.None);
-            var payrollStartDate = Convert.ToDateTime(dates[0]);
-            var payrollEndDate = Convert.ToDateTime(dates[1]);
+            var dates = date.Split('-');
+            var payrollStartDate = dates[0].DeserializeDate();
+            var payrollEndDate = dates[1].DeserializeDate();
 
             var adjustments = _employeeAdjustmentService.GetEmployeeAdjustmentByDate(payrollStartDate, payrollEndDate);
             return adjustments;

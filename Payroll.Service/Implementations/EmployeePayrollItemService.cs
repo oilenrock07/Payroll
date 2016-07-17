@@ -26,6 +26,7 @@ namespace Payroll.Service.Implementations
         private ISettingService _settingService;
         private IEmployeeInfoService _employeeInfoService;
         private IEmployeeSalaryService _employeeSalaryService;
+        private readonly IEmployeePayrollRepository _employeePayrollRepository;
 
         private IEmployeePayrollItemRepository _employeePayrollItemRepository;
 
@@ -41,7 +42,7 @@ namespace Payroll.Service.Implementations
 
         public EmployeePayrollItemService(IUnitOfWork unitOfWork, IEmployeePayrollItemRepository employeePayrollItemRepository, ITotalEmployeeHoursService totalEmployeeHoursService,
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService,
-            IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService) 
+            IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService, IEmployeePayrollRepository employeePayrollRepository) 
             : base(employeePayrollItemRepository)
         {
             _employeePayrollItemRepository = employeePayrollItemRepository;
@@ -52,6 +53,7 @@ namespace Payroll.Service.Implementations
             _settingService = settingService;
             _employeeInfoService = employeeInfoService;
             _employeeSalaryService = employeeSalaryService;
+            _employeePayrollRepository = employeePayrollRepository;
         }
 
         /*Note that this method is applicable to employees with hourly rate*/
@@ -380,6 +382,17 @@ namespace Payroll.Service.Implementations
             return _employeePayrollItemRepository.GetByDateRange(dateFrom, dateTo);
         }
 
+        public virtual IEnumerable<EmployeePayrollItem> GetByCutoffDates(DateTime dateFrom, DateTime dateTo)
+        {
+            var payroll = _employeePayrollRepository.Find(x => x.IsActive && x.CutOffStartDate >= dateFrom && x.CutOffEndDate <= dateTo);
+            var payrollItems = from payrollItem in _employeePayrollItemRepository.GetAllActive()
+                               join pay in payroll on payrollItem.PayrollId equals pay.PayrollId
+                               select payrollItem;
+
+
+            return payrollItems;
+        }
+
         public IEnumerable<EmployeePayrollItem> GetByPayrollId(int payrollId)
         {
             return _employeePayrollItemRepository.Find(x => x.PayrollId == payrollId && x.IsActive);
@@ -388,7 +401,7 @@ namespace Payroll.Service.Implementations
         public virtual DataTable GetPayrollDetailsForExport(DateTime startDate, DateTime endDate)
         {
 
-            var payrollItems = GetByDateRange(startDate, endDate).ToList();
+            var payrollItems = GetByCutoffDates(startDate, endDate).ToList();
 
             var dt = new DataTable();
             dt.Columns.Add("Name");

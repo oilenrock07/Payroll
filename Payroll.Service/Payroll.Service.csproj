@@ -99,6 +99,7 @@
     <Compile Include="Interfaces\IWebService.cs" />
     <Compile Include="Interfaces\Model\IPaginationModel.cs" />
     <Compile Include="Models\PaginationModel.cs" />
+    <Compile Include="Models\PayrollDate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
