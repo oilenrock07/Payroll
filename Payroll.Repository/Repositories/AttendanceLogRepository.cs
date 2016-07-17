@@ -30,7 +30,7 @@ namespace Payroll.Repository.Repositories
         public IList<AttendanceLog> GetAttendanceLogs(bool isRecorded)
         {
             return Find(a => a.IsActive && a.IsRecorded == isRecorded)
-                    .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ThenBy(a => a.Type).ToList();
+                    .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ThenBy(a => a.AttendanceLogId).ToList();
         }
 
         public IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate)
