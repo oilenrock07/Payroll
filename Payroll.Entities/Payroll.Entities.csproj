@@ -78,6 +78,7 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
+    <Compile Include="LogInDisplayClient.cs" />
     <Compile Include="Machine.cs" />
     <Compile Include="Migrations\201605071005272_NewMigration.cs" />
     <Compile Include="Migrations\201605071005272_NewMigration.Designer.cs">
@@ -150,6 +151,14 @@
     <Compile Include="Migrations\201607100425517_payroll-items-changes.cs" />
     <Compile Include="Migrations\201607100425517_payroll-items-changes.Designer.cs">
       <DependentUpon>201607100425517_payroll-items-changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607141440175_jonaschanges.cs" />
+    <Compile Include="Migrations\201607141440175_jonaschanges.Designer.cs">
+      <DependentUpon>201607141440175_jonaschanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607170609373_logindisplayclient.cs" />
+    <Compile Include="Migrations\201607170609373_logindisplayclient.Designer.cs">
+      <DependentUpon>201607170609373_logindisplayclient.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -252,6 +261,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607100425517_payroll-items-changes.resx">
       <DependentUpon>201607100425517_payroll-items-changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607141440175_jonaschanges.resx">
+      <DependentUpon>201607141440175_jonaschanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607170609373_logindisplayclient.resx">
+      <DependentUpon>201607170609373_logindisplayclient.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

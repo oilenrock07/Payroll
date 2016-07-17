@@ -24,5 +24,7 @@ namespace Payroll.Infrastructure.Interfaces
         void ExecuteSqlCommand(string command, params object[] parameters);
 
         void DeleteAll(IList<T> entityList);
+
+        void PermanentDelete(T entity);
     }
 }

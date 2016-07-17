@@ -452,7 +452,7 @@ namespace Payroll.Service.Implementations
                 nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
             }
 
-            var lastPayrollDate = nextPayrollDate.Value.AddDays(1); //nextPayrollDate.Value.AddDays(-1);
+            var lastPayrollDate = nextPayrollDate.Value; //nextPayrollDate.Value.AddDays(-1);
             var lastPayroll = lastPayrollDate.AddMonths(-months);
            
             while (lastPayrollDate >= lastPayroll)

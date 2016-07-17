@@ -96,6 +96,14 @@ namespace Payroll.Infrastructure.Implementations
                 _context.SaveChanges();
         }
 
+        public virtual void PermanentDelete(T entity)
+        {
+            DbSet.Remove(entity);
+
+            if (!_sharedContext)
+                _context.SaveChanges();
+        }
+
         public virtual void ExecuteSqlCommand(string command, params object[] parameters)
         {
             _context.Database.ExecuteSqlCommand(command, parameters);

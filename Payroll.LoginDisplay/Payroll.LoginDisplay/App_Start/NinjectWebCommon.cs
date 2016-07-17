@@ -84,6 +84,7 @@ namespace Payroll.LoginDisplay.App_Start
             kernel.Bind<IPaymentFrequencyRepository>().To<PaymentFrequencyRepository>().InRequestScope();
             kernel.Bind<IDepartmentRepository>().To<DepartmentRepository>().InRequestScope();
             kernel.Bind<IEmployeeDepartmentRepository>().To<EmployeeDepartmentRepository>().InRequestScope();
+            kernel.Bind<ILoginDisplayClientRepository>().To<LoginDisplayClientRepository>().InRequestScope();
         }        
     }
 }
