@@ -26,6 +26,10 @@ namespace Payroll.Service.Implementations
         private ISettingService _settingService;
         private IEmployeeInfoService _employeeInfoService;
         private IEmployeeSalaryService _employeeSalaryService;
+
+        private readonly IAdjustmentRepository _adjustmentRepository;
+        private readonly IEmployeeAdjustmentRepository _employeeAdjustmentRepository;
+        private readonly IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
         private readonly IEmployeePayrollRepository _employeePayrollRepository;
 
         private IEmployeePayrollItemRepository _employeePayrollItemRepository;
@@ -42,7 +46,8 @@ namespace Payroll.Service.Implementations
 
         public EmployeePayrollItemService(IUnitOfWork unitOfWork, IEmployeePayrollItemRepository employeePayrollItemRepository, ITotalEmployeeHoursService totalEmployeeHoursService,
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService,
-            IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService, IEmployeePayrollRepository employeePayrollRepository) 
+            IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService, IEmployeePayrollRepository employeePayrollRepository, IEmployeePayrollDeductionRepository employeePayrollDeductionRepository,
+            IEmployeeAdjustmentRepository employeeAdjustmentRepository, IAdjustmentRepository adjustmentRepository) 
             : base(employeePayrollItemRepository)
         {
             _employeePayrollItemRepository = employeePayrollItemRepository;
@@ -54,6 +59,9 @@ namespace Payroll.Service.Implementations
             _employeeInfoService = employeeInfoService;
             _employeeSalaryService = employeeSalaryService;
             _employeePayrollRepository = employeePayrollRepository;
+            _employeePayrollDeductionRepository = employeePayrollDeductionRepository;
+            _employeeAdjustmentRepository = employeeAdjustmentRepository;
+            _adjustmentRepository = adjustmentRepository;
         }
 
         /*Note that this method is applicable to employees with hourly rate*/
@@ -402,6 +410,11 @@ namespace Payroll.Service.Implementations
         {
 
             var payrollItems = GetByCutoffDates(startDate, endDate).ToList();
+            var payrollIds = payrollItems.Select(x => Convert.ToInt32(x.PayrollId)).ToList();
+
+            var adjustments = _adjustmentRepository.GetAllActive();
+            var employeeAdjustments = _employeeAdjustmentRepository.GetByPayroll(payrollIds).ToList();
+            var deductions = _employeePayrollDeductionRepository.GetByPayroll(payrollIds).ToList();
 
             var dt = new DataTable();
             dt.Columns.Add("Name");
@@ -579,6 +592,17 @@ namespace Payroll.Service.Implementations
                 specialHolidaysNotWorkedExists = true;
             }
 
+            var hasAdjustments = false;
+            if (adjustments != null && adjustments.Any())
+            {
+                hasAdjustments = true;
+                foreach(var adjustment in adjustments)
+                {
+                    dt.Columns.Add(adjustment.AdjustmentName);
+                }
+            }
+
+            dt.Columns.Add("SSS/PAGIBIG/PHILHEALTH");
             dt.Columns.Add("Total Payroll");
 
             var employeeIds = payrollItems.Select(x => x.EmployeeId);
@@ -737,6 +761,20 @@ namespace Payroll.Service.Implementations
                     row["Special Holidays Not Worked Pay"] = specialHolidaysNotWorked != null ? specialHolidaysNotWorked.TotalAmount : 0;
                 }
 
+                //adjustments
+                if (hasAdjustments)
+                {
+                    foreach(var adjustment in adjustments)
+                    {
+                        var employeeAdjustment = employeeAdjustments.Where(x => x.EmployeeId == id && x.AdjustmentId == adjustment.AdjustmentId);
+                        row[adjustment.AdjustmentName] = employeeAdjustment != null && employeeAdjustment.Any() ? employeeAdjustment.Sum(x => x.Amount) : 0;
+                    }
+                }
+
+
+                //deductions
+                var employeeDeduction = deductions.Where(x => x.EmployeeId == id);
+                row["SSS/PAGIBIG/PHILHEALTH"] = deductions != null && deductions.Any() ? employeeDeduction.Sum(x => x.Amount) : 0;
                 row["Total Payroll"] = employeePayroll.Sum(x => x.TotalAmount);
                 dt.Rows.Add(row);
             }

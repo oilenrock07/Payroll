@@ -22,5 +22,14 @@ namespace Payroll.Repository.Repositories
         {
             return Find(d => d.IsActive && d.EmployeePayrollId == payrollId).ToList();
         }
+
+        public virtual IEnumerable<EmployeePayrollDeduction> GetByPayroll(IEnumerable<int> payrollIds)
+        {
+            var deductions = from deduction in GetAllActive()
+                             join payrollId in payrollIds on deduction.EmployeePayrollId equals payrollId
+                             select deduction;
+
+            return deductions;
+        }
     }
 }
