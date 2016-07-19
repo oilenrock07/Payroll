@@ -13,6 +13,7 @@ using Payroll.Repository.Models;
 using System.Linq;
 using Payroll.Resources;
 using Payroll.Service.Interfaces;
+using Payroll.Entities.Payroll;
 
 namespace Payroll.Controllers
 {
@@ -21,6 +22,7 @@ namespace Payroll.Controllers
     {
         private readonly IAttendanceLogRepository _attendanceLogRepository;
         private readonly IAttendanceRepository _attendanceRepository;
+        private readonly IAttendanceService _attendanceService;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeePayrollRepository _employeePayrollRepository;
@@ -28,7 +30,7 @@ namespace Payroll.Controllers
 
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
             IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
-            IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository)
+            IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository, IAttendanceService attendanceService)
         {
             _attendanceLogRepository = attendanceLogRepository;
             _attendanceRepository = attendanceRepository;
@@ -36,6 +38,7 @@ namespace Payroll.Controllers
             _unitOfWork = unitOfWork;
             _employeePayrollRepository = employeePayrollRepository;
             _employeeHoursRepository = employeeHoursRepository;
+            _attendanceService = attendanceService;
         }
 
         public virtual ActionResult CreateAttendance()
@@ -157,14 +160,15 @@ namespace Payroll.Controllers
             var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
             var lastPayrollDate = nextPayrollDate != null ? nextPayrollDate.Value.AddDays(-1) : DateTime.MinValue;
 
-            var result = _attendanceRepository.GetAttendanceByDateRange(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
-            var viewModel = result.MapCollection<Attendance, AttendanceViewModel>((s, d) =>
+            Func<IEnumerable<EmployeeHours>, bool> isNotEmpty = x => x != null && x.Any(y => y != null);
+
+            var result = _attendanceService.GetAttendanceAndHoursByDate(startDate.ToDateTime(), endDate.ToDateTime());
+            var viewModel = result.MapCollection<AttendanceDao, AttendanceViewModel>((s, d) =>
             {
-                d.ClockOut = s.ClockOut.Value;
-                d.FirstName = s.Employee.FirstName;
-                d.LastName = s.Employee.LastName;
-                d.MiddleName = s.Employee.MiddleName;
                 d.Editable = s.ClockIn > lastPayrollDate;
+                d.RegularHours = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.Regular).Sum(x => x.Hours) : 0;
+                d.Overtime = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.OverTime).Sum(x => x.Hours) : 0;
+                d.NightDifferential = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.NightDifferential).Sum(x => x.Hours) : 0;
             });
 
             return viewModel;
@@ -173,7 +177,7 @@ namespace Payroll.Controllers
         public void ExportToExcel(string startDate, string endDate)
         {
             var viewModel = GetAttendance(startDate, endDate);
-            var fileName = String.Format("Attendance_Report_{0}-{1}", Convert.ToDateTime(startDate).Serialize(), Convert.ToDateTime(endDate).Serialize());
+            var fileName = String.Format("Attendance_Report_{0}-{1}", startDate.ToDateTime().SerializeShort(), endDate.ToDateTime().SerializeShort());
             Export.ToExcel(Response, viewModel, fileName);
         }
 

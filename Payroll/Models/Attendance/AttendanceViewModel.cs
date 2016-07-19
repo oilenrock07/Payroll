@@ -1,4 +1,5 @@
 ﻿
+using Payroll.Entities.Enums;
 using System;
 
 namespace Payroll.Models.Attendance
@@ -12,5 +13,9 @@ namespace Payroll.Models.Attendance
         public DateTime ClockIn { get; set; }
         public DateTime ClockOut { get; set; }
         public bool Editable { get; set; }
+
+        public double RegularHours { get; set; }
+        public double NightDifferential { get; set; }
+        public double Overtime { get; set; }
     }
 }

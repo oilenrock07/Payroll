@@ -1,5 +1,4 @@
 ﻿using System;
-using Payroll.Common.Enums;
 using Payroll.Entities;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
@@ -7,6 +6,8 @@ using Payroll.Service.Interfaces;
 using System.Collections.Generic;
 using Payroll.Entities.Enums;
 using Payroll.Infrastructure.Implementations;
+using Payroll.Repository.Models;
+using System.Linq;
 
 namespace Payroll.Service.Implementations
 {
@@ -15,13 +16,15 @@ namespace Payroll.Service.Implementations
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAttendanceLogService _attendanceLogService;
+        private readonly IEmployeeHoursRepository _employeeHoursRepository;
 
         public AttendanceService(IUnitOfWork unitOfWork, IAttendanceRepository attendanceRepository,
-            IAttendanceLogService attendanceLogService) : base(attendanceRepository)
+            IAttendanceLogService attendanceLogService, IEmployeeHoursRepository employeeHoursRepository) : base(attendanceRepository)
         {
             _attendanceRepository = attendanceRepository;
             _unitOfWork = unitOfWork;
             _attendanceLogService = attendanceLogService;
+            _employeeHoursRepository = employeeHoursRepository;
         }
 
         public int CreateWorkSchedule(int employeeId, AttendanceType attCode, DateTime datetime)
@@ -193,6 +196,38 @@ namespace Payroll.Service.Implementations
         {
             DateTime toDate = date.AddDays(1);
             return _attendanceRepository.GetAttendanceByDateRange(employeeId, date, toDate, false);
+        }
+
+        public virtual IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate)
+        {
+            endDate = endDate.AddDays(1).AddSeconds(-1);
+            var attendances = _attendanceRepository.Find(a => a.IsActive && a.ClockIn >= startDate && a.ClockIn <= endDate);
+            var employeeHours = _employeeHoursRepository.GetAllActive();
+
+            var query = from attendance in attendances
+                        join employeeHour in employeeHours on attendance.AttendanceId equals employeeHour.OriginAttendanceId into result
+                        from subResult in result.DefaultIfEmpty()
+                        group subResult by attendance into grouped
+                        select new AttendanceDao
+                        {
+                            //FirstName = attendance.Employee.FirstName,
+                            //ClockIn = attendance.ClockIn,
+                            //Clockout = attendance.ClockOut.Value,
+                            //MiddleName = attendance.Employee.MiddleName,
+                            //LastName = attendance.Employee.LastName,
+                            //RateType = subResult != null ? subResult.Type : RateType.Regular,
+                            //Hours = subResult != null ? subResult.Hours : 0,
+                            //HasEmployeeHours = subResult != null ? true : false
+
+                            FirstName = grouped.Key.Employee.FirstName,
+                            ClockIn = grouped.Key.ClockIn,
+                            ClockOut = grouped.Key.ClockOut.Value,
+                            MiddleName = grouped.Key.Employee.MiddleName,
+                            LastName = grouped.Key.Employee.LastName,
+                            EmployeeHours = grouped
+                        };
+
+            return query.ToList();
         }
     }
 }

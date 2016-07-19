@@ -34,10 +34,11 @@ namespace Payroll.Test.Service
             var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
             var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
             var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
-           
+            var employeeHoursRepository = new EmployeeHoursRepository(databaseFactory);
+
             var attendanceRepository = new AttendanceRepository(databaseFactory);
             var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
-            var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService);
+            var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService, employeeHoursRepository);
 
             //Delete Data
             employeeRepository.ExecuteSqlCommand("TRUNCATE TABLE attendance");
@@ -225,6 +226,24 @@ namespace Payroll.Test.Service
 
 
 
+        }
+
+        [TestMethod]
+        public void GetAttendanceHoursByDateTest()
+        {
+            var databaseFactory = new DatabaseFactory();
+            var unitOfWork = new UnitOfWork(databaseFactory);
+
+            var employeeDepartmentRepository = new EmployeeDepartmentRepository(databaseFactory);
+            var employeeRepository = new EmployeeRepository(databaseFactory, employeeDepartmentRepository);
+            var attendanceLogRepository = new AttendanceLogRepository(databaseFactory, employeeRepository);
+            var employeeHoursRepository = new EmployeeHoursRepository(databaseFactory);
+
+            var attendanceRepository = new AttendanceRepository(databaseFactory);
+            var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
+            var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService, employeeHoursRepository);
+
+            var result = attendanceService.GetAttendanceAndHoursByDate(new DateTime(2016, 6, 8), new DateTime(2016, 6,8));
         }
     }
 }

@@ -8,6 +8,9 @@
             <th>Last Name</th>
             <th>Clock In</th>
             <th>Clock Out</th>
+            <th>Regular Hours</th>
+            <th>Overtime</th>
+            <th>Night Differential</th>
             <th></th>
         </tr>
         @foreach (var item in Model)
@@ -27,6 +30,15 @@
                 </td>
                 <td>
                     @item.ClockOut
+                </td>
+                <td>
+                    @item.RegularHours
+                </td>
+                <td>
+                    @item.Overtime
+                </td>
+                <td>
+                    @item.NightDifferential
                 </td>
                 <td>
                     @if (item.Editable)

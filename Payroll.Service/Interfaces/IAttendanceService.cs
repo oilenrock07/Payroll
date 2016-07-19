@@ -1,8 +1,8 @@
 ﻿using System;
-using Payroll.Common.Enums;
 using Payroll.Entities;
 using System.Collections.Generic;
 using Payroll.Entities.Enums;
+using Payroll.Repository.Models;
 
 namespace Payroll.Service.Interfaces
 {
@@ -23,5 +23,7 @@ namespace Payroll.Service.Interfaces
         IList<Attendance> GetAttendanceForProcessing(int employeeId, DateTime date);
 
         void Update(Attendance attendance);
+
+        IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate);
     }
 }
