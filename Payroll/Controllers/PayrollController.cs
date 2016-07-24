@@ -226,9 +226,9 @@ namespace Payroll.Controllers
         [HttpPost]
         public PartialViewResult ViewEmployeeAdjustmentDetails(int id, string date)
         {
-            var dates = date.Split(new string[] { " to " }, StringSplitOptions.None);
-            var payrollStartDate = Convert.ToDateTime(dates[0]);
-            var payrollEndDate = Convert.ToDateTime(dates[1]);
+            var dates = date.Split('-');
+            var payrollStartDate = dates[0].DeserializeDate();
+            var payrollEndDate = dates[1].DeserializeDate();
 
             var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(id, payrollStartDate, payrollEndDate);
             return PartialView("_ViewAdjustmentModalContent", adjustments);
