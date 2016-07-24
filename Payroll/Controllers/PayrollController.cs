@@ -308,6 +308,7 @@ namespace Payroll.Controllers
             viewModel.Payroll = _employeePayrollService.GetById(id);
             viewModel.Deductions = _employeePayrollDeductionService.GetByPayroll(id);
             viewModel.PayrollItems = _employeePayrollItemservice.GetByPayrollId(id);
+            viewModel.Adjustments = _employeeAdjustmentService.GetByPayrollId(id);
 
             return View(viewModel);
         }
@@ -317,6 +318,17 @@ namespace Payroll.Controllers
             var data = _employeePayrollItemservice.GetPayrollDetailsForExport(startDate.ToDateTime(), endDate.ToDateTime());
             var fileName = String.Format("Transpose{0}-{1}", Convert.ToDateTime(startDate).Serialize(), Convert.ToDateTime(endDate).Serialize());
             Export.ToExcel(Response, data, fileName);
+        }
+
+        [HttpPost]
+        public JsonResult IsPayrollComputed(string date)
+        {
+            var dates = date.Split('-');
+            var startDate = dates[0].DeserializeDate();
+            var endDate = dates[1].DeserializeDate();
+
+            var isPayrollComputed = _employeePayrollService.IsPayrollComputed(startDate, endDate);
+            return Json(isPayrollComputed);
         }
     }
 }

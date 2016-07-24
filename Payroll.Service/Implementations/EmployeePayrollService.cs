@@ -587,5 +587,10 @@ namespace Payroll.Service.Implementations
         {
             return _employeePayrollRepository.GetById(id);
         }
+
+        public virtual bool IsPayrollComputed(DateTime startDate, DateTime endDate)
+        {
+            return _employeePayrollRepository.Find(x => x.IsActive && x.CutOffStartDate == startDate && x.CutOffEndDate == endDate).Any();
+        }
     }
 }

@@ -218,7 +218,7 @@ namespace Payroll.Service.Implementations
                             //RateType = subResult != null ? subResult.Type : RateType.Regular,
                             //Hours = subResult != null ? subResult.Hours : 0,
                             //HasEmployeeHours = subResult != null ? true : false
-
+                            AttendanceId = grouped.Key.AttendanceId,
                             FirstName = grouped.Key.Employee.FirstName,
                             ClockIn = grouped.Key.ClockIn,
                             ClockOut = grouped.Key.ClockOut.Value,

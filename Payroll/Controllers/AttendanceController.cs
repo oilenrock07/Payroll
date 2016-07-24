@@ -81,6 +81,7 @@ namespace Payroll.Controllers
         {
             var attendance = _attendanceRepository.GetById(id);
             var viewModel = attendance.MapItem<CreateAttendanceViewModel>();
+            viewModel.EmployeeId = attendance.EmployeeId;
             viewModel.ClockIn = attendance.ClockIn;
             viewModel.ClockOut = attendance.ClockOut.HasValue ? attendance.ClockOut.Value : DateTime.MinValue;
             viewModel.ClockInTime = attendance.ClockIn.ToShortTimeString();
@@ -158,7 +159,7 @@ namespace Payroll.Controllers
         {
             //do not display the edit link if attendance date < last payroll date
             var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
-            var lastPayrollDate = nextPayrollDate != null ? nextPayrollDate.Value.AddDays(-1) : DateTime.MinValue;
+            var lastPayrollDate = nextPayrollDate != null ? nextPayrollDate.Value : DateTime.MinValue;
 
             Func<IEnumerable<EmployeeHours>, bool> isNotEmpty = x => x != null && x.Any(y => y != null);
 

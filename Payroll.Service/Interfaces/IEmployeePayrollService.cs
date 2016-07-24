@@ -43,5 +43,7 @@ namespace Payroll.Service.Interfaces
         IEnumerable<PayrollDate> GetPayrollDates(int months);
 
         EmployeePayroll GetById(int id);
+
+        bool IsPayrollComputed(DateTime startDate, DateTime endDate);
     }
 }

@@ -10,5 +10,6 @@ namespace Payroll.Service.Interfaces
         IEnumerable<EmployeeAdjustmentDao> GetEmployeeAdjustmentByDate(DateTime startDate, DateTime endDate);
         IEnumerable<EmployeeAdjustment> GetEmployeeAdjustments(int employeeId, DateTime startDate, DateTime endDate);
         void Update(EmployeeAdjustment employeeAdjustment);
+        IEnumerable<EmployeeAdjustment> GetByPayrollId(int id);
     }
 }

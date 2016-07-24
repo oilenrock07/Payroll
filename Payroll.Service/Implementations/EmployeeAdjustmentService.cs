@@ -50,5 +50,10 @@ namespace Payroll.Service.Implementations
         {
             _employeeAdjustmentRepository.Update(employeeAdjustment);
         }
+
+        public virtual IEnumerable<EmployeeAdjustment> GetByPayrollId(int id)
+        {
+            return _employeeAdjustmentRepository.Find(x => x.IsActive && x.PayrollId == id).ToList();
+        }
     }
 }

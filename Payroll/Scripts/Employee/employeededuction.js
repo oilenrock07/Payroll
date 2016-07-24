@@ -9,7 +9,7 @@
             $(this).closest('tr').find(':text').attr('disabled', 'disabled');
     };
 
-    function handleDeductionTrClick() {
+    function handleDeductionTrClick(e) {
         $(this).find(':checkbox').click();
     }
 
@@ -19,7 +19,7 @@
 
     function init() {
         $('.js-deductionTable :text').on('click', handleTextboxClick);
-        $('.js-deductionTable tr').on('click', handleDeductionTrClick);
+        //$('.js-deductionTable tr').on('click', handleDeductionTrClick);
         $('.js-deduction').on('click', handleCheckboxDeductionClick);
     }
 
