@@ -440,20 +440,9 @@ namespace Payroll.Service.Implementations
         public virtual IEnumerable<PayrollDate> GetPayrollDates(int months)
         {
             var dates = new List<PayrollDate>();
-            var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
 
-            if (nextPayrollDate == null)
-            {
-                var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
-                nextPayrollDate = DateTime.Now.StartOfWeek((DayOfWeek) weekStart);
-            }
-            else
-            {
-                //for some reason it adds 1 day in GetNextPayrollStartDate
-                //nextPayrollDate = nextPayrollDate.Value.AddDays(-1);
-            }
-
-            var lastPayrollDate = nextPayrollDate.Value; //nextPayrollDate.Value.AddDays(-1);
+            var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
+            var lastPayrollDate = DateTime.Now.StartOfWeek((DayOfWeek)weekStart);
             var lastPayroll = lastPayrollDate.AddMonths(-months);
            
             while (lastPayrollDate >= lastPayroll)
