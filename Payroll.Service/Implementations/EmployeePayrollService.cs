@@ -332,9 +332,14 @@ namespace Payroll.Service.Implementations
             //Generate Allowance
             ComputeAllowance(payrollStartDate, payrollEndDate, employeePayrollList);
 
+            //Compute Adjustments
+            GenerateAdjustments(employeePayrollList);
+
             //Generate deductions such as SSS, HDMF, Philhealth and TAX
             GenerateDeductions(payrollDate,
                 payrollStartDate, payrollEndDate, employeePayrollList);
+
+
         }
 
 
@@ -492,8 +497,6 @@ namespace Payroll.Service.Implementations
                 payroll.TaxableIncome = payroll.TotalGross - totalDeductions;
                 payroll.TotalDeduction += totalDeductions;
 
-                //Compute Adjustments
-                GenerateAdjustments(payroll);
                 //Compute Tax
                 GenerateTax(payroll);
             }
@@ -508,35 +511,55 @@ namespace Payroll.Service.Implementations
             }
         }
 
-        public void GenerateAdjustments(EmployeePayroll payroll)
+
+        //TODO refactor avoid looping
+        public void GenerateAdjustments(IList<EmployeePayroll> employeePayrolls)
         {
             //Adjustments computation
-            //Get all employee adjustments
-            var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(payroll.EmployeeId, payroll.CutOffStartDate, payroll.CutOffEndDate);
-
-            decimal positiveAdjustments = 0;
-            decimal negativeAdjustments = 0;
-            foreach (EmployeeAdjustment adjustment in adjustments)
+            foreach (EmployeePayroll payroll in employeePayrolls)
             {
-                if (adjustment.Amount >= 0)
-                {
-                    positiveAdjustments += adjustment.Amount;
-                }
-                else
-                {
-                    negativeAdjustments += adjustment.Amount;
-                }
+                //Get all employee adjustments
+                var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(payroll.EmployeeId, payroll.CutOffStartDate, payroll.CutOffEndDate);
 
-                _employeeAdjustmentService.Update(adjustment);
-                adjustment.PayrollId = payroll.PayrollId;
+                if (adjustments != null &&
+                        adjustments.Count() > 0)
+                {
+                    decimal positiveAdjustments = 0;
+                    decimal negativeAdjustments = 0;
+                    foreach (EmployeeAdjustment adjustment in adjustments)
+                    {
+                        if (adjustment.Amount >= 0)
+                        {
+                            positiveAdjustments += adjustment.Amount;
+                        }
+                        else
+                        {
+                            negativeAdjustments += adjustment.Amount;
+                        }
+
+                        _employeeAdjustmentService.Update(adjustment);
+                        adjustment.PayrollId = payroll.PayrollId;
+                    }
+
+                    Update(payroll);
+                    //Update payroll for total deductions and total grosss
+                    payroll.TotalDeduction += Math.Abs(negativeAdjustments);
+                    payroll.TotalAdjustment = positiveAdjustments - negativeAdjustments;
+                    payroll.TaxableIncome += payroll.TotalAdjustment;
+                    payroll.TotalGross += positiveAdjustments;
+                    payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
+                }
+             
             }
-
-            //Update payroll for total deductions and total grosss
-            payroll.TotalDeduction += Math.Abs(negativeAdjustments);
-            payroll.TotalAdjustment = positiveAdjustments - negativeAdjustments;
-            payroll.TaxableIncome += payroll.TotalAdjustment;
-            payroll.TotalGross += positiveAdjustments;
-            payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
+           
+            try
+            {
+                _unitOfWork.Commit();
+            }
+            catch (Exception e)
+            {
+                //Print error
+            }
         }
 
         public void GenerateTax(EmployeePayroll payroll)
