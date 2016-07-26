@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Payroll.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -22,6 +23,6 @@ namespace Payroll.Models.Payroll
         public decimal Amount { get; set; }
         public string Remarks { get; set; }
 
-        public IEnumerable<SelectListItem> Adjustments { get; set; }
+        public IEnumerable<Adjustment> Adjustments { get; set; }
     }
 }

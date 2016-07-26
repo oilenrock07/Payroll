@@ -238,7 +238,7 @@ namespace Payroll.Controllers
         {
             var viewModel = new EmployeeAdjustmentCreateViewModel
             {
-                Adjustments = Adjustments(),
+                Adjustments = _adjustmentRepository.GetAllActive().ToList(),
                 EmployeeId = id,
                 Employee = id > 0 ? _employeeRepository.GetById(id) : null
             };
@@ -262,7 +262,7 @@ namespace Payroll.Controllers
             var adjustments = _employeeAdjustmentRepository.GetById(id);
 
             var viewModel = adjustments.MapItem<EmployeeAdjustmentCreateViewModel>();
-            viewModel.Adjustments = Adjustments();
+            viewModel.Adjustments = _adjustmentRepository.GetAllActive().ToList();
 
             return View(viewModel);
         }
@@ -288,18 +288,6 @@ namespace Payroll.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("Adjustment");
-        }
-
-        protected IEnumerable<SelectListItem> Adjustments()
-        {
-            var adjustments = _adjustmentRepository.GetAllActive().ToList();
-            return adjustments.Any()
-                ? adjustments.Select(x => new SelectListItem
-                {
-                    Text = x.AdjustmentName,
-                    Value = x.AdjustmentId.ToString()
-                })
-                : new List<SelectListItem>();
         }
 
         public ActionResult Details(int id)

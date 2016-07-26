@@ -29,6 +29,15 @@
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.AdjustmentType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                <div class="label-info label">Add means positive amount, Less means negative</div>
+                @Html.DropDownListFor(model => model.AdjustmentType, (IEnumerable<SelectListItem>)ViewBag.AdjustmentTypes, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AdjustmentType)
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-4">

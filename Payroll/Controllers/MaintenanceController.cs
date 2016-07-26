@@ -667,6 +667,7 @@ namespace Payroll.Controllers
 
         public virtual ActionResult CreateAdjustment()
         {
+            ViewBag.AdjustmentTypes = GetAdjustmentTypes();
             return View(new Adjustment());
         }
 
@@ -682,8 +683,23 @@ namespace Payroll.Controllers
 
         public virtual ActionResult EditAdjustment(int id)
         {
+            ViewBag.AdjustmentTypes = GetAdjustmentTypes();
             var adjustment = _adjustmentRepository.GetById(id);
             return View(adjustment);
+        }
+
+        protected IEnumerable<SelectListItem> GetAdjustmentTypes()
+        {
+            var adjustmentTypes = new List<SelectListItem>();
+            foreach (AdjustmentType val in Enum.GetValues(typeof(AdjustmentType)))
+            {
+                adjustmentTypes.Add(new SelectListItem
+                {
+                    Text = val.ToString(),
+                    Value = ((int)val).ToString()
+                });
+            }
+            return adjustmentTypes;
         }
 
         [HttpPost]
@@ -694,6 +710,7 @@ namespace Payroll.Controllers
             _adjustmentRepository.Update(adjustment);
             adjustment.AdjustmentName = model.AdjustmentName;
             adjustment.Description = model.Description;
+            adjustment.AdjustmentType = model.AdjustmentType;
 
             _unitOfWork.Commit();
             return RedirectToAction("Adjustment");

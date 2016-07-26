@@ -80,85 +80,9 @@
     <Compile Include="LoanPayment.cs" />
     <Compile Include="LogInDisplayClient.cs" />
     <Compile Include="Machine.cs" />
-    <Compile Include="Migrations\201605071005272_NewMigration.cs" />
-    <Compile Include="Migrations\201605071005272_NewMigration.Designer.cs">
-      <DependentUpon>201605071005272_NewMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605080337327_EmployeeLeaveSchemaFix.cs" />
-    <Compile Include="Migrations\201605080337327_EmployeeLeaveSchemaFix.Designer.cs">
-      <DependentUpon>201605080337327_EmployeeLeaveSchemaFix.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.cs" />
-    <Compile Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.Designer.cs">
-      <DependentUpon>201605081355280_InheritUserEntitiesToBaseClass.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs" />
-    <Compile Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.Designer.cs">
-      <DependentUpon>201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605191336261_deduction-change.cs" />
-    <Compile Include="Migrations\201605191336261_deduction-change.Designer.cs">
-      <DependentUpon>201605191336261_deduction-change.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605220505405_change-employee-daily-payroll.cs" />
-    <Compile Include="Migrations\201605220505405_change-employee-daily-payroll.Designer.cs">
-      <DependentUpon>201605220505405_change-employee-daily-payroll.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605221303505_add-payroll-total-allowance.cs" />
-    <Compile Include="Migrations\201605221303505_add-payroll-total-allowance.Designer.cs">
-      <DependentUpon>201605221303505_add-payroll-total-allowance.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605281302156_daily-payroll-update.cs" />
-    <Compile Include="Migrations\201605281302156_daily-payroll-update.Designer.cs">
-      <DependentUpon>201605281302156_daily-payroll-update.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605301330202_update-attendance-hours-counted.cs" />
-    <Compile Include="Migrations\201605301330202_update-attendance-hours-counted.Designer.cs">
-      <DependentUpon>201605301330202_update-attendance-hours-counted.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606170654395_AddFKToEmployeeDeduction.cs" />
-    <Compile Include="Migrations\201606170654395_AddFKToEmployeeDeduction.Designer.cs">
-      <DependentUpon>201606170654395_AddFKToEmployeeDeduction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606210203219_payrollupdate.cs" />
-    <Compile Include="Migrations\201606210203219_payrollupdate.Designer.cs">
-      <DependentUpon>201606210203219_payrollupdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606210257498_SchedulerLogs.cs" />
-    <Compile Include="Migrations\201606210257498_SchedulerLogs.Designer.cs">
-      <DependentUpon>201606210257498_SchedulerLogs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606230240154_adjustment_changes.cs" />
-    <Compile Include="Migrations\201606230240154_adjustment_changes.Designer.cs">
-      <DependentUpon>201606230240154_adjustment_changes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606281149268_additionalChangesIDK.cs" />
-    <Compile Include="Migrations\201606281149268_additionalChangesIDK.Designer.cs">
-      <DependentUpon>201606281149268_additionalChangesIDK.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607021051568_additional-fields-payroll.cs" />
-    <Compile Include="Migrations\201607021051568_additional-fields-payroll.Designer.cs">
-      <DependentUpon>201607021051568_additional-fields-payroll.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607030424244_payroll-items.cs" />
-    <Compile Include="Migrations\201607030424244_payroll-items.Designer.cs">
-      <DependentUpon>201607030424244_payroll-items.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607030647596_employee-daily-payroll.cs" />
-    <Compile Include="Migrations\201607030647596_employee-daily-payroll.Designer.cs">
-      <DependentUpon>201607030647596_employee-daily-payroll.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607100425517_payroll-items-changes.cs" />
-    <Compile Include="Migrations\201607100425517_payroll-items-changes.Designer.cs">
-      <DependentUpon>201607100425517_payroll-items-changes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607141440175_jonaschanges.cs" />
-    <Compile Include="Migrations\201607141440175_jonaschanges.Designer.cs">
-      <DependentUpon>201607141440175_jonaschanges.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607170609373_logindisplayclient.cs" />
-    <Compile Include="Migrations\201607170609373_logindisplayclient.Designer.cs">
-      <DependentUpon>201607170609373_logindisplayclient.cs</DependentUpon>
+    <Compile Include="Migrations\201607261433275_adjustmenttype.cs" />
+    <Compile Include="Migrations\201607261433275_adjustmenttype.Designer.cs">
+      <DependentUpon>201607261433275_adjustmenttype.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -208,65 +132,8 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605071005272_NewMigration.resx">
-      <DependentUpon>201605071005272_NewMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605080337327_EmployeeLeaveSchemaFix.resx">
-      <DependentUpon>201605080337327_EmployeeLeaveSchemaFix.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605081355280_InheritUserEntitiesToBaseClass.resx">
-      <DependentUpon>201605081355280_InheritUserEntitiesToBaseClass.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.resx">
-      <DependentUpon>201605150243012_AddedMachineIdAndIpAddressToAttendanceLog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605191336261_deduction-change.resx">
-      <DependentUpon>201605191336261_deduction-change.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605220505405_change-employee-daily-payroll.resx">
-      <DependentUpon>201605220505405_change-employee-daily-payroll.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605221303505_add-payroll-total-allowance.resx">
-      <DependentUpon>201605221303505_add-payroll-total-allowance.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605281302156_daily-payroll-update.resx">
-      <DependentUpon>201605281302156_daily-payroll-update.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605301330202_update-attendance-hours-counted.resx">
-      <DependentUpon>201605301330202_update-attendance-hours-counted.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606170654395_AddFKToEmployeeDeduction.resx">
-      <DependentUpon>201606170654395_AddFKToEmployeeDeduction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606210203219_payrollupdate.resx">
-      <DependentUpon>201606210203219_payrollupdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606210257498_SchedulerLogs.resx">
-      <DependentUpon>201606210257498_SchedulerLogs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606230240154_adjustment_changes.resx">
-      <DependentUpon>201606230240154_adjustment_changes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606281149268_additionalChangesIDK.resx">
-      <DependentUpon>201606281149268_additionalChangesIDK.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607021051568_additional-fields-payroll.resx">
-      <DependentUpon>201607021051568_additional-fields-payroll.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607030424244_payroll-items.resx">
-      <DependentUpon>201607030424244_payroll-items.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607030647596_employee-daily-payroll.resx">
-      <DependentUpon>201607030647596_employee-daily-payroll.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607100425517_payroll-items-changes.resx">
-      <DependentUpon>201607100425517_payroll-items-changes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607141440175_jonaschanges.resx">
-      <DependentUpon>201607141440175_jonaschanges.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607170609373_logindisplayclient.resx">
-      <DependentUpon>201607170609373_logindisplayclient.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607261433275_adjustmenttype.resx">
+      <DependentUpon>201607261433275_adjustmenttype.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

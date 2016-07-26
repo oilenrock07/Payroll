@@ -3,16 +3,16 @@ namespace Payroll.Entities.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class updateattendancehourscounted : DbMigration
+    public partial class adjustmenttype : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.attendance", "IsHoursCounted", c => c.Boolean(nullable: false));
+            AddColumn("dbo.Adjustments", "AdjustmentType", c => c.Int(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.attendance", "IsHoursCounted");
+            DropColumn("dbo.Adjustments", "AdjustmentType");
         }
     }
 }

@@ -104,4 +104,10 @@ namespace Payroll.Entities.Enums
         Success = 1,
         Exception = 2
     }
+
+    public enum AdjustmentType
+    {
+        Add = 1,
+        Less = 2
+    }
 }

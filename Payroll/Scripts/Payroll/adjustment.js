@@ -1,7 +1,10 @@
 ﻿$(function() {
     function init() {
         $('.js-payrollDates').on('change', handlePayrollDateChange);
+        $('.js-adjustment').on('change', handleAdjustmentTypeChange);
         $('body').on('click', '.js-viewAdjustment', handleViewAdjustmentClick);
+
+        handleAdjustmentTypeChange();
     }
 
     function handlePayrollDateChange() {
@@ -15,6 +18,13 @@
 
     function handlePayrollDateChangeSuccess(responseData) {
         $('#adjustment-container').html(responseData);
+    }
+
+    function handleAdjustmentTypeChange() {
+        var adjustmentType = $('.js-adjustment option:selected').data('type');
+
+        var adjustmentLabel = adjustmentType == 'Add' ? '+' : '-';
+        $('.js-adjustmentTypeLabel').html(adjustmentLabel);
     }
 
     function handleViewAdjustmentClick() {

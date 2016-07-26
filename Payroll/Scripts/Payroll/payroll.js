@@ -1,6 +1,6 @@
 ﻿$(function () {
     function handleFormSubmit(e) {
-        
+        var cancel = false;
         $.ajax({
             url: '/Payroll/IsPayrollComputed',
             data: { date: $('#Date').val() },
@@ -9,13 +9,15 @@
             success: function (response) {
                 if (response == true) {
 
-                    if (!confirm("Payroll is already generated for this cutoff.\nWould you like to generate again? This will remove the last entries."))
+                    if (!confirm("Payroll is already generated for this cutoff.\nWould you like to generate again? This will remove the last entries.")) {
                         e.preventDefault();
+                        cancel = true;
+                    }
                 }
             }
         });
 
-        $('.js-message').toggleClass('hidden');
+        if (!cancel) $('.js-message').toggleClass('hidden');
     };
 
     function init() {
