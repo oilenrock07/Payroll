@@ -7,13 +7,13 @@ namespace Payroll.Entities.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class adjustmenttype : IMigrationMetadata
+    public sealed partial class AddedDeductionInEmployeePayrollDeduction : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(adjustmenttype));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedDeductionInEmployeePayrollDeduction));
         
         string IMigrationMetadata.Id
         {
-            get { return "201607261433275_adjustmenttype"; }
+            get { return "201607280952200_AddedDeductionInEmployeePayrollDeduction"; }
         }
         
         string IMigrationMetadata.Source

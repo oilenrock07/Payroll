@@ -16,7 +16,7 @@
             <td>@item.Amount</td>
             <td>@item.Remarks</td>
             <td>
-                @Html.ActionLink("Edit", "EditAdjustment", new {id = item.EmployeeAdjustmentId}) |
+                @Html.ActionLink("Edit", "EditAdjustment", new {id = item.EmployeeAdjustmentId, date = ViewBag.Date }) |
                 @Html.ActionLink("Delete", "DeleteAdjustment", new { id = item.EmployeeAdjustmentId }, new {@class = "js-maintenanceDelete" })
             </td>
         </tr>

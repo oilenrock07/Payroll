@@ -11,10 +11,11 @@
 
 <div>
     <h4>@Model.Payroll.Employee.FullName</h4>
-    <h4>@Model.Payroll.PayrollDate.ToShortDateString()</h4>
+    <h4>@Model.Payroll.PayrollDate.ToLongDateString()</h4>
     <hr />
 
-    <table class="table table-responsive table-striped">
+    <h3>Earnings</h3>
+    <table class="table table-responsive table-striped table-payroll-detail">
         <tr>
             <th>Rate</th>
             <th>Total Hours</th>
@@ -32,9 +33,98 @@
             </tr>
         }
 
-        <tr style="border-top:2px solid">
+        <tr class="totalTableBorder">
             <td colspan="3">Total:</td>
             <td>@Model.TotalPayrollItems.FormatAmount()</td>
+        </tr>
+    </table>
+
+    @if (Model.HasAdjustment)
+    {
+        <h3>Adjustments</h3>
+        <table class="table table-responsive table-striped table-payroll-detail">
+            <tr>
+                <th>Adjustment Name</th>
+                <th></th>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+            
+            @foreach (var item in Model.Adjustments.OrderBy(x => x.Adjustment.AdjustmentType))
+            {
+                <tr>
+                    <td>@item.Adjustment.AdjustmentName</td>
+                    <td></td>
+                    <td>@item.Date.ToShortDateString()</td>
+                    <td>@item.Amount.FormatAmount()</td>
+                </tr>
+            }
+
+            <tr class="totalTableBorder">
+                <td colspan="3">Total:</td>
+                <td>@Model.TotalAdjustments.FormatAmount()</td>
+            </tr>
+
+        </table>
+    }
+
+    @if (Model.HasDeductions)
+    {
+        <h3>Deductions</h3>
+        <table class="table table-responsive table-striped table-payroll-detail">
+            <tr>
+                <th>Deduction Name</th>
+                <th></th>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+
+            @foreach (var item in Model.Deductions)
+            {
+                <tr>
+                    <td>@item.Deduction.DeductionName</td>
+                    <td></td>
+                    <td>@item.DeductionDate.ToShortDateString()</td>
+                    <td>@item.Amount.FormatAmount()</td>
+                </tr>
+            }
+
+            <tr class="totalTableBorder">
+                <td colspan="3">Total:</td>
+                <td>@Model.TotalDeductions.FormatAmount()</td>
+            </tr>
+
+        </table>
+    }
+
+    <br />
+    <hr />
+    <h3>Summary</h3>
+    <table class="table table-responsive table-payroll-detail">
+        <tr></tr>
+        <tr>
+            <td>Total Earnings: </td>
+            <td></td>
+            <td></td>
+            <td>@Model.TotalPayrollItems.FormatAmount()</td>
+        </tr>
+        <tr>
+            <td>Total Deductions: </td>
+            <td></td>
+            <td></td>
+            <td>@Model.TotalDeductions.FormatAmount()</td>
+        </tr>
+        <tr>
+            <td>Total Adjustments: </td>
+            <td></td>
+            <td></td>
+            <td>@Model.TotalAdjustments.FormatAmount()</td>
+        </tr>
+        <tr class="totalTableBorder">
+            <td>Take Home Pay: </td>
+            <td></td>
+            <td></td>
+            <td>@Model.Payroll.TotalNet.FormatAmount()</td>
         </tr>
     </table>
 </div>

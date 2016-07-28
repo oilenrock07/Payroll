@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-4">
-                @Html.DatePickerFor("Date", Model.Date, new { @class = "form-control datepicker js-clockIn" })
+                @Html.DatePickerFor("Date", Model.Date, new { @class = "form-control datepicker", start = Model.StartDate, end = Model.EndDate })
                 @Html.ValidationMessageFor(model => model.Date)
             </div>
         </div>

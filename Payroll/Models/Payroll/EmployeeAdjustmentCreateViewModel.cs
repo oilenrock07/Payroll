@@ -20,9 +20,13 @@ namespace Payroll.Models.Payroll
         [Required]
         public DateTime Date { get; set; }
         [Required]
+        [Range(1, Double.MaxValue, ErrorMessage ="Please input valid number")]
         public decimal Amount { get; set; }
         public string Remarks { get; set; }
 
         public IEnumerable<Adjustment> Adjustments { get; set; }
+
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
 }

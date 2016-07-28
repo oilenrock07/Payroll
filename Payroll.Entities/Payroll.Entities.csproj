@@ -80,9 +80,9 @@
     <Compile Include="LoanPayment.cs" />
     <Compile Include="LogInDisplayClient.cs" />
     <Compile Include="Machine.cs" />
-    <Compile Include="Migrations\201607261433275_adjustmenttype.cs" />
-    <Compile Include="Migrations\201607261433275_adjustmenttype.Designer.cs">
-      <DependentUpon>201607261433275_adjustmenttype.cs</DependentUpon>
+    <Compile Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.cs" />
+    <Compile Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.Designer.cs">
+      <DependentUpon>201607280952200_AddedDeductionInEmployeePayrollDeduction.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -132,8 +132,8 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201607261433275_adjustmenttype.resx">
-      <DependentUpon>201607261433275_adjustmenttype.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.resx">
+      <DependentUpon>201607280952200_AddedDeductionInEmployeePayrollDeduction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

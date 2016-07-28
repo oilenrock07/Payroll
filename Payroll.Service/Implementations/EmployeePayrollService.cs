@@ -519,7 +519,7 @@ namespace Payroll.Service.Implementations
             foreach (EmployeePayroll payroll in employeePayrolls)
             {
                 //Get all employee adjustments
-                var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(payroll.EmployeeId, payroll.CutOffStartDate, payroll.CutOffEndDate);
+                var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(payroll.EmployeeId, payroll.CutOffStartDate, payroll.CutOffEndDate).ToList();
 
                 if (adjustments != null &&
                         adjustments.Count() > 0)
@@ -528,7 +528,7 @@ namespace Payroll.Service.Implementations
                     decimal negativeAdjustments = 0;
                     foreach (EmployeeAdjustment adjustment in adjustments)
                     {
-                        if (adjustment.Amount >= 0)
+                        if (adjustment.Adjustment.AdjustmentType == AdjustmentType.Add)
                         {
                             positiveAdjustments += adjustment.Amount;
                         }

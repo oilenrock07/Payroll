@@ -17,6 +17,7 @@ namespace Payroll.Models.Employee
 
         public string ImagePath { get; set; }
         public int PositionId { get; set; }
+        [Required]
         public int PaymentFrequency { get; set; }
         [Required]
         public int WorkScheduleId { get; set; }

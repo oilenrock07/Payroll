@@ -190,6 +190,7 @@ namespace Payroll.Controllers
         public ActionResult Adjustment()
         {
             var payrollDates = _employeePayrollService.GetPayrollDates(3).ToList();
+            var firstDate = payrollDates.First().SerializedDate;
             var viewModel = new EmployeeAdjustmentViewModel
             {
                 Adjustments = payrollDates
@@ -198,7 +199,8 @@ namespace Payroll.Controllers
                         Text = x.FormattedDate,
                         Value = x.SerializedDate
                     }),
-                EmployeeAdjustments = GetEmployeeAdjustments(payrollDates.First().SerializedDate)
+                EmployeeAdjustments = GetEmployeeAdjustments(firstDate),
+                Date = firstDate
         };
 
             return View(viewModel);
@@ -208,7 +210,7 @@ namespace Payroll.Controllers
         public PartialViewResult GetAdjustments(string date)
         {
 
-            var viewModel = new EmployeeAdjustmentViewModel {EmployeeAdjustments = GetEmployeeAdjustments(date)};
+            var viewModel = new EmployeeAdjustmentViewModel {Date = date, EmployeeAdjustments = GetEmployeeAdjustments(date)};
             return PartialView("_Adjustments", viewModel);
         }
 
@@ -229,18 +231,22 @@ namespace Payroll.Controllers
             var dates = date.Split('-');
             var payrollStartDate = dates[0].DeserializeDate();
             var payrollEndDate = dates[1].DeserializeDate();
+            ViewBag.Date = date;
 
             var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(id, payrollStartDate, payrollEndDate);
             return PartialView("_ViewAdjustmentModalContent", adjustments);
         }
 
-        public ActionResult CreateAdjustment(int id = 0)
+        public ActionResult CreateAdjustment(string date, int id = 0)
         {
+            var dates = date.Split('-');
             var viewModel = new EmployeeAdjustmentCreateViewModel
             {
                 Adjustments = _adjustmentRepository.GetAllActive().ToList(),
                 EmployeeId = id,
-                Employee = id > 0 ? _employeeRepository.GetById(id) : null
+                Employee = id > 0 ? _employeeRepository.GetById(id) : null,
+                StartDate = dates[0].DeserializeDate().ToShortDateString(),
+                EndDate = dates[1].DeserializeDate().ToShortDateString(),
             };
 
             return View(viewModel);
@@ -257,12 +263,14 @@ namespace Payroll.Controllers
         }
 
 
-        public ActionResult EditAdjustment(int id)
+        public ActionResult EditAdjustment(int id, string date)
         {
             var adjustments = _employeeAdjustmentRepository.GetById(id);
-
+            var dates = date.Split('-');
             var viewModel = adjustments.MapItem<EmployeeAdjustmentCreateViewModel>();
             viewModel.Adjustments = _adjustmentRepository.GetAllActive().ToList();
+            viewModel.StartDate = dates[0].DeserializeDate().ToShortDateString();
+            viewModel.EndDate = dates[1].DeserializeDate().ToShortDateString();
 
             return View(viewModel);
         }
@@ -304,7 +312,7 @@ namespace Payroll.Controllers
         public void ExportToExcel(string startDate, string endDate)
         {
             var data = _employeePayrollItemservice.GetPayrollDetailsForExport(startDate.ToDateTime(), endDate.ToDateTime());
-            var fileName = String.Format("Transpose{0}-{1}", Convert.ToDateTime(startDate).Serialize(), Convert.ToDateTime(endDate).Serialize());
+            var fileName = String.Format("Transpose{0}-{1}", startDate.ToDateTime().SerializeShort(), endDate.ToDateTime().SerializeShort());
             Export.ToExcel(Response, data, fileName);
         }
 

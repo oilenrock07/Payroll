@@ -412,7 +412,7 @@ namespace Payroll.Service.Implementations
             var payrollItems = GetByCutoffDates(startDate, endDate).ToList();
             var payrollIds = payrollItems.Select(x => Convert.ToInt32(x.PayrollId)).ToList();
 
-            var adjustments = _adjustmentRepository.GetAllActive();
+            var adjustments = _adjustmentRepository.GetAllActive().OrderBy(x => x.AdjustmentType);
             var employeeAdjustments = _employeeAdjustmentRepository.GetByPayroll(payrollIds).ToList();
             var deductions = _employeePayrollDeductionRepository.GetByPayroll(payrollIds).ToList();
 

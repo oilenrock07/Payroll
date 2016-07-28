@@ -104,13 +104,6 @@
         </div>
         <div class="col-md-6">
             <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Positions, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownListFor(model => model.PositionId, Model.Positions, new { @class = "form-control " })
-                        @Html.ValidationMessageFor(model => model.Positions)
-                    </div>
-                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.PaymentFrequency, "Salary Frequency", htmlAttributes: new { @class = "control-label col-md-4" })
@@ -119,7 +112,15 @@
                         @Html.ValidationMessageFor(model => model.PaymentFrequency)
                     </div>
                 </div>
-                
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Positions, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.PositionId, Model.Positions, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.Positions)
+                    </div>
+                </div>
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.EmploymentStatus, "Employment Status", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
