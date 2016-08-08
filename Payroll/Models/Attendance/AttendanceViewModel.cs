@@ -11,7 +11,7 @@ namespace Payroll.Models.Attendance
         public string LastName { get; set; }
         public string MiddleName { get; set; }
         public DateTime ClockIn { get; set; }
-        public DateTime ClockOut { get; set; }
+        public DateTime? ClockOut { get; set; }
         public bool Editable { get; set; }
 
         public double RegularHours { get; set; }

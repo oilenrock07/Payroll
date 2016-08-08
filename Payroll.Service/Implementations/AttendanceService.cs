@@ -195,7 +195,7 @@ namespace Payroll.Service.Implementations
         public IList<Attendance> GetAttendanceForProcessing(int employeeId, DateTime date)
         {
             DateTime toDate = date.AddDays(1);
-            return _attendanceRepository.GetAttendanceByDateRange(employeeId, date, toDate, false);
+            return _attendanceRepository.GetAttendanceByProcessing(employeeId, date, toDate, false);
         }
 
         public virtual IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate)
@@ -221,7 +221,7 @@ namespace Payroll.Service.Implementations
                             AttendanceId = grouped.Key.AttendanceId,
                             FirstName = grouped.Key.Employee.FirstName,
                             ClockIn = grouped.Key.ClockIn,
-                            ClockOut = grouped.Key.ClockOut.Value,
+                            ClockOut = grouped.Key.ClockOut,
                             MiddleName = grouped.Key.Employee.MiddleName,
                             LastName = grouped.Key.Employee.LastName,
                             EmployeeHours = grouped

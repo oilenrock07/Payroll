@@ -11,7 +11,7 @@ namespace Payroll.Repository.Models
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public DateTime ClockIn { get; set; }
-        public DateTime ClockOut { get; set; }
+        public DateTime? ClockOut { get; set; }
 
         public IEnumerable<EmployeeHours> EmployeeHours { get; set; }
         public bool HasEmployeeHours { get; set; }

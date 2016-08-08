@@ -84,6 +84,10 @@
     <Compile Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.Designer.cs">
       <DependentUpon>201607280952200_AddedDeductionInEmployeePayrollDeduction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607281310239_adjustments.cs" />
+    <Compile Include="Migrations\201607281310239_adjustments.Designer.cs">
+      <DependentUpon>201607281310239_adjustments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
@@ -134,6 +138,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.resx">
       <DependentUpon>201607280952200_AddedDeductionInEmployeePayrollDeduction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607281310239_adjustments.resx">
+      <DependentUpon>201607281310239_adjustments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

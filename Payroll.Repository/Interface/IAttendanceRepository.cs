@@ -14,5 +14,7 @@ namespace Payroll.Repository.Interface
         IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 
         IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate, bool isHoursCounted);
+
+        IList<Attendance> GetAttendanceByProcessing(int employeeId, DateTime fromDate, DateTime toDate, bool isHoursCounted);
     }
 }

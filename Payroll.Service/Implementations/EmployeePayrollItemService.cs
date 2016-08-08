@@ -91,6 +91,10 @@ namespace Payroll.Service.Implementations
 
                 var employeeWorkSchedule =
                    _employeeWorkScheduleService.GetByEmployeeId(employee.EmployeeId);
+                if (employeeWorkSchedule == null)
+                {
+                    continue;
+                }
                 var workSchedule = employeeWorkSchedule.WorkSchedule;
 
                 var employeePayrollItemList = new List<EmployeePayrollItem>();
