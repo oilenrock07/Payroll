@@ -41,6 +41,7 @@ namespace Payroll.Scheduler.Schedules
         private readonly ITaxRepository _taxRepository;
         private readonly IEmployeePayrollItemRepository _employeePayrollItemRepository;
         private readonly IEmployeeAdjustmentRepository _employeeAdjustmentRepository;
+        private readonly IAdjustmentRepository _adjustmentRepository;
 
         private readonly IEmployeeService _employeeService;
         private readonly IEmployeeInfoService _employeeInfoService;
@@ -84,11 +85,12 @@ namespace Payroll.Scheduler.Schedules
             _deductionRepository = new DeductionRepository(_databaseFactory);
             _employeePayrollItemRepository = new EmployeePayrollItemRepository(_databaseFactory);
             _employeeAdjustmentRepository = new EmployeeAdjustmentRepository(_databaseFactory);
+            _adjustmentRepository = new AdjustmentRepository(_databaseFactory);
 
             _employeeService = new EmployeeService(_employeeRepository);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
             _attendanceLogService = new AttendanceLogService(_attendanceLogRepository);
-            _attendanceService = new AttendanceService(_unitOfWork, _attendanceRepository, _attendanceLogService);
+            _attendanceService = new AttendanceService(_unitOfWork, _attendanceRepository, _attendanceLogService, _employeeHoursRepository);
             _settingService = new SettingService(_settingRepository);
             _employeeWorkScheduleService = new EmployeeWorkScheduleService(_employeeWorkScheduleRepository);
             _employeeSalaryService = new EmployeeSalaryService();
@@ -101,9 +103,8 @@ namespace Payroll.Scheduler.Schedules
             _deductionService = new DeductionService(_deductionRepository);
             _taxService = new TaxService(_taxRepository);
             _employeePayrollDeductionService = new EmployeePayrollDeductionService(_unitOfWork, _settingService, _employeeSalaryService, _employeeInfoService, _employeeDeductionService, _deductionService, _employeePayrollDeductionRepository, _taxService);
-            _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService);
+            _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService, _employeePayrollRepository, _employeePayrollDeductionRepository, _employeeAdjustmentRepository, _adjustmentRepository);
             _employeeAdjusmentService = new EmployeeAdjustmentService(_employeeAdjustmentRepository, _employeeRepository);
-
             _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeePayrollRepository, _settingService, null, _employeeInfoService, null, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService, _employeeAdjusmentService);
 
         }

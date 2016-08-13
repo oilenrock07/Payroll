@@ -17,6 +17,7 @@ namespace Payroll.Schedules.Scheduler
         public readonly IAttendanceLogRepository _attendanceLogRepository;
         public readonly IAttendanceLogService _attendanceLogService;
         public readonly IAttendanceService _attendanceService;
+        public readonly IEmployeeHoursRepository _employeeHoursRepository;
 
         public AttendanceSchedule()
         {
@@ -24,9 +25,10 @@ namespace Payroll.Schedules.Scheduler
             _employeeDepartmentRepository = new EmployeeDepartmentRepository(_databaseFactory);
             _employeeRepository = new EmployeeRepository(_databaseFactory, _employeeDepartmentRepository);
             _attendanceLogRepository = new AttendanceLogRepository(_databaseFactory, _employeeRepository);
+            _employeeHoursRepository = new EmployeeHoursRepository(_databaseFactory);
 
             _attendanceLogService = new AttendanceLogService(_attendanceLogRepository);
-            _attendanceService = new AttendanceService(_unitOfWork, _attendanceRepository, _attendanceLogService);
+            _attendanceService = new AttendanceService(_unitOfWork, _attendanceRepository, _attendanceLogService, _employeeHoursRepository);
             
         }
 

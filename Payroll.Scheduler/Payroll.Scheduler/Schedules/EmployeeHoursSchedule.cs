@@ -45,7 +45,7 @@ namespace Payroll.Scheduler.Schedules
             _employeeService = new EmployeeService(_employeeRepository);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
             _attendanceLogService = new AttendanceLogService(_attendanceLogRepository);
-            _attendanceService = new AttendanceService(_unitOfWork, _attendanceRepository, _attendanceLogService);
+            _attendanceService = new AttendanceService(_unitOfWork, _attendanceRepository, _attendanceLogService, _employeeHoursRepository);
             _settingService = new SettingService(_settingRepository);
             _employeeWorkScheduleService = new EmployeeWorkScheduleService(_employeeWorkScheduleRepository);
             _employeeHoursService = new EmployeeHoursService(_unitOfWork, _employeeHoursRepository, _attendanceService, _settingService, _employeeWorkScheduleService, _employeeInfoService);
