@@ -38,7 +38,7 @@ namespace Payroll.Repository.Repositories
 
         public IList<Attendance> GetAttendanceByProcessing(int employeeId, DateTime fromDate, DateTime toDate, bool isHoursCounted)
         {
-            return Find(a => a.IsActive && a.EmployeeId == employeeId && a.IsHoursCounted == isHoursCounted && a.ClockOut != null &&
+            return Find(a => a.IsActive && a.EmployeeId == employeeId && a.ClockOut != null &&
                 ((a.ClockIn >= fromDate && a.ClockIn < toDate) ||
                     (a.ClockOut >= fromDate && a.ClockOut < toDate))).OrderBy(a => a.ClockIn).ToList();
         }

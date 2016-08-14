@@ -57,10 +57,15 @@ namespace Payroll.Service.Implementations
             //Get all active employee with the same frequency
            var employees = _employeeInfoService.GetAllActive();
 
+            //Delete existing entries with the same date
+            var employeeHoursList = this.GetByDateRange(fromDate, toDate);
+            _employeeHoursRepository.DeleteAll(employeeHoursList);
+            _unitOfWork.Commit();
+
             foreach (var employee in employees)
             {
                 employeeWorkSchedule = _employeeWorkScheduleService.GetByEmployeeId(employee.EmployeeId);
-
+              
                 //Will not compute if work schedule is null
                 if (employeeWorkSchedule != null)
                 {
@@ -99,11 +104,11 @@ namespace Payroll.Service.Implementations
                 computeOT();
                 computeNightDifferential();
 
-                _attendanceService.Update(a);
+                /*_attendanceService.Update(a);
                 if (a.ClockOut.Value.Date.Equals(day.Date))
                 {
                     a.IsHoursCounted = true;
-                }
+                }*/
             }
 
             _unitOfWork.Commit();
