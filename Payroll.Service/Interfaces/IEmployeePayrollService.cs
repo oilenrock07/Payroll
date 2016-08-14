@@ -40,7 +40,7 @@ namespace Payroll.Service.Interfaces
          */
         IList<EmployeePayroll> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate);
 
-        IEnumerable<PayrollDate> GetPayrollDates(int months);
+        IEnumerable<PayrollDate> GetPayrollDates(int months, DateTime? endDate = null);
 
         EmployeePayroll GetById(int id);
 

@@ -100,3 +100,7 @@ input[type="checkbox"].input-validation-error {
 .totalTableBorder { border-top:2px solid; }
 
 .table-payroll-detail td  { width: 25%;}
+
+.pos-amount { color: green}
+
+.neg-amount { color: red}
