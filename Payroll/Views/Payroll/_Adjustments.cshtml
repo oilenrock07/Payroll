@@ -1,5 +1,13 @@
 ﻿@model Payroll.Models.Payroll.EmployeeAdjustmentViewModel
 
+@if (ViewBag.EditAdjustment == true)
+{
+    <p>
+        @Html.ActionLink("Create New", "CreateAdjustment", new { date = Model.Date })
+    </p>
+}
+
+
 <table class="table table-responsive table-striped table-hover">
     <tr>
         <th>
@@ -25,10 +33,19 @@
                 @Html.DisplayFor(modelItem => item.EmployeeAdjustmentCount)
             </td>
             <td>
-                @Html.ActionLink("Create Adjustment", "CreateAdjustment", new { date = Model.Date, id = item.Employee.EmployeeId })
+                @if (ViewBag.EditAdjustment == true)
+                {
+                    @Html.ActionLink("Create Adjustment", "CreateAdjustment", new { date = Model.Date, id = item.Employee.EmployeeId })
+                }
+
                 @if (item.EmployeeAdjustmentCount > 0)
                 {
-                    <span> | <a href="javascript:void(0)" class="js-viewAdjustment" data-employeeid="@item.Employee.EmployeeId">View Adjustments</a></span>
+                    if(ViewBag.EditAdjustment == true)
+                    {
+                        <span>|</span>
+                    }
+
+                    <a href="javascript:void(0)" class="js-viewAdjustment" data-employeeid="@item.Employee.EmployeeId">View Adjustments</a>
                 }
             </td>
         </tr>

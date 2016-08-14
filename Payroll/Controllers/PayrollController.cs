@@ -189,8 +189,10 @@ namespace Payroll.Controllers
 
         public ActionResult Adjustment()
         {
-            var payrollDates = _employeePayrollService.GetPayrollDates(3).ToList();
+            var payrollDates = _employeePayrollService.GetPayrollDates(3, DateTime.Now.AddDays(7)).ToList();
             var firstDate = payrollDates.First().SerializedDate;
+            
+            ViewBag.EditAdjustment = true;
             var viewModel = new EmployeeAdjustmentViewModel
             {
                 Adjustments = payrollDates
@@ -201,7 +203,7 @@ namespace Payroll.Controllers
                     }),
                 EmployeeAdjustments = GetEmployeeAdjustments(firstDate),
                 Date = firstDate
-        };
+            };
 
             return View(viewModel);
         }
@@ -209,6 +211,8 @@ namespace Payroll.Controllers
         [HttpPost]
         public PartialViewResult GetAdjustments(string date)
         {
+            var lastPayrollDate = _employeePayrollService.GetNextPayrollStartDate();
+            ViewBag.EditAdjustment = date.Split('-')[1].DeserializeDate().AddDays(1) >= lastPayrollDate ? true : false;
 
             var viewModel = new EmployeeAdjustmentViewModel {Date = date, EmployeeAdjustments = GetEmployeeAdjustments(date)};
             return PartialView("_Adjustments", viewModel);
@@ -231,6 +235,9 @@ namespace Payroll.Controllers
             var dates = date.Split('-');
             var payrollStartDate = dates[0].DeserializeDate();
             var payrollEndDate = dates[1].DeserializeDate();
+            var lastPayrollDate = _employeePayrollService.GetNextPayrollStartDate();
+
+            ViewBag.EditAdjustment = payrollEndDate.AddDays(1) >= lastPayrollDate ? true : false;
             ViewBag.Date = date;
 
             var adjustments = _employeeAdjustmentService.GetEmployeeAdjustments(id, payrollStartDate, payrollEndDate);

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Payroll.Entities.Payroll.EmployeeAdjustment>
+﻿@using Payroll.Common.Extension;
+@model IEnumerable<Payroll.Entities.Payroll.EmployeeAdjustment>
 
 <table class="table table-responsive table-striped">
     <tr>
@@ -10,14 +11,20 @@
     </tr>
     @foreach (var item in Model.ToList())
     {
+
+        var amountClass = item.Adjustment.AdjustmentType == Payroll.Entities.Enums.AdjustmentType.Add ? "pos-amount" : "neg-amount";
+
         <tr>
             <td>@item.Date.ToShortDateString()</td>
             <td>@item.Adjustment.AdjustmentName</td>
-            <td>@item.Amount</td>
+            <td class="@amountClass">@item.Amount.FormatAmount()</td>
             <td>@item.Remarks</td>
             <td>
-                @Html.ActionLink("Edit", "EditAdjustment", new {id = item.EmployeeAdjustmentId, date = ViewBag.Date }) |
-                @Html.ActionLink("Delete", "DeleteAdjustment", new { id = item.EmployeeAdjustmentId }, new {@class = "js-maintenanceDelete" })
+                @if (ViewBag.EditAdjustment == true)
+                {
+                    @Html.ActionLink("Edit", "EditAdjustment", new { id = item.EmployeeAdjustmentId, date = ViewBag.Date }) <text>|</text>
+                    @Html.ActionLink("Delete", "DeleteAdjustment", new { id = item.EmployeeAdjustmentId }, new {@class = "js-maintenanceDelete" })
+                }
             </td>
         </tr>
 

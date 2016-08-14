@@ -442,12 +442,12 @@ namespace Payroll.Service.Implementations
             return GetNextPayrollStartDate(null);
         }
 
-        public virtual IEnumerable<PayrollDate> GetPayrollDates(int months)
+        public virtual IEnumerable<PayrollDate> GetPayrollDates(int months, DateTime? endDate = null)
         {
             var dates = new List<PayrollDate>();
 
             var weekStart = Convert.ToInt32(_settingService.GetByKey(PAYROLL_WEEK_START));
-            var lastPayrollDate = DateTime.Now.StartOfWeek((DayOfWeek)weekStart);
+            var lastPayrollDate = (endDate !=null ? endDate.Value : DateTime.Now).StartOfWeek((DayOfWeek)weekStart);
             var lastPayroll = lastPayrollDate.AddMonths(-months);
            
             while (lastPayrollDate >= lastPayroll)
