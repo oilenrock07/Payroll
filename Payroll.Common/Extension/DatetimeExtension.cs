@@ -67,6 +67,19 @@ namespace Payroll.Common.Extension
                 dateTime.Kind);
         }
 
+        public static DateTime ChangeSeconds(this DateTime dateTime, int seconds, int milliseconds)
+        {
+            return new DateTime(
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                dateTime.Hour,
+                dateTime.Minute,
+                seconds,
+                milliseconds,
+                dateTime.Kind);
+        }
+
         public static bool IsRestDay(this DateTime date, int startDay, int endDay)
         {
             DayOfWeek day = date.DayOfWeek;

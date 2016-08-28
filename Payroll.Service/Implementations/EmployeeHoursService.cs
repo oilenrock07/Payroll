@@ -180,9 +180,9 @@ namespace Payroll.Service.Implementations
                     baseTimeIn = clockOut.Value;
                 }
 
-                TimeSpan? advancedOTHoursCount = baseTimeIn - clockIn;
+                TimeSpan advancedOTHoursCount = baseTimeIn.ChangeSeconds(0,0) - clockIn.ChangeSeconds(0, 0);
 
-                if (advancedOTHoursCount != null && advancedOTHoursCount.Value.TotalHours > 0)
+                if (advancedOTHoursCount.TotalHours > 0)
                 {
                    EmployeeHours advancedOTHours =
                    new EmployeeHours
@@ -190,7 +190,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = Math.Round(advancedOTHoursCount.Value.TotalHours, 2),
+                       Hours = Math.Round(advancedOTHoursCount.TotalHours, 2),
                        Type = Entities.Enums.RateType.OverTime
                    };
 
@@ -233,9 +233,9 @@ namespace Payroll.Service.Implementations
                 tempClockOut = scheduledTimeOut;
             }
 
-            TimeSpan? regularHoursCount = tempClockOut - tempClockIn;
+            TimeSpan regularHoursCount = tempClockOut.Value.ChangeSeconds(0, 0) - tempClockIn.ChangeSeconds(0,0);
 
-            if (regularHoursCount != null && regularHoursCount.Value.TotalHours > 0)
+            if (regularHoursCount.TotalHours > 0)
             {
                 EmployeeHours regularHours =
                    new EmployeeHours
@@ -243,7 +243,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = Math.Round(regularHoursCount.Value.TotalHours, 2),
+                       Hours = Math.Round(regularHoursCount.TotalHours, 2),
                        Type = Entities.Enums.RateType.Regular
                    };
 
@@ -276,9 +276,9 @@ namespace Payroll.Service.Implementations
             }
             if (clockoutLaterThanScheduled)
             {
-                TimeSpan? otHoursCount = otTimeEnd - otTimeStart;
+                TimeSpan otHoursCount = otTimeEnd.Value.ChangeSeconds(0, 0) - otTimeStart.ChangeSeconds(0, 0);
 
-                if (otHoursCount != null && otHoursCount.Value.TotalHours > 0)
+                if (otHoursCount != null && otHoursCount.TotalHours > 0)
                 {
                   EmployeeHours otHours =
                   new EmployeeHours
@@ -286,7 +286,7 @@ namespace Payroll.Service.Implementations
                       OriginAttendanceId = attendance.AttendanceId,
                       Date = day,
                       EmployeeId = attendance.EmployeeId,
-                      Hours = Math.Round(otHoursCount.Value.TotalHours, 2),
+                      Hours = Math.Round(otHoursCount.TotalHours, 2),
                       Type = Entities.Enums.RateType.OverTime
                   };
 
@@ -349,10 +349,10 @@ namespace Payroll.Service.Implementations
                     }
                 }
 
-                TimeSpan? ndHoursCount = clockOut - clockIn;
+                TimeSpan ndHoursCount = clockOut.Value.ChangeSeconds(0, 0) - clockIn.ChangeSeconds(0, 0);
 
                 //Create entry if have night differential hours to record
-                if (ndHoursCount.Value.TotalHours > 0)
+                if (ndHoursCount.TotalHours > 0)
                 {
                     EmployeeHours nightDifHours =
                         new EmployeeHours
@@ -360,7 +360,7 @@ namespace Payroll.Service.Implementations
                             OriginAttendanceId = attendance.AttendanceId,
                             Date = day,
                             EmployeeId = attendance.EmployeeId,
-                            Hours = Math.Round(ndHoursCount.Value.TotalHours, 2),
+                            Hours = Math.Round(ndHoursCount.TotalHours, 2),
                             Type = Entities.Enums.RateType.NightDifferential
                         };
 
