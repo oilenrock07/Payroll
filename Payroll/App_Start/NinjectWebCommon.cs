@@ -18,6 +18,7 @@ namespace Payroll.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using CacheManager.Core;
 
     public static class NinjectWebCommon 
     {
@@ -74,6 +75,13 @@ namespace Payroll.App_Start
             kernel.Bind<IDatabaseFactory>().To<DatabaseFactory>().InRequestScope();
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
+            kernel.Bind(typeof(ICacheManager<>)).ToMethod((context) =>
+            {
+                return CacheManager.Core.CacheFactory.Build<object>(p => p.WithSystemRuntimeCacheHandle());
+            }).InSingletonScope();
+
+
+            //kernel.Bind<ICacheFactory>().To<CacheFactory>().InSingletonScope();
 
             //Repository
             kernel.Bind<IAttendanceRepository>().To<AttendanceRepository>().InRequestScope();

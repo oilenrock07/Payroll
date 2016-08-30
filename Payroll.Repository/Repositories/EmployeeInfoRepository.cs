@@ -5,20 +5,34 @@ using Payroll.Infrastructure.Implementations;
 using Payroll.Repository.Interface;
 using System.Collections.Generic;
 using System;
+using CacheManager.Core;
 
 namespace Payroll.Repository.Repositories
 {
     public class EmployeeInfoRepository : Repository<EmployeeInfo>, IEmployeeInfoRepository
     {
-        public EmployeeInfoRepository(IDatabaseFactory databaseFactory)
+
+        private ICacheManager<object> _cacheManager;
+
+        public EmployeeInfoRepository(IDatabaseFactory databaseFactory, ICacheManager<object> cacheManager)
             : base (databaseFactory)
         {
             DbSet = databaseFactory.GetContext().EmployeeInfos;
+            _cacheManager = cacheManager;
         }
 
         public EmployeeInfo GetByEmployeeId(int employeeId)
         {
-            return Find(x => x.Employee.EmployeeId == employeeId).FirstOrDefault();
+            var cachedEmployee = _cacheManager.Get("emp" + employeeId);
+            if (cachedEmployee == null)
+            {
+                var employee = Find(x => x.Employee.EmployeeId == employeeId).FirstOrDefault();
+                _cacheManager.Add("emp" + employeeId, employee);
+
+                return employee;
+            }
+
+            return cachedEmployee as EmployeeInfo;
         }
 
         public IList<EmployeeInfo> GetActiveByPaymentFrequency(int paymentFrequencyId)
