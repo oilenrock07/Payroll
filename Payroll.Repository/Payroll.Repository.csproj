@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\CacheRegion.cs" />
+    <Compile Include="Constants\SettingValue.cs" />
     <Compile Include="Interface\IAdjustmentRepository.cs" />
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />

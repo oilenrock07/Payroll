@@ -15,6 +15,7 @@ using Payroll.Repository.Interface;
 using Payroll.Repository.Models.Employee;
 using Payroll.Resources;
 using Payroll.Service.Interfaces;
+using Payroll.Repository.Constants;
 
 namespace Payroll.Controllers
 {
@@ -274,14 +275,14 @@ namespace Payroll.Controllers
         public virtual ActionResult Leave()
         {
             var leaves = _leaveRepository.Find(x => x.IsActive);
-            ViewBag.SupportRefundable = _settingRepository.GetSettingValue("SUPPORT_REFUNDABLE_LEAVE", "false");
+            ViewBag.SupportRefundable = _settingRepository.GetSettingValue(SettingValue.SUPPORT_REFUNDABLE_LEAVE, "false");
 
             return View(leaves);
         }
 
         public virtual ActionResult CreateLeave()
         {
-            ViewBag.SupportRefundable = _settingRepository.GetSettingValue("SUPPORT_REFUNDABLE_LEAVE", "false");
+            ViewBag.SupportRefundable = _settingRepository.GetSettingValue(SettingValue.SUPPORT_REFUNDABLE_LEAVE, "false");
             return View(new Leave());
         }
 
@@ -299,7 +300,7 @@ namespace Payroll.Controllers
 
         public virtual ActionResult EditLeave(int id)
         {
-            ViewBag.SupportRefundable = _settingRepository.GetSettingValue("SUPPORT_REFUNDABLE_LEAVE", "false");
+            ViewBag.SupportRefundable = _settingRepository.GetSettingValue(SettingValue.SUPPORT_REFUNDABLE_LEAVE, "false");
             var leave = _leaveRepository.GetById(id);
             return View(leave);
         }

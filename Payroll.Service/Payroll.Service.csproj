@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\CachedDataService.cs" />
     <Compile Include="Implementations\AttendanceLogService.cs" />
     <Compile Include="Implementations\AttendanceService.cs" />
     <Compile Include="Implementations\DeductionAmountService.cs" />
@@ -69,12 +68,9 @@
     <Compile Include="Implementations\UserRoleService.cs" />
     <Compile Include="Implementations\ValidationService.cs" />
     <Compile Include="Interfaces\IAttendanceLogService.cs" />
-    <Compile Include="Implementations\CacheService.cs" />
     <Compile Include="Implementations\SettingService.cs" />
     <Compile Include="Implementations\WebService.cs" />
     <Compile Include="Interfaces\IAttendanceService.cs" />
-    <Compile Include="Interfaces\ICachedDataService.cs" />
-    <Compile Include="Interfaces\ICacheService.cs" />
     <Compile Include="Interfaces\IDeductionAmountService.cs" />
     <Compile Include="Interfaces\IDeductionService.cs" />
     <Compile Include="Interfaces\IEmployeeAdjustmentService.cs" />
