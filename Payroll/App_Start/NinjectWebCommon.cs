@@ -80,9 +80,6 @@ namespace Payroll.App_Start
                 return CacheManager.Core.CacheFactory.Build<object>(p => p.WithSystemRuntimeCacheHandle());
             }).InSingletonScope();
 
-
-            //kernel.Bind<ICacheFactory>().To<CacheFactory>().InSingletonScope();
-
             //Repository
             kernel.Bind<IAttendanceRepository>().To<AttendanceRepository>().InRequestScope();
             kernel.Bind<IEmployeeRepository>().To<EmployeeRepository>().InRequestScope();

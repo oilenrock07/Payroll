@@ -68,13 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\BaseEntityService.cs" />
-    <Compile Include="Implementations\PayrollCacheManager.cs" />
     <Compile Include="Implementations\DatabaseFactory.cs" />
     <Compile Include="Implementations\Repository.cs" />
     <Compile Include="Implementations\UnitOfWork.cs" />
     <Compile Include="Interfaces\IBaseEntityService.cs" />
     <Compile Include="Interfaces\IDatabaseFactory.cs" />
-    <Compile Include="Interfaces\IPayrollCacheManager.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -42,7 +42,7 @@ namespace Payroll.Infrastructure.Implementations
             return DbSet;
         }
 
-        public IQueryable<T> GetAllActive()
+        public virtual IQueryable<T> GetAllActive()
         {
             return Find(e => e.IsActive);
         }
