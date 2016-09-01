@@ -120,6 +120,27 @@
   <data name="ERROR_IMAGE_UPLOAD" xml:space="preserve">
     <value>Error uploading image for employee {0}</value>
   </data>
+  <data name="INFO_LEAVE_APPROVE_REJECT" xml:space="preserve">
+    <value>Leave {0} has been successfully {1} by {2}</value>
+  </data>
+  <data name="INFO_LEAVE_CREATE" xml:space="preserve">
+    <value>Leave {0} has been successfully created by {1}</value>
+  </data>
+  <data name="INFO_LEAVE_DELETED" xml:space="preserve">
+    <value>Leave {0} has been successfully deleted by {1}</value>
+  </data>
+  <data name="INFO_LEAVE_UPDATED" xml:space="preserve">
+    <value>Leave {0} has been successfully updated by {1}</value>
+  </data>
+  <data name="INFO_LOAN_CREATE" xml:space="preserve">
+    <value>Loan {0} has been successfully created by {1}</value>
+  </data>
+  <data name="INFO_LOAN_DELETE" xml:space="preserve">
+    <value>Loan {0} has been successfully deleted by {1}</value>
+  </data>
+  <data name="INFO_LOAN_UPDATE" xml:space="preserve">
+    <value>Loan {0} has been successfully updated by {1}</value>
+  </data>
   <data name="INFO_USER_CREATE" xml:space="preserve">
     <value>User {0} has been successfully created by {1}</value>
   </data>

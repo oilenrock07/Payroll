@@ -20,6 +20,15 @@ namespace Payroll.Repository.Repositories
             _cacheManager = cacheManager;
         }
 
+        public override void Update(Setting entity)
+        {
+            base.Update(entity);
+
+            var cachedEmployee = _cacheManager != null ? _cacheManager.Get(entity.SettingKey, CacheRegion.Settings) : null;
+            if (cachedEmployee != null)
+                _cacheManager.Remove(entity.SettingKey, CacheRegion.Settings);
+        }
+
         public new virtual IEnumerable<Setting> GetAll()
         {
             return base.GetAll().ToList();

@@ -70,6 +70,69 @@ namespace Payroll.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leave {0} has been successfully {1} by {2}.
+        /// </summary>
+        internal static string INFO_LEAVE_APPROVE_REJECT {
+            get {
+                return ResourceManager.GetString("INFO_LEAVE_APPROVE_REJECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave {0} has been successfully created by {1}.
+        /// </summary>
+        internal static string INFO_LEAVE_CREATE {
+            get {
+                return ResourceManager.GetString("INFO_LEAVE_CREATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave {0} has been successfully deleted by {1}.
+        /// </summary>
+        internal static string INFO_LEAVE_DELETED {
+            get {
+                return ResourceManager.GetString("INFO_LEAVE_DELETED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave {0} has been successfully updated by {1}.
+        /// </summary>
+        internal static string INFO_LEAVE_UPDATED {
+            get {
+                return ResourceManager.GetString("INFO_LEAVE_UPDATED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan {0} has been successfully created by {1}.
+        /// </summary>
+        internal static string INFO_LOAN_CREATE {
+            get {
+                return ResourceManager.GetString("INFO_LOAN_CREATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan {0} has been successfully deleted by {1}.
+        /// </summary>
+        internal static string INFO_LOAN_DELETE {
+            get {
+                return ResourceManager.GetString("INFO_LOAN_DELETE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loan {0} has been successfully updated by {1}.
+        /// </summary>
+        internal static string INFO_LOAN_UPDATE {
+            get {
+                return ResourceManager.GetString("INFO_LOAN_UPDATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User {0} has been successfully created by {1}.
         /// </summary>
         internal static string INFO_USER_CREATE {

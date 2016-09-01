@@ -511,6 +511,8 @@ namespace Payroll.Controllers
             _employeeLoanRepository.Add(employeeLoan);
 
             _unitOfWork.Commit();
+
+            _logger.Info(LoggerMessages.INFO_LOAN_CREATE, employeeLoan.LoanId, User.Identity.GetUserId());
             return RedirectToAction("EmployeeLoans");
         }
 
@@ -572,6 +574,7 @@ namespace Payroll.Controllers
             model.IsActive = true;
 
             _unitOfWork.Commit();
+            _logger.Info(LoggerMessages.INFO_LOAN_UPDATE, viewModel.LoanId, User.Identity.GetUserId());
             return RedirectToAction("EmployeeLoans");
         }
 
@@ -583,6 +586,7 @@ namespace Payroll.Controllers
             employeeLoan.IsActive = false;
             _unitOfWork.Commit();
 
+            _logger.Info(LoggerMessages.INFO_LOAN_DELETE, id, User.Identity.GetUserId());
             return RedirectToAction("EmployeeLoans");
         }
 
@@ -744,6 +748,8 @@ namespace Payroll.Controllers
 
             _employeeLeaveRepository.Add(employeeLeave);
             _unitOfWork.Commit();
+
+            _logger.Info(LoggerMessages.INFO_LEAVE_CREATE, employeeLeave.EmployeeLeaveId, User.Identity.GetUserId());
             return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year});
         }
 
@@ -766,6 +772,7 @@ namespace Payroll.Controllers
 
 
             _unitOfWork.Commit();
+            _logger.Info(LoggerMessages.INFO_LEAVE_UPDATED, employeeLeave.EmployeeLeaveId, User.Identity.GetUserId());
             return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year });
         }
 
@@ -776,6 +783,7 @@ namespace Payroll.Controllers
             employeeLeave.LeaveStatus = status;
             _unitOfWork.Commit();
 
+            _logger.Info(LoggerMessages.INFO_LEAVE_APPROVE_REJECT, employeeLeave.EmployeeLeaveId, status.ToString(), User.Identity.GetUserId());
             return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year });
         }
 
@@ -786,6 +794,7 @@ namespace Payroll.Controllers
             employeeLeave.IsActive = false;
             _unitOfWork.Commit();
 
+            _logger.Info(LoggerMessages.INFO_LEAVE_DELETED, employeeLeave.EmployeeLeaveId, User.Identity.GetUserId());
             return RedirectToAction("EmployeeLeaves", new { month = DateTime.Now.Month, year = DateTime.Now.Year });
         }
         #endregion
