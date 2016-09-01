@@ -78,15 +78,16 @@
     <Compile Include="Leave.cs" />
     <Compile Include="Loan.cs" />
     <Compile Include="LoanPayment.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="LogInDisplayClient.cs" />
     <Compile Include="Machine.cs" />
-    <Compile Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.cs" />
-    <Compile Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.Designer.cs">
-      <DependentUpon>201607280952200_AddedDeductionInEmployeePayrollDeduction.cs</DependentUpon>
+    <Compile Include="Migrations\201608290754596_New.cs" />
+    <Compile Include="Migrations\201608290754596_New.Designer.cs">
+      <DependentUpon>201608290754596_New.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607281310239_adjustments.cs" />
-    <Compile Include="Migrations\201607281310239_adjustments.Designer.cs">
-      <DependentUpon>201607281310239_adjustments.cs</DependentUpon>
+    <Compile Include="Migrations\201609010018457_Logs.cs" />
+    <Compile Include="Migrations\201609010018457_Logs.Designer.cs">
+      <DependentUpon>201609010018457_Logs.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
@@ -136,11 +137,11 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201607280952200_AddedDeductionInEmployeePayrollDeduction.resx">
-      <DependentUpon>201607280952200_AddedDeductionInEmployeePayrollDeduction.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608290754596_New.resx">
+      <DependentUpon>201608290754596_New.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607281310239_adjustments.resx">
-      <DependentUpon>201607281310239_adjustments.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609010018457_Logs.resx">
+      <DependentUpon>201609010018457_Logs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

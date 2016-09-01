@@ -38,7 +38,8 @@ namespace Payroll.Entities.Contexts
         public virtual IDbSet<SchedulerLog> SchedulerLogs { get; set; }
         public virtual IDbSet<Adjustment> Adjustments { get; set; }
         public virtual IDbSet<LogInDisplayClient> LoginDisplayClients { get; set; }
-
+        public virtual IDbSet<Log> Logs { get; set; }
+        
         //Payroll
         public virtual IDbSet<Deduction> Deductions { get; set; }
         public virtual IDbSet<EmployeeAdjustment> EmployeeAdjustments { get; set; }

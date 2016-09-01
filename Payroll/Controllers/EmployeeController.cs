@@ -21,6 +21,7 @@ using Payroll.Common.Extension;
 using Payroll.Repository.Repositories;
 using Payroll.Resources;
 using Payroll.Service.Interfaces;
+using NLog;
 
 namespace Payroll.Controllers
 {
@@ -45,6 +46,8 @@ namespace Payroll.Controllers
         private readonly IEmployeeWorkScheduleService _employeeWorkScheduleService;
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
+
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public EmployeeController(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IEmployeeInfoRepository employeeInfoRepository,
             ISettingRepository settingRepository, IPositionRepository positionRepository, IEmployeeLoanRepository employeeLoanRepository,
@@ -331,7 +334,8 @@ namespace Payroll.Controllers
                 newEmployee.Picture = imagePath;
                 _unitOfWork.Commit();
             }
-            
+
+            _logger.Info(LoggerMessages.INFO_USER_CREATE, newEmployee.EmployeeId, User.Identity.GetUserId());
             return RedirectToAction("Index");
         }
 
@@ -399,6 +403,7 @@ namespace Payroll.Controllers
                 _unitOfWork.Commit();
             }
 
+            _logger.Info(LoggerMessages.INFO_USER_UPDATE, employeeInfo.EmployeeId, User.Identity.GetUserId());
             return RedirectToAction("Index");
         }
 
@@ -411,6 +416,7 @@ namespace Payroll.Controllers
             employee.IsActive = false;
             _unitOfWork.Commit();
 
+            _logger.Info(LoggerMessages.INFO_USER_DELETE, employee.EmployeeId, User.Identity.GetUserId());
             return RedirectToAction("Index");
         }
 
@@ -436,7 +442,7 @@ namespace Payroll.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //handle exception here
+                    _logger.Error(ex, LoggerMessages.ERROR_IMAGE_UPLOAD, id);
                 }
             }
 
