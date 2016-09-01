@@ -120,6 +120,21 @@
   <data name="ERROR_IMAGE_UPLOAD" xml:space="preserve">
     <value>Error uploading image for employee {0}</value>
   </data>
+  <data name="INFO_ACCOUNT_LOGIN" xml:space="preserve">
+    <value>User {0} has been successfully logged in</value>
+  </data>
+  <data name="INFO_ACCOUNT_LOGOUT" xml:space="preserve">
+    <value>User {0} has been successfully logged out</value>
+  </data>
+  <data name="INFO_ACCOUNT_REGISTER" xml:space="preserve">
+    <value>User {0} has been successfully registered by {1}</value>
+  </data>
+  <data name="INFO_ACCOUNT_UPDATE" xml:space="preserve">
+    <value>User {0} has been successfully updated by {1}</value>
+  </data>
+  <data name="INFO_ACCOUNT_UPDATE_ROLE" xml:space="preserve">
+    <value>User's {0} role has been changed to {1} by {2}</value>
+  </data>
   <data name="INFO_LEAVE_APPROVE_REJECT" xml:space="preserve">
     <value>Leave {0} has been successfully {1} by {2}</value>
   </data>

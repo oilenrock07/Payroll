@@ -15,6 +15,7 @@ using Payroll.Models.Account;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Interfaces;
+using NLog;
 
 namespace Payroll.Controllers
 {
@@ -26,6 +27,8 @@ namespace Payroll.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRoleService _userRoleService;
+        
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public AccountController(IRoleRepository roleRepository, IUserRoleRepository userRoleRepository,
             IUserRepository userRepository, IUnitOfWork unitOfWork, IUserRoleService userRoleService)
@@ -72,6 +75,8 @@ namespace Payroll.Controllers
                 {
                     var usr = await UserManager.FindByIdAsync(user.Id);
                     await SignInAsync(usr, model.RememberMe);
+                    
+                    _logger.Info(Payroll.Resources.LoggerMessages.INFO_ACCOUNT_LOGIN, user.Id);
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -129,6 +134,7 @@ namespace Payroll.Controllers
                     });
                     _unitOfWork.Commit();
 
+                    _logger.Info(Payroll.Resources.LoggerMessages.INFO_ACCOUNT_REGISTER, usr.Id, User.Identity.GetUserId());
                     //await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Account");
                 }
@@ -336,6 +342,7 @@ namespace Payroll.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            _logger.Info(Payroll.Resources.LoggerMessages.INFO_ACCOUNT_LOGIN, User.Identity.GetUserId());
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
@@ -429,6 +436,9 @@ namespace Payroll.Controllers
             _userRoleRepository.UpdateUserRole(viewModel.UserRole.Id, selectedRoles);
 
             _unitOfWork.Commit();
+
+            _logger.Info(Payroll.Resources.LoggerMessages.INFO_ACCOUNT_UPDATE, user.Id, User.Identity.GetUserId());
+            _logger.Info(Payroll.Resources.LoggerMessages.INFO_ACCOUNT_UPDATE_ROLE, user.Id, String.Join(",", selectedRoles), User.Identity.GetUserId());
             return RedirectToAction("Index");
         }
 

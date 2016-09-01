@@ -70,6 +70,51 @@ namespace Payroll.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User {0} has been successfully logged in.
+        /// </summary>
+        internal static string INFO_ACCOUNT_LOGIN {
+            get {
+                return ResourceManager.GetString("INFO_ACCOUNT_LOGIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} has been successfully logged out.
+        /// </summary>
+        internal static string INFO_ACCOUNT_LOGOUT {
+            get {
+                return ResourceManager.GetString("INFO_ACCOUNT_LOGOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} has been successfully registered by {1}.
+        /// </summary>
+        internal static string INFO_ACCOUNT_REGISTER {
+            get {
+                return ResourceManager.GetString("INFO_ACCOUNT_REGISTER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} has been successfully updated by {1}.
+        /// </summary>
+        internal static string INFO_ACCOUNT_UPDATE {
+            get {
+                return ResourceManager.GetString("INFO_ACCOUNT_UPDATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User&apos;s {0} role has been changed to {1} by {2}.
+        /// </summary>
+        internal static string INFO_ACCOUNT_UPDATE_ROLE {
+            get {
+                return ResourceManager.GetString("INFO_ACCOUNT_UPDATE_ROLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leave {0} has been successfully {1} by {2}.
         /// </summary>
         internal static string INFO_LEAVE_APPROVE_REJECT {
