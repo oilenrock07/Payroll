@@ -6,6 +6,7 @@ using Payroll.Repository.Interface;
 using Payroll.Service.Interfaces;
 using Payroll.Service.Interfaces.Model;
 using Payroll.Service.Models;
+using Payroll.Repository.Constants;
 
 namespace Payroll.Service.Implementations
 {
@@ -30,7 +31,7 @@ namespace Payroll.Service.Implementations
 
             if (itemsPerPage == 0)
             {
-                itemsPerPage = Convert.ToInt16(_settingRepository.GetSettingValue("PAGINATION_ITEMS_PER_PAGE"));
+                itemsPerPage = Convert.ToInt16(_settingRepository.GetSettingValue(SettingValue.PAGINATION_ITEMS_PER_PAGE));
             }
 
             return new PaginationModel

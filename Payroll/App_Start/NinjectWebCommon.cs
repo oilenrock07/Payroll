@@ -2,7 +2,6 @@ using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
-using Payroll.Service.Caching;
 using Payroll.Service.Implementations;
 using Payroll.Service.Interfaces;
 

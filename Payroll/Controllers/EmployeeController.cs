@@ -22,6 +22,7 @@ using Payroll.Repository.Repositories;
 using Payroll.Resources;
 using Payroll.Service.Interfaces;
 using NLog;
+using Payroll.Repository.Constants;
 
 namespace Payroll.Controllers
 {
@@ -123,7 +124,7 @@ namespace Payroll.Controllers
         public virtual ActionResult Edit(int id)
         {
             var viewModel = GetEmployeeViewModel(_employeeInfoRepository.GetByEmployeeId(id));
-            viewModel.IsPrivate = _settingRepository.GetSettingValue("IS_PRIVATE_COMPANY", "true") == "true";
+            viewModel.IsPrivate = _settingRepository.GetSettingValue(SettingValue.IS_PRIVATE_COMPANY, "true") == "true";
 
             ViewBag.Title = "Edit Employee";
             ViewBag.FormAction = "/Employee/Edit";
@@ -135,7 +136,7 @@ namespace Payroll.Controllers
         public virtual ActionResult Create()
         {
             var viewModel = GetEmployeeViewModel(new EmployeeInfo{ Employee = new Employee()});
-            viewModel.IsPrivate = _settingRepository.GetSettingValue("IS_PRIVATE_COMPANY", "true") == "true";
+            viewModel.IsPrivate = _settingRepository.GetSettingValue(SettingValue.IS_PRIVATE_COMPANY, "true") == "true";
 
             ViewBag.Title = "Create Employee";
             ViewBag.FormAction = "/Employee/Create";
@@ -427,7 +428,7 @@ namespace Payroll.Controllers
             {
                 try
                 {
-                    var imageUploadPath = _settingRepository.GetSettingValue("EMPLOYEE_IMAGE_PATH");
+                    var imageUploadPath = _settingRepository.GetSettingValue(SettingValue.EMPLOYEE_IMAGE_PATH);
                     for (var i = 0; i < Request.Files.Count; i++)
                     {
                         var file = Request.Files[i];

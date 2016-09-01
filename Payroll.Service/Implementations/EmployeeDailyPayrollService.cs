@@ -4,6 +4,7 @@ using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Implementations;
 using Payroll.Infrastructure.Interfaces;
+using Payroll.Repository.Constants;
 using Payroll.Repository.Interface;
 using Payroll.Repository.Repositories;
 using Payroll.Service.Interfaces;
@@ -26,16 +27,6 @@ namespace Payroll.Service.Implementations
         private IEmployeeSalaryService _employeeSalaryService;
 
         private IEmployeeDailyPayrollRepository _employeeDailyPayrollRepository;
-
-        private const String RATE_REST_DAY = "RATE_REST_DAY";
-        private const String RATE_OT = "RATE_OT";
-        private const String RATE_NIGHTDIF = "RATE_NIGHTDIF";
-        private const String RATE_HOLIDAY_SPECIAL = "RATE_HOLIDAY_SPECIAL";
-        private const String RATE_HOLIDAY_REGULAR = "RATE_HOLIDAY_REGULAR";
-        private const String RATE_OT_HOLIDAY = "RATE_OT_HOLIDAY";
-        private const String PAYROLL_REGULAR_HOURS = "PAYROLL_REGULAR_HOURS";
-        private const String PAYROLL_IS_SPHOLIDAY_WITH_PAY = "PAYROLL_IS_SPHOLIDAY_WITH_PAY";
-        private const String RATE_HOLIDAY_SPECIAL_REST_DAY = "RATE_HOLIDAY_SPECIAL_REST_DAY";
 
         public EmployeeDailyPayrollService(IUnitOfWork unitOfWork, ITotalEmployeeHoursService totalEmployeeHoursService, 
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService, 
@@ -60,13 +51,13 @@ namespace Payroll.Service.Implementations
             IList<TotalEmployeeHours> totalEmployeeHours = 
                 _totalEmployeeHoursService.GetByDateRange(dateFrom, dateTo);
 
-            Double restDayRate = Double.Parse(_settingService.GetByKey(RATE_REST_DAY));
-            Double OTRate = Double.Parse(_settingService.GetByKey(RATE_OT));
-            Double nightDiffRate = Double.Parse(_settingService.GetByKey(RATE_NIGHTDIF));
-            Double holidayRegularRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_REGULAR));
-            Double holidaySpecialRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL));
-            Double OTRateHoliday = Double.Parse(_settingService.GetByKey(RATE_OT_HOLIDAY));
-            Double holidaySpecialRestDayRate = Double.Parse(_settingService.GetByKey(RATE_HOLIDAY_SPECIAL_REST_DAY));
+            Double restDayRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_REST_DAY));
+            Double OTRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_OT));
+            Double nightDiffRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_NIGHTDIF));
+            Double holidayRegularRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_HOLIDAY_REGULAR));
+            Double holidaySpecialRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_HOLIDAY_SPECIAL));
+            Double OTRateHoliday = Double.Parse(_settingService.GetByKey(SettingValue.RATE_OT_HOLIDAY));
+            Double holidaySpecialRestDayRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_HOLIDAY_SPECIAL_REST_DAY));
 
             foreach (TotalEmployeeHours totalHours in totalEmployeeHours)
             {
@@ -179,7 +170,7 @@ namespace Payroll.Service.Implementations
             {
                 //Check if holiday
                 var holiday = _holidayService.GetHoliday(day);
-                bool isSpecialHolidayPaid = Convert.ToInt32(_settingService.GetByKey(PAYROLL_IS_SPHOLIDAY_WITH_PAY)) > 0;
+                bool isSpecialHolidayPaid = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_IS_SPHOLIDAY_WITH_PAY)) > 0;
 
                 if (holiday != null && (holiday.IsRegularHoliday || isSpecialHolidayPaid))
                 {
@@ -207,7 +198,7 @@ namespace Payroll.Service.Implementations
                         //Check if already have daily entry
                         EmployeeDailyPayroll dailyPayroll = _employeeDailyPayrollRepository.GetByDate(employee.EmployeeId, day);
 
-                        int workHours = Convert.ToInt32(_settingService.GetByKey(PAYROLL_REGULAR_HOURS));
+                        int workHours = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_REGULAR_HOURS));
                         var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
 
                         //If null create a holiday pay
