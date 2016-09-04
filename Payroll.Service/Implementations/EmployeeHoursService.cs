@@ -20,6 +20,7 @@ namespace Payroll.Service.Implementations
         private readonly IEmployeeInfoService _employeeInfoService;
         private readonly ISettingService _settingService;
         private readonly IEmployeeWorkScheduleService _employeeWorkScheduleService;
+        private readonly string SCHEDULE_MINIMUM_OT_MINUTES = "SCHEDULE_MINIMUM_OT_MINUTES";
 
         private EmployeeWorkSchedule employeeWorkSchedule;
         private Attendance attendance;
@@ -190,7 +191,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = Math.Round(advancedOTHoursCount.TotalHours, 2),
+                       Hours = ComputeTotalAllowedHours(Math.Round(advancedOTHoursCount.TotalHours, 2)),
                        Type = Entities.Enums.RateType.OverTime
                    };
 
@@ -243,7 +244,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = Math.Round(regularHoursCount.TotalHours, 2),
+                       Hours = ComputeTotalAllowedHours(Math.Round(regularHoursCount.TotalHours, 2)),
                        Type = Entities.Enums.RateType.Regular
                    };
 
@@ -286,7 +287,7 @@ namespace Payroll.Service.Implementations
                       OriginAttendanceId = attendance.AttendanceId,
                       Date = day,
                       EmployeeId = attendance.EmployeeId,
-                      Hours = Math.Round(otHoursCount.TotalHours, 2),
+                      Hours = ComputeTotalAllowedHours(Math.Round(otHoursCount.TotalHours, 2)),
                       Type = Entities.Enums.RateType.OverTime
                   };
 
@@ -360,7 +361,7 @@ namespace Payroll.Service.Implementations
                             OriginAttendanceId = attendance.AttendanceId,
                             Date = day,
                             EmployeeId = attendance.EmployeeId,
-                            Hours = Math.Round(ndHoursCount.TotalHours, 2),
+                            Hours = ComputeTotalAllowedHours(Math.Round(ndHoursCount.TotalHours, 2)),
                             Type = Entities.Enums.RateType.NightDifferential
                         };
 
@@ -404,6 +405,23 @@ namespace Payroll.Service.Implementations
             var minimumOTDuration = new TimeSpan(minimumOT);
 
             return (otTimeEnd - otTimeStart) >= minimumOTDuration;
+        }
+
+        public double ComputeTotalAllowedHours(double TotalHours)
+        {
+            double total = TotalHours;
+            //Total employee hours minimum is 5 mins
+            //Get minimum OT minutes value
+            double minimumTimeInMinutes = (Convert.ToDouble
+                (_settingService.GetByKey(SCHEDULE_MINIMUM_OT_MINUTES)) / (double)60);
+            double totalMinutes = total - Math.Truncate(total);
+            if (Math.Round(totalMinutes, 2) < Math.Round(minimumTimeInMinutes, 2))
+            {
+                //Set total hours to floor
+                total = Math.Floor(total);
+            }
+
+            return total;
         }
 
         public IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime fromDate, DateTime toDate)

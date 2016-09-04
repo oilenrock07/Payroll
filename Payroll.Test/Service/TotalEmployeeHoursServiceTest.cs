@@ -787,7 +787,7 @@ namespace Payroll.Test.Service
             Assert.AreEqual(1, totalEmployeeHours[0].EmployeeId);
             Assert.AreEqual(DateTime.Parse("03/02/2016"), totalEmployeeHours[0].Date);
             Assert.AreEqual(Entities.Enums.RateType.OverTime, totalEmployeeHours[0].Type);
-            Assert.AreEqual(1, totalEmployeeHours[0].Hours);
+            Assert.AreEqual(1.08, totalEmployeeHours[0].Hours);
 
             Assert.AreEqual(2, totalEmployeeHours[1].EmployeeId);
             Assert.AreEqual(DateTime.Parse("03/02/2016"), totalEmployeeHours[1].Date);
@@ -807,12 +807,12 @@ namespace Payroll.Test.Service
             Assert.AreEqual(1, totalEmployeeHours[4].EmployeeId);
             Assert.AreEqual(DateTime.Parse("03/01/2016"), totalEmployeeHours[4].Date);
             Assert.AreEqual(Entities.Enums.RateType.OverTime, totalEmployeeHours[4].Type);
-            Assert.AreEqual(3, totalEmployeeHours[4].Hours);
+            Assert.AreEqual(3.05, totalEmployeeHours[4].Hours);
 
             Assert.AreEqual(1, totalEmployeeHours[5].EmployeeId);
             Assert.AreEqual(DateTime.Parse("03/01/2016"), totalEmployeeHours[5].Date);
             Assert.AreEqual(Entities.Enums.RateType.NightDifferential, totalEmployeeHours[5].Type);
-            Assert.AreEqual(1, totalEmployeeHours[5].Hours);
+            Assert.AreEqual(1.06, totalEmployeeHours[5].Hours);
 
             /*Assert.AreEqual(2, totalEmployeeHours[6].EmployeeId);
             Assert.AreEqual(DateTime.Parse("03/01/2016"), totalEmployeeHours[6].Date);
@@ -822,7 +822,7 @@ namespace Payroll.Test.Service
             Assert.AreEqual(2, totalEmployeeHours[6].EmployeeId);
             Assert.AreEqual(DateTime.Parse("03/01/2016"), totalEmployeeHours[6].Date);
             Assert.AreEqual(Entities.Enums.RateType.OverTime, totalEmployeeHours[6].Type);
-            Assert.AreEqual(3, totalEmployeeHours[6].Hours);
+            Assert.AreEqual(3.07, totalEmployeeHours[6].Hours);
 
             Assert.AreEqual(true, employeeHours1.IsIncludedInTotal);
             Assert.AreEqual(true, employeeHours2.IsIncludedInTotal);

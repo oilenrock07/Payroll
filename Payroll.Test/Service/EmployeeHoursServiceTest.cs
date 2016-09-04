@@ -2327,5 +2327,97 @@ namespace Payroll.Test.Service
             //Assert.AreEqual(attendance1.IsHoursCounted, true);
 
         }
+
+        /*
+  Regular 8 hours with OT and Excess Minutes within Regular Work Schedule
+*/
+        [TestMethod]
+        public void GenerateEmployeeHoursCheckMinMinutes()
+        {
+            var attendanceId1 = 1;
+            var attendanceId2 = 2;
+
+            var dataAttendance = new List<Attendance>
+                        {
+                            // Standard time
+                            new Attendance()
+                            {
+                                AttendanceId = attendanceId1,
+                                Employee = employee,
+                                ClockIn = new DateTime(2016,2,1,7,0,0),
+                                ClockOut = new DateTime(2016,2,1,12,4,3)
+                            },
+                            new Attendance()
+                            {
+                                AttendanceId = attendanceId2,
+                                Employee = employee,
+                                ClockIn = new DateTime(2016,2,1,12,30,0),
+                                ClockOut = new DateTime(2016,2,1,18,0,0)
+                            }
+                        };
+
+            InitiateServiceAndTestData(dataAttendance);
+
+            var dateFrom = DateTime.Parse("2016-02-01 00:00:00");
+            var dateTo = DateTime.Parse("2016-02-02 00:00:00");
+
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
+
+            var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
+
+            Assert.IsNotNull(employeeHours);
+            Assert.AreEqual(3, employeeHours.Count);
+
+            var employeeHourEntry1 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.Regular,
+                OriginAttendanceId = attendanceId1,
+                EmployeeId = employee.EmployeeId,
+                Hours = 5,
+                Date = dateFrom
+            };
+
+            var employeeHourEntry2 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.Regular,
+                OriginAttendanceId = attendanceId2,
+                EmployeeId = employee.EmployeeId,
+                Hours = 3.5,
+                Date = dateFrom
+            };
+
+            var employeeHourEntry3 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.OverTime,
+                OriginAttendanceId = attendanceId2,
+                EmployeeId = employee.EmployeeId,
+                Hours = 2,
+                Date = dateFrom
+            };
+
+            Assert.AreEqual(employeeHourEntry1.Type, employeeHours[0].Type);
+            Assert.AreEqual(employeeHourEntry1.OriginAttendanceId, employeeHours[0].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry1.EmployeeId, employeeHours[0].EmployeeId);
+            Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
+            Assert.AreEqual(employeeHourEntry1.Date, employeeHours[0].Date);
+
+            Assert.AreEqual(employeeHourEntry2.Type, employeeHours[1].Type);
+            Assert.AreEqual(employeeHourEntry2.OriginAttendanceId, employeeHours[1].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
+            Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
+            Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
+
+            Assert.AreEqual(employeeHourEntry3.Type, employeeHours[2].Type);
+            Assert.AreEqual(employeeHourEntry3.OriginAttendanceId, employeeHours[2].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry3.EmployeeId, employeeHours[2].EmployeeId);
+            Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
+            Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
+
+            //var attendance1 = attendanceRepository.GetById(1);
+            //Assert.AreEqual(attendance1.IsHoursCounted, true);
+
+            //var attendance2 = attendanceRepository.GetById(2);
+            //Assert.AreEqual(attendance2.IsHoursCounted, true);
+        }
     }
 }

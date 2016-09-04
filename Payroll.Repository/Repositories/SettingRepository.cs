@@ -46,7 +46,9 @@ namespace Payroll.Repository.Repositories
             if (cachedSetting == null)
             {
                 var setting = Find(x => x.SettingKey == key).FirstOrDefault();
-                _cacheManager.Add(key, setting, CacheRegion.Settings);
+                if (_cacheManager != null)
+                    _cacheManager.Add(key, setting, CacheRegion.Settings);
+               
                 return setting;
             }
 
