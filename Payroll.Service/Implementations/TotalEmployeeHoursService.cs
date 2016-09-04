@@ -19,8 +19,7 @@ namespace Payroll.Service.Implementations
         private IEmployeeHoursService _employeeHoursService;
         private IUnitOfWork _unitOfWork;
         private ISettingService _settingService;
-        private readonly string SCHEDULE_MINIMUM_OT_MINUTES = "SCHEDULE_MINIMUM_OT_MINUTES";
-
+       
         public TotalEmployeeHoursService(IUnitOfWork unitOfWork, 
             ITotalEmployeeHoursRepository totalEmployeeHoursRepository,
             IEmployeeHoursService employeeHoursService,
@@ -69,12 +68,12 @@ namespace Payroll.Service.Implementations
                             {
                                 _totalEmployeeHoursRepository.Update(existingTotalEmployeeHours);
 
-                                existingTotalEmployeeHours.Hours = ComputeTotalAllowedHours(existingTotalEmployeeHours.Hours + totalEmployeeHours.Hours);
+                                existingTotalEmployeeHours.Hours = (existingTotalEmployeeHours.Hours + totalEmployeeHours.Hours);
 
                             }
                             else //Create new entry
                             {
-                                totalEmployeeHours.Hours = ComputeTotalAllowedHours(totalEmployeeHours.Hours);
+                                totalEmployeeHours.Hours = (totalEmployeeHours.Hours);
 
                                 _totalEmployeeHoursRepository.Add(totalEmployeeHours);
                             }
@@ -100,7 +99,7 @@ namespace Payroll.Service.Implementations
                     if (hours.Equals(last) && (totalEmployeeHours.TotalEmployeeHoursId == null
                         || totalEmployeeHours.TotalEmployeeHoursId <= 0))
                     {
-                        totalEmployeeHours.Hours = ComputeTotalAllowedHours(totalEmployeeHours.Hours);
+                        totalEmployeeHours.Hours = (totalEmployeeHours.Hours);
 
                         _totalEmployeeHoursRepository.Add(totalEmployeeHours);
                     }
@@ -122,7 +121,7 @@ namespace Payroll.Service.Implementations
          
         }
 
-        public double ComputeTotalAllowedHours(double TotalHours)
+        /*public double ComputeTotalAllowedHours(double TotalHours)
         {
             double total = TotalHours;
             //Total employee hours minimum butal is 5 mins
@@ -137,7 +136,7 @@ namespace Payroll.Service.Implementations
             }
 
             return total;
-        }
+        }*/
 
         public TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
         {
