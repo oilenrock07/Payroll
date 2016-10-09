@@ -18,6 +18,7 @@ namespace Payroll.Scheduler.Schedules
         private readonly IEmployeeWorkScheduleRepository _employeeWorkScheduleRepository;
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
         private readonly IEmployeeInfoRepository _employeeInfoRepository;
+        private readonly IEmployeePayrollRepository _employeePayrollRepository;
 
         private readonly IEmployeeInfoService _employeeInfoService;
         private readonly IAttendanceLogService _attendanceLogService;
@@ -41,6 +42,7 @@ namespace Payroll.Scheduler.Schedules
             _employeeWorkScheduleRepository = new EmployeeWorkScheduleRepository(_databaseFactory);
             _employeeHoursRepository = new EmployeeHoursRepository(_databaseFactory);
             _employeeInfoRepository = new EmployeeInfoRepository(_databaseFactory);
+            _employeePayrollRepository = new EmployeePayrollRepository(_databaseFactory);
 
             _employeeService = new EmployeeService(_employeeRepository);
             _employeeInfoService = new EmployeeInfoService(_employeeInfoRepository);
@@ -51,6 +53,8 @@ namespace Payroll.Scheduler.Schedules
             _employeeHoursService = new EmployeeHoursService(_unitOfWork, _employeeHoursRepository, _attendanceService, _settingService, _employeeWorkScheduleService, _employeeInfoService);
 
             _schedulerLogRepository = new SchedulerLogRepository(_databaseFactory);
+            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeePayrollRepository, _settingService, null, _employeeInfoService, null, _employeeService, _totalEmployeeHoursService, null, null);
+
         }
 
         public void Execute()
