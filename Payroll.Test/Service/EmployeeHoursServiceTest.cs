@@ -687,7 +687,7 @@ namespace Payroll.Test.Service
                 Type = Entities.Enums.RateType.OverTime,
                 OriginAttendanceId = attendanceId1,
                 EmployeeId = employee.EmployeeId,
-                Hours = 3.98,
+                Hours = 4,
                 Date = dateFrom
             };
 
@@ -696,7 +696,7 @@ namespace Payroll.Test.Service
                 Type = Entities.Enums.RateType.NightDifferential,
                 OriginAttendanceId = attendanceId1,
                 EmployeeId = employee.EmployeeId,
-                Hours = 3.98,
+                Hours = 3,
                 Date = dateFrom
             };
 
@@ -2329,8 +2329,8 @@ namespace Payroll.Test.Service
         }
 
         /*
-  Regular 8 hours with OT and Excess Minutes within Regular Work Schedule
-*/
+          Regular 8 hours with OT and Excess Minutes within Regular Work Schedule
+        */
         [TestMethod]
         public void GenerateEmployeeHoursCheckMinMinutes()
         {

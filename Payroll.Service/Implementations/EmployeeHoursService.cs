@@ -34,6 +34,7 @@ namespace Payroll.Service.Implementations
 
         private bool arrivedEarlierThanScheduled = false;
         private bool isWithinGracePeriod = false;
+        private bool isWithinGracePeriodTimeOut = false;
         private bool isWithinAdvanceOtPeriod = false;
         private bool clockoutLaterThanScheduled = false;
         private bool clockOutGreaterThanNDEndTime = false;
@@ -160,10 +161,18 @@ namespace Payroll.Service.Implementations
 
             arrivedEarlierThanScheduled = clockIn < scheduledTimeIn;
             isWithinGracePeriod = this.isWtnGracePeriod(clockIn, scheduledTimeIn);
+            isWithinGracePeriodTimeOut = this.isWtnGracePeriodTimeOut(clockOut.Value);
             isWithinAdvanceOtPeriod = this.isForAdvanceOT(clockIn, scheduledTimeIn);
             clockoutLaterThanScheduled = clockOut > scheduledTimeOut;
             clockOutGreaterThanNDEndTime = clockOut > nightDifEndTime;
             isClockInLaterThanScheduledTimeOut = clockIn > scheduledTimeOut;
+
+            //Change clockout if within grace period of time out
+            if (isWithinGracePeriodTimeOut)
+            {
+                clockOut = clockOut.Value.AddHours(1);
+                clockOut = clockOut.Value.ChangeTime(clockOut.Value.Hour, 0,0,0);
+            }
         }
 
         private void computeAdvanceOT()
@@ -381,6 +390,18 @@ namespace Payroll.Service.Implementations
             var gracePeriodDuration = new TimeSpan(0, gracePeriod, 0);
 
             return (clockIn - scheduledClockIn) <= gracePeriodDuration;
+        }
+
+        private bool isWtnGracePeriodTimeOut(DateTime clockOut)
+        {
+            var gracePeriodTimeOut =
+                             Int32.Parse(_settingService.GetByKey("SCHEDULE_GRACE_PERIOD_MINUTES_OUT"));
+
+            var gracePeriodDuration = new TimeSpan(0, gracePeriodTimeOut, 0);
+            var nextHour = clockOut.AddHours(1);
+            nextHour = nextHour.ChangeTime(nextHour.Hour, 0, 0, 0);
+
+            return (nextHour - clockOut) <= gracePeriodDuration;
         }
 
         private bool isForAdvanceOT(DateTime clockIn, DateTime scheduledClockIn)
