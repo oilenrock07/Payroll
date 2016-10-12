@@ -35,8 +35,11 @@ namespace Payroll.Repository.Repositories
             if (cachedEmployee == null)
             {
                 var employee = Find(x => x.Employee.EmployeeId == employeeId).FirstOrDefault();
-                _cacheManager.Add(employeeId.ToString(), employee, CacheRegion.EmployeeInfo);
-
+                if (_cacheManager != null)
+                {
+                    _cacheManager.Add(employeeId.ToString(), employee, CacheRegion.EmployeeInfo);
+                }
+                
                 return employee;
             }
 

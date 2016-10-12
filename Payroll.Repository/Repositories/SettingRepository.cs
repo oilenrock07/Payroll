@@ -37,7 +37,8 @@ namespace Payroll.Repository.Repositories
         public virtual string GetSettingValue(string key, string defaultValue = "")
         {
             var cachedSetting = GetSettingByKey(key);
-            return cachedSetting != null ? cachedSetting.Value : defaultValue;
+            return cachedSetting != null ? cachedSetting.Value : 
+                        GetSettingByKey(key) != null ? GetSettingByKey(key).Value : defaultValue;
         }
 
         public Setting GetSettingByKey(string key)
@@ -46,8 +47,10 @@ namespace Payroll.Repository.Repositories
             if (cachedSetting == null)
             {
                 var setting = Find(x => x.SettingKey == key).FirstOrDefault();
-                if (_cacheManager != null)
+                if (_cacheManager != null && setting != null)
+                {
                     _cacheManager.Add(key, setting, CacheRegion.Settings);
+                }
                
                 return setting;
             }

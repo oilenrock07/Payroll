@@ -34,7 +34,6 @@ namespace Payroll.Service.Implementations
 
         private bool arrivedEarlierThanScheduled = false;
         private bool isWithinGracePeriod = false;
-        private bool isWithinGracePeriodTimeOut = false;
         private bool isWithinAdvanceOtPeriod = false;
         private bool clockoutLaterThanScheduled = false;
         private bool clockOutGreaterThanNDEndTime = false;
@@ -161,17 +160,23 @@ namespace Payroll.Service.Implementations
 
             arrivedEarlierThanScheduled = clockIn < scheduledTimeIn;
             isWithinGracePeriod = this.isWtnGracePeriod(clockIn, scheduledTimeIn);
-            isWithinGracePeriodTimeOut = this.isWtnGracePeriodTimeOut(clockOut.Value);
             isWithinAdvanceOtPeriod = this.isForAdvanceOT(clockIn, scheduledTimeIn);
             clockoutLaterThanScheduled = clockOut > scheduledTimeOut;
             clockOutGreaterThanNDEndTime = clockOut > nightDifEndTime;
             isClockInLaterThanScheduledTimeOut = clockIn > scheduledTimeOut;
 
+            //Change clockin if within grace period of time in
+            if (this.isWtnTimeInAdjustmentPeriod(clockIn))
+            {
+                clockIn = clockIn.AddHours(1);
+                clockIn = clockIn.ChangeTime(clockIn.Hour, 0,0,0);
+            }
+
             //Change clockout if within grace period of time out
-            if (isWithinGracePeriodTimeOut)
+            if (this.isWtnTimeOutAdjustmentPeriod(clockOut.Value))
             {
                 clockOut = clockOut.Value.AddHours(1);
-                clockOut = clockOut.Value.ChangeTime(clockOut.Value.Hour, 0,0,0);
+                clockOut = clockOut.Value.ChangeTime(clockOut.Value.Hour, 0, 0, 0);
             }
         }
 
@@ -191,8 +196,8 @@ namespace Payroll.Service.Implementations
                 }
 
                 TimeSpan advancedOTHoursCount = baseTimeIn.ChangeSeconds(0,0) - clockIn.ChangeSeconds(0, 0);
-
-                if (advancedOTHoursCount.TotalHours > 0)
+                var allowedHours = ComputeTotalAllowedHours(Math.Round(advancedOTHoursCount.TotalHours, 2));
+                if (allowedHours > 0)
                 {
                    EmployeeHours advancedOTHours =
                    new EmployeeHours
@@ -200,7 +205,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = ComputeTotalAllowedHours(Math.Round(advancedOTHoursCount.TotalHours, 2)),
+                       Hours = allowedHours,
                        Type = Entities.Enums.RateType.OverTime
                    };
 
@@ -223,7 +228,12 @@ namespace Payroll.Service.Implementations
 
             var tempClockIn = clockIn;
             // Check if within graceperiod or if advance OT
-            if (isWithinGracePeriod || arrivedEarlierThanScheduled)
+            if (isWithinGracePeriod)
+            {
+                //Set clockIn to scheduled time in 
+                // For counting of regular hours
+                tempClockIn = clockIn.ChangeTime(clockIn.Hour, 0, 0, 0) ;
+            }else if (arrivedEarlierThanScheduled)
             {
                 //Set clockIn to scheduled time in 
                 // For counting of regular hours
@@ -245,7 +255,8 @@ namespace Payroll.Service.Implementations
 
             TimeSpan regularHoursCount = tempClockOut.Value.ChangeSeconds(0, 0) - tempClockIn.ChangeSeconds(0,0);
 
-            if (regularHoursCount.TotalHours > 0)
+            var allowedHours = ComputeTotalAllowedHours(Math.Round(regularHoursCount.TotalHours, 2));
+            if (allowedHours > 0)
             {
                 EmployeeHours regularHours =
                    new EmployeeHours
@@ -253,7 +264,7 @@ namespace Payroll.Service.Implementations
                        OriginAttendanceId = attendance.AttendanceId,
                        Date = day,
                        EmployeeId = attendance.EmployeeId,
-                       Hours = ComputeTotalAllowedHours(Math.Round(regularHoursCount.TotalHours, 2)),
+                       Hours = allowedHours,
                        Type = Entities.Enums.RateType.Regular
                    };
 
@@ -288,7 +299,8 @@ namespace Payroll.Service.Implementations
             {
                 TimeSpan otHoursCount = otTimeEnd.Value.ChangeSeconds(0, 0) - otTimeStart.ChangeSeconds(0, 0);
 
-                if (otHoursCount != null && otHoursCount.TotalHours > 0)
+                var totalHours = ComputeTotalAllowedHours(Math.Round(otHoursCount.TotalHours, 2));
+                if (otHoursCount != null && otHoursCount.TotalHours > 0 && totalHours > 0)
                 {
                   EmployeeHours otHours =
                   new EmployeeHours
@@ -296,7 +308,7 @@ namespace Payroll.Service.Implementations
                       OriginAttendanceId = attendance.AttendanceId,
                       Date = day,
                       EmployeeId = attendance.EmployeeId,
-                      Hours = ComputeTotalAllowedHours(Math.Round(otHoursCount.TotalHours, 2)),
+                      Hours = totalHours,
                       Type = Entities.Enums.RateType.OverTime
                   };
 
@@ -362,7 +374,8 @@ namespace Payroll.Service.Implementations
                 TimeSpan ndHoursCount = clockOut.Value.ChangeSeconds(0, 0) - clockIn.ChangeSeconds(0, 0);
 
                 //Create entry if have night differential hours to record
-                if (ndHoursCount.TotalHours > 0)
+                var totalHours = ComputeTotalAllowedHours(Math.Round(ndHoursCount.TotalHours, 2));
+                if (totalHours > 0)
                 {
                     EmployeeHours nightDifHours =
                         new EmployeeHours
@@ -370,7 +383,7 @@ namespace Payroll.Service.Implementations
                             OriginAttendanceId = attendance.AttendanceId,
                             Date = day,
                             EmployeeId = attendance.EmployeeId,
-                            Hours = ComputeTotalAllowedHours(Math.Round(ndHoursCount.TotalHours, 2)),
+                            Hours = totalHours,
                             Type = Entities.Enums.RateType.NightDifferential
                         };
 
@@ -382,26 +395,51 @@ namespace Payroll.Service.Implementations
 
         }
 
+        //TODO make work schedule to have 2 parts, on and after break time 
+            //to be able to compute grace period for both without using settings
         private bool isWtnGracePeriod(DateTime clockIn, DateTime scheduledClockIn)
         {
+            var timeInAM = DateTime.Parse(_settingService.GetByKey("SCHEDULE_TIME_IN_AM"));
+            var timeInPM = DateTime.Parse(_settingService.GetByKey("SCHEDULE_TIME_IN_PM"));
+
             var gracePeriod =
                              Int32.Parse(_settingService.GetByKey("SCHEDULE_GRACE_PERIOD_MINUTES"));
 
             var gracePeriodDuration = new TimeSpan(0, gracePeriod, 0);
+            var timeDifferenceAM = clockIn.TimeOfDay - timeInAM.TimeOfDay;
+            var timeDifferencePM = clockIn.TimeOfDay - timeInPM.TimeOfDay;
+            var timeSpanZero = new TimeSpan();
 
-            return (clockIn - scheduledClockIn) <= gracePeriodDuration;
+            return (timeDifferenceAM <= gracePeriodDuration && timeDifferenceAM > timeSpanZero) ||
+                 (timeDifferencePM <= gracePeriodDuration && timeDifferencePM > timeSpanZero);
         }
 
-        private bool isWtnGracePeriodTimeOut(DateTime clockOut)
+        private bool isWtnTimeInAdjustmentPeriod(DateTime clockIn)
         {
-            var gracePeriodTimeOut =
-                             Int32.Parse(_settingService.GetByKey("SCHEDULE_GRACE_PERIOD_MINUTES_OUT"));
+            var timeInAdjustmentPeriodMinutes =
+                             Int32.Parse(_settingService.GetByKey("SCHEDULE_TIME_IN_ADJUSTMENT_PERIOD_MINUTES"));
 
-            var gracePeriodDuration = new TimeSpan(0, gracePeriodTimeOut, 0);
-            var nextHour = clockOut.AddHours(1);
+            var gracePeriodDuration = new TimeSpan(0, timeInAdjustmentPeriodMinutes, 0);
+            var nextHour = clockIn.AddHours(1);
             nextHour = nextHour.ChangeTime(nextHour.Hour, 0, 0, 0);
 
-            return (nextHour - clockOut) <= gracePeriodDuration;
+            return (nextHour - clockIn) <= gracePeriodDuration;
+        }
+
+        private bool isWtnTimeOutAdjustmentPeriod(DateTime clockOut)
+        {
+            var adjustmentPeriodOutAM = DateTime.Parse(_settingService.GetByKey("SCHEDULE_TIME_OUT_ADJUSTMENT_PERIOD_MINUTES_SCHED_AM"));
+            var adjustmentPeriodOutPM = DateTime.Parse(_settingService.GetByKey("SCHEDULE_TIME_OUT_ADJUSTMENT_PERIOD_MINUTES_SCHED_PM"));
+            var timeOutAdjustmentPeriodMinutes =
+                             Int32.Parse(_settingService.GetByKey("SCHEDULE_TIME_OUT_ADJUSTMENT_PERIOD_MINUTES"));
+
+            var timeOutAdjustmentDuration = new TimeSpan(0, timeOutAdjustmentPeriodMinutes, 0);
+            var zeroTimeSpan = new TimeSpan();
+            var timeDifferenceAM = adjustmentPeriodOutAM.TimeOfDay - clockOut.TimeOfDay;
+            var timeDifferencePM = adjustmentPeriodOutPM.TimeOfDay - clockOut.TimeOfDay;
+
+            return (timeDifferenceAM <= timeOutAdjustmentDuration && timeDifferenceAM > zeroTimeSpan) ||
+                (timeDifferencePM <= timeOutAdjustmentDuration && timeDifferencePM > zeroTimeSpan);
         }
 
         private bool isForAdvanceOT(DateTime clockIn, DateTime scheduledClockIn)
