@@ -50,7 +50,7 @@ namespace Payroll.Controllers
         [HttpPost]
         public ActionResult Edit(Setting setting)
         {
-            var updateSetting = new Setting {SettingId = setting.SettingId};
+            var updateSetting = new Setting {SettingId = setting.SettingId, SettingKey = setting.SettingKey};
             _settingRepository.Update(updateSetting);
             updateSetting.InjectFrom(setting);
             _unitOfWork.Commit();

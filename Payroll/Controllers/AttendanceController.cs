@@ -118,7 +118,7 @@ namespace Payroll.Controllers
 
             //delete employee hours
             var employeeHours = _employeeHoursRepository.Find(x => x.OriginAttendanceId == attendance.AttendanceId);
-            if (employeeHours != null)
+            if (employeeHours != null && employeeHours.Any())
             {
                 var employeeHour = employeeHours.FirstOrDefault();
                 _employeeHoursRepository.Update(employeeHour);
