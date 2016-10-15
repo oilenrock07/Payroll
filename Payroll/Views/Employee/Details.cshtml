@@ -2,7 +2,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form method="POST" action="@ViewBag.FormAction" enctype="multipart/form-data">
+<form method="POST" action="@ViewBag.FormAction" enctype="multipart/form-data" id="frmEmployeeDetails">
     @if ((!ViewData.ModelState.IsValid))
     {
         <div class="alert alert-danger">

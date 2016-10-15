@@ -6,6 +6,8 @@
     @Html.HiddenFor(model => model.EmployeeInfo.Employee.EmployeeId)
     @Html.HiddenFor(model => model.ImagePath)
 
+    <div class="alert alert-danger js-errorsummary hidden"></div>
+
     <div class="col-md-7">
         <div class="form-group">
             @Html.LabelFor(model => model.EmployeeInfo.Employee.EmployeeCode, htmlAttributes: new { @class = "control-label col-md-2" })

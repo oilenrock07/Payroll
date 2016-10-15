@@ -1,6 +1,21 @@
 ﻿$(function() {
 
     function handleFormSubmit(e) {
+
+        $('.js-errorsummary').addClass('hidden');        
+        if (!$('#frmEmployeeDetails').valid()) {
+
+            if ($('.field-validation-error').length > 0) {
+                $('.js-errorsummary').html('');
+
+                $.each($('.field-validation-error'), function (index, value) {
+                    $('.js-errorsummary').append('<div>' + $(value).find('span').html() + '</div>');
+                });
+
+                $('.js-errorsummary').removeClass('hidden');
+            }
+        }
+
         var checkedDepartments = [];
         $('input.js-department:checkbox:checked').each(function () {
             checkedDepartments.push($(this).data('departmentid'));
