@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Payroll.Models.Attendance.AttendanceViewModel>
 
 <div class="Attendance t2">
-    <table class="table table-responsive table-striped">
+    <table class="table">
         <tr>
             <th>First Name</th>
             <th>Middle Name</th>
@@ -17,7 +17,7 @@
         {
             var clockout = item.ClockOut.HasValue ? item.ClockOut.Value.ToString() : "";
 
-            <tr>
+            <tr style="background-color: #eeeeee">
                 <td>
                     @item.FirstName
                 </td>
@@ -45,10 +45,29 @@
                 <td>
                     @if (item.Editable)
                     {
-                        @Html.ActionLink("Edit", "EditAttendance", "Attendance", new { id = item.AttendanceId}, null)   
+                        @Html.ActionLink("Edit", "EditAttendance", "Attendance", new {id = item.AttendanceId}, null)
                     }
                 </td>
             </tr>
+
+            if (item.Breakdown != null && item.Breakdown.Count() > 1)
+            {
+                <tr>
+                    <td colspan="3"></td>
+                    <th colspan="5">Date</th>
+                </tr>
+                foreach (var breakdown in item.Breakdown)
+                {
+                    <tr>
+                        <td colspan="3"></td>
+                        <td>@breakdown.Date.ToShortDateString()</td>
+                        <td></td>
+                        <td>@breakdown.RegularHours</td>
+                        <td>@breakdown.Overtime</td>
+                        <td>@breakdown.NightDifferential</td>
+                    </tr>
+                }
+            }
         }
     </table>
     

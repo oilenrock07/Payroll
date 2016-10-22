@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Web.Mvc;
 using Payroll.Common.Extension;
 using Payroll.Entities;
@@ -170,6 +171,13 @@ namespace Payroll.Controllers
                 d.RegularHours = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.Regular).Sum(x => x.Hours) : 0;
                 d.Overtime = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.OverTime).Sum(x => x.Hours) : 0;
                 d.NightDifferential = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.NightDifferential).Sum(x => x.Hours) : 0;
+                d.Breakdown = s.EmployeeHours.Where(x => x != null).ToList().GroupBy(x => x.Date).Select(x => new AttendanceBreakdownViewModel
+                {
+                    Date = x.Key,
+                    NightDifferential = isNotEmpty(x) ? x.Where(y => y.Type == RateType.NightDifferential).Sum(y => y.Hours) : 0,
+                    Overtime = isNotEmpty(x) ?  x.Where(y => y.Type == RateType.OverTime).Sum(y => y.Hours) : 0,
+                    RegularHours = isNotEmpty(x) ? x.Where(y => y.Type == RateType.Regular).Sum(y => y.Hours) : 0
+                });
             });
 
             return viewModel;
@@ -179,7 +187,52 @@ namespace Payroll.Controllers
         {
             var viewModel = GetAttendance(startDate, endDate);
             var fileName = String.Format("Attendance_Report_{0}-{1}", startDate.ToDateTime().SerializeShort(), endDate.ToDateTime().SerializeShort());
-            Export.ToExcel(Response, viewModel, fileName);
+
+            var dt = new DataTable();
+            dt.Columns.Add("First Name", typeof(string));
+            dt.Columns.Add("Middle Name", typeof(string));
+            dt.Columns.Add("Last Name", typeof(string));
+            dt.Columns.Add("Clock In", typeof(string));
+            dt.Columns.Add("Clock Out", typeof(string));
+            dt.Columns.Add("Regular Hours", typeof(string));
+            dt.Columns.Add("Overtime", typeof(string));
+            dt.Columns.Add("Night Differential", typeof(string));
+
+            foreach (var item in viewModel)
+            {
+                var row = dt.NewRow();
+
+                row["First Name"] = item.FirstName;
+                row["Middle Name"] = item.MiddleName;
+                row["Last Name"] = item.LastName;
+                row["Clock In"] = item.ClockIn;
+                row["Clock Out"] = item.ClockOut;
+                row["Regular Hours"] = item.RegularHours;
+                row["Overtime"] = item.Overtime;
+                row["Night Differential"] = item.NightDifferential;
+
+                dt.Rows.Add(row);
+                if (item.Breakdown != null && item.Breakdown.Count() > 1)
+                {
+                    row = dt.NewRow();
+                    row["Clock In"] = "Date";
+
+                    dt.Rows.Add(row);
+
+                    foreach (var breakdown in item.Breakdown)
+                    {
+                        row = dt.NewRow();
+                        row["Clock In"] = breakdown.Date.ToShortDateString();
+                        row["Regular Hours"] = breakdown.RegularHours;
+                        row["Overtime"] = breakdown.Overtime;
+                        row["Night Differential"] = breakdown.NightDifferential;
+
+                        dt.Rows.Add(row);
+                    }
+                }
+            }
+
+            Export.ToExcel(Response, dt, fileName);
         }
 
         public virtual ActionResult AttendanceLog()
