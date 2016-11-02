@@ -262,6 +262,29 @@ namespace Payroll.Service.Implementations
             return payrollStartDate.Value;
         }
 
+        public DateTime GetLatestPayrollStartDate()
+        {
+            var d = DateTime.Now;
+
+            //TODO more frequency support
+            switch (_frequency)
+            {
+                case FrequencyType.Weekly:
+                    //Note that the job should always schedule the day after the payroll end date
+                    var startOfWeeklyPayroll = (DayOfWeek) Enum.Parse(typeof (DayOfWeek),
+                        _settingService.GetByKey(PAYROLL_WEEK_START));
+
+                    if (d.DayOfWeek == startOfWeeklyPayroll)
+                    {
+                        d = d.AddDays(-7);
+                    }
+
+                    return d.StartOfWeek(startOfWeeklyPayroll);
+            }
+
+            return d;
+        }
+
         public DateTime GetNextPayrollEndDate(DateTime payrollStartDate)
         {
             DateTime payrollEndDate = payrollStartDate;

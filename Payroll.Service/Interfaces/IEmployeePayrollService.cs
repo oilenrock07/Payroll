@@ -26,6 +26,8 @@ namespace Payroll.Service.Interfaces
 
         DateTime GetNextPayrollStartDate(DateTime? date);
 
+        DateTime GetLatestPayrollStartDate();
+
         DateTime GetNextPayrollEndDate(DateTime payrollStartDate);
 
         DateTime GetNextPayrollReleaseDate(DateTime payrollEndDate);

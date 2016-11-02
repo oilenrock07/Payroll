@@ -63,7 +63,7 @@ namespace Payroll.Scheduler.Schedules
             try
             {
                 var payrollStartDate = _employeePayrollService
-                    .GetNextPayrollStartDate(DateTime.Now).TruncateTime();
+                    .GetLatestPayrollStartDate().TruncateTime();
                 var payrollEndDate = _employeePayrollService
                     .GetNextPayrollEndDate(payrollStartDate).TruncateTime();
 
