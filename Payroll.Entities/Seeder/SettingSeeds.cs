@@ -13,6 +13,7 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "SCHEDULE_NIGHTDIF_TIME_END", Value = "7:59:00 AM", Description = "Night Differential End Time", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_ADVANCE_OT_PERIOD_MINUTES", Value = "15", Description = "Advance OT Period in minutes", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_GRACE_PERIOD_MINUTES", Value = "5", Description = "Grace period in minutes", Category = "SCHEDULE" },
+                new Setting { SettingKey = "SCHEDULE_GRACE_PERIOD_IS_EVERY_HOUR", Value = "true", Description = "Is Grace period in minutes", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_TIME_IN_ADJUSTMENT_PERIOD_MINUTES", Value = "17", Description = "Time in adjustment minutes", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_TIME_OUT_ADJUSTMENT_PERIOD_MINUTES", Value = "1", Description = "Time in adjustment minutes base on schedule", Category = "SCHEDULE" },
                 new Setting { SettingKey = "SCHEDULE_TIME_OUT_ADJUSTMENT_PERIOD_MINUTES_SCHED_AM", Value = "12:00:00 PM", Description = "Time out adjustment am schedule", Category = "SCHEDULE" },
