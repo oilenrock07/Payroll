@@ -201,7 +201,7 @@ namespace Payroll.Service.Implementations
         public virtual IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate)
         {
             endDate = endDate.AddDays(1).AddSeconds(-1);
-            var attendances = _attendanceRepository.Find(a => a.IsActive && a.ClockIn >= startDate && a.ClockIn <= endDate);
+            var attendances = _attendanceRepository.Find(a => a.IsActive && ((a.ClockIn >= startDate && a.ClockIn <= endDate) || (a.ClockOut >= startDate && a.ClockOut <= endDate)));
             var employeeHours = _employeeHoursRepository.GetAllActive();
 
             var query = from attendance in attendances

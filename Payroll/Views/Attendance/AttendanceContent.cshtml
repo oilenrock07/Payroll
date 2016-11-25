@@ -16,8 +16,14 @@
         @foreach (var item in Model)
         {
             var clockout = item.ClockOut.HasValue ? item.ClockOut.Value.ToString() : "";
-
-            <tr style="background-color: #eeeeee">
+            
+            <tr @if (item.ClockOut != null && (item.ClockOut.Value - item.ClockIn).Days >= 1)
+            {
+                @Html.Raw("style='color: #a94442; background-color: #f7c4c4;'")
+            }
+                else {
+                    @Html.Raw("style='background-color: #eeeeee'")
+                }>
                 <td>
                     @item.FirstName
                 </td>
