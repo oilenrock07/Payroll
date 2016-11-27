@@ -67,8 +67,11 @@ namespace Payroll.Service.Implementations
         //Will get last day of work
         private DateTime getLastDayOfWork(DateTime date, WorkSchedule workSchedule)
         {
-            var lastDayOfWork = date.AddDays(1);
-            if (lastDayOfWork.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
+            var lastDayOfWork = date.AddDays(-1);
+            //Check if with schedule and not holiday
+            var holiday = _holidayService.GetHoliday(lastDayOfWork);
+            if (lastDayOfWork.IsRestDay(workSchedule.WeekStart, 
+                workSchedule.WeekEnd) || holiday != null)
             {
                 return getLastDayOfWork(lastDayOfWork, workSchedule);
             }
@@ -147,7 +150,7 @@ namespace Payroll.Service.Implementations
                                     var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
 
                                     //Set holiday to null if the employee didn't work the day before holiday
-                                    if (employeeHours == null)
+                                    if (employeeHours == null || employeeHours.Count <= 0)
                                     {
                                         holiday = null;
                                     }
@@ -555,7 +558,7 @@ namespace Payroll.Service.Implementations
             if (payrollItems.Any(x => x.RateType == RateType.SpecialHoliday))
             {
                 dt.Columns.Add("Total Special Holiday Hours");
-                dt.Columns.Add("Special Holiday Rate");
+                dt.Columns.Add("Regular Special Holiday Rate");
                 dt.Columns.Add("% Special Holiday");
                 dt.Columns.Add("Special Holiday Pay");
 
@@ -750,7 +753,7 @@ namespace Payroll.Service.Implementations
                 {
                     var specialHolidayOtHours = employeePayroll.FirstOrDefault(x => x.RateType == RateType.SpecialHolidayOT);
                     row["Total Special Holiday OT Hours"] = specialHolidayOtHours != null ? specialHolidayOtHours.TotalHours : 0;
-                    row["Regular Special Holiday OT Rate"] = specialHolidayOtHours != null ? specialHolidayOtHours.RatePerHour : 0;
+                    row["Special Holiday OT Rate"] = specialHolidayOtHours != null ? specialHolidayOtHours.RatePerHour : 0;
                     row["% Special Holiday OT"] = specialHolidayOtHours != null ? specialHolidayOtHours.Multiplier : 0;
                     row["Special Holiday OT Pay"] = specialHolidayOtHours != null ? specialHolidayOtHours.TotalAmount : 0;
                 }
