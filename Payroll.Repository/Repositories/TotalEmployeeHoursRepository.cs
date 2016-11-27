@@ -24,6 +24,11 @@ namespace Payroll.Repository.Repositories
             return Find(eh => eh.IsActive && eh.EmployeeId == employeeId && eh.Date == date && eh.Type == type).FirstOrDefault();
         }
 
+        public IList<TotalEmployeeHours> GetByEmployeeDate(int employeeId, DateTime date)
+        {
+            return Find(eh => eh.IsActive && eh.EmployeeId == employeeId && eh.Date == date).ToList();
+        }
+
         public IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             return Find(eh => eh.IsActive && eh.Date >= dateFrom && eh.Date < dateTo)

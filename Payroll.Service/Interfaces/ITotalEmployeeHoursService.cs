@@ -10,7 +10,7 @@ namespace Payroll.Service.Interfaces
 {
     public interface ITotalEmployeeHoursService 
     {
-        void GenerateTotalByDateRange(DateTime dateFrom, DateTime dateTo);
+        void GenerateTotalByDateRange(DateTime dateFrom, DateTime date);
 
         TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type);
 
@@ -21,5 +21,7 @@ namespace Payroll.Service.Interfaces
         TotalEmployeeHours GetById(int id);
 
         double CountTotalHours(int employeeId, DateTime date);
+
+        IList<TotalEmployeeHours> GetByEmployeeDate(int employeeId, DateTime date);
     }
 }

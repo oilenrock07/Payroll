@@ -64,6 +64,20 @@ namespace Payroll.Service.Implementations
             _adjustmentRepository = adjustmentRepository;
         }
 
+        //Will get last day of work
+        private DateTime getLastDayOfWork(DateTime date, WorkSchedule workSchedule)
+        {
+            var lastDayOfWork = date.AddDays(1);
+            if (lastDayOfWork.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
+            {
+                return getLastDayOfWork(lastDayOfWork, workSchedule);
+            }
+            else
+            {
+                return lastDayOfWork;
+            }
+        }
+
         /*Note that this method is applicable to employees with hourly rate*/
         public void GenerateEmployeePayrollItemByDateRange(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
         {
@@ -85,17 +99,17 @@ namespace Payroll.Service.Implementations
             var activeEmployeeList = _employeeInfoService.GetAllActive();
             foreach (EmployeeInfo employee in activeEmployeeList)
             {
-                //Get all total employee hours
-                var employeeTotalHoursList = totalEmployeeHours.Where(h => h.EmployeeId == employee.EmployeeId)
-                    .OrderByDescending(h => h.Date);
-
                 var employeeWorkSchedule =
-                   _employeeWorkScheduleService.GetByEmployeeId(employee.EmployeeId);
+                    _employeeWorkScheduleService.GetByEmployeeId(employee.EmployeeId);
                 if (employeeWorkSchedule == null)
                 {
                     continue;
                 }
                 var workSchedule = employeeWorkSchedule.WorkSchedule;
+
+                //Get all total employee hours
+                var employeeTotalHoursList = totalEmployeeHours.Where(h => h.EmployeeId == employee.EmployeeId)
+                    .OrderByDescending(h => h.Date);
 
                 var employeePayrollItemList = new List<EmployeePayrollItem>();
                 foreach (DateTime day in DatetimeExtension.EachDay(payrollStartDate, payrollEndDate))
@@ -126,7 +140,20 @@ namespace Payroll.Service.Implementations
                             }
                             else
                             {
-                                //Check if holiday 
+                                //If employee didn't work the day before holiday will not get holiday pay
+                                if (holiday != null)
+                                {
+                                    var lastDayOfWork = getLastDayOfWork(day, workSchedule);
+                                    var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
+
+                                    //Set holiday to null if the employee didn't work the day before holiday
+                                    if (employeeHours == null)
+                                    {
+                                        holiday = null;
+                                    }
+                                }
+
+                                //Check if with holiday pay
                                 if (holiday != null)
                                 {
                                     if (holiday.IsRegularHoliday)
