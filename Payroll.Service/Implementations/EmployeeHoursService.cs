@@ -148,14 +148,14 @@ namespace Payroll.Service.Implementations
             clockIn = attendance.ClockIn;
             // Count hour before 12 midnight
             // If different date set clock in to 12AM
-            if (attendance.ClockIn.Day < day.Day)
+            if (attendance.ClockIn.Date.CompareTo(day.Date) < 0)
             {
                 clockIn = day;
             }
 
             clockOut = attendance.ClockOut;
 
-            if (clockOut.Value.Day > day.Day)
+            if (clockOut.Value.Date.CompareTo(day.Date) > 0)
             {
                 clockOut = day.AddDays(1);
             }

@@ -3022,5 +3022,111 @@ namespace Payroll.Test.Service
             //Assert.AreEqual(attendance1.IsHoursCounted, true);
 
         }
+
+        [TestMethod]
+        public void GenerateEmployeeHoursNightDiff()
+        {
+            var attendanceId1 = 1;
+
+            var dataAttendance = new List<Attendance>
+                        {
+                            // Standard time
+                            new Attendance()
+                            {
+                                AttendanceId = attendanceId1,
+                                Employee = employee,
+                                ClockIn = new DateTime(2016,11,30,7,30,0),
+                                ClockOut = new DateTime(2016,12,1,3,43,0)
+                            }
+                        };
+
+            InitiateServiceAndTestData(dataAttendance);
+
+            var dateFrom = DateTime.Parse("2016-11-30 00:00:00");
+            var dateTo = DateTime.Parse("2016-12-01 00:00:00");
+
+            employeeHoursService.GenerateEmployeeHours(dateFrom, dateTo);
+
+            var employeeHours = employeeHoursService.GetByEmployeeAndDateRange(employee.EmployeeId, dateFrom, dateTo);
+
+            Assert.IsNotNull(employeeHours);
+            Assert.AreEqual(5, employeeHours.Count);
+
+            var employeeHourEntry1 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.Regular,
+                OriginAttendanceId = attendanceId1,
+                EmployeeId = employee.EmployeeId,
+                Hours = 8.5,
+                Date = dateFrom
+            };
+
+            var employeeHourEntry2 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.OverTime,
+                OriginAttendanceId = attendanceId1,
+                EmployeeId = employee.EmployeeId,
+                Hours = 8,
+                Date = dateFrom
+            };
+
+            var employeeHourEntry3 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.NightDifferential,
+                OriginAttendanceId = attendanceId1,
+                EmployeeId = employee.EmployeeId,
+                Hours = 2,
+                Date = dateFrom
+            };
+
+            var employeeHourEntry4 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.OverTime,
+                OriginAttendanceId = attendanceId1,
+                EmployeeId = employee.EmployeeId,
+                Hours = 3.72,
+                Date = dateTo
+            };
+
+            var employeeHourEntry5 = new EmployeeHours
+            {
+                Type = Entities.Enums.RateType.NightDifferential,
+                OriginAttendanceId = attendanceId1,
+                EmployeeId = employee.EmployeeId,
+                Hours = 3.72,
+                Date = dateTo
+            };
+
+            Assert.AreEqual(employeeHourEntry1.Type, employeeHours[0].Type);
+            Assert.AreEqual(employeeHourEntry1.OriginAttendanceId, employeeHours[0].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry1.EmployeeId, employeeHours[0].EmployeeId);
+            Assert.AreEqual(employeeHourEntry1.Hours, employeeHours[0].Hours);
+            Assert.AreEqual(employeeHourEntry1.Date, employeeHours[0].Date);
+
+            Assert.AreEqual(employeeHourEntry2.Type, employeeHours[1].Type);
+            Assert.AreEqual(employeeHourEntry2.OriginAttendanceId, employeeHours[1].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry2.EmployeeId, employeeHours[1].EmployeeId);
+            Assert.AreEqual(employeeHourEntry2.Hours, employeeHours[1].Hours);
+            Assert.AreEqual(employeeHourEntry2.Date, employeeHours[1].Date);
+
+            Assert.AreEqual(employeeHourEntry3.Type, employeeHours[2].Type);
+            Assert.AreEqual(employeeHourEntry3.OriginAttendanceId, employeeHours[2].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry3.EmployeeId, employeeHours[2].EmployeeId);
+            Assert.AreEqual(employeeHourEntry3.Hours, employeeHours[2].Hours);
+            Assert.AreEqual(employeeHourEntry3.Date, employeeHours[2].Date);
+
+            Assert.AreEqual(employeeHourEntry4.Type, employeeHours[3].Type);
+            Assert.AreEqual(employeeHourEntry4.OriginAttendanceId, employeeHours[3].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry4.EmployeeId, employeeHours[3].EmployeeId);
+            Assert.AreEqual(employeeHourEntry4.Hours, employeeHours[3].Hours);
+            Assert.AreEqual(employeeHourEntry4.Date, employeeHours[3].Date);
+
+            Assert.AreEqual(employeeHourEntry5.Type, employeeHours[4].Type);
+            Assert.AreEqual(employeeHourEntry5.OriginAttendanceId, employeeHours[4].OriginAttendanceId);
+            Assert.AreEqual(employeeHourEntry5.EmployeeId, employeeHours[4].EmployeeId);
+            Assert.AreEqual(employeeHourEntry5.Hours, employeeHours[4].Hours);
+            Assert.AreEqual(employeeHourEntry5.Date, employeeHours[4].Date);
+
+        }
     }
 }

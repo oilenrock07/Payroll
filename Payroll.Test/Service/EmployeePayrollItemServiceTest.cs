@@ -774,6 +774,25 @@ namespace Payroll.Test.Service
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule2);
 
             //Total EmployeeHours
+            var totalEmployeeHoursA = new TotalEmployeeHours
+            {
+                Date = DateTime.Parse("12/31/2015"),
+                EmployeeId = 1,
+                Hours = 8,
+                TotalEmployeeHoursId = 1,
+                Type = RateType.Regular
+            };
+
+            var totalEmployeeHoursB = new TotalEmployeeHours
+            {
+                Date = DateTime.Parse("12/31/2015"),
+                EmployeeId = 2,
+                Hours = 8,
+                TotalEmployeeHoursId = 1,
+                Type = RateType.Regular
+            };
+
+
             var totalEmployeeHours1 = new TotalEmployeeHours
             {
                 Date = DateTime.Parse("01/01/2016"),
@@ -828,6 +847,8 @@ namespace Payroll.Test.Service
                 Type = RateType.NightDifferential
             };
 
+            _totalEmployeeHoursRepository.Add(totalEmployeeHoursA);
+            _totalEmployeeHoursRepository.Add(totalEmployeeHoursB);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours1);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours2);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours3);
@@ -1184,6 +1205,15 @@ namespace Payroll.Test.Service
             _employeeWorkScheduleRepository.Add(employeeWorkSchedule2);
 
             //Total EmployeeHours
+            var totalEmployeeHours0 = new TotalEmployeeHours
+            {
+                Date = DateTime.Parse("12/31/2015"),
+                EmployeeId = 1,
+                Hours = 4,
+                TotalEmployeeHoursId = 1,
+                Type = RateType.Regular
+            };
+
             var totalEmployeeHours1 = new TotalEmployeeHours
             {
                 Date = DateTime.Parse("01/01/2016"),
@@ -1202,6 +1232,7 @@ namespace Payroll.Test.Service
                 Type = RateType.Regular
             };
 
+            _totalEmployeeHoursRepository.Add(totalEmployeeHours0);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours1);
             _totalEmployeeHoursRepository.Add(totalEmployeeHours2);
 
@@ -1240,11 +1271,11 @@ namespace Payroll.Test.Service
             Assert.AreEqual(payrollDate, results[1].PayrollDate);
 
             Assert.AreEqual(2, results[2].EmployeeId);
-            Assert.AreEqual(specialHolidayRestDayRate, results[2].Multiplier);
+            Assert.AreEqual(1.3, results[2].Multiplier);
             Assert.AreEqual(200, results[2].RatePerHour);
-            Assert.AreEqual(RateType.SpecialHolidayRestDay, results[2].RateType);
+            Assert.AreEqual(RateType.RestDay, results[2].RateType);
             Assert.AreEqual(2, results[2].TotalHours);
-            Assert.AreEqual((decimal)600, results[2].TotalAmount);
+            Assert.AreEqual((decimal)520, results[2].TotalAmount);
             Assert.AreEqual(payrollDate, results[2].PayrollDate);
 
             Assert.AreEqual(2, results[3].EmployeeId);
