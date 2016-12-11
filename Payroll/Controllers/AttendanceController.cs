@@ -59,9 +59,28 @@ namespace Payroll.Controllers
             var clockOut = Convert.ToDateTime(String.Format("{0} {1}", viewModel.ClockOut.ToShortDateString(), viewModel.ClockOutTime));
             viewModel.Employees = GetEmployeeNames();
 
+            //validate clock in should not be greater than or equal to clock out
+            if (clockIn >= clockOut)
+            {
+                if (viewModel.EmployeeId > 0)
+                {
+                    var employee = _employeeRepository.GetById(viewModel.EmployeeId);
+                    ViewData["Name"] = employee.FullName;
+                }
+                
+                ModelState.AddModelError("", ErrorMessages.ATTENDANCE_CLOCKIN_GREATER_THAN_CLOCKOUT);
+                return View("CreateAttendance", viewModel);
+            }
+
             //validate clockin and clockout date, should not be a future date
             if (clockIn > DateTime.Now || clockOut > DateTime.Now)
             {
+                if (viewModel.EmployeeId > 0)
+                {
+                    var employee = _employeeRepository.GetById(viewModel.EmployeeId);
+                    ViewData["Name"] = employee.FullName;
+                }
+
                 ModelState.AddModelError("", ErrorMessages.ATTENDANCE_INVALID_FUTUREDATE);
                 return View("CreateAttendance", viewModel);
             }
