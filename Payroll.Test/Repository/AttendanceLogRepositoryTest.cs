@@ -171,7 +171,7 @@ namespace Payroll.Test.Repository
             var endDate = new DateTime(2016, 03, 07);
             
             //Act
-            var result = attendanceLogRepository.GetAttendanceLogsWithName(startDate, endDate);
+            var result = attendanceLogRepository.GetAttendanceLogsWithName(startDate, endDate, 0);
             
             //Assert
             Assert.IsNotNull(result);

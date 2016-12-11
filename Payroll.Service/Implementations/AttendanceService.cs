@@ -198,7 +198,7 @@ namespace Payroll.Service.Implementations
             return _attendanceRepository.GetAttendanceByProcessing(employeeId, date, toDate, false);
         }
 
-        public virtual IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate)
+        public virtual IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate, int employeeId)
         {
             endDate = endDate.AddDays(1).AddSeconds(-1);
             var attendances = _attendanceRepository.Find(a => a.IsActive && ((a.ClockIn >= startDate && a.ClockIn <= endDate) || (a.ClockOut >= startDate && a.ClockOut <= endDate)));
@@ -210,14 +210,7 @@ namespace Payroll.Service.Implementations
                         group subResult by attendance into grouped
                         select new AttendanceDao
                         {
-                            //FirstName = attendance.Employee.FirstName,
-                            //ClockIn = attendance.ClockIn,
-                            //Clockout = attendance.ClockOut.Value,
-                            //MiddleName = attendance.Employee.MiddleName,
-                            //LastName = attendance.Employee.LastName,
-                            //RateType = subResult != null ? subResult.Type : RateType.Regular,
-                            //Hours = subResult != null ? subResult.Hours : 0,
-                            //HasEmployeeHours = subResult != null ? true : false
+                            EmployeeId =  grouped.Key.EmployeeId,
                             AttendanceId = grouped.Key.AttendanceId,
                             FirstName = grouped.Key.Employee.FirstName,
                             ClockIn = grouped.Key.ClockIn,
@@ -226,6 +219,8 @@ namespace Payroll.Service.Implementations
                             LastName = grouped.Key.Employee.LastName,
                             EmployeeHours = grouped
                         };
+
+            if (employeeId > 0) query = query.Where(x => x.EmployeeId == employeeId);
 
             return query.ToList();
         }

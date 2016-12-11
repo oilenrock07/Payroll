@@ -243,7 +243,7 @@ namespace Payroll.Test.Service
             var attendanceLogService = new AttendanceLogService(attendanceLogRepository);
             var attendanceService = new AttendanceService(unitOfWork, attendanceRepository, attendanceLogService, employeeHoursRepository);
 
-            var result = attendanceService.GetAttendanceAndHoursByDate(new DateTime(2016, 6, 8), new DateTime(2016, 6,8));
+            var result = attendanceService.GetAttendanceAndHoursByDate(new DateTime(2016, 6, 8), new DateTime(2016, 6,8), 0);
         }
     }
 }

@@ -24,6 +24,6 @@ namespace Payroll.Service.Interfaces
 
         void Update(Attendance attendance);
 
-        IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate);
+        IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate, int employeeId);
     }
 }

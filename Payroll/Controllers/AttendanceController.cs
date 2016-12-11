@@ -167,15 +167,15 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public virtual PartialViewResult AttendanceContent(string startDate, string endDate)
+        public virtual PartialViewResult AttendanceContent(string startDate, string endDate, int employeeId)
         {
-            var viewModel = GetAttendance(startDate, endDate);
+            var viewModel = GetAttendance(startDate, endDate, employeeId);
             ViewBag.StartDate = startDate;
             ViewBag.EndDate = endDate;
             return PartialView(viewModel);
         }
 
-        protected virtual IEnumerable<AttendanceViewModel> GetAttendance(string startDate, string endDate)
+        protected virtual IEnumerable<AttendanceViewModel> GetAttendance(string startDate, string endDate, int employeeId)
         {
             //do not display the edit link if attendance date < last payroll date
             var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
@@ -183,7 +183,7 @@ namespace Payroll.Controllers
 
             Func<IEnumerable<EmployeeHours>, bool> isNotEmpty = x => x != null && x.Any(y => y != null);
 
-            var result = _attendanceService.GetAttendanceAndHoursByDate(startDate.ToDateTime(), endDate.ToDateTime());
+            var result = _attendanceService.GetAttendanceAndHoursByDate(startDate.ToDateTime(), endDate.ToDateTime(), employeeId);
             var viewModel = result.MapCollection<AttendanceDao, AttendanceViewModel>((s, d) =>
             {
                 d.Editable = s.ClockIn > lastPayrollDate;
@@ -202,9 +202,9 @@ namespace Payroll.Controllers
             return viewModel;
         }
 
-        public void ExportToExcel(string startDate, string endDate)
+        public void ExportToExcel(string startDate, string endDate, int employeeId)
         {
-            var viewModel = GetAttendance(startDate, endDate);
+            var viewModel = GetAttendance(startDate, endDate, employeeId);
             var fileName = String.Format("Attendance_Report_{0}-{1}", startDate.ToDateTime().SerializeShort(), endDate.ToDateTime().SerializeShort());
 
             var dt = new DataTable();
@@ -260,9 +260,9 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public virtual PartialViewResult AttendanceLogContent(string startDate, string endDate)
+        public virtual PartialViewResult AttendanceLogContent(string startDate, string endDate, int employeeId = 0)
         {
-            var result = _attendanceLogRepository.GetAttendanceLogsWithName(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate).AddDays(1));
+            var result = _attendanceLogRepository.GetAttendanceLogsWithName(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate).AddDays(1), employeeId);
             var viewModel = result.MapCollection<AttendanceLogDao, AttendanceLogViewModel>((s, d) =>
             {
                 d.Datetime = String.Format("{0} {1}", s.ClockInOut.ToLongDateString(), s.ClockInOut.ToLongTimeString());

@@ -9,7 +9,7 @@ namespace Payroll.Repository.Interface
     public interface IAttendanceLogRepository : IRepository<AttendanceLog>
     {
         IList<AttendanceLog> GetAttendanceLogs(DateTime fromDate, DateTime toDate, bool isRecorded);
-        IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate);
+        IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate, int employeeId);
         IList<AttendanceLog> GetAttendanceLogs(bool isRecorded);
     }
 }

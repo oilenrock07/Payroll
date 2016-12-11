@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Attendance";
+    ViewData["InfoMessage"] = "Leave this blank to search all employees";
 }
 
 <h2>Attendance</h2>
@@ -12,6 +13,12 @@
 
 <form>
     <div class="form-horizontal">
+        <div class="form-group">
+            @Html.Label("Filter by Employee:", new { @for = "EmployeeId", @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.Partial("_EmployeeTypeAhead", 0)
+            </div>
+        </div>
         <div class="form-group">
             <label class="control-label col-md-2" for="StartDate">Start Date: </label>
             <div class="col-md-4">
@@ -31,10 +38,14 @@
         </div>
     </div>
 </form>
- 
+
 <div id="content"></div>
 
 @section scripts
 {
+    <script type="text/javascript">
+        $.validator.setDefaults({ ignore: [] });
+    </script>
+    <script type="text/javascript" src="/Scripts/Employee/employeetypeahead.js"></script>
     <script type="text/javascript" src="/Scripts/Attendance/attendance.js"></script>
 }

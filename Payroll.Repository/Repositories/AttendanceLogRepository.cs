@@ -33,7 +33,7 @@ namespace Payroll.Repository.Repositories
                     .OrderBy(a => a.EmployeeId).ThenBy(a => a.ClockInOut).ThenBy(a => a.AttendanceLogId).ToList();
         }
 
-        public IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate)
+        public IEnumerable<AttendanceLogDao> GetAttendanceLogsWithName(DateTime fromDate, DateTime toDate, int employeeId)
         {
             var attendanceLog = Find(a => a.ClockInOut >= fromDate && a.ClockInOut < toDate && a.IsActive);
 
@@ -53,6 +53,8 @@ namespace Payroll.Repository.Repositories
                             IpAddress = attendance.IpAddress,
                             MachineId = attendance.MachineId
                         };
+
+            if (employeeId > 0) result = result.Where(x => x.EmployeeId == employeeId);
 
             return result.ToList();
         }
