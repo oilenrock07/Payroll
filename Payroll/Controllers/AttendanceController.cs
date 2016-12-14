@@ -172,6 +172,7 @@ namespace Payroll.Controllers
             var viewModel = GetAttendance(startDate, endDate, employeeId);
             ViewBag.StartDate = startDate;
             ViewBag.EndDate = endDate;
+            ViewBag.EmployeeId = employeeId;
             return PartialView(viewModel);
         }
 
