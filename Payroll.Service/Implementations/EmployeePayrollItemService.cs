@@ -524,7 +524,7 @@ namespace Payroll.Service.Implementations
                 dt.Columns.Add("Total Regular Holiday OT Hours");
                 dt.Columns.Add("Regular Holiday OT Rate");
                 dt.Columns.Add("% Regular Holiday OT");
-                dt.Columns.Add("Regular Holiday Pay OT Pay");
+                dt.Columns.Add("Regular Holiday OT Pay");
 
                 regularHolidayOtExists = true;
             }
