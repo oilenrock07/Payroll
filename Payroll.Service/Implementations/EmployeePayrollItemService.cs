@@ -292,6 +292,10 @@ namespace Payroll.Service.Implementations
             GenerateEmployeeHolidayPay(payrollDate, payrollStartDate, payrollEndDate);
         }
 
+        /**
+         * Generate employee holiday pay NOT WORKED
+         *
+         **/
         public void GenerateEmployeeHolidayPay(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
         {
             //Get all active employees
@@ -315,6 +319,16 @@ namespace Payroll.Service.Implementations
                             if (day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
                             {
                                 //Don't proceed
+                                return;
+                            }
+
+                            //Check if worked before holiday
+                            var lastDayOfWork = getLastDayOfWork(day, workSchedule);
+                            var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
+
+                            //Don't proceed if the employee didn't work the day before holiday
+                            if (employeeHours == null || employeeHours.Count <= 0)
+                            {
                                 return;
                             }
                         }
