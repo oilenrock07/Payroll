@@ -26,6 +26,7 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "RATE_OT", Value = "1.25", Description = "OT Rate", Category = "RATE" },
                 new Setting { SettingKey = "RATE_NIGHTDIF", Value = "0.8", Description = "Night Dif", Category = "RATE" },
                 new Setting { SettingKey = "RATE_REST_DAY", Value = "1.3", Description = "Rest Day", Category = "RATE" },
+                new Setting { SettingKey = "RATE_REST_DAY_OT", Value = "1.3", Description = "Rest Day OT", Category = "RATE" },
                 new Setting { SettingKey = "RATE_HOLIDAY_SPECIAL", Value = "1.3", Description = "Special Holiday", Category = "RATE" },
                 new Setting { SettingKey = "RATE_HOLIDAY_REGULAR", Value = "2", Description = "Regular Holiday", Category = "RATE" },
                 new Setting { SettingKey = "RATE_OT_HOLIDAY", Value = "1.3", Description = "OT Rate Holiday", Category = "RATE" },

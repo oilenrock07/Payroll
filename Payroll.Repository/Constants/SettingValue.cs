@@ -8,6 +8,7 @@
         public const string PAGINATION_ITEMS_PER_PAGE = "PAGINATION_ITEMS_PER_PAGE";
 
         public const string RATE_REST_DAY = "RATE_REST_DAY";
+        public const string RATE_REST_DAY_OT = "RATE_REST_DAY_OT";
         public const string RATE_OT = "RATE_OT";
         public const string RATE_NIGHTDIF = "RATE_NIGHTDIF";
         public const string RATE_HOLIDAY_SPECIAL = "RATE_HOLIDAY_SPECIAL";
