@@ -36,10 +36,21 @@ namespace Payroll.Repository.Repositories
                 && p.CutOffEndDate == payrollEnd).FirstOrDefault();
         }
 
-        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate)
+        //Will get all not taxed payroll within a month from the payroll date or within 15 days if semi monthly
+        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate, bool isSemiMonthly)
         {
-            return Find(p => p.IsActive && !p.IsTaxed && p.EmployeeId == employeeId 
-                && p.PayrollDate < payrollDate).OrderByDescending( p => p.PayrollDate).ToList();
+            if (isSemiMonthly)
+            {
+                var fromDate = payrollDate.AddDays(-8);
+                return Find(p => p.IsActive && p.EmployeeId == employeeId
+                    && p.PayrollDate < payrollDate && p.PayrollDate > fromDate).OrderByDescending(p => p.PayrollDate).ToList();
+            }
+            else
+            {
+                var fromDate = payrollDate.AddDays(-24);
+                return Find(p => p.IsActive && p.EmployeeId == employeeId
+                    && p.PayrollDate < payrollDate && p.PayrollDate > fromDate).OrderByDescending(p => p.PayrollDate).ToList();
+            }
         }
 
         public DateTime? GetNextPayrollStartDate()

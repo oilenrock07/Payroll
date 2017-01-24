@@ -38,6 +38,7 @@ namespace Payroll.Service.Implementations
         private readonly String ALLOWANCE_DAY_SCHEDULE = "ALLOWANCE_DAY_SCHEDULE";
         private readonly String ALLOWANCE_TOTAL_DAYS = "ALLOWANCE_TOTAL_DAYS";
         private readonly String PAYROLL_TOTAL_HOURS = "PAYROLL_TOTAL_HOURS";
+        private readonly String TAX_FREQUENCY = "TAX_FREQUENCY";
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
             IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService, IEmployeeService employeeService, ITotalEmployeeHoursService totalEmployeeHoursService,
@@ -226,9 +227,9 @@ namespace Payroll.Service.Implementations
             _employeePayrollRepository.Update(employeePayroll);
         }
 
-        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate)
+        public IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate, bool isSemiMonthly)
         {
-            return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId, payrollDate);
+            return _employeePayrollRepository.GetForTaxProcessingByEmployee(employeeId, payrollDate, false);
         }
 
         public DateTime GetNextPayrollStartDate(DateTime? date)
@@ -589,8 +590,13 @@ namespace Payroll.Service.Implementations
         {
             //Tax computation
             //Get old payroll for tax computation
+            var frequency = _settingService.GetByKey(TAX_FREQUENCY);
+
+            FrequencyType taxFrequency = (FrequencyType)Convert.ToInt32(frequency);
+
             var payrollForTaxProcessing = 
-                GetForTaxProcessingByEmployee(payroll.EmployeeId, payroll.PayrollDate);
+                GetForTaxProcessingByEmployee(payroll.EmployeeId, payroll.PayrollDate, 
+                    (taxFrequency == FrequencyType.SemiMonthly ? true : false));
 
             decimal totalTaxableIncome = payroll.TaxableIncome;
             foreach (EmployeePayroll employeePayroll in payrollForTaxProcessing)
@@ -605,7 +611,7 @@ namespace Payroll.Service.Implementations
             //Compute tax
             var employeeInfo = _employeeInfoService.GetByEmployeeId(payroll.EmployeeId);
             var totalTax = _employeePayrollDeductionService
-                .ComputeTax(payroll.PayrollId, employeeInfo, totalTaxableIncome);
+                .ComputeTax(payroll.PayrollId, employeeInfo, totalTaxableIncome, taxFrequency);
 
             //Update payroll for total deductions and total grosss
             payroll.TotalDeduction += totalTax;

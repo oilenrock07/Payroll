@@ -36,7 +36,6 @@ namespace Payroll.Service.Implementations
 
         private readonly int MAX_DEPENDENT = 4;
         private readonly String TAX_DEDUCTION_NAME = "Tax";
-        private readonly string TAX_FREQUENCY = "TAX_FREQUENCY";
 
         public EmployeePayrollDeductionService(IUnitOfWork unitOfWork, ISettingService settingService,
             IEmployeeSalaryService employeeSalaryService, IEmployeeInfoService employeeInfoService,
@@ -102,14 +101,11 @@ namespace Payroll.Service.Implementations
             return totalDeductions;
         }
 
-        public decimal ComputeTax(int payrollId, EmployeeInfo employeeInfo, decimal totalTaxableIncome)
+        public decimal ComputeTax(int payrollId, EmployeeInfo employeeInfo, decimal totalTaxableIncome, FrequencyType taxFrequency)
         {
             var taxDeduction = _deductionService.GetByName(TAX_DEDUCTION_NAME);
-            var frequency = _settingService.GetByKey(TAX_FREQUENCY);
             var noOfDependents =
                 employeeInfo.Dependents > MAX_DEPENDENT ? MAX_DEPENDENT : employeeInfo.Dependents;
-
-            FrequencyType taxFrequency = (FrequencyType)Convert.ToInt32(frequency);
 
             var taxAmount = _taxService.ComputeTax(taxFrequency, noOfDependents, totalTaxableIncome);
 
@@ -159,8 +155,16 @@ namespace Payroll.Service.Implementations
                 int deductionSchedule = Convert
                    .ToInt32(_settingService.GetByKey(DEDUCTION_MONTHLY_SCHEDULE));
 
-                if (payrollStartDate.Day <= deductionSchedule &&
-                        payrollEndDate.Day >= deductionSchedule)
+                //Use month 
+                DateTime deductionDate =
+                    new DateTime(payrollStartDate.Year, payrollStartDate.Month, deductionSchedule);
+
+                //Use month 
+                DateTime deductionDate2 =
+                    new DateTime(payrollEndDate.Year, payrollEndDate.Month, deductionSchedule);
+
+                if ((payrollStartDate <= deductionDate && payrollEndDate >= deductionDate) 
+                        || (payrollStartDate <= deductionDate2 && payrollEndDate >= deductionDate2))
                 {
                     proceed = true;
                 }

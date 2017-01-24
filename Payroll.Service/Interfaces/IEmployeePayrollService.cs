@@ -16,7 +16,7 @@ namespace Payroll.Service.Interfaces
 
         void Update(EmployeePayroll employeePayroll);
 
-        IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate);
+        IList<EmployeePayroll> GetForTaxProcessingByEmployee(int employeeId, DateTime payrollDate, bool isSemiMonthly);
 
         void GeneratePayroll(DateTime? date);
 

@@ -1,4 +1,5 @@
 ﻿using Payroll.Entities;
+using Payroll.Entities.Enums;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
 using System;
@@ -19,6 +20,6 @@ namespace Payroll.Service.Interfaces
 
         bool proceedDeduction(DateTime payrollStartDate, DateTime payrollEndDate);
 
-        decimal ComputeTax(int payrollId, EmployeeInfo employeeInfo, decimal totalTaxableIncome);
+        decimal ComputeTax(int payrollId, EmployeeInfo employeeInfo, decimal totalTaxableIncome, FrequencyType taxFrequency);
     }
 }
