@@ -142,7 +142,8 @@ namespace Payroll.Service.Implementations
                                     var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
 
                                     //Set holiday to null if the employee didn't work the day before holiday
-                                    if (employeeHours == null || employeeHours.Count <= 0)
+                                    if (!holiday.IsAlwaysPayable &&
+                                         (employeeHours == null || employeeHours.Count <= 0))
                                     {
                                         holiday = null;
                                     }
@@ -319,7 +320,8 @@ namespace Payroll.Service.Implementations
                             var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
 
                             //Don't proceed if the employee didn't work the day before holiday
-                            if (employeeHours == null || employeeHours.Count <= 0)
+                            if (!holiday.IsAlwaysPayable &&
+                                        (employeeHours == null || employeeHours.Count <= 0))
                             {
                                 return;
                             }
