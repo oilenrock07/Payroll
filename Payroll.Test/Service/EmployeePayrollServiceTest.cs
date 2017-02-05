@@ -33,6 +33,7 @@ namespace Payroll.Test.Service
         private IEmployeeService _employeeService;
         private IEmployeePayrollItemService _employeePayrollItemService;
         private IEmployeeAdjustmentService _employeeAdjusmentService;
+        private IEmployeePayrollAllowanceService _employeePayrollAllowanceService;
 
         private IEmployeePayrollRepository _employeePayrollRepository;
         private IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
@@ -78,7 +79,8 @@ namespace Payroll.Test.Service
             _totalEmployeeHoursService = new TotalEmployeeHoursService(_unitOfWork, _totalEmployeeHoursRepository, null, _settingService);
             _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, null, null, null, null,null, null, null, null, null, null);
             _employeeAdjusmentService = new EmployeeAdjustmentService(_employeeAdjustmentRepository, _employeeRepository);
-            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService, _employeeAdjusmentService);
+            _employeePayrollAllowanceService = new EmployeePayrollAllowanceService(_settingService, _totalEmployeeHoursService);
+            _employeePayrollService = new EmployeePayrollService(_unitOfWork, _employeePayrollRepository, _settingService, _employeePayrollDeductionService, _employeeInfoService, _totalEmployeeHoursService, _employeeService, _totalEmployeeHoursService, _employeePayrollItemService, _employeeAdjusmentService, _employeePayrollAllowanceService);
 
             //Update settings
             var settingsPayrollStartDate = _settingRepository.GetSettingByKey("PAYROLL_WEEK_START");
@@ -628,7 +630,7 @@ namespace Payroll.Test.Service
             _unitOfWork.Commit();
 
             //Test
-            var dateStart = DateTime.Parse("05/04/2016");
+            var dateStart = DateTime.Parse("04/30/2016");
             var dateEnd = DateTime.Parse("05/10/2016");
             
             _employeePayrollService.GeneratePayroll(dateStart, dateEnd);
@@ -642,23 +644,23 @@ namespace Payroll.Test.Service
             Assert.AreEqual(1, payrollList[0].EmployeeId);
             Assert.AreEqual(dateStart, payrollList[0].CutOffStartDate);
             Assert.AreEqual(dateEnd, payrollList[0].CutOffEndDate);
-            Assert.AreEqual(false, payrollList[0].IsTaxed);
+            Assert.AreEqual(true, payrollList[0].IsTaxed);
             Assert.AreEqual(0, payrollList[0].TotalAdjustment);
-            Assert.AreEqual(0, payrollList[0].TotalDeduction);
+            Assert.AreEqual(200.6M, payrollList[0].TotalDeduction);
             Assert.AreEqual(552.59M, decimal.Round(payrollList[0].TotalGross, 2));
-            Assert.AreEqual(552.59M, decimal.Round(payrollList[0].TotalNet, 2));
-            Assert.AreEqual(552.59M, decimal.Round(payrollList[0].TaxableIncome, 2));
+            Assert.AreEqual(351.99M, decimal.Round(payrollList[0].TotalNet, 2));
+            Assert.AreEqual(351.99M, decimal.Round(payrollList[0].TaxableIncome, 2));
             Assert.AreEqual(26.92M, decimal.Round(payrollList[0].TotalAllowance, 2));
 
             Assert.AreEqual(2, payrollList[1].EmployeeId);
             Assert.AreEqual(dateStart, payrollList[1].CutOffStartDate);
             Assert.AreEqual(dateEnd, payrollList[1].CutOffEndDate);
-            Assert.AreEqual(false, payrollList[1].IsTaxed);
+            Assert.AreEqual(true, payrollList[1].IsTaxed);
             Assert.AreEqual(0, payrollList[1].TotalAdjustment);
-            Assert.AreEqual(0, payrollList[1].TotalDeduction);
+            Assert.AreEqual(201.60M, payrollList[1].TotalDeduction);
             Assert.AreEqual(902.43M, decimal.Round(payrollList[1].TotalGross, 2));
-            Assert.AreEqual(902.43M, decimal.Round(payrollList[1].TotalNet, 2));
-            Assert.AreEqual(902.43M, decimal.Round(payrollList[1].TaxableIncome, 2));
+            Assert.AreEqual(700.83M, decimal.Round(payrollList[1].TotalNet, 2));
+            Assert.AreEqual(700.83M, decimal.Round(payrollList[1].TaxableIncome, 2));
             Assert.AreEqual(12.31M, decimal.Round(payrollList[1].TotalAllowance, 2));
 
         }

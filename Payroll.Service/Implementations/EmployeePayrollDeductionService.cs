@@ -155,13 +155,21 @@ namespace Payroll.Service.Implementations
                 int deductionSchedule = Convert
                    .ToInt32(_settingService.GetByKey(DEDUCTION_MONTHLY_SCHEDULE));
 
-                //Use month 
-                DateTime deductionDate =
-                    new DateTime(payrollStartDate.Year, payrollStartDate.Month, deductionSchedule);
+                //This will handle end of month
+                int lastDayOfMonth1 = DateTime.DaysInMonth(payrollStartDate.Year, payrollStartDate.Month);
+                int deductionSchedule1 = deductionSchedule <= lastDayOfMonth1 ? deductionSchedule : lastDayOfMonth1;
 
-                //Use month 
+                //Use month of payroll start
+                DateTime deductionDate =
+                    new DateTime(payrollStartDate.Year, payrollStartDate.Month, deductionSchedule1);
+
+                //This will handle end of month
+                int lastDayOfMonth2 = DateTime.DaysInMonth(payrollEndDate.Year, payrollEndDate.Month);
+                int deductionSchedule2 = deductionSchedule <= lastDayOfMonth2 ? deductionSchedule : lastDayOfMonth2;
+
+                //Use month of payroll end
                 DateTime deductionDate2 =
-                    new DateTime(payrollEndDate.Year, payrollEndDate.Month, deductionSchedule);
+                    new DateTime(payrollEndDate.Year, payrollEndDate.Month, deductionSchedule2);
 
                 if ((payrollStartDate <= deductionDate && payrollEndDate >= deductionDate) 
                         || (payrollStartDate <= deductionDate2 && payrollEndDate >= deductionDate2))

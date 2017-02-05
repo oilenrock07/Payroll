@@ -27,6 +27,7 @@ namespace Payroll.Service.Implementations
         private ITotalEmployeeHoursService _totalEmployeeHoursService;
         private IEmployeePayrollItemService _employeePayrollItemService;
         private IEmployeeAdjustmentService _employeeAdjustmentService;
+        private IEmployeePayrollAllowanceService _employeePayrollAllowanceService;
 
         private FrequencyType _frequency;
 
@@ -42,7 +43,7 @@ namespace Payroll.Service.Implementations
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
             IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService, IEmployeeService employeeService, ITotalEmployeeHoursService totalEmployeeHoursService,
-            IEmployeePayrollItemService employeePayrollItemService, IEmployeeAdjustmentService employeeAdjustmentService)
+            IEmployeePayrollItemService employeePayrollItemService, IEmployeeAdjustmentService employeeAdjustmentService, IEmployeePayrollAllowanceService employeePayrollAllowanceService)
         {
             _unitOfWork = unitOfWork;
             _employeePayrollRepository = employeeePayrollRepository;
@@ -54,6 +55,7 @@ namespace Payroll.Service.Implementations
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _employeePayrollItemService = employeePayrollItemService;
             _employeeAdjustmentService = employeeAdjustmentService;
+            _employeePayrollAllowanceService = employeePayrollAllowanceService;
 
             _frequency = (FrequencyType)Convert
                 .ToInt32(_settingService.GetByKey(PAYROLL_FREQUENCY));
@@ -79,7 +81,7 @@ namespace Payroll.Service.Implementations
                     {
                         if (tempEmployeePayroll != null)
                         {
-                            //Save last entry if for different employee
+                            //Save last employeePayrollAllowanceServiceentry if for different employee
                             _employeePayrollRepository.Add(tempEmployeePayroll);
                             employeePayrollList.Add(tempEmployeePayroll);
                         }
@@ -376,87 +378,27 @@ namespace Payroll.Service.Implementations
         public void ComputeAllowance(DateTime payrollStartDate, DateTime payrollEndDate, 
             IList<EmployeePayroll> payrollList)
         {
-            //Get allowance schedule
-            //If 1st, 2nd, 3rd or 4th of the week
-            int weekSchedule = Convert.ToInt32(_settingService.GetByKey(ALLOWANCE_WEEK_SCHEDULE));
-            //If monday, tuesday ... so on
-            DayOfWeek daySchedule = (DayOfWeek)Enum.Parse(typeof(DayOfWeek),
-                            _settingService.GetByKey(ALLOWANCE_DAY_SCHEDULE));
 
-            //Get schedule
-            var allowanceDateByStartDate = DatetimeExtension
-                .GetNthWeekofMonth(payrollStartDate, weekSchedule, daySchedule);
-
-            var allowanceDateByEndDate = DatetimeExtension
-               .GetNthWeekofMonth(payrollEndDate, weekSchedule, daySchedule);
-
-            if ((allowanceDateByStartDate >= payrollStartDate && allowanceDateByStartDate < payrollEndDate.AddDays(1)) ||
-                    (allowanceDateByEndDate >= payrollStartDate && allowanceDateByEndDate < payrollEndDate.AddDays(1)))
+            if (_employeePayrollAllowanceService.proceedAllowance(payrollStartDate, payrollEndDate))
             {
-
                 // Get all active employees
                 var employees = _employeeInfoService.GetAllWithAllowance();
 
                 int totalWorkHoursPerDay = Convert.ToInt32(_settingService.GetByKey(PAYROLL_TOTAL_HOURS));
+                var totalDays = Convert.ToInt32(_settingService.GetByKey(ALLOWANCE_TOTAL_DAYS));
 
                 foreach (EmployeeInfo employee in employees)
                 {
-                    double totalHours = 0;
-                    //Get regular and OT hours per day
-                    List<TotalEmployeeHours> employeeTotalHours =
-                       new List<TotalEmployeeHours>(_totalEmployeeHourService
-                           .GetByTypeAndDateRange(employee.EmployeeId, RateType.Regular, payrollStartDate, payrollEndDate));
-
-                    employeeTotalHours.AddRange(_totalEmployeeHourService
-                           .GetByTypeAndDateRange(employee.EmployeeId, RateType.OverTime, payrollStartDate, payrollEndDate));
-                    
-                    employeeTotalHours = employeeTotalHours.OrderByDescending(e => e.Date).ToList();
-
-                    if (employeeTotalHours != null && employeeTotalHours.Count > 1)
-                    {
-                        DateTime? tempDate = null;
-                        double dayHours = 0;
-
-                        var last = employeeTotalHours.Last();
-                        foreach (TotalEmployeeHours employeeHours in employeeTotalHours)
-                        {
-                            //If different date add dayhours to totalhours and set dat hours to 0
-                            if (tempDate != null && tempDate != employeeHours.Date)
-                            {
-                                totalHours += (dayHours > totalWorkHoursPerDay ?
-                                    totalWorkHoursPerDay : dayHours);
-                                dayHours = 0;
-                            }
-
-                            dayHours = dayHours + employeeHours.Hours;
-                            tempDate = employeeHours.Date;
-
-                            //If last iteration
-                            if (last.Equals(employeeHours))
-                            {
-                                totalHours += (dayHours > totalWorkHoursPerDay
-                                    ? totalWorkHoursPerDay : dayHours);
-                            }
-                        }
-
-                        //Compute total allowance
-                        var totalDays = Convert.ToInt32(_settingService.GetByKey(ALLOWANCE_TOTAL_DAYS));
-                        var totalAllowanceHours = totalDays * totalWorkHoursPerDay;
-
-                        Decimal totalAllowancePerHour = employee.Allowance.Value /
-                                ((decimal)totalDays * (decimal)totalWorkHoursPerDay);
-
-                        Decimal totalAllowance = (decimal)totalHours * totalAllowancePerHour;
-
-                        //Update employee payroll
-                        EmployeePayroll employeePayroll = payrollList.OfType<EmployeePayroll>()
-                              .Where(p => p.EmployeeId == employee.EmployeeId).FirstOrDefault();
-                        employeePayroll.TotalAllowance = totalAllowance;
-                        employeePayroll.TaxableIncome = decimal.Add(employeePayroll.TaxableIncome, totalAllowance);
-                        employeePayroll.TotalGross = decimal.Add(employeePayroll.TotalGross, totalAllowance);
-                        employeePayroll.TotalNet = employeePayroll.TotalGross;
-                        _unitOfWork.Commit();
-                    }
+                    decimal totalAllowance = _employeePayrollAllowanceService
+                        .ComputeEmployeeAllowance(totalDays, totalWorkHoursPerDay, employee, payrollStartDate, payrollEndDate);
+                    //Update employee payroll
+                    EmployeePayroll employeePayroll = payrollList.OfType<EmployeePayroll>()
+                          .Where(p => p.EmployeeId == employee.EmployeeId).FirstOrDefault();
+                    employeePayroll.TotalAllowance = totalAllowance;
+                    employeePayroll.TaxableIncome = decimal.Add(employeePayroll.TaxableIncome, totalAllowance);
+                    employeePayroll.TotalGross = decimal.Add(employeePayroll.TotalGross, totalAllowance);
+                    employeePayroll.TotalNet = employeePayroll.TotalGross;
+                    _unitOfWork.Commit();
                 }
             }
         }
