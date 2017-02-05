@@ -138,9 +138,10 @@ namespace Payroll.App_Start
             kernel.Bind<ISchedulerLogService>().To<SchedulerLogService>().InRequestScope();
             kernel.Bind<IEmployeeAdjustmentService>().To<EmployeeAdjustmentService>().InRequestScope();
             kernel.Bind<IEmployeePayrollItemService>().To<EmployeePayrollItemService>().InRequestScope();
+            kernel.Bind<IEmployeePayrollAllowanceService>().To<EmployeePayrollAllowanceService>().InRequestScope();
 
             //Caching
             //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();
-        }        
+        }
     }
 }

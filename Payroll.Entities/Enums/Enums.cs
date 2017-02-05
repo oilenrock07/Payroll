@@ -62,7 +62,10 @@ namespace Payroll.Entities.Enums
         SpecialHolidayRestDay = 14,
 
         [Description("Special HolidayRest Day OT")]
-        SpecialHolidayRestDayOT = 15
+        SpecialHolidayRestDayOT = 15,
+
+        [Description("Allowance")]
+        Allowance = 16
     }
 
     public enum FrequencyType

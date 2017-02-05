@@ -394,11 +394,28 @@ namespace Payroll.Service.Implementations
                     //Update employee payroll
                     EmployeePayroll employeePayroll = payrollList.OfType<EmployeePayroll>()
                           .Where(p => p.EmployeeId == employee.EmployeeId).FirstOrDefault();
-                    employeePayroll.TotalAllowance = totalAllowance;
-                    employeePayroll.TaxableIncome = decimal.Add(employeePayroll.TaxableIncome, totalAllowance);
-                    employeePayroll.TotalGross = decimal.Add(employeePayroll.TotalGross, totalAllowance);
-                    employeePayroll.TotalNet = employeePayroll.TotalGross;
-                    _unitOfWork.Commit();
+                    if (employeePayroll != null)
+                    {
+                        employeePayroll.TotalAllowance = totalAllowance;
+                        employeePayroll.TaxableIncome = decimal.Add(employeePayroll.TaxableIncome, totalAllowance);
+                        employeePayroll.TotalGross = decimal.Add(employeePayroll.TotalGross, totalAllowance);
+                        employeePayroll.TotalNet = employeePayroll.TotalGross;
+
+                        //TODO change this if allowance is already a list
+                        //Create allowance payroll item
+                        EmployeePayrollItem allowanceItem = new EmployeePayrollItem();
+                        allowanceItem.EmployeeId = employeePayroll.EmployeeId;
+                        allowanceItem.PayrollId = employeePayroll.PayrollId;
+                        allowanceItem.PayrollDate = employeePayroll.PayrollDate;
+                        allowanceItem.Multiplier = 1;
+                        allowanceItem.RatePerHour = employee.Salary;
+                        allowanceItem.RateType = RateType.Allowance;
+                        allowanceItem.TotalAmount = employeePayroll.TotalAllowance;
+
+                        _employeePayrollItemService.Add(allowanceItem);
+                        _unitOfWork.Commit();
+                    }
+
                 }
             }
         }
