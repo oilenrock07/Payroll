@@ -40,6 +40,7 @@ namespace Payroll.Service.Implementations
         private readonly String ALLOWANCE_TOTAL_DAYS = "ALLOWANCE_TOTAL_DAYS";
         private readonly String PAYROLL_TOTAL_HOURS = "PAYROLL_TOTAL_HOURS";
         private readonly String TAX_FREQUENCY = "TAX_FREQUENCY";
+        private readonly String TAX_ENABLED = "TAX";
 
         public EmployeePayrollService(IUnitOfWork unitOfWork, IEmployeePayrollRepository employeeePayrollRepository, ISettingService settingService, IEmployeePayrollDeductionService employeePayrollDeductionService,
             IEmployeeInfoService employeeInfoService, ITotalEmployeeHoursService totalEmployeeHourService, IEmployeeService employeeService, ITotalEmployeeHoursService totalEmployeeHoursService,
@@ -480,8 +481,13 @@ namespace Payroll.Service.Implementations
                 payroll.TaxableIncome = payroll.TotalGross - totalDeductions;
                 payroll.TotalDeduction += totalDeductions;
 
-                //Compute Tax
-                GenerateTax(payroll);
+
+                //Compute Tax if enabled
+                int taxEnabled = Convert.ToInt32(_settingService.GetByKey(TAX_ENABLED));
+                if (taxEnabled > 0)
+                {
+                    GenerateTax(payroll);
+                }
             }
 
             try

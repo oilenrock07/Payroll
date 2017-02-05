@@ -60,9 +60,11 @@ namespace Payroll.Entities.Seeder
                 new Setting { SettingKey = "PAYROLL_IS_SPHOLIDAY_WITH_PAY", Value = "0", Description = "Is Specia holiday with pay", Category = "PAYROLL_SCHEDULE"},
                 
                 //Adjustments
-                new Setting { SettingKey = "ALLOWANCE_TOTAL_DAYS", Value = "26", Description = "Allowance total number of working days monthly", Category = "PAYROLL_ADJUSTMENTS"},
-                new Setting { SettingKey = "ALLOWANCE_WEEK_SCHEDULE", Value = "1", Description = "Allowance week schedule", Category = "PAYROLL_ADJUSTMENTS"},
-                new Setting { SettingKey = "ALLOWANCE_DAY_SCHEDULE", Value = "6", Description = "Allowance week schedule", Category = "PAYROLL_ADJUSTMENTS"},
+                new Setting { SettingKey = "ALLOWANCE_TOTAL_DAYS", Value = "26", Description = "Allowance total number of working days monthly", Category = "ALLOWANCE"},
+                new Setting { SettingKey = "ALLOWANCE_WEEK_SCHEDULE", Value = "1", Description = "Allowance week schedule", Category = "ALLOWANCE"},
+                new Setting { SettingKey = "ALLOWANCE_DAY_SCHEDULE", Value = "6", Description = "Allowance week schedule", Category = "ALLOWANCE"},
+
+                new Setting { SettingKey = "TAX", Value = "0", Description = "Is allowance enabled", Category = "TAX"},
 
                 //settings for deduction
                 new Setting { SettingKey = "HDMF_MAX_MONTHLY_COMPENSATION", Value = "5000", Description = "HDMF Maximum Monthly Compensation Contributions", Category = "PAYROLL_DEDUCTIONS"},
