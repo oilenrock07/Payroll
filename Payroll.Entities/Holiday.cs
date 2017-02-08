@@ -25,6 +25,5 @@ namespace Payroll.Entities
         public string Description { get; set; }
 
         public bool IsAlwaysPayable { get; set; }
-
     }
 }

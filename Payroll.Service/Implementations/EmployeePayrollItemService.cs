@@ -142,10 +142,10 @@ namespace Payroll.Service.Implementations
                                     var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
 
                                     //Set holiday to null if the employee didn't work the day before holiday
-                                    if (!holiday.IsAlwaysPayable &&
-                                         (employeeHours == null || employeeHours.Count <= 0))
+                                    if (holiday.IsAlwaysPayable == false)
                                     {
-                                        holiday = null;
+                                        if (employeeHours == null || employeeHours.Count <= 0)
+                                            holiday = null;
                                     }
                                 }
 
@@ -312,7 +312,7 @@ namespace Payroll.Service.Implementations
                             if (day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
                             {
                                 //Don't proceed
-                                return;
+                                continue;
                             }
 
                             //Check if worked before holiday
@@ -320,16 +320,17 @@ namespace Payroll.Service.Implementations
                             var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
 
                             //Don't proceed if the employee didn't work the day before holiday
-                            if (!holiday.IsAlwaysPayable &&
-                                        (employeeHours == null || employeeHours.Count <= 0))
+                            if (holiday.IsAlwaysPayable == false)
                             {
-                                return;
+                                if (employeeHours == null || employeeHours.Count <= 0)
+                                    continue; 
                             }
+                           
                         }
                         else
                         {
                             //No work schedule, no holiday pay
-                            return;
+                            continue;
                         }
 
                         //If with schedule on this date, generate holiday pay

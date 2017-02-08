@@ -184,13 +184,13 @@ namespace Payroll.Service.Implementations
                             if (day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
                             {
                                 //Don't proceed
-                                return;
+                                continue;
                             }
                         }
                         else
                         {
                             //No work schedule, no holiday pay
-                            return;
+                            continue;
                         }
 
                         //If with schedule on this date, generate holiday pay
