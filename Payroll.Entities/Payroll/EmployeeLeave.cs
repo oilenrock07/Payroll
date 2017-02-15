@@ -21,7 +21,9 @@ namespace Payroll.Entities.Payroll
         public int LeaveId { get; set; }
         public virtual Leave Leave { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
 
         [StringLength(5000)]
         public string Reason { get; set; }
