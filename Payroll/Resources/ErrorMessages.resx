@@ -135,4 +135,7 @@
   <data name="ATTENDANCE_CLOCKIN_GREATER_THAN_CLOCKOUT" xml:space="preserve">
     <value>Clockin should not be greater than or equal to clockout</value>
   </data>
+  <data name="HOLIDAY_EXISTS" xml:space="preserve">
+    <value>Holiday date already exists</value>
+  </data>
 </root>

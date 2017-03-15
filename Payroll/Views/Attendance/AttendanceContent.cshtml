@@ -6,7 +6,9 @@
             <th>First Name</th>
             <th>Middle Name</th>
             <th>Last Name</th>
+            <th>Clock In Day Of Week</th>
             <th>Clock In</th>
+            <th>Clock Out Day Of Week</th>            
             <th>Clock Out</th>
             <th>Regular Hours</th>
             <th>Overtime</th>
@@ -16,7 +18,8 @@
         @foreach (var item in Model)
         {
             var clockout = item.ClockOut.HasValue ? item.ClockOut.Value.ToString() : "";
-            
+            var clockOutDow = item.ClockOut.HasValue ? item.ClockOut.Value.DayOfWeek.ToString("ddd") : "";
+
             <tr @if (item.ClockOut != null && (item.ClockOut.Value - item.ClockIn).Days >= 1)
             {
                 @Html.Raw("style='color: #a94442; background-color: #f7c4c4;'")
@@ -34,7 +37,13 @@
                     @item.LastName
                 </td>
                 <td>
+                    @item.ClockIn.DayOfWeek.ToString("ddd")
+                </td>
+                <td>
                     @item.ClockIn
+                </td>
+                <td>
+                    @clockOutDow
                 </td>
                 <td>
                     @clockout

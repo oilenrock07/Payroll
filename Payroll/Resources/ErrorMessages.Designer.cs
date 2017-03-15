@@ -79,6 +79,15 @@ namespace Payroll.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Holiday date already exists.
+        /// </summary>
+        internal static string HOLIDAY_EXISTS {
+            get {
+                return ResourceManager.GetString("HOLIDAY_EXISTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter valid date.
         /// </summary>
         internal static string INVALID_DATE {
