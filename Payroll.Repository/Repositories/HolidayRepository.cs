@@ -30,8 +30,15 @@ namespace Payroll.Repository.Repositories
         public bool IsHolidayExists(DateTime date)
         {
             return Find(x =>
-                        x.Date.Year == date.Date.Month && x.Date.Month == date.Date.Month &&
+                        x.Date.Year == date.Date.Year && x.Date.Month == date.Date.Month &&
                         x.Date.Day == date.Date.Day && x.IsActive).FirstOrDefault() != null;
+        }
+
+        public bool IsHolidayExists(DateTime date, int holidayId)
+        {
+            return Find(x =>
+                        x.Date.Year == date.Date.Year && x.Date.Month == date.Date.Month &&
+                        x.Date.Day == date.Date.Day && x.IsActive && x.HolidayId != holidayId).FirstOrDefault() != null;
         }
     }
 }

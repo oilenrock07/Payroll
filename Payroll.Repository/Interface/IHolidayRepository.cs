@@ -12,5 +12,7 @@ namespace Payroll.Repository.Interface
         Holiday GetHoliday(DateTime date);
 
         bool IsHolidayExists(DateTime date);
+
+        bool IsHolidayExists(DateTime date, int holidayId);
     }
 }

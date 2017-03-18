@@ -1,6 +1,7 @@
 ﻿@using System.ComponentModel;
 @using Payroll.Common.Helpers;
 @using Payroll.Common.Extension
+@using Payroll.Entities.Enums
 @model Payroll.Models.Payroll.PayrollDetailsViewModel
 
 @{
@@ -52,11 +53,13 @@
             
             @foreach (var item in Model.Adjustments.OrderBy(x => x.Adjustment.AdjustmentType))
             {
+                var negative = item.Adjustment.AdjustmentType == AdjustmentType.Less ? "-" : "";
+
                 <tr>
                     <td>@item.Adjustment.AdjustmentName</td>
                     <td></td>
                     <td>@item.Date.ToShortDateString()</td>
-                    <td>@item.Amount.FormatAmount()</td>
+                    <td>@negative@item.Amount.FormatAmount()</td>
                 </tr>
             }
 
