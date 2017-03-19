@@ -480,7 +480,7 @@ namespace Payroll.Service.Implementations
                 Update(payroll);
                 payroll.TaxableIncome = payroll.TotalGross - totalDeductions;
                 payroll.TotalDeduction += totalDeductions;
-
+                payroll.TotalNet = payroll.TotalGross - payroll.TotalDeduction;
 
                 //Compute Tax if enabled
                 int taxEnabled = Convert.ToInt32(_settingService.GetByKey(TAX_ENABLED));
