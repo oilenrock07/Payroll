@@ -16,6 +16,7 @@
         public const string RATE_OT_HOLIDAY = "RATE_OT_HOLIDAY";
         public const string PAYROLL_REGULAR_HOURS = "PAYROLL_REGULAR_HOURS";
         public const string PAYROLL_IS_SPHOLIDAY_WITH_PAY = "PAYROLL_IS_SPHOLIDAY_WITH_PAY";
+        public const string PAYROLL_IS_REST_DAY_HOLIDAY_WITH_PAY = "PAYROLL_IS_REST_DAY_HOLIDAY_WITH_PAY";
         public const string RATE_HOLIDAY_SPECIAL_REST_DAY = "RATE_HOLIDAY_SPECIAL_REST_DAY";
     }
 }
