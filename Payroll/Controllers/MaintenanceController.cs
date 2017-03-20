@@ -234,6 +234,13 @@ namespace Payroll.Controllers
             holiday.Year = DateTime.Now.Year;
             holiday.IsActive = true;
 
+            var holidayExists = _holidayRepository.IsHolidayExists(holiday.Date);
+            if (holidayExists)
+            {
+                ModelState.AddModelError("", ErrorMessages.HOLIDAY_EXISTS);
+                return View("CreateHoliday", holiday);
+            }
+
             _holidayRepository.Add(holiday);
             _unitOfWork.Commit();
 
@@ -250,6 +257,13 @@ namespace Payroll.Controllers
         [ValidateAntiForgeryToken]
         public virtual ActionResult EditHoliday(Holiday model)
         {
+            var holidayExists = _holidayRepository.IsHolidayExists(model.Date, model.HolidayId);
+            if (holidayExists)
+            {
+                ModelState.AddModelError("", ErrorMessages.HOLIDAY_EXISTS);
+                return View("CreateHoliday", model);
+            }
+
             var holiday = _holidayRepository.GetById(model.HolidayId);
             _holidayRepository.Update(holiday);
 

@@ -10,5 +10,9 @@ namespace Payroll.Repository.Interface
         IEnumerable<Holiday> GetHolidaysByCurrentYear();
 
         Holiday GetHoliday(DateTime date);
+
+        bool IsHolidayExists(DateTime date);
+
+        bool IsHolidayExists(DateTime date, int holidayId);
     }
 }

@@ -28,10 +28,12 @@ namespace Payroll.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeePayrollRepository _employeePayrollRepository;
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
+        private readonly IHolidayRepository _holidayRepository;
 
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
             IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
-            IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository, IAttendanceService attendanceService)
+            IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository, IAttendanceService attendanceService,
+            IHolidayRepository holidayRepository)
         {
             _attendanceLogRepository = attendanceLogRepository;
             _attendanceRepository = attendanceRepository;
@@ -40,6 +42,7 @@ namespace Payroll.Controllers
             _employeePayrollRepository = employeePayrollRepository;
             _employeeHoursRepository = employeeHoursRepository;
             _attendanceService = attendanceService;
+            _holidayRepository = holidayRepository;
         }
 
         public virtual ActionResult CreateAttendance()
@@ -180,23 +183,37 @@ namespace Payroll.Controllers
         {
             //do not display the edit link if attendance date < last payroll date
             var nextPayrollDate = _employeePayrollRepository.GetNextPayrollStartDate(); //this is actually the last payroll date
-            var lastPayrollDate = nextPayrollDate != null ? nextPayrollDate.Value : DateTime.MinValue;
+            var lastPayrollDate = nextPayrollDate ?? DateTime.MinValue;
+            var sDate = startDate.ToDateTime();
+            var eDate = endDate.ToDateTime();
+
+            var holidays = _holidayRepository.Find(x => x.IsActive && x.Date >= sDate && x.Date <= eDate).ToList();
 
             Func<IEnumerable<EmployeeHours>, bool> isNotEmpty = x => x != null && x.Any(y => y != null);
+            Func<DateTime, bool> isHoliday = x => holidays.Any(y => y.Date == x.Date);
+            Func<DateTime, bool> isRegularHoliday = x =>
+            {
+                var holiday = holidays.FirstOrDefault(y => y.Date == x.Date);
+                return holiday != null ? holiday.IsRegularHoliday : false;
+            };
 
-            var result = _attendanceService.GetAttendanceAndHoursByDate(startDate.ToDateTime(), endDate.ToDateTime(), employeeId);
+            var result = _attendanceService.GetAttendanceAndHoursByDate(sDate, eDate, employeeId).ToList();
             var viewModel = result.MapCollection<AttendanceDao, AttendanceViewModel>((s, d) =>
             {
                 d.Editable = s.ClockIn > lastPayrollDate;
                 d.RegularHours = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.Regular).Sum(x => x.Hours) : 0;
                 d.Overtime = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.OverTime).Sum(x => x.Hours) : 0;
                 d.NightDifferential = isNotEmpty(s.EmployeeHours) ? s.EmployeeHours.Where(x => x.Type == RateType.NightDifferential).Sum(x => x.Hours) : 0;
+                d.IsHoliday = isHoliday(s.ClockIn);
+                d.IsRegularHoliday = isRegularHoliday(s.ClockIn);
                 d.Breakdown = s.EmployeeHours.Where(x => x != null).ToList().GroupBy(x => x.Date).Select(x => new AttendanceBreakdownViewModel
-                {
+                {                    
                     Date = x.Key,
                     NightDifferential = isNotEmpty(x) ? x.Where(y => y.Type == RateType.NightDifferential).Sum(y => y.Hours) : 0,
                     Overtime = isNotEmpty(x) ?  x.Where(y => y.Type == RateType.OverTime).Sum(y => y.Hours) : 0,
-                    RegularHours = isNotEmpty(x) ? x.Where(y => y.Type == RateType.Regular).Sum(y => y.Hours) : 0
+                    RegularHours = isNotEmpty(x) ? x.Where(y => y.Type == RateType.Regular).Sum(y => y.Hours) : 0,
+                    IsHoliday = isHoliday(x.Key),
+                    IsRegularHoliday = isRegularHoliday(x.Key)
                 });
             });
 

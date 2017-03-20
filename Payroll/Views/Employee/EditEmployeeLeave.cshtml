@@ -28,12 +28,20 @@
                 @Html.ValidationMessageFor(model => model.LeaveId)
             </div>
         </div>
-        
+
         <div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new {@class = "control-label col-md-2"})
             <div class="col-md-4">
-                @Html.DatePickerFor("Date", Model.Date, new { @class = "form-control datepicker" })
-                @Html.ValidationMessageFor(model => model.Date)
+                @Html.DatePickerFor("StartDate", Model.StartDate, new {@class = "form-control datepicker"})
+                @Html.ValidationMessageFor(model => model.StartDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DatePickerFor("EndDate", Model.EndDate, new { @class = "form-control datepicker" })
+                @Html.ValidationMessageFor(model => model.EndDate)
             </div>
         </div>
 

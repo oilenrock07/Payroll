@@ -27,7 +27,10 @@ namespace Payroll.Models.Employee
         public int SpecifiedHours { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
+
+        [Required]
+        public DateTime EndDate { get; set; }
 
         public string Reason { get; set; }
 

@@ -596,21 +596,6 @@ namespace Payroll.Controllers
         public virtual ActionResult EmployeeLeaves(int month, int year)
         {
             var employeeLeaves = _employeeLeaveRepository.GetEmployeeLeavesByDate(month, year).ToList();
-            var employees = new List<EmployeeLeaveViewModel>();
-            
-            var startDate = new DateTime(year, month, 1);
-            var endDate = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);
-
-            while (startDate <= endDate)
-            {
-                employees.Add(new EmployeeLeaveViewModel
-                {
-                    Date = startDate,
-                    Employees = employeeLeaves.Where(x => x.Date == startDate).ToList()
-                });
-                startDate = startDate.AddDays(1);
-            }
-
             var years = new List<SelectListItem>
             {
                 new SelectListItem
@@ -632,15 +617,12 @@ namespace Payroll.Controllers
 
             var viewModel = new EmployeeLeaveListViewModel
             {
-                Employees = employees,
+                EmployeeLeaves = employeeLeaves,
                 Month = month,
                 Year = year,
                 Years = years
             };
 
-            //should display the employee leaves per month
-            //should have a calendar wihch marks all the employee leaves for the month
-            //upon double click or click, display a modal which displays the employee name
             return View(viewModel);
         }
 
@@ -675,7 +657,8 @@ namespace Payroll.Controllers
 
             var viewModel = new EmployeeLeaveCreateViewModel
             {
-                Date = DateTime.Now.AddDays(1),
+                StartDate = DateTime.Now.AddDays(1),
+                EndDate = DateTime.Now.AddDays(1),
                 Leaves = leaves,
                 LeaveHours = hours
             };
@@ -714,7 +697,8 @@ namespace Payroll.Controllers
 
             var viewModel = new EmployeeLeaveCreateViewModel
             {
-                Date = employeeLeave.Date,
+                StartDate = employeeLeave.StartDate,
+                EndDate = employeeLeave.EndDate,
                 Leaves = leaves,
                 MarkAsApproved = employeeLeave.LeaveStatus == LeaveStatus.Approved,
                 LeaveHours = hours,
@@ -760,7 +744,8 @@ namespace Payroll.Controllers
             _employeeLeaveRepository.Update(employeeLeave);
 
             employeeLeave.Hours = viewModel.Hours > 0 ? viewModel.Hours : viewModel.SpecifiedHours;
-            employeeLeave.Date = viewModel.Date;
+            employeeLeave.StartDate = viewModel.StartDate;
+            employeeLeave.EndDate = viewModel.EndDate;
             employeeLeave.Reason = viewModel.Reason;
             employeeLeave.LeaveId = viewModel.LeaveId;
 
@@ -769,6 +754,8 @@ namespace Payroll.Controllers
                 employeeLeave.ApprovedBy = User.Identity.GetUserId();
                 employeeLeave.LeaveStatus = LeaveStatus.Approved;
             }
+            else
+                employeeLeave.LeaveStatus = LeaveStatus.Pending;
 
 
             _unitOfWork.Commit();

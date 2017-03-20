@@ -1,5 +1,4 @@
-﻿@using Payroll.Common.Extension
-@using Payroll.Entities.Enums
+﻿@using Payroll.Entities.Enums
 @model Payroll.Models.Employee.EmployeeLeaveListViewModel
 
 @{
@@ -16,7 +15,8 @@
 
 <table class="table table-responsive">
     <tr>
-        <th>Date</th>
+        <th>Start Date</th>
+        <th>End Date</th>
         <th>Name</th>
         <th>Leave</th>
         <th>Status</th>
@@ -26,11 +26,15 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Employees.SelectMany(x => x.Employees))
+    @*@foreach (var item in Model.Employees.SelectMany(x => x.Employees))*@
+    @foreach(var item in Model.EmployeeLeaves)
     {
         <tr>
             <td>
-                @item.Date.ToShortDateString()
+                @item.StartDate.ToShortDateString()
+            </td>
+            <td>
+                @item.EndDate.ToShortDateString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Employee.FullName)
@@ -51,12 +55,12 @@
                 @item.Reason
             </td>
             <td>
-                @if (item.Date > DateTime.Now)
+                @if (item.StartDate > DateTime.Now)
                 {
                     @Html.ActionLink("Edit", "EditEmployeeLeave", new { id=item.EmployeeLeaveId })<text> | </text>
                 }
 
-                @if (item.Date > DateTime.Now && item.LeaveStatus == LeaveStatus.Pending)
+                @if (item.StartDate > DateTime.Now && item.LeaveStatus == LeaveStatus.Pending)
                 {
                     @Html.ActionLink("Delete", "DeleteEmployeeLeave", new { id = item.EmployeeLeaveId }, new { @class = "js-maintenanceDelete" }) <text> | </text>
                     @Html.ActionLink("Approve", "ApproveRejectLeave", new { id = item.EmployeeLeaveId, status = LeaveStatus.Approved })    <text> | </text>

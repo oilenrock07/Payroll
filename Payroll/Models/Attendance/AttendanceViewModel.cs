@@ -13,6 +13,8 @@ namespace Payroll.Models.Attendance
         public DateTime? ClockOut { get; set; }
         public bool Editable { get; set; }
 
+        public bool IsHoliday { get; set; }
+        public bool IsRegularHoliday { get; set; }
         public double RegularHours { get; set; }
         public double NightDifferential { get; set; }
         public double Overtime { get; set; }
