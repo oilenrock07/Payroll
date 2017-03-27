@@ -360,11 +360,11 @@ namespace Payroll.Service.Implementations
                         if (totalEmployeeHours <= 0)
                         {
                             var multiplier = 1d;
-                            /*if (isRestDay)
+                            if (isRestDay)
                             {
                                 multiplier *= restDayRate;
                                 
-                            }*/
+                            }
                             //Update 
                             if (employeePayrollItem != null)
                             {
