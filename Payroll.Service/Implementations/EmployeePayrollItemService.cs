@@ -380,10 +380,10 @@ namespace Payroll.Service.Implementations
                                 {
                                     EmployeeId = employee.EmployeeId,
                                     PayrollDate = payrollDate,
-                                    TotalAmount = hourlyRate * workHours,
+                                    TotalAmount = (hourlyRate * workHours) * (decimal)multiplier,
                                     TotalHours = workHours,
                                     RateType = rateType,
-                                    Multiplier = 1,
+                                    Multiplier = multiplier,
                                     RatePerHour = hourlyRate
                                 };
 
@@ -392,6 +392,12 @@ namespace Payroll.Service.Implementations
                         }
                         else
                         {
+                            var multiplier = 1d;
+                            if (isRestDay)
+                            {
+                                multiplier *= restDayRate;
+
+                            }
                             //If existing create new for remaining unpaid hours
                             if (totalEmployeeHours < workHours)
                             {
@@ -405,7 +411,7 @@ namespace Payroll.Service.Implementations
                                 {
                                     _employeePayrollItemRepository.Update(employeePayrollItem);
 
-                                    employeePayrollItem.TotalAmount += amount;
+                                    employeePayrollItem.TotalAmount += (amount * (decimal)multiplier);
                                     employeePayrollItem.TotalHours += remainingUnpaidHours;
                                 }
                                 else
@@ -415,10 +421,10 @@ namespace Payroll.Service.Implementations
                                     {
                                         EmployeeId = employee.EmployeeId,
                                         PayrollDate = payrollDate,
-                                        TotalAmount = amount,
+                                        TotalAmount = (amount * (decimal)multiplier),
                                         TotalHours = remainingUnpaidHours,
                                         RateType = rateType,
-                                        Multiplier = 1,
+                                        Multiplier = multiplier,
                                         RatePerHour = hourlyRate
                                     };
                                     _employeePayrollItemRepository.Add(payrollItem);
