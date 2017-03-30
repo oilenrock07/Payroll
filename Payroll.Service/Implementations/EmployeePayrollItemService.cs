@@ -299,6 +299,9 @@ namespace Payroll.Service.Implementations
                 //Check if holiday
                 var holiday = _holidayService.GetHoliday(day);
                 bool isSpecialHolidayPaid = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_IS_SPHOLIDAY_WITH_PAY)) > 0;
+                bool isRestDayHolidayPaid = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_IS_REST_DAY_HOLIDAY_WITH_PAY)) > 0;
+                Double restDayRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_REST_DAY));
+                var isRestDay = false;
 
                 if (holiday != null && (holiday.IsRegularHoliday || isSpecialHolidayPaid))
                 {
@@ -308,13 +311,20 @@ namespace Payroll.Service.Implementations
 
                         if (workSchedule != null)
                         {
-                            //Check if within schedule
-                            if (day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd))
-                            {
-                                //Don't proceed
-                                continue;
-                            }
+                            isRestDay = day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd);
 
+                            //Will only check if within schedule if rest day holiday is NOT paid or
+                                // if SPECIAL Holiday
+                            if (!isRestDayHolidayPaid || !holiday.IsRegularHoliday)
+                            {
+                                //Check if within schedule
+                                if (isRestDay)
+                                {
+                                    //Don't proceed
+                                    continue;
+                                }
+                            }
+                        
                             //Check if worked before holiday
                             var lastDayOfWork = getLastDayOfWork(day, workSchedule);
                             var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
@@ -341,18 +351,26 @@ namespace Payroll.Service.Implementations
 
                         int workHours = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_REGULAR_HOURS));
                         var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
-                        var rateType = holiday.IsRegularHoliday ? RateType.RegularHolidayNotWorked : RateType.SpecialHolidayNotWorked;
+                        var rateType = holiday.IsRegularHoliday ? 
+                            (isRestDay ? RateType.RegularHolidayRestDayNotWorked : RateType.RegularHolidayNotWorked) : 
+                            RateType.SpecialHolidayNotWorked;
 
                         var employeePayrollItem = Find(employee.EmployeeId, day, rateType);
                         //If null create a holiday pay
                         if (totalEmployeeHours <= 0)
                         {
+                            var multiplier = 1d;
+                            if (isRestDay)
+                            {
+                                multiplier *= restDayRate;
+                                
+                            }
                             //Update 
                             if (employeePayrollItem != null)
                             {
                                 _employeePayrollItemRepository.Update(employeePayrollItem);
 
-                                employeePayrollItem.TotalAmount += hourlyRate * workHours;
+                                employeePayrollItem.TotalAmount += (hourlyRate * workHours) * (decimal)multiplier;
                                 employeePayrollItem.TotalHours += workHours;
                             }
                             else
@@ -362,10 +380,10 @@ namespace Payroll.Service.Implementations
                                 {
                                     EmployeeId = employee.EmployeeId,
                                     PayrollDate = payrollDate,
-                                    TotalAmount = hourlyRate * workHours,
+                                    TotalAmount = (hourlyRate * workHours) * (decimal)multiplier,
                                     TotalHours = workHours,
                                     RateType = rateType,
-                                    Multiplier = 1,
+                                    Multiplier = multiplier,
                                     RatePerHour = hourlyRate
                                 };
 
@@ -374,6 +392,12 @@ namespace Payroll.Service.Implementations
                         }
                         else
                         {
+                            var multiplier = 1d;
+                            if (isRestDay)
+                            {
+                                multiplier *= restDayRate;
+
+                            }
                             //If existing create new for remaining unpaid hours
                             if (totalEmployeeHours < workHours)
                             {
@@ -387,7 +411,7 @@ namespace Payroll.Service.Implementations
                                 {
                                     _employeePayrollItemRepository.Update(employeePayrollItem);
 
-                                    employeePayrollItem.TotalAmount += amount;
+                                    employeePayrollItem.TotalAmount += (amount * (decimal)multiplier);
                                     employeePayrollItem.TotalHours += remainingUnpaidHours;
                                 }
                                 else
@@ -397,10 +421,10 @@ namespace Payroll.Service.Implementations
                                     {
                                         EmployeeId = employee.EmployeeId,
                                         PayrollDate = payrollDate,
-                                        TotalAmount = amount,
+                                        TotalAmount = (amount * (decimal)multiplier),
                                         TotalHours = remainingUnpaidHours,
                                         RateType = rateType,
-                                        Multiplier = 1,
+                                        Multiplier = multiplier,
                                         RatePerHour = hourlyRate
                                     };
                                     _employeePayrollItemRepository.Add(payrollItem);

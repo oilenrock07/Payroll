@@ -245,7 +245,8 @@ namespace Payroll.Service.Implementations
                 //If logout and scheduled time in difference is not an hour.
 
             //No regular time will be recorded
-            if (isClockInLaterThanScheduledTimeOut || !clockOutGreaterThanNDEndTime)
+            if (isClockInLaterThanScheduledTimeOut || 
+                (!clockOutGreaterThanNDEndTime && arrivedEarlierThanScheduled && isWithinAdvanceOtPeriod))
                 return;
 
             var tempClockIn = clockIn;

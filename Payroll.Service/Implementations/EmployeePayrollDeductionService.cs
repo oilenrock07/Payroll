@@ -89,7 +89,7 @@ namespace Payroll.Service.Implementations
                             EmployeeId = employee.EmployeeId,
                             DeductionId = deduction.DeductionId,
                             Amount = employeeDeduction.Amount,
-                            DeductionDate = new DateTime(),
+                            DeductionDate = DateTime.Now,
                             EmployeePayrollId = employeePayroll.PayrollId
                         };
 
