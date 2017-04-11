@@ -106,3 +106,9 @@ input[type="checkbox"].input-validation-error {
 .neg-amount { color: red}
 
 .gold {color: gold}
+
+@media print {
+  .hidden-print {
+    display: none !important;
+  }
+}

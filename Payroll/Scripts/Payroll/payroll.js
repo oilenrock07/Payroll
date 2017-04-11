@@ -1,4 +1,10 @@
 ﻿$(function () {
+
+    function printPayroll() {
+        //alert($(this).data('payroll'));
+        window.print();
+    }
+
     function handleFormSubmit(e) {
         var cancel = false;
         $.ajax({
@@ -22,6 +28,7 @@
 
     function init() {
         $('form').on('submit', handleFormSubmit);
+        $('.js-printPayroll').on('click', printPayroll);
     };
 
     init();
