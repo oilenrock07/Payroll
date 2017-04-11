@@ -138,13 +138,22 @@ namespace Payroll.Service.Implementations
                                 //If employee didn't work the day before holiday will not get holiday pay
                                 if (holiday != null)
                                 {
-                                    var lastDayOfWork = getLastDayOfWork(day, workSchedule);
-                                    var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
+                                    var yesterdayHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, day.AddDays(-1));
+                                    var qualifiedForOT = (yesterdayHours != null && yesterdayHours.Count > 0);
+
+                                    if (!qualifiedForOT)
+                                    {
+                                        var lastDayOfWork = getLastDayOfWork(day, workSchedule);
+                                        var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
+
+                                        qualifiedForOT = (employeeHours != null && employeeHours.Count > 0);
+                                    }
+                                    
 
                                     //Set holiday to null if the employee didn't work the day before holiday
                                     if (holiday.IsAlwaysPayable == false)
                                     {
-                                        if (employeeHours == null || employeeHours.Count <= 0)
+                                        if (!qualifiedForOT)
                                             holiday = null;
                                     }
                                 }
