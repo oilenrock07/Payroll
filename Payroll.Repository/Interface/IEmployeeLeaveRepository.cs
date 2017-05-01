@@ -10,5 +10,7 @@ namespace Payroll.Repository.Interface
         IEnumerable<EmployeeLeave> GetEmployeeLeavesByDate(int month, int year);
 
         IEnumerable<EmployeeLeave> GetEmployeePayableLeavesByDateRange(DateTime dateStart, DateTime dateEnd);
+
+        int CountLeavesHolidayPayable(int employeeId, DateTime date);
     }
 }

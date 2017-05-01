@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Payroll.Entities.Payroll;
 using Payroll.Infrastructure.Interfaces;
@@ -20,7 +21,8 @@ namespace Payroll.Repository.Repositories
             var startDate = new DateTime(year, month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            return Find(x => x.IsActive && x.Employee.IsActive && x.StartDate >= startDate && x.EndDate <= endDate);
+            return Find(x => x.IsActive && x.Employee.IsActive && x.StartDate >= startDate 
+                && x.EndDate <= endDate);
         }
 
         public IEnumerable<EmployeeLeave> GetEmployeePayableLeavesByDateRange(DateTime dateStart, DateTime dateEnd)
@@ -28,6 +30,14 @@ namespace Payroll.Repository.Repositories
             return Find(x => x.IsActive && x.Employee.IsActive && x.Leave.IsPayable 
                         && x.LeaveStatus == Entities.Enums.LeaveStatus.Approved
                         && x.StartDate >= dateStart && x.EndDate <= dateEnd);
+        }
+
+        public int CountLeavesHolidayPayable(int employeeId, DateTime date)
+        {
+            return Find(x => x.IsActive && x.EmployeeId == employeeId 
+                        && x.Employee.IsActive && x.Leave.IsHolidayAfterPayable
+                        && x.LeaveStatus == Entities.Enums.LeaveStatus.Approved
+                        && x.StartDate >= date && x.EndDate <= date).Count();
         }
     }
 }

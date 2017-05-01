@@ -342,14 +342,23 @@ namespace Payroll.Service.Implementations
                             //Check if worked before holiday
                             var lastDayOfWork = getLastDayOfWork(day, workSchedule);
                             var employeeHours = _totalEmployeeHoursService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
-
+                            
                             //Don't proceed if the employee didn't work the day before holiday
                             if (holiday.IsAlwaysPayable == false)
                             {
+                                //If didnt work before holiday
+                                //Check if there's a filed leave with holiday pay after payable
                                 if (employeeHours == null || employeeHours.Count <= 0)
-                                    continue; 
+                                {
+                                    var leave = _employeeLeaveRepository
+                                        .CountLeavesHolidayPayable(employee.EmployeeId, lastDayOfWork);
+                                    //Without filed don't proceed in computing
+                                    if (leave <= 0)
+                                    {
+                                        continue;
+                                    }
+                                }
                             }
-                           
                         }
                         else
                         {

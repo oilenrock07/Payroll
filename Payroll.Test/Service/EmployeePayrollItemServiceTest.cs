@@ -76,7 +76,7 @@ namespace Payroll.Test.Service
             _employeePayrollDeductionRepository = new EmployeePayrollDeductionRepository(databaseFactory);
 
             _employeePayrollItemService = new EmployeePayrollItemService(_unitOfWork, _employeePayrollItemRepository, 
-                    _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService, _employeePayrollRepository, _employeePayrollDeductionRepository, null, null);
+                    _totalEmployeeHoursService, _employeeWorkScheduleService, _holidayService, _settingService, _employeeInfoService, _employeeSalaryService, _employeePayrollRepository, _employeePayrollDeductionRepository, null, null, null);
         }
 
         public void DeleteData()
