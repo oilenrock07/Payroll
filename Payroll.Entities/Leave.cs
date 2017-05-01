@@ -15,6 +15,10 @@ namespace Payroll.Entities
 
         public bool IsRefundable { get; set; }
 
+        public bool IsPayable { get; set; }
+
+        public bool IsHolidayAfterPayable { get; set; }
+
         public int Count { get; set; }
 
         [StringLength(2500)]

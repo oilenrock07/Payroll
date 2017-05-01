@@ -71,7 +71,10 @@ namespace Payroll.Entities.Enums
         RegularHolidayRestDayNotWorked = 17,
 
         [Description("Special Holiday Rest Day Not Worked")]
-        SpecialHolidayRestDayNotWorked = 18
+        SpecialHolidayRestDayNotWorked = 18,
+
+        [Description("Leave")]
+        Leave = 19
 
     }
 

@@ -34,6 +34,22 @@
         }
 
         <div class="form-group">
+            @Html.LabelFor(model => model.IsPayable, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                 @Html.EditorFor(model => model.IsPayable)
+                 @Html.ValidationMessageFor(model => model.IsPayable)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsHolidayAfterPayable, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.IsHolidayAfterPayable)
+                @Html.ValidationMessageFor(model => model.IsHolidayAfterPayable)
+            </div>
+        </div>
+        
+        <div class="form-group">
             @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 @Html.TextBoxFor(model => model.Count, new { @class = "form-control" })

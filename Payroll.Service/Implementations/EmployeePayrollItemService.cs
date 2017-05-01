@@ -32,13 +32,14 @@ namespace Payroll.Service.Implementations
         private readonly IEmployeeAdjustmentRepository _employeeAdjustmentRepository;
         private readonly IEmployeePayrollDeductionRepository _employeePayrollDeductionRepository;
         private readonly IEmployeePayrollRepository _employeePayrollRepository;
+        private readonly IEmployeeLeaveRepository _employeeLeaveRepository;
 
         private IEmployeePayrollItemRepository _employeePayrollItemRepository;
 
         public EmployeePayrollItemService(IUnitOfWork unitOfWork, IEmployeePayrollItemRepository employeePayrollItemRepository, ITotalEmployeeHoursService totalEmployeeHoursService,
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService,
             IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService, IEmployeePayrollRepository employeePayrollRepository, IEmployeePayrollDeductionRepository employeePayrollDeductionRepository,
-            IEmployeeAdjustmentRepository employeeAdjustmentRepository, IAdjustmentRepository adjustmentRepository) 
+            IEmployeeAdjustmentRepository employeeAdjustmentRepository, IAdjustmentRepository adjustmentRepository, IEmployeeLeaveRepository employeeLeaveRepository) 
             : base(employeePayrollItemRepository)
         {
             _employeePayrollItemRepository = employeePayrollItemRepository;
@@ -53,6 +54,7 @@ namespace Payroll.Service.Implementations
             _employeePayrollDeductionRepository = employeePayrollDeductionRepository;
             _employeeAdjustmentRepository = employeeAdjustmentRepository;
             _adjustmentRepository = adjustmentRepository;
+            _employeeLeaveRepository = employeeLeaveRepository;
         }
 
         //Will get last day of work
@@ -292,6 +294,9 @@ namespace Payroll.Service.Implementations
 
             //Generate holiday pays
             GenerateEmployeeHolidayPay(payrollDate, payrollStartDate, payrollEndDate);
+
+            //Generate leave pays
+            GenerateEmployeeLeavesPay(payrollDate, payrollStartDate, payrollEndDate);
         }
 
         /**
@@ -444,6 +449,74 @@ namespace Payroll.Service.Implementations
                     }
                 }
             }
+        }
+
+
+        /**
+      * Generate employee leaves
+      *
+      **/
+        public void GenerateEmployeeLeavesPay(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
+        {
+            //Get all active leaves within payroll dates
+            IList<EmployeeLeave> leaves = _employeeLeaveRepository
+                .GetEmployeePayableLeavesByDateRange(payrollStartDate, payrollEndDate)
+                .OrderBy(l => l.EmployeeId).ToList();
+
+            //for each leaves 
+            foreach (EmployeeLeave leave in leaves)
+            {
+                WorkSchedule workSchedule = _employeeWorkScheduleService
+                    .GetByEmployeeId(leave.EmployeeId).WorkSchedule;
+                var employee = _employeeInfoService.GetByEmployeeId(leave.EmployeeId);
+                var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
+                var employeePayrollItem = this.Find(leave.EmployeeId, payrollDate, RateType.Leave);
+               
+                //for each day in leaves
+                foreach (DateTime day in DatetimeExtension.EachDay(leave.StartDate, leave.EndDate))
+                {
+                    //Check if within payroll date
+                    if (day.IsWithinDateRange(payrollStartDate, payrollEndDate))
+                    {
+                        var isRestDay = day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd);
+
+                        //Will be paid only if employee have schedule on current day
+                        if (!isRestDay)
+                        {
+                            //If more than 8 use 8 hours else use indicated hours
+                            //Note that if the employee will file half day in a date range
+                            //File the half day on a separate entry
+                            var hours = leave.Hours > 8 ? 8 : leave.Hours; 
+                            //Update 
+                            if (employeePayrollItem != null)
+                            {
+                                _employeePayrollItemRepository.Update(employeePayrollItem);
+
+                                employeePayrollItem.TotalAmount += (hourlyRate * hours);
+                                employeePayrollItem.TotalHours += hours;
+                            }
+                            else
+                            {
+                                //Create new
+                                EmployeePayrollItem payrollItem = new EmployeePayrollItem
+                                {
+                                    EmployeeId = leave.EmployeeId,
+                                    PayrollDate = payrollDate,
+                                    RateType = RateType.Leave,
+                                    Multiplier = 1,
+                                    RatePerHour = hourlyRate,
+                                    TotalAmount = (hourlyRate * hours),
+                                    TotalHours = hours
+                                };
+                                _employeePayrollItemRepository.Add(payrollItem);
+                            }
+
+                            _unitOfWork.Commit();
+                        }
+                    }
+                }
+            }
+   
         }
 
         public EmployeePayrollItem Find(int employeeId, DateTime date, RateType rateType)

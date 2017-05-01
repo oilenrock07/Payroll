@@ -130,5 +130,10 @@ namespace Payroll.Common.Extension
         {
             return Convert.ToDateTime(date);
         }
+
+        public static bool IsWithinDateRange(this DateTime date, DateTime startDate, DateTime endDate)
+        {
+            return date >= startDate && date <= endDate;
+        }
     }
 }

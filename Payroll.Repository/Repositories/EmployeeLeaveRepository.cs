@@ -22,5 +22,12 @@ namespace Payroll.Repository.Repositories
 
             return Find(x => x.IsActive && x.Employee.IsActive && x.StartDate >= startDate && x.EndDate <= endDate);
         }
+
+        public IEnumerable<EmployeeLeave> GetEmployeePayableLeavesByDateRange(DateTime dateStart, DateTime dateEnd)
+        {
+            return Find(x => x.IsActive && x.Employee.IsActive && x.Leave.IsPayable 
+                        && x.LeaveStatus == Entities.Enums.LeaveStatus.Approved
+                        && x.StartDate >= dateStart && x.EndDate <= dateEnd);
+        }
     }
 }
