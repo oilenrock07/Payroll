@@ -7,7 +7,7 @@ namespace Payroll.Repository.Interface
 {
     public interface IEmployeeLeaveRepository : IRepository<EmployeeLeave>
     {
-        IEnumerable<EmployeeLeave> GetEmployeeLeavesByDate(int month, int year);
+        IEnumerable<EmployeeLeave> GetEmployeeLeavesByDate(DateTime startDate, DateTime endDate, int employeeId);
 
         IEnumerable<EmployeeLeave> GetEmployeePayableLeavesByDateRange(DateTime dateStart, DateTime dateEnd);
 

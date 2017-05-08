@@ -435,6 +435,7 @@
     <Content Include="Views\Payroll\_ViewAdjustmentModal.cshtml" />
     <Content Include="Views\Payroll\_ViewAdjustmentModalContent.cshtml" />
     <Content Include="Views\Payroll\Details.cshtml" />
+    <Content Include="Views\Employee\_EmployeeLeavesContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

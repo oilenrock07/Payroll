@@ -16,13 +16,14 @@ namespace Payroll.Repository.Repositories
             DbSet = databaseFactory.GetContext().EmployeeLeaves;
         }
 
-        public IEnumerable<EmployeeLeave> GetEmployeeLeavesByDate(int month, int year)
+        public IEnumerable<EmployeeLeave> GetEmployeeLeavesByDate(DateTime startDate, DateTime endDate, int employeeId)
         {
-            var startDate = new DateTime(year, month, 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
+            var result = Find(x => x.IsActive && x.Employee.IsActive && x.StartDate >= startDate 
+                         && x.EndDate <= endDate);
 
-            return Find(x => x.IsActive && x.Employee.IsActive && x.StartDate >= startDate 
-                && x.EndDate <= endDate);
+            if (employeeId > 0) result = result.Where(x => x.EmployeeId == employeeId);
+
+            return result;
         }
 
         public IEnumerable<EmployeeLeave> GetEmployeePayableLeavesByDateRange(DateTime dateStart, DateTime dateEnd)

@@ -30,7 +30,7 @@
                                 @if (!User.IsInRole("Encoder"))
                                 {
                                     <li>@Html.ActionLink("Employee Loans", "EmployeeLoans", "Employee")</li>
-                                    <li>@Html.ActionLink("Employee Leaves", "EmployeeLeaves", "Employee", new { month = DateTime.Now.Month, year = DateTime.Now.Year }, null)</li>
+                                    <li>@Html.ActionLink("Employee Leaves", "EmployeeLeaves", "Employee")</li>
                                 }
                             </ul>
                         </li>

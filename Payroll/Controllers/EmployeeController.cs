@@ -593,37 +593,19 @@ namespace Payroll.Controllers
 
         #region EmployeeLeave
         [Authorize(Roles = "Admin,Manager,Encoder")]
-        public virtual ActionResult EmployeeLeaves(int month, int year)
+        public virtual ActionResult EmployeeLeaves()
         {
-            var employeeLeaves = _employeeLeaveRepository.GetEmployeeLeavesByDate(month, year).ToList();
-            var years = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = DateTime.Now.AddYears(-1).Year.ToString(),
-                    Value = DateTime.Now.AddYears(-1).Year.ToString(),
-                },
-                new SelectListItem
-                {
-                    Text = DateTime.Now.Year.ToString(),
-                    Value = DateTime.Now.Year.ToString(),
-                },
-                new SelectListItem
-                {
-                    Text = DateTime.Now.AddYears(1).Year.ToString(),
-                    Value = DateTime.Now.AddYears(1).Year.ToString(),
-                }
-            };
+            return View();
+        }
 
-            var viewModel = new EmployeeLeaveListViewModel
-            {
-                EmployeeLeaves = employeeLeaves,
-                Month = month,
-                Year = year,
-                Years = years
-            };
-
-            return View(viewModel);
+        [HttpPost]
+        public virtual PartialViewResult EmployeeLeavesContent(string startDate, string endDate, int employeeId)
+        {
+            var viewModel = _employeeLeaveRepository.GetEmployeeLeavesByDate(startDate.ToDateTime(), endDate.ToDateTime(), employeeId).ToList();
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
+            ViewBag.EmployeeId = employeeId;
+            return PartialView("_EmployeeLeavesContent", viewModel);
         }
 
         [Authorize(Roles = "Admin,Manager,Encoder")]
