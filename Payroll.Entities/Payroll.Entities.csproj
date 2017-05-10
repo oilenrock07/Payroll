@@ -61,6 +61,7 @@
     <Compile Include="AttendanceLog.cs" />
     <Compile Include="AuditTrail.cs" />
     <Compile Include="Base\BaseEntity.cs" />
+    <Compile Include="Company.cs" />
     <Compile Include="Contexts\PayrollContext.cs" />
     <Compile Include="DeductionAmount.cs" />
     <Compile Include="Department.cs" />
@@ -102,7 +103,10 @@
     <Compile Include="Payroll\EmployeePayroll.cs" />
     <Compile Include="Payroll\EmployeePayrollDeduction.cs" />
     <Compile Include="Payroll\EmployeePayrollItem.cs" />
+    <Compile Include="Payroll\EmployeePayrollItemPerCompany.cs" />
+    <Compile Include="Payroll\EmployeePayrollPerCompany.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
+    <Compile Include="Payroll\TotalEmployeeHoursPerCompany.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />

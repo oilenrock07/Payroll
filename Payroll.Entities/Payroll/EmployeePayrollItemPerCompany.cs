@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Payroll.Entities.Payroll
 {
     [Table("employee_payroll_item_per_company")]
-    public class EmployeePayrollItemPerCompany : BaseEntity
+    public class EmployeePayrollItemPerCompany : EmployeePayrollItem
     {
         [Key]
         public int EmployeePayrollItemPerCompanyId { get; set; }
