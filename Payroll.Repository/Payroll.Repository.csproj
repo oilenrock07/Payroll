@@ -82,6 +82,7 @@
     <Compile Include="Interface\IAdjustmentRepository.cs" />
     <Compile Include="Interface\IAttendanceLogRepository.cs" />
     <Compile Include="Interface\IAttendanceRepository.cs" />
+    <Compile Include="Interface\ICompanyRepository.cs" />
     <Compile Include="Interface\IDeductionAmountRepository.cs" />
     <Compile Include="Interface\IDeductionRepository.cs" />
     <Compile Include="Interface\IDepartmentRepository.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Repositories\AdjustmentRepository.cs" />
     <Compile Include="Repositories\AttendanceLogRepository.cs" />
     <Compile Include="Repositories\AttendanceRepository.cs" />
+    <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\DeductionAmountRepository.cs" />
     <Compile Include="Repositories\DeductionRepository.cs" />
     <Compile Include="Repositories\DepartmentRepository.cs" />

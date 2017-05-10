@@ -114,7 +114,8 @@ namespace Payroll.App_Start
             kernel.Bind<IAdjustmentRepository>().To<AdjustmentRepository>().InRequestScope();
             kernel.Bind<IEmployeeAdjustmentRepository>().To<EmployeeAdjustmentRepository>().InRequestScope();
             kernel.Bind<IEmployeePayrollItemRepository>().To<EmployeePayrollItemRepository>().InRequestScope();
-            
+            kernel.Bind<ICompanyRepository>().To<CompanyRepository>().InRequestScope();
+
             //Service
             kernel.Bind<IUserRoleService>().To<UserRoleService>().InRequestScope();
             kernel.Bind<IWebService>().To<WebService>().InRequestScope();

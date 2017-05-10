@@ -9,6 +9,8 @@ namespace Payroll.Entities
     {
         [Key]
         public int CompanyId { get; set; }
+        [StringLength(100)]
+        public string CompanyName { get; set; }
 
         [StringLength(20)]
         public string CompanyCode { get; set; }

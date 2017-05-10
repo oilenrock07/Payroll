@@ -82,10 +82,6 @@
     <Compile Include="Log.cs" />
     <Compile Include="LogInDisplayClient.cs" />
     <Compile Include="Machine.cs" />
-    <Compile Include="Migrations\201608290754596_New.cs" />
-    <Compile Include="Migrations\201608290754596_New.Designer.cs">
-      <DependentUpon>201608290754596_New.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201609010018457_Logs.cs" />
     <Compile Include="Migrations\201609010018457_Logs.Designer.cs">
       <DependentUpon>201609010018457_Logs.cs</DependentUpon>
@@ -141,9 +137,6 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608290754596_New.resx">
-      <DependentUpon>201608290754596_New.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609010018457_Logs.resx">
       <DependentUpon>201609010018457_Logs.cs</DependentUpon>
     </EmbeddedResource>

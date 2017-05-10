@@ -35,12 +35,14 @@ namespace Payroll.Controllers
         private readonly IWorkScheduleRepository _workScheduleRepository;
         private readonly IDeductionRepository _deductionRepository;
         private readonly IAdjustmentRepository _adjustmentRepository;
+        private readonly ICompanyRepository _companyRepository;
         private readonly IWebService _webService;
 
         public MaintenanceController(IUnitOfWork unitOfWork, ISettingRepository settingRepository, IPositionRepository positionRepository, IPaymentFrequencyRepository paymentFrequencyRepository, 
             IHolidayRepository holidayRepository, IDepartmentRepository departmentRepository, ILeaveRepository leaveRepository, ILoanRepository loanRepository, 
             IMachineRepository machineRepository, IWebService webService, IDeductionRepository deductionRepository,
-            IEmployeeMachineService emplyeeMachineService, IWorkScheduleRepository workScheduleRepository, IAdjustmentRepository adjustmentRepository)
+            IEmployeeMachineService emplyeeMachineService, IWorkScheduleRepository workScheduleRepository, IAdjustmentRepository adjustmentRepository,
+            ICompanyRepository companyRepository)
         {
             _unitOfWork = unitOfWork;
             _settingRepository = settingRepository;
@@ -56,6 +58,7 @@ namespace Payroll.Controllers
             _workScheduleRepository = workScheduleRepository;
             _deductionRepository = deductionRepository;
             _adjustmentRepository = adjustmentRepository;
+            _companyRepository = companyRepository;
         }
 
         #region Positions
@@ -739,6 +742,60 @@ namespace Payroll.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction("Adjustment");
+        }
+        #endregion
+
+        #region Companies
+        public virtual ActionResult Companies()
+        {
+            var companies = _companyRepository.GetAllActive().ToList();
+            return View(companies);
+        }
+
+        public virtual ActionResult CreateCompany()
+        {
+            return View(new Company());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult CreateCompany(Company model)
+        {
+            _companyRepository.Add(model);
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Companies");
+        }
+
+        public virtual ActionResult EditCompany(int id)
+        {
+            var company = _companyRepository.GetById(id);
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult EditCompany(Company model)
+        {
+            var company = _companyRepository.GetById(model.CompanyId);
+            _companyRepository.Update(company);
+            company.CompanyName = model.CompanyName;
+            company.CompanyInfo = model.CompanyInfo;
+            company.CompanyCode = model.CompanyCode;
+            company.Address = model.Address;
+
+            _unitOfWork.Commit();
+            return RedirectToAction("Companies");
+        }
+
+        public virtual ActionResult DeleteCompany(int id)
+        {
+            var company = _companyRepository.GetById(id);
+            _companyRepository.Update(company);
+            company.IsActive = false;
+            _unitOfWork.Commit();
+
+            return RedirectToAction("Companies");
         }
         #endregion
 

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Payroll.Entities.Company>
+
+@{
+    ViewBag.Title = "Companies";
+}
+
+<h2>Companies</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateCompany")
+</p>
+
+<table class="table table-responsive table-striped">
+    <tr>
+        <th>
+            Company Name
+        </th>
+        <th>
+            Company Code
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            Company Info
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyInfo)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCompany", new {id = item.CompanyId}) |
+                @Html.ActionLink("Delete", "DeleteCompany", new {id = item.CompanyId}, new {@class = "js-maintenanceDelete"})
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="/Scripts/Maintenance/maintenance.js"></script>
+}
