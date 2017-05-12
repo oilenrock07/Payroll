@@ -1,2 +1,0 @@
-ALTER TABLE company
-ADD COLUMN CompanyName VARCHAR(100)
