@@ -194,7 +194,7 @@ namespace Payroll.Controllers
             Func<DateTime, bool> isRegularHoliday = x =>
             {
                 var holiday = holidays.FirstOrDefault(y => y.Date == x.Date);
-                return holiday != null ? holiday.IsRegularHoliday : false;
+                return holiday != null && holiday.IsRegularHoliday;
             };
 
             var result = _attendanceService.GetAttendanceAndHoursByDate(sDate, eDate, employeeId).ToList();
@@ -328,6 +328,11 @@ namespace Payroll.Controllers
                     //employee did not clocked in
                 }
             }
+        }
+
+        public virtual ActionResult TotalHoursPerCompany()
+        {
+            
         }
     }
 }

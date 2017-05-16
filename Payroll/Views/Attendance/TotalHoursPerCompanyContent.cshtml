@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Payroll.Models.Attendance.AttendanceViewModel>
+
+<div class="Attendance t2">
+    <table class="table">
+        <tr>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th></th>
+            <th>Clock In</th>
+            <th></th>            
+            <th>Clock Out</th>
+            <th>Regular Hours</th>
+            <th>Overtime</th>
+            <th>Night Differential</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            var clockout = item.ClockOut.HasValue ? item.ClockOut.Value.ToString() : "";
+            var clockOutDow = item.ClockOut.HasValue ? item.ClockOut.Value.ToString("ddd") : "";
+
+            <tr @if (item.ClockOut != null && (item.ClockOut.Value - item.ClockIn).Days >= 1)
+            {
+                @Html.Raw("style='color: #a94442; background-color: #f7c4c4;'")
+            }
+                else {
+                    @Html.Raw("style='background-color: #eeeeee'")
+                }>
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @item.MiddleName
+                </td>
+                <td>
+                    @item.LastName
+                </td>
+                <td>
+                    @item.ClockIn.ToString("ddd")
+                </td>
+                <td>
+                    @item.ClockIn
+
+                    @if (item.IsHoliday)
+                    {
+                        if (item.IsRegularHoliday)
+                        {
+                            <i class="fa fa-star gold" aria-hidden="true" title="Regular Holiday"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-star-half-o gold" aria-hidden="true" title="Special Holiday"></i>
+                        }
+                    }
+                </td>
+                <td>
+                    @clockOutDow
+                </td>
+                <td>
+                    @clockout
+                </td>
+                <td>
+                    @item.RegularHours
+                </td>
+                <td>
+                    @item.Overtime
+                </td>
+                <td>
+                    @item.NightDifferential
+                </td>
+                <td>
+                    @if (item.Editable)
+                    {
+                        @Html.ActionLink("Edit", "EditAttendance", "Attendance", new {id = item.AttendanceId}, null)
+                    }
+                </td>
+            </tr>
+
+            if (item.Breakdown != null && item.Breakdown.Count() > 1)
+            {
+                <tr>
+                    <td colspan="4"></td>
+                    <th colspan="6">Date</th>
+                </tr>
+                foreach (var breakdown in item.Breakdown)
+                {
+                    <tr>
+                        <td colspan="4"></td>
+                        <td>
+                            @breakdown.Date.ToShortDateString()
+                            @if (breakdown.IsHoliday)
+                            {
+                                if (breakdown.IsRegularHoliday)
+                                {
+                                    <i class="fa fa-star gold" aria-hidden="true" title="Regular Holiday"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-star-half-o gold" aria-hidden="true" title="Special Holiday"></i>
+                                }
+                            }
+                        </td>
+                        <td colspan="2"></td>
+                        <td>@breakdown.RegularHours</td>
+                        <td>@breakdown.Overtime</td>
+                        <td>@breakdown.NightDifferential</td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+</div>

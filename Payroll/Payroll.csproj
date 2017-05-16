@@ -439,6 +439,8 @@
     <Content Include="Views\Maintenance\Companies.cshtml" />
     <Content Include="Views\Maintenance\CreateCompany.cshtml" />
     <Content Include="Views\Maintenance\EditCompany.cshtml" />
+    <Content Include="Views\Attendance\TotalHoursPerCompany.cshtml" />
+    <Content Include="Views\Attendance\TotalHoursPerCompanyContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
