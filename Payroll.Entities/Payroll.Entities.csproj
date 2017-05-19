@@ -99,8 +99,6 @@
     <Compile Include="Payroll\EmployeePayroll.cs" />
     <Compile Include="Payroll\EmployeePayrollDeduction.cs" />
     <Compile Include="Payroll\EmployeePayrollItem.cs" />
-    <Compile Include="Payroll\EmployeePayrollItemPerCompany.cs" />
-    <Compile Include="Payroll\EmployeePayrollPerCompany.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Payroll\TotalEmployeeHoursPerCompany.cs" />
     <Compile Include="Position.cs" />

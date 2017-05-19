@@ -122,6 +122,7 @@
     <Compile Include="Models\EmployeeLoanDao.cs" />
     <Compile Include="Models\Employee\EmployeeMachineDao.cs" />
     <Compile Include="Models\Employee\EmployeeNames.cs" />
+    <Compile Include="Models\HoursPerCompanyDao.cs" />
     <Compile Include="Models\Payroll\EmployeeAdjustmentDao.cs" />
     <Compile Include="Models\Payroll\PayrollDao.cs" />
     <Compile Include="Models\User\UserRoleDao.cs" />

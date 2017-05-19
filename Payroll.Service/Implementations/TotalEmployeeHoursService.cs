@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Payroll.Repository.Models;
 
 namespace Payroll.Service.Implementations
 {
@@ -181,6 +182,35 @@ namespace Payroll.Service.Implementations
         public double CountTotalHours(int employeeId, DateTime date)
         {
             return _totalEmployeeHoursRepository.CountTotalHours(employeeId, date);
+        }
+
+        public virtual IEnumerable<HoursPerCompanyDao> GetEmployeeHoursTotal(DateTime startDate, DateTime endDate, int employeeId)
+        {
+            IEnumerable<TotalEmployeeHours> totalHours;
+            if (employeeId > 0)
+                totalHours = _totalEmployeeHoursRepository.GetByDateRange(startDate, endDate, employeeId);
+            else
+                totalHours = _totalEmployeeHoursRepository.GetByDateRange(startDate, endDate);
+
+            var query = totalHours.GroupBy(x => new {
+                    x.Date,
+                    x.EmployeeId,
+                    x.Employee.FirstName,
+                    x.Employee.LastName,
+                    x.Employee.MiddleName
+                }).ToList();
+
+            var hourPerCompany = query.Select(item => new HoursPerCompanyDao
+            {
+                Date = item.Key.Date,
+                EmployeeId = item.Key.EmployeeId,
+                FirstName = item.Key.FirstName,
+                LastName = item.Key.LastName,
+                MiddleName = item.Key.MiddleName,
+                TotalEmployeeHours = item
+            });
+
+            return hourPerCompany;
         }
     }
 }

@@ -1,0 +1,16 @@
+﻿<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">@ViewBag.ModalTitle</h4>
+        </div>
+        <form method="POST" action="@(ViewBag.ModalFormAction ?? "")" id="@(ViewBag.ModalFormId ?? "")">
+            <div class="modal-body">
+                @RenderBody()
+            </div>
+            <div class="modal-footer">
+                @RenderSection("ModalFooter", false)
+            </div>
+        </form>
+    </div>
+</div>

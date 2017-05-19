@@ -28,12 +28,13 @@ namespace Payroll.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeePayrollRepository _employeePayrollRepository;
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
+        private readonly ITotalEmployeeHoursService _totalEmployeeHoursService;
         private readonly IHolidayRepository _holidayRepository;
 
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
             IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
             IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository, IAttendanceService attendanceService,
-            IHolidayRepository holidayRepository)
+            IHolidayRepository holidayRepository, ITotalEmployeeHoursService totalEmployeeHoursService)
         {
             _attendanceLogRepository = attendanceLogRepository;
             _attendanceRepository = attendanceRepository;
@@ -43,6 +44,7 @@ namespace Payroll.Controllers
             _employeeHoursRepository = employeeHoursRepository;
             _attendanceService = attendanceService;
             _holidayRepository = holidayRepository;
+            _totalEmployeeHoursService = totalEmployeeHoursService;
         }
 
         public virtual ActionResult CreateAttendance()
@@ -330,9 +332,30 @@ namespace Payroll.Controllers
             }
         }
 
-        public virtual ActionResult TotalHoursPerCompany()
+        public virtual ActionResult HoursPerCompany()
         {
+            return View();
+        }
+
+        public virtual PartialViewResult HoursPerCompanyContent(string startDate, string endDate, int employeeId)
+        {
+            var result = _totalEmployeeHoursService.GetEmployeeHoursTotal(startDate.ToDateTime(), endDate.ToDateTime().AddDays(1), employeeId);
+            Func<IEnumerable<TotalEmployeeHours>, bool> isNotEmpty = x => x != null && x.Any(y => y != null);
+
+            var viewModel = result.MapCollection<HoursPerCompanyDao, EmployeeTotalHoursViewModel>((s, d) =>
+            {
+                d.RegularHours = isNotEmpty(s.TotalEmployeeHours) ? s.TotalEmployeeHours.Where(x => x.Type == RateType.Regular).Sum(x => x.Hours) : 0;
+                d.Overtime = isNotEmpty(s.TotalEmployeeHours) ? s.TotalEmployeeHours.Where(x => x.Type == RateType.OverTime).Sum(x => x.Hours) : 0;
+                d.NightDifferential = isNotEmpty(s.TotalEmployeeHours) ? s.TotalEmployeeHours.Where(x => x.Type == RateType.NightDifferential).Sum(x => x.Hours) : 0; 
+            });
+
             
+            return PartialView(viewModel);
+        }
+
+        public ActionResult CreateHoursPerCompany(int employeeId, DateTime date)
+        {
+            return View(employeeId);
         }
     }
 }

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Payroll.Models.Attendance.EmployeeTotalHoursViewModel>
+
+<div class="Attendance t2">
+    <table class="table table-striped">
+        <tr>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th></th>
+            <th>Date</th>
+            <th>Regular Hours</th>
+            <th>Overtime</th>
+            <th>Night Differential</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr >
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @item.MiddleName
+                </td>
+                <td>
+                    @item.LastName
+                </td>
+                <td>
+                    @item.Date.ToString("ddd")
+                </td>
+                <td>
+                    @item.Date.ToShortDateString()
+                </td>
+                <td>
+                    @item.RegularHours
+                </td>
+                <td>
+                    @item.Overtime
+                </td>
+                <td>
+                    @item.NightDifferential
+                </td>
+                <td>                    
+                    @Html.ActionLink("Set Company", "CreateHoursPerCompany", new {employeeId = @item.EmployeeId, date=@item.Date}, new {@class = "btn btn-primary", data_target="#modal-container", data_toggle="modal"})
+                </td>
+            </tr>
+        }
+    </table>
+</div>

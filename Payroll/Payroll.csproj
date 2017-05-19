@@ -238,6 +238,7 @@
     <Compile Include="Models\Account\EditUserRoleViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceBreakdownViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceLogViewModel.cs" />
+    <Compile Include="Models\Attendance\EmployeeTotalHoursViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceViewModel.cs" />
     <Compile Include="Models\Attendance\CreateAttendanceViewModel.cs" />
     <Compile Include="Models\Employee\EmployeeDeductionViewModel.cs" />
@@ -292,6 +293,7 @@
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\Attendance\attendance.js" />
     <Content Include="Scripts\Attendance\attendancelog.js" />
+    <Content Include="Scripts\Attendance\employeehours.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -439,8 +441,10 @@
     <Content Include="Views\Maintenance\Companies.cshtml" />
     <Content Include="Views\Maintenance\CreateCompany.cshtml" />
     <Content Include="Views\Maintenance\EditCompany.cshtml" />
-    <Content Include="Views\Attendance\TotalHoursPerCompany.cshtml" />
-    <Content Include="Views\Attendance\TotalHoursPerCompanyContent.cshtml" />
+    <Content Include="Views\Attendance\HoursPerCompany.cshtml" />
+    <Content Include="Views\Attendance\HoursPerCompanyContent.cshtml" />
+    <Content Include="Views\Attendance\CreateHoursPerCompany.cshtml" />
+    <Content Include="Views\Shared\_LayoutDynamicModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

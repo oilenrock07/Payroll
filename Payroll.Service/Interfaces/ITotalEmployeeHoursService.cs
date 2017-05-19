@@ -2,9 +2,7 @@
 using Payroll.Entities.Payroll;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Payroll.Repository.Models;
 
 namespace Payroll.Service.Interfaces
 {
@@ -23,5 +21,7 @@ namespace Payroll.Service.Interfaces
         double CountTotalHours(int employeeId, DateTime date);
 
         IList<TotalEmployeeHours> GetByEmployeeDate(int employeeId, DateTime date);
+
+        IEnumerable<HoursPerCompanyDao> GetEmployeeHoursTotal(DateTime startDate, DateTime endDate, int employeeId);
     }
 }

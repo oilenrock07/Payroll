@@ -1,0 +1,17 @@
+﻿@model int
+@{
+    ViewBag.Title = "WorkSchedules";
+    ViewBag.ModalId = "ModalWorkSchedules";
+    ViewBag.ModalTitle = "Work Schedules";
+    Layout = "/Views/Shared/_LayoutDynamicModal.cshtml";
+}
+
+<table class="table table-responsive table-striped">
+    <h2>Test @Model</h2>
+</table>
+
+@section ModalFooter
+{
+    <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" />
+}
+

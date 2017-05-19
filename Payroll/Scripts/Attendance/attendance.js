@@ -17,6 +17,25 @@
                 $('#content').html(responseData);
             }
         });
+    };
+
+    function handleHoursPerCompanyClick() {
+        var startDate = $('.js-startDate').val();
+        var endDate = $('.js-endDate').val();
+
+        var employeeId = $('.js-employeeIdTypeAhead').val();
+        if (employeeId == '' || employeeId == undefined) {
+            employeeId = 0;
+        }
+
+        $.ajax({
+            url: '/Attendance/HoursPerCompanyContent',
+            data: { startDate: startDate, endDate: endDate, employeeId: parseInt(employeeId) },
+            method: 'POST',
+            success: function (responseData) {
+                $('#content').html(responseData);
+            }
+        });
     }
 
     function handleCreateAttendanceClick() {
@@ -31,6 +50,7 @@
 
     function init() {
         $('.js-submitAttendance').on('click', handleAttendanceClick);
+        $('.js-submitHoursPerCompany').on('click', handleHoursPerCompanyClick);
         $('.js-createAttendance').on('click', handleCreateAttendanceClick);
     }
 
