@@ -1,4 +1,5 @@
 ﻿using System;
+using Payroll.Entities.Payroll;
 
 namespace Payroll.Models.Attendance
 {
@@ -12,7 +13,12 @@ namespace Payroll.Models.Attendance
         public DateTime Date { get; set; }
 
         public double RegularHours { get; set; }
+        public int TotalRegularHoursId { get; set; }
+
         public double NightDifferential { get; set; }
+        public int TotalNightDifferentialId { get; set; }
+
         public double Overtime { get; set; }
+        public int TotalOvertimeId { get; set; }
     }
 }

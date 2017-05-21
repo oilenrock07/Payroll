@@ -238,6 +238,7 @@
     <Compile Include="Models\Account\EditUserRoleViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceBreakdownViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceLogViewModel.cs" />
+    <Compile Include="Models\Attendance\CreateHoursPerCompanyViewModel.cs" />
     <Compile Include="Models\Attendance\EmployeeTotalHoursViewModel.cs" />
     <Compile Include="Models\Attendance\AttendanceViewModel.cs" />
     <Compile Include="Models\Attendance\CreateAttendanceViewModel.cs" />
@@ -290,6 +291,7 @@
     <Content Include="Images\loading.gif" />
     <Content Include="Images\noimage.jpg" />
     <Content Include="Scripts\Account\editaccount.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\Attendance\attendance.js" />
     <Content Include="Scripts\Attendance\attendancelog.js" />
@@ -341,6 +343,7 @@
     <Content Include="Scripts\pagination.js" />
     <Content Include="Scripts\search.js" />
     <Content Include="Scripts\typeahead.bundle.js" />
+    <Content Include="Scripts\ui-bootstrap-tpls-2.5.0.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

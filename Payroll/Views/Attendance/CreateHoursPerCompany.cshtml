@@ -1,17 +1,29 @@
-﻿@model int
+﻿@model Payroll.Models.Attendance.CreateHoursPerCompanyViewModel
 @{
-    ViewBag.Title = "WorkSchedules";
-    ViewBag.ModalId = "ModalWorkSchedules";
-    ViewBag.ModalTitle = "Work Schedules";
+    ViewBag.ModalId = "ModalCreateHoursPerCompany";
     Layout = "/Views/Shared/_LayoutDynamicModal.cshtml";
 }
 
-<table class="table table-responsive table-striped">
-    <h2>Test @Model</h2>
+<table>
+    <tr>
+        <th>Regular Hours: @Model.EmployeeTotalHoursViewModel.RegularHours</th>
+        <td></td>
+    </tr>
+    <tr>
+        <th>Overtime: @Model.EmployeeTotalHoursViewModel.Overtime</th>
+    </tr>
+    <tr>
+        <th>Night Differential: @Model.EmployeeTotalHoursViewModel.NightDifferential</th>
+    </tr>
 </table>
+
+<div ng-controller="Test">
+    <p>Name : <input type="text" ng-model="name">
+    </p>
+    <h1>Hello {{name}}</h1>
+</div>
 
 @section ModalFooter
 {
     <input type="button" class="btn btn-default" data-dismiss="modal" value="Close" />
 }
-

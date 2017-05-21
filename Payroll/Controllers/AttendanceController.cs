@@ -30,11 +30,13 @@ namespace Payroll.Controllers
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
         private readonly ITotalEmployeeHoursService _totalEmployeeHoursService;
         private readonly IHolidayRepository _holidayRepository;
+        private readonly ITotalEmployeeHoursPerCompanyRepository _totalEmployeeHoursPerCompanyRepository;
 
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
             IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
             IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository, IAttendanceService attendanceService,
-            IHolidayRepository holidayRepository, ITotalEmployeeHoursService totalEmployeeHoursService)
+            IHolidayRepository holidayRepository, ITotalEmployeeHoursService totalEmployeeHoursService,
+            ITotalEmployeeHoursPerCompanyRepository totalEmployeeHoursPerCompanyRepository)
         {
             _attendanceLogRepository = attendanceLogRepository;
             _attendanceRepository = attendanceRepository;
@@ -45,6 +47,7 @@ namespace Payroll.Controllers
             _attendanceService = attendanceService;
             _holidayRepository = holidayRepository;
             _totalEmployeeHoursService = totalEmployeeHoursService;
+            _totalEmployeeHoursPerCompanyRepository = totalEmployeeHoursPerCompanyRepository;
         }
 
         public virtual ActionResult CreateAttendance()
@@ -294,7 +297,7 @@ namespace Payroll.Controllers
             return PartialView(viewModel);
         }
 
-        public void ClockIn(int employeeId)
+        public virtual void ClockIn(int employeeId)
         {
             var employee = _employeeRepository.GetById(employeeId);
             if (employee != null)
@@ -311,7 +314,7 @@ namespace Payroll.Controllers
             }
         }
 
-        public void ClockOut(int employeeId)
+        public virtual void ClockOut(int employeeId)
         {
             var employee = _employeeRepository.GetById(employeeId);
             
@@ -339,23 +342,49 @@ namespace Payroll.Controllers
 
         public virtual PartialViewResult HoursPerCompanyContent(string startDate, string endDate, int employeeId)
         {
-            var result = _totalEmployeeHoursService.GetEmployeeHoursTotal(startDate.ToDateTime(), endDate.ToDateTime().AddDays(1), employeeId);
-            Func<IEnumerable<TotalEmployeeHours>, bool> isNotEmpty = x => x != null && x.Any(y => y != null);
-
-            var viewModel = result.MapCollection<HoursPerCompanyDao, EmployeeTotalHoursViewModel>((s, d) =>
-            {
-                d.RegularHours = isNotEmpty(s.TotalEmployeeHours) ? s.TotalEmployeeHours.Where(x => x.Type == RateType.Regular).Sum(x => x.Hours) : 0;
-                d.Overtime = isNotEmpty(s.TotalEmployeeHours) ? s.TotalEmployeeHours.Where(x => x.Type == RateType.OverTime).Sum(x => x.Hours) : 0;
-                d.NightDifferential = isNotEmpty(s.TotalEmployeeHours) ? s.TotalEmployeeHours.Where(x => x.Type == RateType.NightDifferential).Sum(x => x.Hours) : 0; 
-            });
-
-            
+            var viewModel = GetTotalEmployeeHours(startDate.ToDateTime(), endDate.ToDateTime(), employeeId);
             return PartialView(viewModel);
         }
 
-        public ActionResult CreateHoursPerCompany(int employeeId, DateTime date)
+        [HttpPost]
+        public virtual JsonResult CreateHoursPerCompany(int employeeId, string date)
         {
-            return View(employeeId);
+            var deserializedDate = date.DeserializeDate();
+            var employeeTotalHours = GetTotalEmployeeHours(deserializedDate, deserializedDate, employeeId);
+            if (employeeTotalHours != null)
+            {
+                var employeeTotalHoursPerCompany = _totalEmployeeHoursPerCompanyRepository.Find(x => x.TotalEmployeeHours.Date == deserializedDate && x.TotalEmployeeHours.EmployeeId == employeeId).ToList();
+                var emp = employeeTotalHours.First();
+
+                var viewModel = new CreateHoursPerCompanyViewModel
+                {
+                    EmployeeTotalHoursViewModel = emp,
+                    ModalTitle = String.Format("{0} {1} {2} - {3}", emp.FirstName, emp.MiddleName, emp.LastName, deserializedDate.ToShortDateString())
+                };
+                return Json(viewModel);
+            }
+
+            return null;
         }
+
+        private IEnumerable<EmployeeTotalHoursViewModel> GetTotalEmployeeHours(DateTime startDate, DateTime endDate, int employeeId)
+        {
+            var result = _totalEmployeeHoursService.GetEmployeeHoursTotal(startDate, endDate.AddDays(1), employeeId);
+            var viewModel = result.MapCollection<HoursPerCompanyDao, EmployeeTotalHoursViewModel>((s, d) =>
+            {
+                var regularHours = s.TotalEmployeeHours.FirstOrDefault(x => x.Type == RateType.Regular);
+                var overtime = s.TotalEmployeeHours.FirstOrDefault(x => x.Type == RateType.OverTime);
+                var nightDifferential = s.TotalEmployeeHours.FirstOrDefault(x => x.Type == RateType.NightDifferential);
+
+                d.RegularHours = regularHours != null ? regularHours.Hours : 0;
+                d.TotalRegularHoursId = regularHours != null ? regularHours.TotalEmployeeHoursId : 0;
+                d.Overtime = overtime != null ? overtime.Hours : 0;
+                d.TotalOvertimeId = overtime != null ? overtime.TotalEmployeeHoursId : 0;
+                d.NightDifferential = nightDifferential != null ? nightDifferential.Hours : 0;
+                d.TotalNightDifferentialId = nightDifferential != null ? nightDifferential.TotalEmployeeHoursId : 0;
+            });
+
+            return viewModel;
+        } 
     }
 }

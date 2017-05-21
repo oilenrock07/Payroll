@@ -10,7 +10,9 @@ namespace Payroll.Entities.Payroll
         [Key]
         public int TotalEmployeeHoursPerCompanyId { get; set; }
 
+        [ForeignKey("TotalEmployeeHours")]
         public int TotalEmployeeHoursId { get; set; }
+        public virtual TotalEmployeeHours TotalEmployeeHours { get; set; }
 
         [ForeignKey("Company")]
         public int CompanyId { get; set; }

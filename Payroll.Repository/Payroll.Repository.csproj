@@ -113,6 +113,7 @@
     <Compile Include="Interface\ISchedulerLogRepository.cs" />
     <Compile Include="Interface\ISettingRepository.cs" />
     <Compile Include="Interface\ITaxRepository.cs" />
+    <Compile Include="Interface\ITotalEmployeeHoursPerCompanyRepository.cs" />
     <Compile Include="Interface\ITotalEmployeeHoursRepository.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
     <Compile Include="Interface\IUserRoleRepository.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Repositories\SchedulerLogRepository.cs" />
     <Compile Include="Repositories\SettingRepository.cs" />
     <Compile Include="Repositories\TaxRepository.cs" />
+    <Compile Include="Repositories\TotalEmployeeHoursPerCompanyRepository.cs" />
     <Compile Include="Repositories\TotalEmployeeHoursRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Repositories\UserRoleRepository.cs" />

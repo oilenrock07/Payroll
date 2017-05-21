@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Payroll.Models.Attendance.EmployeeTotalHoursViewModel>
+﻿@using Payroll.Common.Extension
+@model IEnumerable<Payroll.Models.Attendance.EmployeeTotalHoursViewModel>
 
 <div class="Attendance t2">
     <table class="table table-striped">
@@ -40,8 +41,9 @@
                 <td>
                     @item.NightDifferential
                 </td>
-                <td>                    
-                    @Html.ActionLink("Set Company", "CreateHoursPerCompany", new {employeeId = @item.EmployeeId, date=@item.Date}, new {@class = "btn btn-primary", data_target="#modal-container", data_toggle="modal"})
+                <td>
+                    <button type="button" class="btn btn-primary js-setCompany" ng-click="$ctrl.open('@item.EmployeeId', '@item.Date.SerializeShort()')">Set Company</button>
+                    @*@Html.ActionLink("Set Company", "CreateHoursPerCompany", new {employeeId = @item.EmployeeId, date = @item.Date}, new {@class = "btn btn-primary", data_target = "#modal-container", data_toggle = "modal"})*@
                 </td>
             </tr>
         }
