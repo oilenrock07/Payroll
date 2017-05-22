@@ -349,7 +349,7 @@ namespace Payroll.Controllers
         }
 
         [HttpPost]
-        public virtual JsonResult CreateHoursPerCompany(int employeeId, string date)
+        public virtual JsonResult ViewHoursPerCompanyModal(int employeeId, string date)
         {
             var deserializedDate = date.DeserializeDate();
             var employeeTotalHours = GetTotalEmployeeHours(deserializedDate, deserializedDate, employeeId);
@@ -366,12 +366,18 @@ namespace Payroll.Controllers
                     EmployeeTotalHoursViewModel = emp,
                     RegularHoursPerCompany = employeeTotalHoursPerCompany.Where(x => x.TotalEmployeeHoursId == emp.TotalRegularHoursId),
                     OvertimePerCompany = employeeTotalHoursPerCompany.Where(x => x.TotalEmployeeHoursId == emp.TotalOvertimeId),
-                    NightDifferentialPerCompany = employeeTotalHoursPerCompany.Where(x => x.TotalEmployeeHoursId == emp.TotalNightDifferentialId),
+                    NightDifferentialPerCompany = employeeTotalHoursPerCompany.Where(x => x.TotalEmployeeHoursId == emp.TotalNightDifferentialId).ToList(),
                     ModalTitle = String.Format("{0} {1} {2} - {3}", emp.FirstName, emp.MiddleName, emp.LastName, deserializedDate.ToShortDateString())
                 };
                 return Json(viewModel);
             }
 
+            return null;
+        }
+
+        [HttpPost]
+        public virtual JsonResult CreateHoursPerCompany(CreateHoursPerCompanyViewModel viewModel)
+        {
             return null;
         }
 
@@ -393,6 +399,6 @@ namespace Payroll.Controllers
             });
 
             return viewModel;
-        } 
+        }
     }
 }
