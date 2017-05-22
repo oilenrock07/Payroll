@@ -5,5 +5,6 @@ namespace Payroll.Repository.Constants
     {
         public const string EmployeeInfo = "EMPLOYEE_INFO";
         public const string Settings = "SETTINGS";
+        public const string Companies = "COMPANIES";
     }
 }

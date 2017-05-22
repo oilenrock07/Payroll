@@ -112,3 +112,16 @@ input[type="checkbox"].input-validation-error {
     display: none !important;
   }
 }
+
+table.no-border td{
+    border-top: 0px !important;
+}
+
+.js-modal {
+    max-height: 450px;
+    overflow: auto;
+}
+
+.hours-per-company-modal-header {
+    background-color: gainsboro;
+}

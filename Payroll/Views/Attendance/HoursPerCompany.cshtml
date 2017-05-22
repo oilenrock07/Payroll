@@ -6,7 +6,7 @@
 
 <h2>Total Hours Per Company</h2>
 
-<div ng-controller="ModalController as $ctrl" class="hours-per-company-modal" id="testmodal">
+<div ng-controller="ModalController as $ctrl" class="hours-per-company-modal">
     <form>
         <div class="form-horizontal">
             <div class="form-group">
@@ -46,42 +46,98 @@
             <button type="button" class="close" ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">{{$ctrl.modalTitle}}</h4>
         </div>
-        <div class="modal-body" id="modal-body">
-            <table class="table">
-                <tr>
+        <div class="modal-body js-modal" id="modal-body">
+            <table class="table no-border">
+                <tr class="hours-per-company-modal-header">
                     <td>
                         <h4>Regular Hours: {{$ctrl.regularHours}}</h4>
                     </td>
-                    <td align="right">
-                        <input type="button" class="btn btn-primary" value="Add Company" />
+                    <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.regularHoursPerCompany, $ctrl)"/></td>
+                </tr>
+                <tr ng-show="$ctrl.regularHoursPerCompany.length > 0">
+                    <td colspan="2">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Hours Worked</th>
+                                <th>Company</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in $ctrl.regularHoursPerCompany">
+                                <td><input type="text" class="form-control" ng-model="item.Hours"/></td>
+                                <td>
+                                    <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies">                                       
+                                    </select>
+                                </td>
+                                <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.regularHoursPerCompany, item)">Remove</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
-                <tr>
+                <tr class="hours-per-company-modal-header">
                     <td>
                         <h4>Overtime: {{$ctrl.overtime}}</h4>
                     </td>
-                    <td align="right">
-                        <input type="button" class="btn btn-primary" value="Add Company" />
+                    <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.overtimePerCompany, $ctrl)"/></td>
+                </tr>
+                <tr ng-show="$ctrl.overtimePerCompany.length > 0">
+                    <td colspan="2">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Hours Worked</th>
+                                <th>Company</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in $ctrl.overtimePerCompany">
+                                <td><input type="text" class="form-control" ng-model="item.Hours"/></td>
+                                <td>
+                                    <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies">                                       
+                                    </select>
+                                </td>
+                                <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.overtimePerCompany, item)">Remove</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
-                <tr>
+                <tr class="hours-per-company-modal-header">
                     <td>
                         <h4>Night Differential: {{$ctrl.nightDifferential}}</h4>
                     </td>
-                    <td align="right">
-                        <input type="button" class="btn btn-primary" value="Add Company" />
+                    <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.nightDifferentialPerCompany, $ctrl)"/></td>
+                </tr>
+                <tr ng-show="$ctrl.nightDifferentialPerCompany.length > 0">
+                    <td colspan="2">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Hours Worked</th>
+                                <th>Company</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in $ctrl.nightDifferentialPerCompany">
+                                <td><input type="text" class="form-control" ng-model="item.Hours"/></td>
+                                <td>
+                                    <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies">                                       
+                                    </select>
+                                </td>
+                                <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.nightDifferentialPerCompany, item)">Remove</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
             </table>
-            @*<ul>
-                    <li ng-repeat="item in $ctrl.items">
-                        <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
-                    </li>
-                </ul>*@
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+            <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>            
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">Save</button>
+            
         </div>
     </script>
 </div>
@@ -113,15 +169,8 @@
                     size: 'lg',
                     appendTo: parentElem,
                     resolve: {
-                        data: function () {
-                            var viewModel = {
-                                modalTitle: responseData.data.ModalTitle,
-                                regularHours: responseData.data.EmployeeTotalHoursViewModel.RegularHours,
-                                overtime: responseData.data.EmployeeTotalHoursViewModel.Overtime,
-                                nightDifferential: responseData.data.EmployeeTotalHoursViewModel.NightDifferential
-                            };
-
-                            return viewModel;
+                        responseData: function () {
+                            return responseData;
                         }
                     }
                 });
@@ -159,23 +208,33 @@
                 var content = $('#content');
                 content.html(responseData.data);
 
-                var mController = angular.element(document.getElementById("testmodal"));
+                var mController = angular.element(document.getElementsByClassName("hours-per-company-modal"));
                 mController.scope().activateView(content);
 
             });
         };
     });
 
-    app.controller('ModalInstanceCtrl', function ($uibModalInstance, data) {
+    app.controller('ModalInstanceCtrl', function ($uibModalInstance, responseData) {
         var $ctrl = this;
-        //$ctrl.items = data.items;
-        $ctrl.regularHours = data.regularHours;
-        $ctrl.overtime = data.overtime;
-        $ctrl.nightDifferential = data.nightDifferential;
-        $ctrl.modalTitle = data.modalTitle;
-        //$ctrl.selected = {
-        //    item: $ctrl.items[0]
-        //};
+
+        $ctrl.regularHours = responseData.data.EmployeeTotalHoursViewModel.RegularHours;
+        $ctrl.overtime = responseData.data.EmployeeTotalHoursViewModel.Overtime;
+        $ctrl.nightDifferential = responseData.data.EmployeeTotalHoursViewModel.NightDifferential;
+        $ctrl.modalTitle = responseData.data.ModalTitle;
+        $ctrl.companies = responseData.data.Companies;
+        $ctrl.regularHoursPerCompany = responseData.data.RegularHoursPerCompany;
+        $ctrl.overtimePerCompany = responseData.data.OvertimePerCompany;
+        $ctrl.nightDifferentialPerCompany = responseData.data.NightDifferentialPerCompany;
+
+        $ctrl.addCompany = function(array, item) {
+            array.push({
+                TotalEmployeeHoursPerCompanyId: 0,
+                TotalEmployeeHoursId: item.TotalEmployeeHoursPerCompanyId,
+                CompanyId: 0,
+                Hours: 0
+            });
+        }
 
         $ctrl.ok = function () {
             $uibModalInstance.close($ctrl.selected.item);
@@ -184,6 +243,11 @@
         $ctrl.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+        $ctrl.remove = function(array, item) {
+            var index = array.indexOf(item);
+            array.splice(index, 1);
+        }
     });
 </script>
 

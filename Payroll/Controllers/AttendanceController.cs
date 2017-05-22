@@ -31,12 +31,13 @@ namespace Payroll.Controllers
         private readonly ITotalEmployeeHoursService _totalEmployeeHoursService;
         private readonly IHolidayRepository _holidayRepository;
         private readonly ITotalEmployeeHoursPerCompanyRepository _totalEmployeeHoursPerCompanyRepository;
+        private readonly ICompanyRepository _companyRepository;
 
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
             IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
             IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository, IAttendanceService attendanceService,
             IHolidayRepository holidayRepository, ITotalEmployeeHoursService totalEmployeeHoursService,
-            ITotalEmployeeHoursPerCompanyRepository totalEmployeeHoursPerCompanyRepository)
+            ITotalEmployeeHoursPerCompanyRepository totalEmployeeHoursPerCompanyRepository, ICompanyRepository companyRepository)
         {
             _attendanceLogRepository = attendanceLogRepository;
             _attendanceRepository = attendanceRepository;
@@ -48,6 +49,7 @@ namespace Payroll.Controllers
             _holidayRepository = holidayRepository;
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _totalEmployeeHoursPerCompanyRepository = totalEmployeeHoursPerCompanyRepository;
+            _companyRepository = companyRepository;
         }
 
         public virtual ActionResult CreateAttendance()
@@ -354,11 +356,17 @@ namespace Payroll.Controllers
             if (employeeTotalHours != null)
             {
                 var employeeTotalHoursPerCompany = _totalEmployeeHoursPerCompanyRepository.Find(x => x.TotalEmployeeHours.Date == deserializedDate && x.TotalEmployeeHours.EmployeeId == employeeId).ToList();
+                var companies = _companyRepository.GetAllActive().ToList();
+
                 var emp = employeeTotalHours.First();
 
                 var viewModel = new CreateHoursPerCompanyViewModel
                 {
+                    Companies = companies,
                     EmployeeTotalHoursViewModel = emp,
+                    RegularHoursPerCompany = employeeTotalHoursPerCompany.Where(x => x.TotalEmployeeHoursId == emp.TotalRegularHoursId),
+                    OvertimePerCompany = employeeTotalHoursPerCompany.Where(x => x.TotalEmployeeHoursId == emp.TotalOvertimeId),
+                    NightDifferentialPerCompany = employeeTotalHoursPerCompany.Where(x => x.TotalEmployeeHoursId == emp.TotalNightDifferentialId),
                     ModalTitle = String.Format("{0} {1} {2} - {3}", emp.FirstName, emp.MiddleName, emp.LastName, deserializedDate.ToShortDateString())
                 };
                 return Json(viewModel);
