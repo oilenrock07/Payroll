@@ -74,6 +74,7 @@ app.controller('ModalController', function ($scope, $http, $uibModal, $log, $doc
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, responseData) {
     var $ctrl = this;
 
+    $ctrl.error = '';
     $ctrl.regularHours = responseData.data.EmployeeTotalHoursViewModel.RegularHours;
     $ctrl.overtime = responseData.data.EmployeeTotalHoursViewModel.Overtime;
     $ctrl.nightDifferential = responseData.data.EmployeeTotalHoursViewModel.NightDifferential;
@@ -81,18 +82,25 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, response
     $ctrl.companies = responseData.data.Companies;
     $ctrl.regularHoursPerCompany = responseData.data.RegularHoursPerCompany;
     $ctrl.overtimePerCompany = responseData.data.OvertimePerCompany;
-    $ctrl.nightDifferentialPerCompany = responseData.data.NightDifferentialPerCompany;
+    $ctrl.nightDifferentialPerCompany = responseData.data.NightDifferentialPerCompany;    
 
-    $ctrl.addCompany = function (array, item) {
+    $ctrl.regularId = responseData.data.EmployeeTotalHoursViewModel.TotalRegularHoursId;
+    $ctrl.overtimeId = responseData.data.EmployeeTotalHoursViewModel.TotalOvertimeId;
+    $ctrl.nightDifferentialId = responseData.data.EmployeeTotalHoursViewModel.TotalNightDifferentialId;
+
+    $ctrl.addCompany = function (array, id) {
         array.push({
             TotalEmployeeHoursPerCompanyId: 0,
-            TotalEmployeeHoursId: item.TotalEmployeeHoursPerCompanyId,
+            TotalEmployeeHoursId: id,
             CompanyId: 0,
             Hours: 0
         });
     }
 
     $ctrl.save = function () {
+
+        if (!$ctrl.validate())
+            return;        
 
         var viewModel = {
             RegularHoursPerCompany: $ctrl.regularHoursPerCompany,
@@ -105,11 +113,43 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, response
             url: '/Attendance/CreateHoursPerCompany',
             contentType: 'application/json',
             data: JSON.stringify(viewModel),
-            success: function() {
-
+            success: function(response) {
+                if (response.Success === true) {
+                    $uibModalInstance.dismiss('cancel');
+                } else {
+                    alert(response.Error);
+                }
             }
         });
     };
+
+    $ctrl.validate = function () {
+        var regularHoursValid = $ctrl.TotalHoursIsValid($ctrl.regularHoursPerCompany, 'Regular hours');
+        var overtimeValid = $ctrl.TotalHoursIsValid($ctrl.overtimePerCompany, 'Overtime');
+        var nightDiffValid = $ctrl.TotalHoursIsValid($ctrl.nightDifferentialPerCompany, 'Night Differential');
+
+        return regularHoursValid && overtimeValid && nightDiffValid;
+    }
+
+    $ctrl.TotalHoursIsValid = function (array, title) {
+        var valid = true;
+
+        var sum = 0;
+        angular.forEach(array, function (value) {
+            sum = sum + parseFloat(value.Hours);
+        });
+
+        if (sum > parseFloat($ctrl.nightDifferential)) {
+            $ctrl.error.append('<li>Total ' + title + ' is greater than actual hours</li>');
+            valid = false;
+        }
+        if (sum < parseFloat($ctrl.nightDifferential)) {
+            $ctrl.error.append('<li>Total ' + title + ' is less than actual hours</li>');
+            valid = false;
+        }
+
+        return valid;
+    }
 
     $ctrl.cancel = function () {
         $uibModalInstance.dismiss('cancel');
