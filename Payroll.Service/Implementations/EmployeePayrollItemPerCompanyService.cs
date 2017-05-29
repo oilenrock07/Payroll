@@ -119,6 +119,7 @@ namespace Payroll.Service.Implementations
                         {
                             DateTime date = totalHours.TotalEmployeeHours.Date;
                             RateType rateType = totalHours.TotalEmployeeHours.Type;
+                            var companyId = totalHours.CompanyId;
 
                             var isRestDay = date.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd);
                             Holiday holiday = _holidayService.GetHoliday(date);
@@ -251,9 +252,9 @@ namespace Payroll.Service.Implementations
                                 totalPayment = (decimal)hourlyRate * (decimal)totalHours.Hours * (decimal)rateMultiplier;
                             }
 
-                            //Get existing 
+                            //Get existing by company
                             var employeePayrollItem = employeePayrollItemList.Where(pi =>
-                                pi.EmployeeId == employee.EmployeeId && pi.RateType == rateType).FirstOrDefault();
+                                pi.EmployeeId == employee.EmployeeId && pi.CompanyId == companyId && pi.RateType == rateType).FirstOrDefault();
                             if (employeePayrollItem == null)
                             {
                                 //Create new entry
@@ -265,7 +266,8 @@ namespace Payroll.Service.Implementations
                                     TotalAmount = totalPayment,
                                     RatePerHour = hourlyRate,
                                     PayrollDate = payrollDate,
-                                    RateType = rateType
+                                    RateType = rateType,
+                                    CompanyId = companyId
                                 };
 
                                 employeePayrollItemList.Add(employeePayrollItem);
@@ -286,241 +288,6 @@ namespace Payroll.Service.Implementations
                 }
             }
             _unitOfWork.Commit();
-
-            //Generate holiday pays
-            GenerateEmployeeHolidayPay(payrollDate, payrollStartDate, payrollEndDate);
-
-            //Generate leave pays
-            GenerateEmployeeLeavesPay(payrollDate, payrollStartDate, payrollEndDate);
-        }
-
-        /**
-         * Generate employee holiday pay NOT WORKED
-         *
-         **/
-        public void GenerateEmployeeHolidayPay(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
-        {
-            //Get all active employees
-            IList<EmployeeInfo> employees = _employeeInfoService.GetAllActive();
-
-            foreach (DateTime day in DatetimeExtension.EachDay(payrollStartDate, payrollEndDate))
-            {
-                //Check if holiday
-                var holiday = _holidayService.GetHoliday(day);
-                bool isSpecialHolidayPaid = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_IS_SPHOLIDAY_WITH_PAY)) > 0;
-                bool isRestDayHolidayPaid = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_IS_REST_DAY_HOLIDAY_WITH_PAY)) > 0;
-                Double restDayRate = Double.Parse(_settingService.GetByKey(SettingValue.RATE_REST_DAY));
-                var isRestDay = false;
-
-                if (holiday != null && (holiday.IsRegularHoliday || isSpecialHolidayPaid))
-                {
-                    foreach (EmployeeInfo employee in employees)
-                    {
-                        WorkSchedule workSchedule = _employeeWorkScheduleService.GetByEmployeeId(employee.EmployeeId).WorkSchedule;
-
-                        if (workSchedule != null)
-                        {
-                            isRestDay = day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd);
-
-                            //Will only check if within schedule if rest day holiday is NOT paid or
-                                // if SPECIAL Holiday
-                            if (!isRestDayHolidayPaid || !holiday.IsRegularHoliday)
-                            {
-                                //Check if within schedule
-                                if (isRestDay)
-                                {
-                                    //Don't proceed
-                                    continue;
-                                }
-                            }
-                        
-                            //Check if worked before holiday
-                            var lastDayOfWork = getLastDayOfWork(day, workSchedule);
-                            var employeeHours = _totalEmployeeHoursPerCompanyService.GetByEmployeeDate(employee.EmployeeId, lastDayOfWork);
-                            
-                            //Don't proceed if the employee didn't work the day before holiday
-                            if (holiday.IsAlwaysPayable == false)
-                            {
-                                //If didnt work before holiday
-                                //Check if there's a filed leave with holiday pay after payable
-                                if (employeeHours == null || employeeHours.Count <= 0)
-                                {
-                                    var leave = _employeeLeaveRepository
-                                        .CountLeavesHolidayPayable(employee.EmployeeId, lastDayOfWork);
-                                    //Without filed don't proceed in computing
-                                    if (leave <= 0)
-                                    {
-                                        continue;
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //No work schedule, no holiday pay
-                            continue;
-                        }
-
-                        //If with schedule on this date, generate holiday pay
-
-                        //Check if with worked hours
-                        double totalEmployeeHours =
-                            _totalEmployeeHoursPerCompanyService.CountTotalHours(employee.EmployeeId, day);
-
-                        int workHours = Convert.ToInt32(_settingService.GetByKey(SettingValue.PAYROLL_REGULAR_HOURS));
-                        var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
-                        var rateType = holiday.IsRegularHoliday ? 
-                            (isRestDay ? RateType.RegularHolidayRestDayNotWorked : RateType.RegularHolidayNotWorked) : 
-                            RateType.SpecialHolidayNotWorked;
-
-                        var employeePayrollItem = Find(employee.EmployeeId, day, rateType);
-                        //If null create a holiday pay
-                        if (totalEmployeeHours <= 0)
-                        {
-                            var multiplier = 1d;
-                            if (isRestDay)
-                            {
-                                multiplier *= restDayRate;
-                                
-                            }
-                            //Update 
-                            if (employeePayrollItem != null)
-                            {
-                                _employeePayrollItemPerCompanyRepository.Update(employeePayrollItem);
-
-                                employeePayrollItem.TotalAmount += (hourlyRate * workHours) * (decimal)multiplier;
-                                employeePayrollItem.TotalHours += workHours;
-                            }
-                            else
-                            {
-                                //Create new
-                                EmployeePayrollItemPerCompany payrollItem = new EmployeePayrollItemPerCompany
-                                {
-                                    EmployeeId = employee.EmployeeId,
-                                    PayrollDate = payrollDate,
-                                    TotalAmount = (hourlyRate * workHours) * (decimal)multiplier,
-                                    TotalHours = workHours,
-                                    RateType = rateType,
-                                    Multiplier = multiplier,
-                                    RatePerHour = hourlyRate
-                                };
-
-                                _employeePayrollItemPerCompanyRepository.Add(payrollItem);
-                            }
-                        }
-                        else
-                        {
-                            var multiplier = 1d;
-                            if (isRestDay)
-                            {
-                                multiplier *= restDayRate;
-
-                            }
-                            //If existing create new for remaining unpaid hours
-                            if (totalEmployeeHours < workHours)
-                            {
-                                var remainingUnpaidHours =
-                                    Convert.ToDouble(workHours - totalEmployeeHours);
-
-                                var amount = hourlyRate * (decimal)remainingUnpaidHours;
-
-                                //Update 
-                                if (employeePayrollItem != null)
-                                {
-                                    _employeePayrollItemPerCompanyRepository.Update(employeePayrollItem);
-
-                                    employeePayrollItem.TotalAmount += (amount * (decimal)multiplier);
-                                    employeePayrollItem.TotalHours += remainingUnpaidHours;
-                                }
-                                else
-                                {
-                                    //Create new
-                                    EmployeePayrollItemPerCompany payrollItem = new EmployeePayrollItemPerCompany
-                                    {
-                                        EmployeeId = employee.EmployeeId,
-                                        PayrollDate = payrollDate,
-                                        TotalAmount = (amount * (decimal)multiplier),
-                                        TotalHours = remainingUnpaidHours,
-                                        RateType = rateType,
-                                        Multiplier = multiplier,
-                                        RatePerHour = hourlyRate
-                                    };
-                                    _employeePayrollItemPerCompanyRepository.Add(payrollItem);
-                                }
-                            }
-                        }
-                        _unitOfWork.Commit();
-                    }
-                }
-            }
-        }
-
-
-        /**
-      * Generate employee leaves
-      *
-      **/
-        public void GenerateEmployeeLeavesPay(DateTime payrollDate, DateTime payrollStartDate, DateTime payrollEndDate)
-        {
-            //Get all active leaves within payroll dates
-            IList<EmployeeLeave> leaves = _employeeLeaveRepository
-                .GetEmployeePayableLeavesByDateRange(payrollStartDate, payrollEndDate)
-                .OrderBy(l => l.EmployeeId).ToList();
-
-            //for each leaves 
-            foreach (EmployeeLeave leave in leaves)
-            {
-                WorkSchedule workSchedule = _employeeWorkScheduleService
-                    .GetByEmployeeId(leave.EmployeeId).WorkSchedule;
-                var employee = _employeeInfoService.GetByEmployeeId(leave.EmployeeId);
-                var hourlyRate = _employeeSalaryService.GetEmployeeHourlyRate(employee);
-                var employeePayrollItem = this.Find(leave.EmployeeId, payrollDate, RateType.Leave);
-               
-                //for each day in leaves
-                foreach (DateTime day in DatetimeExtension.EachDay(leave.StartDate, leave.EndDate))
-                {
-                    //Check if within payroll date
-                    if (day.IsWithinDateRange(payrollStartDate, payrollEndDate))
-                    {
-                        var isRestDay = day.IsRestDay(workSchedule.WeekStart, workSchedule.WeekEnd);
-
-                        //Will be paid only if employee have schedule on current day
-                        if (!isRestDay)
-                        {
-                            //If more than 8 use 8 hours else use indicated hours
-                            //Note that if the employee will file half day in a date range
-                            //File the half day on a separate entry
-                            var hours = leave.Hours > 8 ? 8 : leave.Hours; 
-                            //Update 
-                            if (employeePayrollItem != null)
-                            {
-                                _employeePayrollItemPerCompanyRepository.Update(employeePayrollItem);
-
-                                employeePayrollItem.TotalAmount += (hourlyRate * hours);
-                                employeePayrollItem.TotalHours += hours;
-                            }
-                            else
-                            {
-                                //Create new
-                                EmployeePayrollItemPerCompany payrollItem = new EmployeePayrollItemPerCompany
-                                {
-                                    EmployeeId = leave.EmployeeId,
-                                    PayrollDate = payrollDate,
-                                    RateType = RateType.Leave,
-                                    Multiplier = 1,
-                                    RatePerHour = hourlyRate,
-                                    TotalAmount = (hourlyRate * hours),
-                                    TotalHours = hours
-                                };
-                                _employeePayrollItemPerCompanyRepository.Add(payrollItem);
-                            }
-
-                            _unitOfWork.Commit();
-                        }
-                    }
-                }
-            }
-   
         }
 
         public EmployeePayrollItemPerCompany Find(int employeeId, DateTime date, RateType rateType)
