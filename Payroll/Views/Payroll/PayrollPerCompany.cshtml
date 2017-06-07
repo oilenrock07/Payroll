@@ -1,0 +1,64 @@
+﻿@using Payroll.Common.Extension
+@model Payroll.Models.Payroll.PayrollViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Payroll</h2>
+<div class="js-message alert alert-info hidden">
+    <img src="~/Images/ajax-loader.gif" /> &nbsp;Generating Payroll. Please wait
+</div>
+@using (Html.BeginForm("PayrollPerCompany", "Payroll", FormMethod.Get))
+{
+    <div class="row b2">
+        @Html.LabelFor(model => model.Date, "Payroll Date", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-4">
+            @Html.DropDownListFor(model => model.Date, Model.PayrollDates, new { @class = "form-control" })
+        </div>
+        <button type="submit" class="btn btn-primary js-generate">Generate Payroll</button>
+    </div>
+}
+
+@if (Model.Payrolls.Any())
+{
+    <table class="table table-responsive">
+        <tr>
+            <th>Name</th>
+            <th>Gross Pay</th>
+            <th>Total Deduction</th>
+            <th>Net Pay</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Payrolls)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @item.TotalGross.FormatAmount()
+                </td>
+                <td>
+                    -@item.TotalDeduction.FormatAmount()
+                </td>
+                <td>
+                    @item.TotalNet.FormatAmount()
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new {  id=item.PayrollId })
+                </td>
+            </tr>
+        }
+    </table>
+
+    @Html.Partial("Pagination", Model.Pagination)
+    @Html.ActionLink("Export to Excel", "ExportToExcel", new { startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }, new { @class = "btn btn-primary" })
+}
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/Payroll/payroll.js"></script>
+    <script type="text/javascript" src="/Scripts/pagination.js"></script>
+}

@@ -97,8 +97,11 @@
     <Compile Include="Interface\IEmployeeLoanRepository.cs" />
     <Compile Include="Interface\IEmployeeMachineRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollDeductionRepository.cs" />
-    <Compile Include="Interface\IEmployeePayrollItemPerCompanyRepository.cs" />
+    <Compile Include="Interface\IEmployeePayrollItemPerCompanyRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Interface\IEmployeePayrollItemRepository.cs" />
+    <Compile Include="Interface\IEmployeePayrollPerCompanyRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollRepository.cs" />
     <Compile Include="Interface\IEmployeeRepository.cs" />
     <Compile Include="Interface\IEmployeeworkScheduleRepository.cs" />
@@ -148,6 +151,7 @@
     <Compile Include="Repositories\EmployeePayrollDeductionRepository.cs" />
     <Compile Include="Repositories\EmployeePayrollItemPerCompanyRepository.cs" />
     <Compile Include="Repositories\EmployeePayrollItemRepository.cs" />
+    <Compile Include="Repositories\EmployeePayrollPerCompanyRepository.cs" />
     <Compile Include="Repositories\EmployeePayrollRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

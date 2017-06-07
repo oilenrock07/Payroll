@@ -448,6 +448,7 @@
     <Content Include="Views\Attendance\HoursPerCompanyContent.cshtml" />
     <Content Include="Views\Attendance\CreateHoursPerCompany.cshtml" />
     <Content Include="Views\Shared\_LayoutDynamicModal.cshtml" />
+    <Content Include="Views\Payroll\PayrollPerCompany.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

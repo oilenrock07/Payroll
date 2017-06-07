@@ -66,6 +66,7 @@
     <Compile Include="Implementations\HolidayService.cs" />
     <Compile Include="Implementations\SchedulerLogService.cs" />
     <Compile Include="Implementations\TaxService.cs" />
+    <Compile Include="Implementations\TotalEmployeeHoursPerCompanyService.cs" />
     <Compile Include="Implementations\TotalEmployeeHoursService.cs" />
     <Compile Include="Implementations\UserRoleService.cs" />
     <Compile Include="Implementations\ValidationService.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Interfaces\IEmployeeWorkScheduleService.cs" />
     <Compile Include="Interfaces\IHolidayService.cs" />
     <Compile Include="Interfaces\ISchedulerLogService.cs" />
+    <Compile Include="Interfaces\ITotalEmployeeHoursPerCompanyService.cs" />
     <Compile Include="Interfaces\IUserRoleService.cs" />
     <Compile Include="Interfaces\ISettingService.cs" />
     <Compile Include="Interfaces\ITaxService.cs" />
