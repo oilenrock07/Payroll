@@ -109,5 +109,10 @@ namespace Payroll.Infrastructure.Implementations
             _context.Database.ExecuteSqlCommand(command, parameters);
         }
 
+        public virtual void ExecuteSqlCommandTransaction(string command, params object[] parameters)
+        {
+            _context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, command, parameters);
+        }
+
     }
 }

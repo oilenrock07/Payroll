@@ -115,6 +115,8 @@ namespace Payroll.App_Start
             kernel.Bind<IEmployeeAdjustmentRepository>().To<EmployeeAdjustmentRepository>().InRequestScope();
             kernel.Bind<IEmployeePayrollItemRepository>().To<EmployeePayrollItemRepository>().InRequestScope();
             kernel.Bind<ICompanyRepository>().To<CompanyRepository>().InRequestScope();
+            kernel.Bind<IEmployeePayrollPerCompanyRepository>().To<EmployeePayrollPerCompanyRepository>().InRequestScope();
+            kernel.Bind<IEmployeePayrollItemPerCompanyRepository>().To<EmployeePayrollItemPerCompanyRepository>().InRequestScope();            
             kernel.Bind<ITotalEmployeeHoursPerCompanyRepository>().To<TotalEmployeeHoursPerCompanyRepository>().InRequestScope();
 
             //Service
@@ -141,6 +143,7 @@ namespace Payroll.App_Start
             kernel.Bind<IEmployeeAdjustmentService>().To<EmployeeAdjustmentService>().InRequestScope();
             kernel.Bind<IEmployeePayrollItemService>().To<EmployeePayrollItemService>().InRequestScope();
             kernel.Bind<IEmployeePayrollAllowanceService>().To<EmployeePayrollAllowanceService>().InRequestScope();
+            kernel.Bind<IEmployeePayrollItemPerCompanyService>().To<EmployeePayrollItemPerCompanyService>().InRequestScope();      
 
             //Caching
             //kernel.Bind<ISettingRepository>().To<CachedSettingService>().InRequestScope();

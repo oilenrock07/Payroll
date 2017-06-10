@@ -378,7 +378,54 @@ namespace Payroll.Controllers
         [HttpPost]
         public virtual JsonResult CreateHoursPerCompany(CreateHoursPerCompanyViewModel viewModel)
         {
-            return null;
+            try
+            {
+                var toDeleteIds = new List<int>();
+                if (viewModel.RegularHoursPerCompany != null)
+                    toDeleteIds.AddRange(viewModel.RegularHoursPerCompany.Where(x => x.TotalEmployeeHoursPerCompanyId > 0).Select(x => x.TotalEmployeeHoursPerCompanyId));
+                if (viewModel.OvertimePerCompany != null)
+                    toDeleteIds.AddRange(viewModel.OvertimePerCompany.Where(x => x.TotalEmployeeHoursPerCompanyId > 0).Select(x => x.TotalEmployeeHoursPerCompanyId));
+                if (viewModel.NightDifferentialPerCompany != null)
+                    toDeleteIds.AddRange(viewModel.NightDifferentialPerCompany.Where(x => x.TotalEmployeeHoursPerCompanyId > 0).Select(x => x.TotalEmployeeHoursPerCompanyId));
+
+                //delete first all the existing records
+                _totalEmployeeHoursPerCompanyRepository.DeleteByTotalEmployeeHoursPerCompanyIds(toDeleteIds);
+
+                //add them again
+                if (viewModel.RegularHoursPerCompany != null)
+                {
+                    foreach (var item in viewModel.RegularHoursPerCompany)
+                    {
+                        item.TotalEmployeeHours = null;
+                        _totalEmployeeHoursPerCompanyRepository.Add(item);
+                    }
+                }
+
+                if (viewModel.OvertimePerCompany != null)
+                {
+                    foreach (var item in viewModel.OvertimePerCompany)
+                    {
+                        item.TotalEmployeeHours = null;
+                        _totalEmployeeHoursPerCompanyRepository.Add(item);
+                    }
+                }
+
+                if (viewModel.NightDifferentialPerCompany != null)
+                {
+                    foreach (var item in viewModel.NightDifferentialPerCompany)
+                    {
+                        item.TotalEmployeeHours = null;
+                        _totalEmployeeHoursPerCompanyRepository.Add(item);
+                    }
+                }
+
+                _unitOfWork.Commit();
+                return Json(new {Success = true});
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Error = ex.Message });
+            }
         }
 
         private IEnumerable<EmployeeTotalHoursViewModel> GetTotalEmployeeHours(DateTime startDate, DateTime endDate, int employeeId)
@@ -391,7 +438,7 @@ namespace Payroll.Controllers
                 var nightDifferential = s.TotalEmployeeHours.FirstOrDefault(x => x.Type == RateType.NightDifferential);
 
                 d.RegularHours = regularHours != null ? regularHours.Hours : 0;
-                d.TotalRegularHoursId = regularHours != null ? regularHours.TotalEmployeeHoursId : 0;
+                d.TotalRegularHoursId = regularHours != null ? regularHours.TotalEmployeeHoursId : 0;                
                 d.Overtime = overtime != null ? overtime.Hours : 0;
                 d.TotalOvertimeId = overtime != null ? overtime.TotalEmployeeHoursId : 0;
                 d.NightDifferential = nightDifferential != null ? nightDifferential.Hours : 0;
