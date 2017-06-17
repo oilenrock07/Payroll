@@ -4,13 +4,14 @@
             <h4 class="modal-title" id="myModalLabel">{{$ctrl.modalTitle}}</h4>
         </div>
         <div class="modal-body js-modal" id="modal-body">
+            <error-message></error-message>
             <form name="HoursPerCompanyModalForm">
                 <table class="table no-border">
                     <tr class="hours-per-company-modal-header">
                         <td>
                             <h4>Regular Hours: {{$ctrl.regularHours}}</h4>
                         </td>
-                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.regularHoursPerCompany, $ctrl)" /></td>
+                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.regularHoursPerCompany, $ctrl.regularId)" /></td>
                     </tr>
                     <tr ng-show="$ctrl.regularHoursPerCompany.length > 0">
                         <td colspan="2">
@@ -37,7 +38,7 @@
                         <td>
                             <h4>Overtime: {{$ctrl.overtime}}</h4>
                         </td>
-                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.overtimePerCompany, $ctrl)" /></td>
+                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.overtimePerCompany, $ctrl.overtimeId)" /></td>
                     </tr>
                     <tr ng-show="$ctrl.overtimePerCompany.length > 0">
                         <td colspan="2">
@@ -64,7 +65,7 @@
                         <td>
                             <h4>Night Differential: {{$ctrl.nightDifferential}}</h4>
                         </td>
-                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.nightDifferentialPerCompany, $ctrl)" /></td>
+                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.nightDifferentialPerCompany, $ctrl.nightDifferentialId)" /></td>
                     </tr>
                     <tr ng-show="$ctrl.nightDifferentialPerCompany.length > 0">
                         <td colspan="2">

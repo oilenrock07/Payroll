@@ -1,5 +1,6 @@
 ﻿var app = angular.module('PayrollApp', ['ui.bootstrap']);
 
+//try to refactor this sometime to remove the $ctrl
 app.controller('ModalController', function ($scope, $http, $uibModal, $log, $document, $compile) {
     var $ctrl = this;
     $ctrl.animationsEnabled = true;
@@ -71,10 +72,10 @@ app.controller('ModalController', function ($scope, $http, $uibModal, $log, $doc
     };
 });
 
-app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, responseData) {
+app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, responseData, $compile) {
     var $ctrl = this;
 
-    $ctrl.error = '';
+    $ctrl.error = [];
     $ctrl.regularHours = responseData.data.EmployeeTotalHoursViewModel.RegularHours;
     $ctrl.overtime = responseData.data.EmployeeTotalHoursViewModel.Overtime;
     $ctrl.nightDifferential = responseData.data.EmployeeTotalHoursViewModel.NightDifferential;
@@ -124,14 +125,15 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, response
     };
 
     $ctrl.validate = function () {
-        var regularHoursValid = $ctrl.TotalHoursIsValid($ctrl.regularHoursPerCompany, 'Regular hours');
-        var overtimeValid = $ctrl.TotalHoursIsValid($ctrl.overtimePerCompany, 'Overtime');
-        var nightDiffValid = $ctrl.TotalHoursIsValid($ctrl.nightDifferentialPerCompany, 'Night Differential');
+        $ctrl.error = [];
+        var regularHoursValid = $ctrl.TotalHoursIsValid($ctrl.regularHoursPerCompany, $ctrl.regularHours, 'Regular hours');
+        var overtimeValid = $ctrl.TotalHoursIsValid($ctrl.overtimePerCompany, $ctrl.overtime, 'Overtime');
+        var nightDiffValid = $ctrl.TotalHoursIsValid($ctrl.nightDifferentialPerCompany, $ctrl.nightDifferential, 'Night Differential');
 
         return regularHoursValid && overtimeValid && nightDiffValid;
     }
 
-    $ctrl.TotalHoursIsValid = function (array, title) {
+    $ctrl.TotalHoursIsValid = function (array, totalHours, title) {
         var valid = true;
 
         var sum = 0;
@@ -139,12 +141,12 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, response
             sum = sum + parseFloat(value.Hours);
         });
 
-        if (sum > parseFloat($ctrl.nightDifferential)) {
-            $ctrl.error.append('<li>Total ' + title + ' is greater than actual hours</li>');
+        if (sum > parseFloat(totalHours)) {
+            $ctrl.error.push('Total ' + title + ' is greater than actual hours');
             valid = false;
         }
-        if (sum < parseFloat($ctrl.nightDifferential)) {
-            $ctrl.error.append('<li>Total ' + title + ' is less than actual hours</li>');
+        if (sum < parseFloat(totalHours)) {
+            $ctrl.error.push('Total ' + title + ' is less than actual hours');
             valid = false;
         }
 
@@ -158,5 +160,15 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $http, response
     $ctrl.remove = function (array, item) {
         var index = array.indexOf(item);
         array.splice(index, 1);
+    }
+});
+
+app.directive('errorMessage', function ($compile) {
+    return {
+        restrict: 'E',
+        replace: true,
+        template: '<div class="alert alert-danger fade in" ng-show="$ctrl.error.length > 0"><div>' +
+                  '<ul><li ng-repeat="e in $ctrl.error">{{e}}</li></ul>' +
+                  '</div></div>'
     }
 });
