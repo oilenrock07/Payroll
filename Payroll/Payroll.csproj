@@ -329,6 +329,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Maintenance\companytypeahead.js" />
     <Content Include="Scripts\Maintenance\frequency.js" />
     <Content Include="Scripts\Maintenance\maintenance.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -449,9 +450,12 @@
     <Content Include="Views\Attendance\CreateHoursPerCompany.cshtml" />
     <Content Include="Views\Shared\_LayoutDynamicModal.cshtml" />
     <Content Include="Views\Payroll\PayrollPerCompany.cshtml" />
+    <Content Include="Views\Payroll\SearchPerCompany.cshtml" />
+    <Content Include="Views\Shared\_CompanyTypeAhead.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\Shared\" />
     <Folder Include="Views\SiteContent\" />
   </ItemGroup>
   <ItemGroup>

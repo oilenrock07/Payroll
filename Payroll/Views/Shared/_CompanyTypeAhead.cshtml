@@ -1,0 +1,11 @@
+﻿@model int
+@{
+    var name = ViewData["CompanyName"] ?? "";
+    var infoMessage = ViewData["CompanyInfoMessage"] ?? "You can type company name or company code here";
+}           
+
+<input type="text" autocomplete="off" class="form-control typeahead company-typeahead" data-provide="typeahead" placeholder="Enter company here" value="@name"/>
+<div class="label-info label">@infoMessage</div>
+<div>
+    <input type="hidden" name="CompanyId" id="CompanyId" class="js-companyIdTypeAhead" data-val="true" data-val-required="Please select company" value="@(Model == 0 ? null: Model.ToString())" />    
+</div>

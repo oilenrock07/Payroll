@@ -58,7 +58,7 @@ namespace Payroll.Controllers
         {
             var viewModel = new PayrollViewModel();
             var payrolls = new List<PayrollDao>();
-            var payrollDates = _employeePayrollService.GetPayrollDates(3).Select(x => new SelectListItem
+            var payrollDates = _employeePayrollService.GetPayrollDates(6).Select(x => new SelectListItem
             {
                 Text = x.FormattedDate,
                 Value = x.SerializedDate
@@ -110,7 +110,7 @@ namespace Payroll.Controllers
         {
             var viewModel = new PayrollViewModel();
             var payrolls = new List<PayrollDao>();
-            var payrollDates = _employeePayrollService.GetPayrollDates(3).Select(x => new SelectListItem
+            var payrollDates = _employeePayrollService.GetPayrollDates(6).Select(x => new SelectListItem
             {
                 Text = x.FormattedDate,
                 Value = x.SerializedDate
@@ -162,7 +162,7 @@ namespace Payroll.Controllers
         public ActionResult Search(string date = "", int employeeId = 0)
         {
             //get the last 3 months cutoffs
-            var payrollDates = _employeePayrollService.GetPayrollDates(3);
+            var payrollDates = _employeePayrollService.GetPayrollDates(6);
             var viewModel = new PayrollSearchViewModel
             {
                 PayrollDates = payrollDates.Select(x => new SelectListItem
@@ -197,6 +197,52 @@ namespace Payroll.Controllers
                 ViewBag.EndDate = endDate;
             }
  
+            return View(viewModel);
+        }
+
+        public ActionResult SearchPerCompany(string date = "", int employeeId = 0, int companyId = 0)
+        {
+            //get the last 3 months cutoffs
+            var payrollDates = _employeePayrollService.GetPayrollDates(6);
+            var viewModel = new PayrollSearchViewModel
+            {
+                PayrollDates = payrollDates.Select(x => new SelectListItem
+                {
+                    Text = x.FormattedDate,
+                    Value = x.SerializedDate
+                }),
+                EmployeeId = employeeId
+            };
+
+            if (date != "")
+            {
+                var dates = date.Split('-');
+                var startDate = dates[0].DeserializeDate();
+                var endDate = dates[1].DeserializeDate();
+
+                var employeePayrolls = _employeePayrollService.GetByPayrollDateRange(startDate, endDate);
+
+                if (employeeId > 0)
+                {
+                    employeePayrolls = employeePayrolls.Where(x => x.EmployeeId == employeeId).ToList();
+                    viewModel.EmployeeName = employeePayrolls.Any() ? employeePayrolls.First().Employee.FullName : "";
+                }
+
+                if (companyId > 0)
+                {
+                    
+                }
+
+                var payrolls = MapEmployeePayrollToViewModel(employeePayrolls);
+                var pagination = _webService.GetPaginationModel(Request, payrolls.Count());
+                viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination);
+                viewModel.Date = date;
+                viewModel.Pagination = pagination;
+
+                ViewBag.StartDate = startDate;
+                ViewBag.EndDate = endDate;
+            }
+
             return View(viewModel);
         }
 
@@ -242,7 +288,7 @@ namespace Payroll.Controllers
 
         public ActionResult Adjustment()
         {
-            var payrollDates = _employeePayrollService.GetPayrollDates(3, DateTime.Now.AddDays(7)).ToList();
+            var payrollDates = _employeePayrollService.GetPayrollDates(6, DateTime.Now.AddDays(7)).ToList();
             var firstDate = payrollDates.First().SerializedDate;
             
             ViewBag.EditAdjustment = true;

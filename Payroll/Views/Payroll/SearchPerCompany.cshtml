@@ -1,0 +1,87 @@
+﻿@using Payroll.Common.Extension
+@model Payroll.Models.Payroll.PayrollSearchViewModel
+
+@{
+    ViewBag.Title = "Payroll Search Per Company";
+    var employeeData = Model.EmployeeId > 0 ? new ViewDataDictionary { { "Name", Model.EmployeeName } } : null;
+    var companyData = Model.CompanyId > 0 ? new ViewDataDictionary { { "Name", Model.CompanyName } } : null;
+}
+
+<div class="row">
+    @using (Html.BeginForm("SearchPerCompany", "Payroll", FormMethod.Get))
+    {
+        <div class="col-md-12">
+            <div class="form-horizontal">
+                <h2>Payroll Search Per Company</h2>
+                <hr />
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Date, "Payroll Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.Date, Model.PayrollDates, new { @class = "form-control" })
+                    </div>
+
+                    @Html.Label("Employee", new { @for = "EmployeeId", @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.Partial("_EmployeeTypeAhead", Model.EmployeeId, employeeData)
+                        @Html.ValidationMessageFor(model => model.EmployeeId)
+                    </div>
+
+                    @Html.Label("Company", new { @for = "CompanyId", @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.Partial("_CompanyTypeAhead", Model.CompanyId, companyData)
+                        @Html.ValidationMessageFor(model => model.CompanyId)
+                    </div>
+                    <div class="t1 pull-right">
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    @if (Model.Payrolls != null)
+    {
+        <table class="table table-responsive table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Gross Pay</th>
+                <th>Total Deduction</th>
+                <th>Net Pay</th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Payrolls)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @item.TotalGross.FormatAmount()
+                    </td>
+                    <td>
+                        -@item.TotalDeduction.FormatAmount()
+                    </td>
+                    <td>
+                        @item.TotalNet.FormatAmount()
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.PayrollId })
+                    </td>
+                </tr>
+            }
+        </table>
+
+        @Html.Partial("Pagination", Model.Pagination)
+        @Html.ActionLink("Export to Excel", "ExportToExcel", new { startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }, new { @class = "btn btn-primary" })
+    }
+
+
+    @section scripts
+    {
+        <script type="text/javascript" src="/Scripts/Employee/employeetypeahead.js"></script>
+        <script type="text/javascript" src="/Scripts/Maintenance/companytypeahead.js"></script>
+    }
+</div>

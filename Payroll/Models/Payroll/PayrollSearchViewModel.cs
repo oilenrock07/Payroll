@@ -8,7 +8,9 @@ namespace Payroll.Models.Payroll
     public class PayrollSearchViewModel
     {
         public int EmployeeId { get; set; }
+        public int CompanyId { get; set; }
         public string EmployeeName { get; set; }
+        public string CompanyName { get; set; }
 
         public string Date { get; set; }
         public IEnumerable<SelectListItem> PayrollDates { get; set; }

@@ -4,7 +4,7 @@
     var infoMessage = ViewData["InfoMessage"] ?? "You can type first name, last name and employee code here";
 }           
 
-<input type="text" autocomplete="off" class="form-control typeahead js-typeAhead" data-provide="typeahead" placeholder="Enter employee here" value="@name"/>
+<input type="text" autocomplete="off" class="form-control typeahead employee-typeahead" data-provide="typeahead" placeholder="Enter employee here" value="@name"/>
 <div class="label-info label">@infoMessage</div>
 <div>
     <input type="hidden" name="EmployeeId" id="EmployeeId" class="js-employeeIdTypeAhead" data-val="true" data-val-required="Please select employee" value="@(Model == 0 ? null: Model.ToString())" />    
