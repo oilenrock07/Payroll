@@ -290,10 +290,7 @@ namespace Payroll.Service.Implementations
             _unitOfWork.Commit();
         }
 
-        public EmployeePayrollItemPerCompany Find(int employeeId, DateTime date, RateType rateType)
-        {
-            return _employeePayrollItemPerCompanyRepository.Find(employeeId, date, rateType);
-        }
+      
 
         private void DeleteByDateRange(DateTime dateFrom, DateTime dateTo)
         {
@@ -670,5 +667,6 @@ namespace Payroll.Service.Implementations
 
             return dt;
         }
+
     }
 }

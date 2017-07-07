@@ -22,14 +22,14 @@ namespace Payroll.Repository.Repositories
         public IList<EmployeePayrollItemPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             return Find(ep => ep.IsActive && ep.PayrollDate >= dateFrom && ep.PayrollDate < dateTo)
-              .OrderByDescending(ep => ep.PayrollDate).ThenBy(ep => ep.EmployeeId).ToList();
+              .OrderByDescending(ep => ep.PayrollDate).ThenBy(ep => ep.EmployeeId).ThenBy(ep =>  ep.CompanyId).ToList();
         }
 
-        public EmployeePayrollItemPerCompany Find(int employeeId, DateTime date, RateType rateType)
+        public EmployeePayrollItemPerCompany Find(int employeeId, DateTime date, RateType rateType, int companyId)
         {
             return Find(ep => ep.IsActive && ep.PayrollPerCompanyId == 0
                 && ep.EmployeeId == employeeId && ep.PayrollDate == date
-                && ep.RateType == rateType).FirstOrDefault();
+                && ep.RateType == rateType && ep.CompanyId == companyId).FirstOrDefault();
         }
     }
 }

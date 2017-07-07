@@ -25,19 +25,10 @@ namespace Payroll.Service.Implementations
             return _totalEmployeeHoursPerCompanyRepository.GetByEmployeeDate(employeeId, date);
         }
 
-        public IList<TotalEmployeeHoursPerCompany> GetByTypeAndDateRange(int employeeId, RateType? rateType, DateTime payrollStartDate, DateTime payrollEndDate)
-        {
-            payrollEndDate = payrollEndDate.AddDays(1);
-            if (rateType == null)
-            {
-                return _totalEmployeeHoursPerCompanyRepository.GetByDateRange(employeeId, payrollStartDate, payrollEndDate);
-            }
-            return _totalEmployeeHoursPerCompanyRepository.GetByTypeAndDateRange(employeeId, rateType.Value, payrollStartDate, payrollEndDate);
-        }
-
         public double CountTotalHours(int employeeId, DateTime date)
         {
             return _totalEmployeeHoursPerCompanyRepository.CountTotalHours(employeeId, date);
         }
+
     }
 }

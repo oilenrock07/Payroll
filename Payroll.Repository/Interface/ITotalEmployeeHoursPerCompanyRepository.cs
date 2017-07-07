@@ -10,13 +10,9 @@ namespace Payroll.Repository.Interface
     {
         void DeleteByTotalEmployeeHoursPerCompanyIds(IEnumerable<int> ids);
 
-        TotalEmployeeHoursPerCompany GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type);
-
         IList<TotalEmployeeHoursPerCompany> GetByEmployeeDate(int employeeId, DateTime date);
 
         IList<TotalEmployeeHoursPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo);
-
-        IList<TotalEmployeeHoursPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo, int employeeId);
 
         IList<TotalEmployeeHoursPerCompany> GetByTypeAndDateRange(int employeeId, RateType rateType, DateTime payrollStartDate, DateTime payrollEndDate);
 
