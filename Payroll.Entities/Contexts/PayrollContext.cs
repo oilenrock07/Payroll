@@ -55,7 +55,6 @@ namespace Payroll.Entities.Contexts
         public virtual IDbSet<EmployeePayrollDeduction> EmployeePayrollDeductions { get; set; }
         public virtual IDbSet<EmployeePayrollItem> EmployeePayrollItems { get; set; }
         public virtual IDbSet<EmployeePayrollItemPerCompany> EmployeePayrollItemPerCompany { get; set; }
-        public virtual IDbSet<EmployeePayrollPerCompany> EmployeePayrollPerCompany { get; set; }
         public virtual IDbSet<TotalEmployeeHoursPerCompany> TotalEmployeeHoursPerCompany { get; set; }
 
         //Users

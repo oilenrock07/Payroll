@@ -138,7 +138,7 @@ namespace Payroll.Service.Implementations
                 var employeePayroll = payrolls.Where(p => p.EmployeeId == item.EmployeeId).First();
 
                 _employeePayrollItemService.Update(item);
-                item.PayrollId = employeePayroll.PayrollId;
+                item.PayrollPerCompanyId = employeePayroll.PayrollPerCompanyId;
             }
             //Commit
             _unitOfWork.Commit();
