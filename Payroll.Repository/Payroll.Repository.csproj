@@ -97,7 +97,9 @@
     <Compile Include="Interface\IEmployeeLoanRepository.cs" />
     <Compile Include="Interface\IEmployeeMachineRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollDeductionRepository.cs" />
-    <Compile Include="Interface\IEmployeePayrollItemPerCompanyRepository.cs" />
+    <Compile Include="Interface\IEmployeePayrollItemPerCompanyRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Interface\IEmployeePayrollItemRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollPerCompanyRepository.cs" />
     <Compile Include="Interface\IEmployeePayrollRepository.cs" />

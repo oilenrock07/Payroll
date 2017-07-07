@@ -106,6 +106,59 @@ namespace Payroll.Controllers
             return View(viewModel);
         }
 
+        public ActionResult PayrollPerCompany(string date = "")
+        {
+            var viewModel = new PayrollViewModel();
+            var payrolls = new List<PayrollDao>();
+            var payrollDates = _employeePayrollService.GetPayrollDates(3).Select(x => new SelectListItem
+            {
+                Text = x.FormattedDate,
+                Value = x.SerializedDate
+            });
+
+            viewModel.PayrollDates = payrollDates;
+
+            if (!String.IsNullOrEmpty(date))
+            {
+                var dates = date.Split('-');
+                var payrollStartDate = dates[0].DeserializeDate();
+                var payrollEndDate = dates[1].DeserializeDate();
+
+                ViewBag.StartDate = payrollStartDate;
+                ViewBag.EndDate = payrollEndDate;
+                GeneratePayroll(payrollStartDate, payrollEndDate);
+
+                //populate the viewmodel here from service data
+                //sort it in the service by surname
+                var employeePayrollList = _employeePayrollService.GetByPayrollDateRange
+                    (payrollStartDate, payrollEndDate);
+
+                foreach (EmployeePayroll payroll in employeePayrollList)
+                {
+                    var payrollDto = new PayrollDao
+                    {
+                        PayrollId = payroll.PayrollId,
+                        FirstName = payroll.Employee.FirstName,
+                        LastName = payroll.Employee.LastName,
+                        MiddleName = payroll.Employee.MiddleName,
+                        TotalDeduction = payroll.TotalDeduction,
+                        TotalGross = payroll.TotalGross,
+                        TotalNet = payroll.TotalNet
+                    };
+
+                    payrolls.Add(payrollDto);
+                }
+
+                viewModel.Date = date;
+            }
+
+            var pagination = _webService.GetPaginationModel(Request, payrolls.Count);
+            viewModel.Payrolls = _webService.TakePaginationModel(payrolls, pagination);
+            viewModel.Pagination = pagination;
+
+            return View(viewModel);
+        }
+
         public ActionResult Search(string date = "", int employeeId = 0)
         {
             //get the last 3 months cutoffs

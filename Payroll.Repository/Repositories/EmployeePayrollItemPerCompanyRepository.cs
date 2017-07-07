@@ -16,7 +16,7 @@ namespace Payroll.Repository.Repositories
         public EmployeePayrollItemPerCompanyRepository(IDatabaseFactory databaseFactory)
             : base(databaseFactory)
         {
-            DbSet = databaseFactory.GetContext().EmployeePayrollItemsPerCompany;
+            DbSet = databaseFactory.GetContext().EmployeePayrollItemPerCompany;
         }
 
         public IList<EmployeePayrollItemPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo)
@@ -27,7 +27,7 @@ namespace Payroll.Repository.Repositories
 
         public EmployeePayrollItemPerCompany Find(int employeeId, DateTime date, RateType rateType, int companyId)
         {
-            return Find(ep => ep.IsActive && ep.PayrollId == null
+            return Find(ep => ep.IsActive && ep.PayrollPerCompanyId == 0
                 && ep.EmployeeId == employeeId && ep.PayrollDate == date
                 && ep.RateType == rateType && ep.CompanyId == companyId).FirstOrDefault();
         }

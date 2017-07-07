@@ -311,7 +311,7 @@ namespace Payroll.Service.Implementations
         {
             var payroll = _employeePayrollRepository.Find(x => x.IsActive && x.CutOffStartDate >= dateFrom && x.CutOffEndDate <= dateTo);
             var payrollItems = from payrollItem in _employeePayrollItemPerCompanyRepository.GetAllActive()
-                               join pay in payroll on payrollItem.PayrollId equals pay.PayrollId
+                               join pay in payroll on payrollItem.PayrollPerCompanyId equals pay.PayrollId
                                select payrollItem;
 
 
@@ -320,14 +320,14 @@ namespace Payroll.Service.Implementations
 
         public IEnumerable<EmployeePayrollItemPerCompany> GetByPayrollId(int payrollId)
         {
-            return _employeePayrollItemPerCompanyRepository.Find(x => x.PayrollId == payrollId && x.IsActive);
+            return _employeePayrollItemPerCompanyRepository.Find(x => x.PayrollPerCompanyId == payrollId && x.IsActive);
         }
 
         public virtual DataTable GetPayrollDetailsForExport(DateTime startDate, DateTime endDate)
         {
 
             var payrollItems = GetByCutoffDates(startDate, endDate).ToList();
-            var payrollIds = payrollItems.Select(x => Convert.ToInt32(x.PayrollId)).ToList();
+            var payrollIds = payrollItems.Select(x => Convert.ToInt32(x.PayrollPerCompanyId)).ToList();
 
             var dt = new DataTable();
             dt.Columns.Add("Name");

@@ -4,92 +4,92 @@
             <h4 class="modal-title" id="myModalLabel">{{$ctrl.modalTitle}}</h4>
         </div>
         <div class="modal-body js-modal" id="modal-body">
-            <table class="table no-border">
-                <tr class="hours-per-company-modal-header">
-                    <td>
-                        <h4>Regular Hours: {{$ctrl.regularHours}}</h4>
-                    </td>
-                    <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.regularHoursPerCompany, $ctrl.regularId)"/></td>
-                </tr>
-                <tr ng-show="$ctrl.regularHoursPerCompany.length > 0">
-                    <td colspan="2">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Hours Worked</th>
-                                <th>Company</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="item in $ctrl.regularHoursPerCompany">
-                                <td><input type="text" class="form-control" ng-model="item.Hours"/></td>
-                                <td>
-                                    <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies">                                       
-                                    </select>
-                                </td>
-                                <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.regularHoursPerCompany, item)">Remove</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr class="hours-per-company-modal-header">
-                    <td>
-                        <h4>Overtime: {{$ctrl.overtime}}</h4>
-                    </td>
-                    <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.overtimePerCompany, $ctrl.overtimeId)"/></td>
-                </tr>
-                <tr ng-show="$ctrl.overtimePerCompany.length > 0">
-                    <td colspan="2">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Hours Worked</th>
-                                <th>Company</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="item in $ctrl.overtimePerCompany">
-                                <td><input type="text" class="form-control" ng-model="item.Hours"/></td>
-                                <td>
-                                    <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies">                                       
-                                    </select>
-                                </td>
-                                <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.overtimePerCompany, item)">Remove</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr class="hours-per-company-modal-header">
-                    <td>
-                        <h4>Night Differential: {{$ctrl.nightDifferential}}</h4>
-                    </td>
-                    <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.nightDifferentialPerCompany, $ctrl.nightDifferentialId)"/></td>
-                </tr>
-                <tr ng-show="$ctrl.nightDifferentialPerCompany.length > 0">
-                    <td colspan="2">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Hours Worked</th>
-                                <th>Company</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="item in $ctrl.nightDifferentialPerCompany">
-                                <td><input type="text" class="form-control" ng-model="item.Hours"/></td>
-                                <td>
-                                    <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies">                                       
-                                    </select>
-                                </td>
-                                <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.nightDifferentialPerCompany, item)">Remove</a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+            <error-message></error-message>
+            <form name="HoursPerCompanyModalForm">
+                <table class="table no-border">
+                    <tr class="hours-per-company-modal-header">
+                        <td>
+                            <h4>Regular Hours: {{$ctrl.regularHours}}</h4>
+                        </td>
+                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.regularHoursPerCompany, $ctrl.regularId)" /></td>
+                    </tr>
+                    <tr ng-show="$ctrl.regularHoursPerCompany.length > 0">
+                        <td colspan="2">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Hours Worked</th>
+                                        <th>Company</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.regularHoursPerCompany" data-id="{{item.TotalEmployeeHoursPerCompanyId}}">
+                                        <td><input type="text" class="form-control" ng-model="item.Hours" /></td>
+                                        <td>
+                                            <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies"></select>
+                                        </td>
+                                        <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.regularHoursPerCompany, item)">Remove</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="hours-per-company-modal-header">
+                        <td>
+                            <h4>Overtime: {{$ctrl.overtime}}</h4>
+                        </td>
+                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.overtimePerCompany, $ctrl.overtimeId)" /></td>
+                    </tr>
+                    <tr ng-show="$ctrl.overtimePerCompany.length > 0">
+                        <td colspan="2">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Hours Worked</th>
+                                        <th>Company</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.overtimePerCompany">
+                                        <td><input type="text" class="form-control" ng-model="item.Hours" /></td>
+                                        <td>
+                                            <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies"></select>
+                                        </td>
+                                        <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.overtimePerCompany, item)">Remove</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="hours-per-company-modal-header">
+                        <td>
+                            <h4>Night Differential: {{$ctrl.nightDifferential}}</h4>
+                        </td>
+                        <td align="right"><input type="button" class="btn btn-primary" value="Add Company" ng-click="$ctrl.addCompany($ctrl.nightDifferentialPerCompany, $ctrl.nightDifferentialId)" /></td>
+                    </tr>
+                    <tr ng-show="$ctrl.nightDifferentialPerCompany.length > 0">
+                        <td colspan="2">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Hours Worked</th>
+                                        <th>Company</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in $ctrl.nightDifferentialPerCompany">
+                                        <td><input type="text" class="form-control" ng-model="item.Hours" /></td>
+                                        <td>
+                                            <select ng-model="item.CompanyId" class="form-control" ng-options="option.CompanyId as option.CompanyName for option in $ctrl.companies"></select>
+                                        </td>
+                                        <td><a href="javascript:void(0);" ng-click="$ctrl.remove($ctrl.nightDifferentialPerCompany, item)">Remove</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </form>
         </div>
         <div class="modal-footer">
             <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>            

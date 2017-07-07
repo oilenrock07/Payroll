@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PaymentFrequency.cs" />
+    <Compile Include="Payroll\Base\PayrollItemBase.cs" />
     <Compile Include="Payroll\EmployeeDailyPayroll.cs" />
     <Compile Include="Payroll\EmployeeDeduction.cs" />
     <Compile Include="Payroll\EmployeeHours.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Payroll\EmployeePayrollItem.cs" />
     <Compile Include="Payroll\EmployeePayrollItemPerCompany.cs" />
     <Compile Include="Payroll\EmployeePayrollPerCompany.cs" />
+    <Compile Include="Payroll\Base\PayrollBase.cs" />
     <Compile Include="Payroll\TotalEmployeeHours.cs" />
     <Compile Include="Payroll\TotalEmployeeHoursPerCompany.cs" />
     <Compile Include="Position.cs" />
