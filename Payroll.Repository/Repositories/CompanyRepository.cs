@@ -5,6 +5,7 @@ using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Constants;
 using Payroll.Repository.Interface;
 using CacheManager.Core;
+using System.Collections.Generic;
 
 namespace Payroll.Repository.Repositories
 {
@@ -58,6 +59,18 @@ namespace Payroll.Repository.Repositories
                 _cacheManager.Remove(COMPANY_CACHE_KEY, CacheRegion.Companies);
 
             return addedEntity;
+        }
+
+        public IEnumerable<Company> SearchCompany(string criteria)
+        {
+            var companies = new List<Company>();
+            var companyNames = Find(x => x.CompanyName.Contains(criteria) && x.IsActive).ToList();
+            var companyIds = Find(x => x.CompanyCode.Contains(criteria) && x.IsActive).ToList();
+
+            companies.AddRange(companyNames);
+            companies.AddRange(companyIds);
+
+            return companies;
         }
     }
 }
