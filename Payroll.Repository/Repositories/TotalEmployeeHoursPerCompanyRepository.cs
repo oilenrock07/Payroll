@@ -40,9 +40,9 @@ namespace Payroll.Repository.Repositories
         //    }
         //}
 
-        public TotalEmployeeHoursPerCompany GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
+        public TotalEmployeeHoursPerCompany GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type, int companyId)
         {
-            return Find(eh => eh.IsActive && eh.TotalEmployeeHours.EmployeeId == employeeId && eh.TotalEmployeeHours.Date == date && eh.TotalEmployeeHours.Type == type).FirstOrDefault();
+            return Find(eh => eh.IsActive && eh.TotalEmployeeHours.EmployeeId == employeeId && eh.TotalEmployeeHours.Date == date && eh.TotalEmployeeHours.Type == type && eh.TotalEmployeeHoursPerCompanyId == companyId).FirstOrDefault();
         }
 
         public IList<TotalEmployeeHoursPerCompany> GetByEmployeeDate(int employeeId, DateTime date)
@@ -53,27 +53,27 @@ namespace Payroll.Repository.Repositories
         public IList<TotalEmployeeHoursPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             return Find(eh => eh.IsActive && eh.TotalEmployeeHours.Date >= dateFrom && eh.TotalEmployeeHours.Date < dateTo)
-                .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ThenBy(eh => eh.TotalEmployeeHours.EmployeeId).ThenBy(eh => eh.TotalEmployeeHours.Type).ToList();
+                .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ThenBy(eh => eh.TotalEmployeeHours.EmployeeId).ThenBy(eh => eh.TotalEmployeeHoursPerCompanyId).ThenBy(eh => eh.TotalEmployeeHours.Type).ToList();
         }
 
         public IList<TotalEmployeeHoursPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo, int employeeId)
         {
             return Find(eh => eh.IsActive && eh.TotalEmployeeHours.Date >= dateFrom && eh.TotalEmployeeHours.Date < dateTo && eh.TotalEmployeeHours.EmployeeId == employeeId)
-                .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ThenBy(eh => eh.TotalEmployeeHours.Type).ToList();
+                .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ThenBy(eh => eh.TotalEmployeeHoursPerCompanyId).ThenBy(eh => eh.TotalEmployeeHours.Type).ToList();
         }
 
         public IList<TotalEmployeeHoursPerCompany> GetByTypeAndDateRange(int employeeId, RateType rateType, DateTime payrollStartDate, DateTime payrollEndDate)
         {
             return Find(eh => eh.IsActive && eh.TotalEmployeeHours.EmployeeId == employeeId &&
                 eh.TotalEmployeeHours.Type == rateType && eh.TotalEmployeeHours.Date >= payrollStartDate && eh.TotalEmployeeHours.Date < payrollEndDate)
-                    .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ToList();
+                    .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ThenBy(eh => eh.TotalEmployeeHoursPerCompanyId).ThenBy(eh => eh.TotalEmployeeHours.Type).ToList();
         }
 
         public IList<TotalEmployeeHoursPerCompany> GetByDateRange(int employeeId, DateTime payrollStartDate, DateTime payrollEndDate)
         {
             return Find(eh => eh.IsActive && eh.TotalEmployeeHours.EmployeeId == employeeId &&
                 eh.TotalEmployeeHours.Date >= payrollStartDate && eh.TotalEmployeeHours.Date < payrollEndDate)
-                    .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ToList();
+                    .OrderByDescending(eh => eh.TotalEmployeeHours.Date).ThenBy(eh => eh.TotalEmployeeHoursPerCompanyId).ThenBy(eh => eh.TotalEmployeeHours.Type).ToList();
         }
 
         public double CountTotalHours(int employeeId, DateTime date)

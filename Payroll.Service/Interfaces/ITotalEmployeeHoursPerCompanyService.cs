@@ -12,8 +12,6 @@ namespace Payroll.Service.Interfaces
     {
         IList<TotalEmployeeHoursPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo);
 
-        IList<TotalEmployeeHoursPerCompany> GetByTypeAndDateRange(int employeeId, RateType? rateType, DateTime payrollStartDate, DateTime payrollEndDate);
-
         IList<TotalEmployeeHoursPerCompany> GetByEmployeeDate(int employeeId, DateTime date);
 
         double CountTotalHours(int employeeId, DateTime date);

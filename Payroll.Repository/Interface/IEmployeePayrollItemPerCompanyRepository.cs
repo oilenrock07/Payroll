@@ -12,7 +12,7 @@ namespace Payroll.Repository.Interface
     public interface IEmployeePayrollItemPerCompanyRepository : 
         IRepository<EmployeePayrollItemPerCompany>
     {
-        EmployeePayrollItemPerCompany Find(int employeeId, DateTime date, RateType rateType);
+        EmployeePayrollItemPerCompany Find(int employeeId, DateTime date, RateType rateType, int companyId);
 
         IList<EmployeePayrollItemPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo);
     }

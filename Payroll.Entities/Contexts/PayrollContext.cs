@@ -46,6 +46,7 @@ namespace Payroll.Entities.Contexts
         public virtual IDbSet<EmployeeLeave> EmployeeLeaves { get; set; }
         public virtual IDbSet<EmployeeLoan> EmployeeLoans { get; set; }
         public virtual IDbSet<EmployeePayroll> EmployeePayroll { get; set; }
+        public virtual IDbSet<EmployeePayrollPerCompany> EmployeePayrollPerCompany { get; set; }
         public virtual IDbSet<EmployeeDailyPayroll> EmployeeDailyPayroll { get; set; }
         public virtual IDbSet<EmployeeHours> EmployeeHours { get; set; }
         public virtual IDbSet<TotalEmployeeHours> TotalEmployeeHours { get; set; }
