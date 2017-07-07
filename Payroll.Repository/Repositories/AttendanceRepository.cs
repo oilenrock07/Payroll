@@ -40,7 +40,7 @@ namespace Payroll.Repository.Repositories
         {
             return Find(a => a.IsActive && a.EmployeeId == employeeId && a.ClockOut != null &&
                 ((a.ClockIn >= fromDate && a.ClockIn < toDate) ||
-                    (a.ClockOut >= fromDate && a.ClockOut < toDate))).OrderBy(a => a.ClockIn).ToList();
+                    (a.ClockOut >= fromDate && a.ClockOut < toDate)) && a.IsHoursCounted == isHoursCounted).OrderBy(a => a.ClockIn).ToList();
         }
 
         public Attendance GetLastAttendance(int employeeId)

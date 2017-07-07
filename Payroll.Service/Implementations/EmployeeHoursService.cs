@@ -72,9 +72,9 @@ namespace Payroll.Service.Implementations
            var employees = _employeeInfoService.GetAllActive();
 
             //Delete existing entries with the same date
-            var employeeHoursList = this.GetByDateRange(fromDate, toDate);
-            _employeeHoursRepository.DeleteAll(employeeHoursList);
-            _unitOfWork.Commit();
+            //var employeeHoursList = this.GetByDateRange(fromDate, toDate);
+            //_employeeHoursRepository.DeleteAll(employeeHoursList);
+            //_unitOfWork.Commit();
 
             foreach (var employee in employees)
             {
@@ -118,11 +118,11 @@ namespace Payroll.Service.Implementations
                 computeOT();
                 computeNightDifferential();
 
-                /*_attendanceService.Update(a);
+                _attendanceService.Update(a);
                 if (a.ClockOut.Value.Date.Equals(day.Date))
                 {
                     a.IsHoursCounted = true;
-                }*/
+                }
             }
 
             _unitOfWork.Commit();

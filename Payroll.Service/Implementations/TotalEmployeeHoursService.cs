@@ -35,10 +35,10 @@ namespace Payroll.Service.Implementations
         public void GenerateTotalByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             //Delete existing data within date range
-            DeleteByDateRange(dateFrom, dateTo);
+            //DeleteByDateRange(dateFrom, dateTo);
 
             var employeeHoursList = _employeeHoursService
-                .GetForProcessingByDateRange(true, dateFrom, dateTo);
+                .GetForProcessingByDateRange(false, dateFrom, dateTo);
 
             if (employeeHoursList != null && employeeHoursList.Count > 1)
             {
