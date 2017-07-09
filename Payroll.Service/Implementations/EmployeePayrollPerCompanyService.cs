@@ -99,7 +99,7 @@ namespace Payroll.Service.Implementations
                             TotalGross = item.TotalAmount,
                             TotalNet = item.TotalAmount,
                             TaxableIncome = item.TotalAmount,
-                            CompanyId = item.CompanyId
+                            Company = item.Company
                         };
 
                         tempEmployeePayroll = employeePayroll;

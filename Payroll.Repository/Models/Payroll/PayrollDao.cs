@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Payroll.Entities;
+using System;
 
 namespace Payroll.Repository.Models.Payroll
 {
@@ -12,6 +13,7 @@ namespace Payroll.Repository.Models.Payroll
         public decimal TotalNet { get; set; }
         public decimal TotalDeduction { get; set; }
         public decimal TotalGross { get; set; }
+        public Company Company { get; set; }
 
         public string FullName
         {
