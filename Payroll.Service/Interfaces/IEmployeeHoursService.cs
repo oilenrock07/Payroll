@@ -11,6 +11,8 @@ namespace Payroll.Service.Interfaces
     {
         int GenerateEmployeeHours(DateTime fromDate, DateTime toDate);
 
+        void ComputeEmployeeHours(DateTime day, int employeeId);
+
         IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime fromDate, DateTime toDate);
 
         IList<EmployeeHours> GetForProcessingByDateRange(bool isManual, DateTime fromDate, DateTime toDate);

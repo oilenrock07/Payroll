@@ -212,5 +212,10 @@ namespace Payroll.Service.Implementations
 
             return hourPerCompany;
         }
+
+        public void Update(TotalEmployeeHours totalEmployeeHours)
+        {
+            _totalEmployeeHoursRepository.Update(totalEmployeeHours);
+        }
     }
 }

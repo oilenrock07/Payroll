@@ -28,6 +28,7 @@ namespace Payroll.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeePayrollRepository _employeePayrollRepository;
         private readonly IEmployeeHoursRepository _employeeHoursRepository;
+        private readonly IEmployeeHoursService _employeeHoursService;
         private readonly ITotalEmployeeHoursService _totalEmployeeHoursService;
         private readonly IHolidayRepository _holidayRepository;
         private readonly ITotalEmployeeHoursPerCompanyRepository _totalEmployeeHoursPerCompanyRepository;
@@ -36,7 +37,7 @@ namespace Payroll.Controllers
         public AttendanceController(IAttendanceLogRepository attendanceLogRepository,
             IAttendanceRepository attendanceRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork,
             IEmployeePayrollRepository employeePayrollRepository, IEmployeeHoursRepository employeeHoursRepository, IAttendanceService attendanceService,
-            IHolidayRepository holidayRepository, ITotalEmployeeHoursService totalEmployeeHoursService,
+            IHolidayRepository holidayRepository, IEmployeeHoursService employeeHoursService, ITotalEmployeeHoursService totalEmployeeHoursService,
             ITotalEmployeeHoursPerCompanyRepository totalEmployeeHoursPerCompanyRepository, ICompanyRepository companyRepository)
         {
             _attendanceLogRepository = attendanceLogRepository;
@@ -47,6 +48,7 @@ namespace Payroll.Controllers
             _employeeHoursRepository = employeeHoursRepository;
             _attendanceService = attendanceService;
             _holidayRepository = holidayRepository;
+            _employeeHoursService = employeeHoursService;
             _totalEmployeeHoursService = totalEmployeeHoursService;
             _totalEmployeeHoursPerCompanyRepository = totalEmployeeHoursPerCompanyRepository;
             _companyRepository = companyRepository;
@@ -150,10 +152,27 @@ namespace Payroll.Controllers
             var employeeHours = _employeeHoursRepository.Find(x => x.OriginAttendanceId == attendance.AttendanceId);
             if (employeeHours != null && employeeHours.Any())
             {
-                var employeeHour = employeeHours.FirstOrDefault();
-                _employeeHoursRepository.Update(employeeHour);
-                employeeHour.IsActive = false;
+                foreach (var employeeHour in employeeHours)
+                {
+                    if (employeeHour.IsIncludedInTotal)
+                    {
+                        var employeeTotalHours = _totalEmployeeHoursService.GetByEmployeeDateAndType(employeeHour.EmployeeId, employeeHour.Date, employeeHour.Type);
+                        if (employeeTotalHours != null)
+                        {
+                            _totalEmployeeHoursService.Update(employeeTotalHours);
+                            employeeTotalHours.Hours -= employeeHour.Hours;
+                        }
+                    }
+
+                    _employeeHoursRepository.Update(employeeHour);
+                    employeeHour.IsActive = false;
+                }
             }
+
+            //recompute employee hours            
+            _employeeHoursService.ComputeEmployeeHours(attendance.ClockIn, attendance.EmployeeId);
+            if (clockIn.Date == clockOut.Date)
+                _employeeHoursService.ComputeEmployeeHours(attendance.ClockOut.Value, attendance.EmployeeId);
 
             _unitOfWork.Commit();
 

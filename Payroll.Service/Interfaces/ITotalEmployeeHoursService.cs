@@ -23,5 +23,7 @@ namespace Payroll.Service.Interfaces
         IList<TotalEmployeeHours> GetByEmployeeDate(int employeeId, DateTime date);
 
         IEnumerable<HoursPerCompanyDao> GetEmployeeHoursTotal(DateTime startDate, DateTime endDate, int employeeId);
+
+        void Update(TotalEmployeeHours totalEmployeeHours);
     }
 }

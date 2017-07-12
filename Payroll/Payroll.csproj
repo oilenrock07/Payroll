@@ -222,6 +222,7 @@
     <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\MaintenanceController.cs" />
     <Compile Include="Controllers\PayrollController.cs" />
+    <Compile Include="Controllers\PayrollPerCompanyController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SiteContentController.cs" />
     <Compile Include="Extension\HtmlExtension.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Models\Payroll\EmployeeAdjustmentCreateViewModel.cs" />
     <Compile Include="Models\Payroll\EmployeeAdjustmentDetails.cs" />
     <Compile Include="Models\Payroll\EmployeeAdjustmentViewModel.cs" />
+    <Compile Include="Models\Payroll\PayrollDetailsPerCompanyViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollDetailsViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollExportViewModel.cs" />
     <Compile Include="Models\Payroll\PayrollListViewModel.cs" />
@@ -449,8 +451,8 @@
     <Content Include="Views\Attendance\HoursPerCompanyContent.cshtml" />
     <Content Include="Views\Attendance\CreateHoursPerCompany.cshtml" />
     <Content Include="Views\Shared\_LayoutDynamicModal.cshtml" />
-    <Content Include="Views\Payroll\PayrollPerCompany.cshtml" />
-    <Content Include="Views\Payroll\SearchPerCompany.cshtml" />
+    <Content Include="Views\PayrollPerCompany\Index.cshtml" />
+    <Content Include="Views\PayrollPerCompany\Search.cshtml" />
     <Content Include="Views\Shared\_CompanyTypeAhead.cshtml" />
   </ItemGroup>
   <ItemGroup>

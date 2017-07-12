@@ -9,7 +9,7 @@
 <div class="js-message alert alert-info hidden">
     <img src="~/Images/ajax-loader.gif" /> &nbsp;Generating Payroll. Please wait
 </div>
-@using (Html.BeginForm("PayrollPerCompany", "Payroll", FormMethod.Get))
+@using (Html.BeginForm("Index", "PayrollPerCompany", FormMethod.Get))
 {
     <div class="row b2">
         @Html.LabelFor(model => model.Date, "Payroll Date", htmlAttributes: new { @class = "control-label col-md-2" })
