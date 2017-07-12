@@ -14,6 +14,11 @@ namespace Payroll.Service.Implementations
     {
         private ITotalEmployeeHoursPerCompanyRepository _totalEmployeeHoursPerCompanyRepository;
 
+        public TotalEmployeeHoursPerCompanyService(ITotalEmployeeHoursPerCompanyRepository totalEmployeeHoursPerCompanyRepository)
+        {
+            _totalEmployeeHoursPerCompanyRepository = totalEmployeeHoursPerCompanyRepository;
+        }
+
         public IList<TotalEmployeeHoursPerCompany> GetByDateRange(DateTime dateFrom, DateTime dateTo)
         {
             dateTo = dateTo.AddDays(1);

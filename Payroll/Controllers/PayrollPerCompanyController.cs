@@ -83,7 +83,7 @@ namespace Payroll.Controllers
                 {
                     var payrollDto = new PayrollDao
                     {
-                        PayrollId = payroll.PayrollPerCompanyId,
+                        PayrollId = payroll.EmployeePayrollPerCompanyId,
                         FirstName = payroll.Employee.FirstName,
                         LastName = payroll.Employee.LastName,
                         MiddleName = payroll.Employee.MiddleName,

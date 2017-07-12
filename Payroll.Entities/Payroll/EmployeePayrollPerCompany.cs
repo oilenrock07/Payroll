@@ -9,7 +9,7 @@ namespace Payroll.Entities.Payroll
     public class EmployeePayrollPerCompany : PayrollBase
     {
         [Key]
-        public int PayrollPerCompanyId { get; set; }
+        public int EmployeePayrollPerCompanyId { get; set; }
 
         [ForeignKey("Company")]
         public int CompanyId { get; set; }

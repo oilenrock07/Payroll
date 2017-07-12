@@ -99,7 +99,7 @@ namespace Payroll.Service.Implementations
                             TotalGross = item.TotalAmount,
                             TotalNet = item.TotalAmount,
                             TaxableIncome = item.TotalAmount,
-                            Company = item.Company
+                            CompanyId = item.CompanyId
                         };
 
                         tempEmployeePayroll = employeePayroll;
@@ -138,7 +138,7 @@ namespace Payroll.Service.Implementations
                 var employeePayroll = payrolls.Where(p => p.EmployeeId == item.EmployeeId).First();
 
                 _employeePayrollItemService.Update(item);
-                item.PayrollPerCompanyId = employeePayroll.PayrollPerCompanyId;
+                item.PayrollPerCompanyId = employeePayroll.EmployeePayrollPerCompanyId;
             }
             //Commit
             _unitOfWork.Commit();
