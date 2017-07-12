@@ -104,6 +104,7 @@ namespace Payroll.Controllers
 
             _attendanceRepository.Add(attendance);
             _unitOfWork.Commit();
+            RecomputeEmployeeHours(attendance.ClockIn, attendance.ClockOut.Value, attendance.EmployeeId);
 
             ViewData["CreateSuccess"] = "Attendance successfully created";
             return View(new CreateAttendanceViewModel {Employees = viewModel.Employees});
@@ -169,15 +170,19 @@ namespace Payroll.Controllers
                 }
             }
 
-            //recompute employee hours            
-            _employeeHoursService.ComputeEmployeeHours(attendance.ClockIn, attendance.EmployeeId);
-            if (clockIn.Date == clockOut.Date)
-                _employeeHoursService.ComputeEmployeeHours(attendance.ClockOut.Value, attendance.EmployeeId);
-
             _unitOfWork.Commit();
+            RecomputeEmployeeHours(attendance.ClockIn, attendance.ClockOut.Value, attendance.EmployeeId);
 
             ViewData["EditSuccess"] = "Attendance successfully updated";
             return RedirectToAction("Attendance");
+        }
+
+        private void RecomputeEmployeeHours(DateTime clockin, DateTime clockout, int employeeId)
+        {
+            //recompute employee hours            
+            _employeeHoursService.ComputeEmployeeHours(clockin, employeeId);
+            if (clockin.Date != clockout.Date)
+                _employeeHoursService.ComputeEmployeeHours(clockout, employeeId);
         }
 
         protected IEnumerable<SelectListItem> GetEmployeeNames()

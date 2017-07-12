@@ -97,11 +97,13 @@ namespace Payroll.Service.Implementations
 
         public void ComputeEmployeeHours(DateTime day, int employeeId)
         {
+            if (employeeWorkSchedule == null)
+                employeeWorkSchedule = _employeeWorkScheduleService.GetByEmployeeId(employeeId);
+
+            this.day = day;
             //Get all employee attendance within date range
             // Will not include attendance without clockout
-            IList<Attendance> attendanceList = _attendanceService
-                .GetAttendanceForProcessing(employeeId, day);
-
+            var attendanceList = _attendanceService.GetAttendanceForProcessing(employeeId, day);
             ComputeEmployeeHours(attendanceList, day);
         }
 
