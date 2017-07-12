@@ -4,6 +4,7 @@ CREATE TABLE `employee_payroll_per_company` (
   `PayrollId` int(11) DEFAULT NULL,
   `EmployeeId` int(11) DEFAULT NULL,
   `TotalNet` decimal(18,2) DEFAULT NULL,
+  `TotalGross` decimal(18,2) DEFAULT NULL,
   `TotalDeduction` decimal(18,2) DEFAULT NULL,
   `TaxableIncome` decimal(18,2) DEFAULT NULL,
   `TotalAdjustment` decimal(18,2) DEFAULT NULL,
