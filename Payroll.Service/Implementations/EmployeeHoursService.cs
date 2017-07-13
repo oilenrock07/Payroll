@@ -541,6 +541,12 @@ namespace Payroll.Service.Implementations
             return _employeeHoursRepository.GetByEmployeeAndDateRange(employeeId, fromDate, toDate);
         }
 
+        public IList<EmployeeHours> GetForProcessingByEmployeeAndDate(int employeeId, DateTime date)
+        {
+            var toDate = date.AddDays(1);
+            return _employeeHoursRepository.GetForProcessingByEmployeeAndDate(employeeId, date, toDate);
+        }
+
         public IList<EmployeeHours> GetForProcessingByDateRange(bool isManual, DateTime fromDate, DateTime toDate)
         {
             toDate = toDate.AddDays(1);

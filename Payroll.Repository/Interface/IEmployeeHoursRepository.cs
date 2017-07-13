@@ -11,6 +11,8 @@ namespace Payroll.Repository.Interface
 
         IList<EmployeeHours> GetForProcessingByDateRange(bool isManual, DateTime fromDate, DateTime toDate);
 
+        IList<EmployeeHours> GetForProcessingByEmployeeAndDate(int employeeId, DateTime fromDate, DateTime toDate);
+
         IList<EmployeeHours> GetByDateRange(DateTime fromDate, DateTime toDate);
     }
 }

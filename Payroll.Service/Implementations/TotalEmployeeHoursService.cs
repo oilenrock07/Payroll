@@ -32,14 +32,8 @@ namespace Payroll.Service.Implementations
             _settingService = settingService;
         }
 
-        public void GenerateTotalByDateRange(DateTime dateFrom, DateTime dateTo)
+        public void GenerateTotal(IList<EmployeeHours> employeeHoursList)
         {
-            //Delete existing data within date range
-            //DeleteByDateRange(dateFrom, dateTo);
-
-            var employeeHoursList = _employeeHoursService
-                .GetForProcessingByDateRange(false, dateFrom, dateTo);
-
             if (employeeHoursList != null && employeeHoursList.Count > 1)
             {
                 int tempEmployeeId = 0;
@@ -119,7 +113,33 @@ namespace Payroll.Service.Implementations
                 //Commit all change
                 _unitOfWork.Commit();
             }
-         
+
+        }
+
+
+        public void GenerateTotalByDateRange(DateTime dateFrom, DateTime dateTo)
+        {
+            //Delete existing data within date range
+            //DeleteByDateRange(dateFrom, dateTo);
+
+            var employeeHoursList = _employeeHoursService
+                .GetForProcessingByDateRange(false, dateFrom, dateTo);
+
+            GenerateTotal(employeeHoursList);
+
+        }
+
+
+        public void GenerateTotalByDateAndEmployee(int employeeId, DateTime date)
+        {
+            //Delete existing data within date range
+            //DeleteByDateRange(dateFrom, dateTo);
+
+            var employeeHoursList = _employeeHoursService
+                .GetForProcessingByEmployeeAndDate(employeeId, date);
+
+            GenerateTotal(employeeHoursList);
+
         }
 
         /*public double ComputeTotalAllowedHours(double TotalHours)

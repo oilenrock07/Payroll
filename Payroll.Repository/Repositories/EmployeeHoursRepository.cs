@@ -33,9 +33,15 @@ namespace Payroll.Repository.Repositories
             if (isManual)
             {
                 return Find(eh => eh.IsActive && eh.Date >= fromDate
-                && eh.Date < toDate).OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
+                    && eh.Date < toDate).OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
             }
             return Find(eh => eh.IsActive && !eh.IsIncludedInTotal && eh.Date >= fromDate 
+                && eh.Date < toDate).OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
+        }
+
+        public IList<EmployeeHours> GetForProcessingByEmployeeAndDate(int employeeId, DateTime fromDate, DateTime toDate)
+        {
+            return Find(eh => eh.IsActive && !eh.IsIncludedInTotal && eh.EmployeeId == employeeId && eh.Date >= fromDate 
                 && eh.Date < toDate).OrderByDescending(eh => eh.Date).ThenBy(eh => eh.EmployeeId).ThenBy(eh => eh.Type).ToList();
         }
     }
