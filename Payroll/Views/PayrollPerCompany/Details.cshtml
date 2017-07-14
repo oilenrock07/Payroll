@@ -1,0 +1,85 @@
+﻿@using System.ComponentModel;
+@using Payroll.Common.Helpers;
+@using Payroll.Common.Extension
+@using Payroll.Entities.Enums
+@model Payroll.Models.Payroll.PayrollDetailsPerCompanyViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Employee Payroll Per Company Details</h2>
+
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>@Model.Payroll.Employee.FullName</h4>
+            <h4>@Model.Payroll.PayrollDate.ToLongDateString()</h4>
+            <h4>@Model.Payroll.Company.CompanyName</h4>
+        </div>
+
+        <div class="col-md-6">
+            <input type="button" class="btn btn-primary pull-right js-printPayroll hidden-print" value="Print" data-payroll="@Model.Payroll.EmployeePayrollPerCompanyId" />
+        </div>
+        @*<hr />*@
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <h3>Earnings</h3>
+            <table class="table table-responsive table-striped table-payroll-detail">
+                <tr>
+                    <th>Rate</th>
+                    <th>Total Hours</th>
+                    <th>Rate Per Hour</th>
+                    <th>Total Amount</th>
+                </tr>
+
+                @foreach (var item in Model.PayrollItems)
+                {
+                    <tr>
+                        <td>@(item.RateType.GetAttributeOfType<DescriptionAttribute>().Description)</td>
+                        <td>@item.TotalHours</td>
+                        <td>@item.RatePerHour.FormatAmount()</td>
+                        <td>@item.TotalAmount.FormatAmount()</td>
+                    </tr>
+                }
+
+                <tr class="totalTableBorder">
+                    <td colspan="3">Total:</td>
+                    <td>@Model.TotalPayrollItems.FormatAmount()</td>
+                </tr>
+            </table>
+
+            <br />
+            <hr />
+            <h3>Summary</h3>
+            <table class="table table-responsive table-payroll-detail">
+                <tr></tr>
+                <tr>
+                    <td>Total Earnings: </td>
+                    <td></td>
+                    <td></td>
+                    <td>@Model.TotalPayrollItems.FormatAmount()</td>
+                </tr>
+                <tr class="totalTableBorder">
+                    <td>Take Home Pay: </td>
+                    <td></td>
+                    <td></td>
+                    <td>@Model.Payroll.TotalNet.FormatAmount()</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/Payroll/payroll.js"></script>
+}

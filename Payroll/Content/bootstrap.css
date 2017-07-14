@@ -3319,7 +3319,8 @@ input[type="button"].btn-block {
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.428571429;
-  color: #999999;
+  color: red;
+  /*color: #999999;*/
 }
 
 .dropdown-backdrop {

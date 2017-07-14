@@ -454,6 +454,7 @@
     <Content Include="Views\PayrollPerCompany\Index.cshtml" />
     <Content Include="Views\PayrollPerCompany\Search.cshtml" />
     <Content Include="Views\Shared\_CompanyTypeAhead.cshtml" />
+    <Content Include="Views\PayrollPerCompany\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

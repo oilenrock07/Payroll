@@ -25,6 +25,7 @@
     <table class="table table-responsive">
         <tr>
             <th>Name</th>
+            <th>Company</th>
             <th>Gross Pay</th>
             <th>Total Deduction</th>
             <th>Net Pay</th>
@@ -36,6 +37,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.CompanyName)
                 </td>
                 <td>
                     @item.TotalGross.FormatAmount()

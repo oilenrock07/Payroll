@@ -34,7 +34,7 @@ namespace Payroll.Service.Implementations
 
         public void GenerateTotal(IList<EmployeeHours> employeeHoursList)
         {
-            if (employeeHoursList != null && employeeHoursList.Count > 1)
+            if (employeeHoursList != null && employeeHoursList.Any())
             {
                 int tempEmployeeId = 0;
                 DateTime? tempDate = null;

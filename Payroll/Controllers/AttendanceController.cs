@@ -105,6 +105,7 @@ namespace Payroll.Controllers
             _attendanceRepository.Add(attendance);
             _unitOfWork.Commit();
             RecomputeEmployeeHours(attendance.ClockIn, attendance.ClockOut.Value, attendance.EmployeeId);
+            RecomputeTotalEmployeeHours(attendance.ClockIn, attendance.ClockOut.Value, attendance.EmployeeId);
 
             ViewData["CreateSuccess"] = "Attendance successfully created";
             return View(new CreateAttendanceViewModel {Employees = viewModel.Employees});
@@ -172,7 +173,7 @@ namespace Payroll.Controllers
 
             _unitOfWork.Commit();
             RecomputeEmployeeHours(attendance.ClockIn, attendance.ClockOut.Value, attendance.EmployeeId);
-
+            RecomputeTotalEmployeeHours(attendance.ClockIn, attendance.ClockOut.Value, attendance.EmployeeId);
             ViewData["EditSuccess"] = "Attendance successfully updated";
             return RedirectToAction("Attendance");
         }
@@ -183,6 +184,13 @@ namespace Payroll.Controllers
             _employeeHoursService.ComputeEmployeeHours(clockin, employeeId);
             if (clockin.Date != clockout.Date)
                 _employeeHoursService.ComputeEmployeeHours(clockout, employeeId);
+        }
+
+        private void RecomputeTotalEmployeeHours(DateTime clockin, DateTime clockout, int employeeId)
+        {
+            _totalEmployeeHoursService.GenerateTotalByDateAndEmployee(employeeId, clockin);
+            if (clockin.Date != clockout.Date)
+                _totalEmployeeHoursService.GenerateTotalByDateAndEmployee(employeeId, clockout);
         }
 
         protected IEnumerable<SelectListItem> GetEmployeeNames()
@@ -379,7 +387,11 @@ namespace Payroll.Controllers
             var employeeTotalHours = GetTotalEmployeeHours(deserializedDate, deserializedDate, employeeId);
             if (employeeTotalHours != null)
             {
-                var employeeTotalHoursPerCompany = _totalEmployeeHoursPerCompanyRepository.Find(x => x.TotalEmployeeHours.Date == deserializedDate && x.TotalEmployeeHours.EmployeeId == employeeId).ToList();
+                var endDate = deserializedDate.Date.AddDays(1);
+                var employeeTotalHoursPerCompany = _totalEmployeeHoursPerCompanyRepository
+                    .Find(x => x.TotalEmployeeHours.Date > deserializedDate && x.TotalEmployeeHours.Date < endDate
+                    && x.TotalEmployeeHours.EmployeeId == employeeId).ToList();
+
                 var companies = _companyRepository.GetAllActive().ToList();
 
                 var emp = employeeTotalHours.First();
@@ -421,6 +433,7 @@ namespace Payroll.Controllers
                     foreach (var item in viewModel.RegularHoursPerCompany)
                     {
                         item.TotalEmployeeHours = null;
+                        item.Company = null;
                         _totalEmployeeHoursPerCompanyRepository.Add(item);
                     }
                 }
@@ -430,6 +443,7 @@ namespace Payroll.Controllers
                     foreach (var item in viewModel.OvertimePerCompany)
                     {
                         item.TotalEmployeeHours = null;
+                        item.Company = null;
                         _totalEmployeeHoursPerCompanyRepository.Add(item);
                     }
                 }
@@ -439,6 +453,7 @@ namespace Payroll.Controllers
                     foreach (var item in viewModel.NightDifferentialPerCompany)
                     {
                         item.TotalEmployeeHours = null;
+                        item.Company = null;
                         _totalEmployeeHoursPerCompanyRepository.Add(item);
                     }
                 }

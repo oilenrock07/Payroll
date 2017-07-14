@@ -10,6 +10,8 @@ namespace Payroll.Service.Interfaces
     {
         void GenerateTotalByDateRange(DateTime dateFrom, DateTime date);
 
+        void GenerateTotalByDateAndEmployee(int employeeId, DateTime date);
+
         TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type);
 
         IList<TotalEmployeeHours> GetByDateRange(DateTime dateFrom, DateTime dateTo);

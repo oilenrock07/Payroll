@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Payroll Search Per Company";
     var employeeData = Model.EmployeeId > 0 ? new ViewDataDictionary { { "Name", Model.EmployeeName } } : null;
-    var companyData = Model.CompanyId > 0 ? new ViewDataDictionary { { "Name", Model.CompanyName } } : null;
+    var companyData = Model.CompanyId > 0 ? new ViewDataDictionary { { "CompanyName", Model.CompanyName } } : null;
 }
 
 <div class="row">
@@ -46,6 +46,7 @@
         <table class="table table-responsive table-striped">
             <tr>
                 <th>Name</th>
+                <th>Company</th>
                 <th>Gross Pay</th>
                 <th>Total Deduction</th>
                 <th>Net Pay</th>
@@ -57,6 +58,9 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company.CompanyName)
                     </td>
                     <td>
                         @item.TotalGross.FormatAmount()

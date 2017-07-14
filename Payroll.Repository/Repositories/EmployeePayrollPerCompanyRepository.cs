@@ -4,6 +4,7 @@ using Payroll.Infrastructure.Interfaces;
 using Payroll.Repository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,8 @@ namespace Payroll.Repository.Repositories
 
         public IList<EmployeePayrollPerCompany> GetByDateRange(DateTime dateStart, DateTime dateEnd)
         {
-            return Find(p => p.IsActive && p.PayrollDate >= dateStart && p.PayrollDate < dateEnd)
-                .OrderByDescending(p => p.PayrollDate).ToList();
+            return Find(p => p.IsActive && p.PayrollDate >= dateStart && p.PayrollDate < dateEnd).Include(x => x.Company)
+                   .OrderByDescending(p => p.PayrollDate).ToList();
         }
 
         public IList<EmployeePayrollPerCompany> GetByPayrollDateRange(DateTime payrollStartDate, DateTime payrollEndDate)

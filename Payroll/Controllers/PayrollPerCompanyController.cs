@@ -138,6 +138,7 @@ namespace Payroll.Controllers
                 {
                     employeePayrollPerCompany = employeePayrollPerCompany.Where(x => x.CompanyId == companyId).ToList();
                     viewModel.CompanyName = employeePayrollPerCompany.Any() ? employeePayrollPerCompany.First().Company.CompanyName : "";
+                    viewModel.CompanyId = companyId;
                 }
 
                 var payrolls = MapEmployeePayrollToViewModel(employeePayrollPerCompany);
@@ -157,6 +158,7 @@ namespace Payroll.Controllers
         {
             return payrolls.MapCollection<EmployeePayrollPerCompany, PayrollListViewModel>((s, d) =>
             {
+                d.PayrollId = s.EmployeePayrollPerCompanyId;
                 d.FirstName = s.Employee.FirstName;
                 d.LastName = s.Employee.LastName;
                 d.MiddleName = s.Employee.MiddleName;
@@ -180,7 +182,7 @@ namespace Payroll.Controllers
         {
             var viewModel = new PayrollDetailsPerCompanyViewModel();
             viewModel.Payroll = _employeePayrollService.GetById(id);
-            viewModel.PayrollItems = _employeePayrollItemservice.GetByPayrollId(id);
+            viewModel.PayrollItems = _employeePayrollItemservice.GetByPayrollId(id).Where(x => x.CompanyId == viewModel.Payroll.CompanyId);
           
             return View(viewModel);
         }
