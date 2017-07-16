@@ -107,7 +107,7 @@ namespace Payroll.Service.Implementations
                 foreach (DateTime day in DatetimeExtension.EachDay(payrollStartDate, payrollEndDate))
                 {
                     //Get all total employee hours for the day
-                    var employeeTotalHoursListPerDay = employeeTotalHoursList.Where(h => h.TotalEmployeeHours.Date == day);
+                    var employeeTotalHoursListPerDay = employeeTotalHoursList.Where(h => h.TotalEmployeeHours.Date.Date == day.Date);
 
                     foreach (TotalEmployeeHoursPerCompany totalHours in employeeTotalHoursListPerDay)
                     {
