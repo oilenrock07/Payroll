@@ -340,6 +340,7 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\Payroll\adjustment.js" />
+    <Content Include="Scripts\Payroll\payrollpercompany.js" />
     <Content Include="Scripts\Payroll\payroll.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

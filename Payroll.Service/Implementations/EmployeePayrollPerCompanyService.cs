@@ -135,7 +135,7 @@ namespace Payroll.Service.Implementations
             //Add mapping to employee payroll lists
             foreach (EmployeePayrollItemPerCompany item in items)
             {
-                var employeePayroll = payrolls.Where(p => p.EmployeeId == item.EmployeeId).First();
+                var employeePayroll = payrolls.Where(p => p.EmployeeId == item.EmployeeId && p.CompanyId == item.CompanyId).First();
 
                 _employeePayrollItemService.Update(item);
                 item.PayrollPerCompanyId = employeePayroll.EmployeePayrollPerCompanyId;
