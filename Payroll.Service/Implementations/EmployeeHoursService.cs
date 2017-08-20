@@ -100,6 +100,9 @@ namespace Payroll.Service.Implementations
             if (employeeWorkSchedule == null)
                 employeeWorkSchedule = _employeeWorkScheduleService.GetByEmployeeId(employeeId);
 
+            if (employeeWorkSchedule == null)
+                throw new Exception("Employee does not have work schedule");
+
             this.day = day;
             //Get all employee attendance within date range
             // Will not include attendance without clockout

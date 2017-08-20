@@ -56,12 +56,7 @@ namespace Payroll.Controllers
 
         public virtual ActionResult CreateAttendance()
         {
-            var viewModel = new CreateAttendanceViewModel
-            {
-                Employees = GetEmployeeNames()
-            };
-
-            return View(viewModel);
+            return View(new CreateAttendanceViewModel());
         }
 
         [HttpPost]
@@ -69,7 +64,6 @@ namespace Payroll.Controllers
         {
             var clockIn = Convert.ToDateTime(String.Format("{0} {1}", viewModel.ClockIn.ToShortDateString(), viewModel.ClockInTime));
             var clockOut = Convert.ToDateTime(String.Format("{0} {1}", viewModel.ClockOut.ToShortDateString(), viewModel.ClockOutTime));
-            viewModel.Employees = GetEmployeeNames();
 
             //validate clock in should not be greater than or equal to clock out
             if (clockIn >= clockOut)
@@ -108,7 +102,7 @@ namespace Payroll.Controllers
             RecomputeTotalEmployeeHours(attendance.ClockIn, attendance.ClockOut.Value, attendance.EmployeeId);
 
             ViewData["CreateSuccess"] = "Attendance successfully created";
-            return View(new CreateAttendanceViewModel {Employees = viewModel.Employees});
+            return View(new CreateAttendanceViewModel());
         }
 
         public virtual ActionResult EditAttendance(int id)
