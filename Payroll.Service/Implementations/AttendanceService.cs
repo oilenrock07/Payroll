@@ -183,19 +183,19 @@ namespace Payroll.Service.Implementations
 
         public IList<Attendance> GetAttendanceByDateRange(int employeeId, DateTime fromDate, DateTime toDate)
         {
-            return _attendanceRepository.GetAttendanceByDateRange(employeeId, fromDate, toDate);
+            return _attendanceRepository.GetAttendanceByDateRange(employeeId, fromDate.Date, toDate.Date);
         }
 
         public IList<Attendance> GetAttendanceByDate(int employeeId, DateTime date)
         {
             DateTime toDate = date.AddDays(1);
-            return _attendanceRepository.GetAttendanceByDateRange(employeeId, date, toDate);
+            return _attendanceRepository.GetAttendanceByDateRange(employeeId, date.Date, toDate.Date);
         }
         
         public IList<Attendance> GetAttendanceForProcessing(int employeeId, DateTime date)
         {
             DateTime toDate = date.AddDays(1);
-            return _attendanceRepository.GetAttendanceByProcessing(employeeId, date, toDate, false);
+            return _attendanceRepository.GetAttendanceByProcessing(employeeId, date.Date, toDate.Date, false);
         }
 
         public virtual IEnumerable<AttendanceDao> GetAttendanceAndHoursByDate(DateTime startDate, DateTime endDate, int employeeId)
