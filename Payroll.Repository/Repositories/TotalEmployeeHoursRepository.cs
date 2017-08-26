@@ -21,7 +21,7 @@ namespace Payroll.Repository.Repositories
 
         public TotalEmployeeHours GetByEmployeeDateAndType(int employeeId, DateTime date, RateType type)
         {
-            return Find(eh => eh.IsActive && eh.EmployeeId == employeeId && eh.Date == date && eh.Type == type).FirstOrDefault();
+            return Find(eh => eh.IsActive && eh.EmployeeId == employeeId && eh.Date == date.Date && eh.Type == type).FirstOrDefault();
         }
 
         public IList<TotalEmployeeHours> GetByEmployeeDate(int employeeId, DateTime date)
