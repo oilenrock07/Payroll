@@ -28,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ClockIn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-4">
-                @Html.DatePickerFor("ClockIn", DateTime.Now, new { @class = "form-control datepicker js-clockIn" })
+                @Html.DatePickerFor("ClockIn", Model.ClockIn, new {@class = "form-control datepicker js-clockIn"})
                 @Html.ValidationMessageFor(model => model.ClockIn)
             </div>
             <div class="col-md-2">
@@ -46,7 +46,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ClockOut, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-4">
-                @Html.DatePickerFor("ClockOut", DateTime.Now, new { @class = "form-control datepicker js-clockOut" })
+                @Html.DatePickerFor("ClockOut", Model.ClockOut, new { @class = "form-control datepicker js-clockOut" })
                 @Html.ValidationMessageFor(model => model.ClockOut)
             </div>
             <div class="col-md-2">

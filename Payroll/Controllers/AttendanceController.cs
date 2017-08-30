@@ -145,8 +145,8 @@ namespace Payroll.Controllers
             _attendanceRepository.Add(attendance);
 
             //delete employee hours
-            var employeeHours = _employeeHoursRepository.Find(x => x.OriginAttendanceId == attendance.AttendanceId);
-            if (employeeHours != null && employeeHours.Any())
+            var employeeHours = _employeeHoursRepository.Find(x => x.OriginAttendanceId == attendance.AttendanceId).ToList();
+            if (employeeHours.Any())
             {
                 foreach (var employeeHour in employeeHours)
                 {
@@ -230,7 +230,7 @@ namespace Payroll.Controllers
                 return holiday != null && holiday.IsRegularHoliday;
             };
 
-            var result = _attendanceService.GetAttendanceAndHoursByDate(sDate, eDate, employeeId).ToList();
+            var result = _attendanceService.GetAttendanceAndHoursByDate(sDate, eDate, employeeId).OrderBy(x => x.ClockIn).ToList();
             var viewModel = result.MapCollection<AttendanceDao, AttendanceViewModel>((s, d) =>
             {
                 d.Editable = s.ClockIn > lastPayrollDate;
