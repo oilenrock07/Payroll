@@ -91,12 +91,27 @@ namespace Payroll.Service.Implementations
 
                     //If Last Iteration and New entry  
                     //Save
-                    if (hours.Equals(last) && (totalEmployeeHours.TotalEmployeeHoursId == null
-                        || totalEmployeeHours.TotalEmployeeHoursId <= 0))
+                    if (hours.Equals(last) && totalEmployeeHours.TotalEmployeeHoursId <= 0)
                     {
-                        totalEmployeeHours.Hours = (totalEmployeeHours.Hours);
+                        //Check if there's an existing total entry for the employee, rate type and date
+                        var existingTotalEmployeeHours = _totalEmployeeHoursRepository
+                            .GetByEmployeeDateAndType(totalEmployeeHours.EmployeeId,
+                                totalEmployeeHours.Date, totalEmployeeHours.Type);
 
-                        _totalEmployeeHoursRepository.Add(totalEmployeeHours);
+                        //If yes update the value
+                        if (existingTotalEmployeeHours != null)
+                        {
+                            _totalEmployeeHoursRepository.Update(existingTotalEmployeeHours);
+
+                            existingTotalEmployeeHours.Hours = (existingTotalEmployeeHours.Hours + totalEmployeeHours.Hours);
+
+                        }
+                        else //Create new entry
+                        {
+                            totalEmployeeHours.Hours = (totalEmployeeHours.Hours);
+
+                            _totalEmployeeHoursRepository.Add(totalEmployeeHours);
+                        }
                     }
 
                     //Set Reference data
