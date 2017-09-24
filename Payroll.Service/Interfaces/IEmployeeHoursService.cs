@@ -11,6 +11,8 @@ namespace Payroll.Service.Interfaces
     {
         int GenerateEmployeeHours(DateTime fromDate, DateTime toDate);
 
+        int GenerateEmployeeHours(DateTime fromDate, DateTime toDate, int employeeId);
+
         void ComputeEmployeeHours(DateTime day, int employeeId);
 
         IList<EmployeeHours> GetByEmployeeAndDateRange(int employeeId, DateTime fromDate, DateTime toDate);
@@ -22,5 +24,6 @@ namespace Payroll.Service.Interfaces
         IList<EmployeeHours> GetByDateRange(DateTime fromDate, DateTime toDate);
 
         void Update(EmployeeHours employeeHours);
+       
     }
 }

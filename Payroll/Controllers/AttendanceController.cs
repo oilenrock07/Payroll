@@ -175,9 +175,9 @@ namespace Payroll.Controllers
         private void RecomputeEmployeeHours(DateTime clockin, DateTime clockout, int employeeId)
         {
             //recompute employee hours            
-            _employeeHoursService.ComputeEmployeeHours(clockin, employeeId);
-            if (clockin.Date != clockout.Date)
-                _employeeHoursService.ComputeEmployeeHours(clockout, employeeId);
+            _employeeHoursService.GenerateEmployeeHours(clockin.Date, clockout.Date, employeeId);
+            //if (clockin.Date != clockout.Date)
+           //     _employeeHoursService.ComputeEmployeeHours(clockout, employeeId);
         }
 
         private void RecomputeTotalEmployeeHours(DateTime clockin, DateTime clockout, int employeeId)

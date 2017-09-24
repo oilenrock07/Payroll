@@ -95,6 +95,24 @@ namespace Payroll.Service.Implementations
             return 0;
         }
 
+        public int GenerateEmployeeHours(DateTime fromDate, DateTime toDate, int employeeId)
+        {
+            employeeWorkSchedule = _employeeWorkScheduleService.GetByEmployeeId(employeeId);
+
+            //Will not compute if work schedule is null
+            if (employeeWorkSchedule != null)
+            {
+                foreach (DateTime d in DatetimeExtension.EachDay(fromDate, toDate))
+                {
+                      ComputeEmployeeHours(d, employeeId);
+                }
+            }
+            
+            _unitOfWork.Commit();
+
+            return 0;
+        }
+
         public void ComputeEmployeeHours(DateTime day, int employeeId)
         {
             if (employeeWorkSchedule == null)
