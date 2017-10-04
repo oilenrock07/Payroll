@@ -383,7 +383,7 @@ namespace Payroll.Controllers
             {
                 var endDate = deserializedDate.Date.AddDays(1);
                 var employeeTotalHoursPerCompany = _totalEmployeeHoursPerCompanyRepository
-                    .Find(x => x.TotalEmployeeHours.Date > deserializedDate && x.TotalEmployeeHours.Date < endDate
+                    .Find(x => x.TotalEmployeeHours.Date >= deserializedDate && x.TotalEmployeeHours.Date < endDate
                     && x.TotalEmployeeHours.EmployeeId == employeeId).ToList();
 
                 var companies = _companyRepository.GetAllActive().ToList();
