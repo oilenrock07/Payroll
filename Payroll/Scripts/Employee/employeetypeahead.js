@@ -25,6 +25,7 @@
         $("input.typeahead.employee-typeahead").typeahead({
             source: handleTypeAheadGetData,
             minLength: 2,
+            items:9999,
             updater: handleUpdater
         });
     }
