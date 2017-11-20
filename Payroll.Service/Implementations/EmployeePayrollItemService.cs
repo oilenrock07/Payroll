@@ -618,7 +618,7 @@ namespace Payroll.Service.Implementations
 
             //check if there are Night Differentials
             var nightDiffExists = false;
-            if (payrollItems.Any(x => x.RateType == RateType.RestDayOT))
+            if (payrollItems.Any(x => x.RateType == RateType.NightDifferential))
             {
                 dt.Columns.Add("Total Night Differential Hours");
                 dt.Columns.Add("Night Differential Rate");

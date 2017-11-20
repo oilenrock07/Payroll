@@ -28,7 +28,7 @@ namespace Payroll.Service.Implementations
         private IEmployeeInfoService _employeeInfoService;
         private IEmployeeSalaryService _employeeSalaryService;
 
-        private readonly IEmployeePayrollRepository _employeePayrollRepository;
+        private readonly IEmployeePayrollPerCompanyRepository _employeePayrollRepository;
         private readonly IEmployeeLeaveRepository _employeeLeaveRepository;
 
         private IEmployeePayrollItemPerCompanyRepository _employeePayrollItemPerCompanyRepository;
@@ -36,7 +36,7 @@ namespace Payroll.Service.Implementations
         public EmployeePayrollItemPerCompanyService(IUnitOfWork unitOfWork, IEmployeePayrollItemPerCompanyRepository employeePayrollItemPerCompanyRepository,
             ITotalEmployeeHoursPerCompanyService totalEmployeeHoursPerCompanyService,
             IEmployeeWorkScheduleService employeeWorkScheduleService, IHolidayService holidayService, ISettingService settingService,
-            IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService, IEmployeePayrollRepository employeePayrollRepository,
+            IEmployeeInfoService employeeInfoService, IEmployeeSalaryService employeeSalaryService, IEmployeePayrollPerCompanyRepository employeePayrollRepository,
             IEmployeeLeaveRepository employeeLeaveRepository) 
             : base(employeePayrollItemPerCompanyRepository)
         {
@@ -309,9 +309,9 @@ namespace Payroll.Service.Implementations
 
         public virtual IEnumerable<EmployeePayrollItemPerCompany> GetByCutoffDates(DateTime dateFrom, DateTime dateTo)
         {
-            var payroll = _employeePayrollRepository.Find(x => x.IsActive && x.CutOffStartDate >= dateFrom && x.CutOffEndDate <= dateTo);
+            var payroll = _employeePayrollRepository.Find(x => x.IsActive && x.CutOffStartDate >= dateFrom && x.CutOffEndDate <= dateTo && x.CompanyId > 0);
             var payrollItems = from payrollItem in _employeePayrollItemPerCompanyRepository.GetAllActive()
-                               join pay in payroll on payrollItem.PayrollPerCompanyId equals pay.PayrollId
+                               join pay in payroll on payrollItem.PayrollPerCompanyId equals pay.EmployeePayrollPerCompanyId
                                select payrollItem;
 
 
@@ -331,6 +331,7 @@ namespace Payroll.Service.Implementations
 
             var dt = new DataTable();
             dt.Columns.Add("Name");
+            dt.Columns.Add("Company");
             dt.Columns.Add("Hourly Rate");
             dt.Columns.Add("Total Regular Hours");
             dt.Columns.Add("Regular Hours Pay");
@@ -373,7 +374,7 @@ namespace Payroll.Service.Implementations
 
             //check if there are Night Differentials
             var nightDiffExists = false;
-            if (payrollItems.Any(x => x.RateType == RateType.RestDayOT))
+            if (payrollItems.Any(x => x.RateType == RateType.NightDifferential))
             {
                 dt.Columns.Add("Total Night Differential Hours");
                 dt.Columns.Add("Night Differential Rate");
@@ -505,17 +506,19 @@ namespace Payroll.Service.Implementations
                 specialHolidaysNotWorkedExists = true;
             }
 
-            dt.Columns.Add("SSS/PAGIBIG/PHILHEALTH");
+            //dt.Columns.Add("SSS/PAGIBIG/PHILHEALTH");
             dt.Columns.Add("Total Payroll");
 
-            var employeeIds = payrollItems.Select(x => x.EmployeeId);
-            foreach(var id in employeeIds.Distinct())
+            //var employeeIds = payrollItems.Select(x => x.EmployeeId);
+            var employeeCompany = payrollItems.GroupBy(x => new {x.CompanyId, x.EmployeeId});
+            foreach(var id in employeeCompany)
             {
                 var row = dt.NewRow();
-                var payroll = payrollItems.First(x => x.EmployeeId == id);
-                var employeePayroll = payrollItems.Where(x => x.EmployeeId == id);
+                var payroll = payrollItems.First(x => x.EmployeeId == id.Key.EmployeeId && x.CompanyId == id.Key.CompanyId);
+                var employeePayroll = payrollItems.Where(x => x.EmployeeId == id.Key.EmployeeId && x.CompanyId == id.Key.CompanyId);
 
                 row["Name"] = payroll.Employee.FullName;
+                row["Company"] = payroll.Company.CompanyName;
 
                 //Regular Hours
                 var regularHours = employeePayroll.FirstOrDefault(x => x.RateType == RateType.Regular);
@@ -663,6 +666,9 @@ namespace Payroll.Service.Implementations
                     row["% Special Holidays Not Worked"] = specialHolidaysNotWorked != null ? specialHolidaysNotWorked.Multiplier : 0;
                     row["Special Holidays Not Worked Pay"] = specialHolidaysNotWorked != null ? specialHolidaysNotWorked.TotalAmount : 0;
                 }
+
+                row["Total Payroll"] = employeePayroll.Sum(x => x.TotalAmount);
+                dt.Rows.Add(row);
             }
 
             return dt;
